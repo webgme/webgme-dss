@@ -1,7 +1,12 @@
 import React, {Component} from 'react';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+
 import logo from './logo.svg';
 import './App.css';
 import Projects from './Projects';
+import Project from './Project';
+
+
 
 export default class App extends Component {
 
@@ -39,7 +44,17 @@ export default class App extends Component {
                     <img src={logo} className={initialConnect ? "App-logo" : "App-logo-loading"} alt="logo"/>
                     <h1 className="App-title">{initialConnect ? "Welcome to WebGME-DSS" : "Connecting to WebGME"}</h1>
                 </header>
-                {content}
+                <Router>
+                    <div>
+                        <Route exact={true} path="/" render={() => (
+                            content
+                        )}/>
+                        <Route path="/p/:owner/:name" render={ ({match}) => (
+                            <Project projectId={`${match.params.owner}+${match.params.name}`}
+                                gmeClient={window.gmeClient}/>
+                        )}/>
+                    </div>
+                </Router>
             </div>
         );
     }

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Button} from 'material-ui';
 import List, { ListItem, ListItemText } from 'material-ui/List';
+import {Link} from 'react-router-dom';
 
 export default class Projects extends Component {
     constructor(props) {
@@ -15,7 +16,6 @@ export default class Projects extends Component {
     }
 
     getProjects() {
-        debugger;
         this.props.gmeClient.getProjects({}, (err, projects) => {
             if (err) {
                 console.error(err);
@@ -24,7 +24,6 @@ export default class Projects extends Component {
 
             console.log('projects', projects);
             this.setState({projects: projects});
-            //this.setState({err, projects});
         });
     }
 
@@ -40,9 +39,11 @@ export default class Projects extends Component {
                 {projects
                     .map(project => {
                         return (
+                        <Link to={`/p/${project.owner}/${project.name}`}>
                             <ListItem button>
                                 <ListItemText primary={project.name}/>
                             </ListItem>
+                        </Link>
                         )
                     })
                 }

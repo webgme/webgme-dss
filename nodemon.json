@@ -1,0 +1,23 @@
+{
+  "restartable": "rs",
+  "ignore": [
+    ".git",
+    "build",
+    "node_modules/**/node_modules"
+  ],
+  "verbose": true,
+  "ext": "js jsx json",
+  "execMap": {
+    "js": "node --harmony",
+    "jsx": "node"
+  },
+  "events": {
+    "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'"
+  },
+  "watch": [
+    "src"
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

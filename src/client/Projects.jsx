@@ -39,7 +39,7 @@ export default class Projects extends Component {
                 {projects
                     .map(project => {
                         return (
-                        <Link to={`/p/${project.owner}/${project.name}`}>
+                        <Link key={project._id} to={`/p/${project.owner}/${project.name}`}>
                             <ListItem button>
                                 <ListItemText primary={project.name}/>
                             </ListItem>

@@ -1,3 +1,4 @@
+// Libraries
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -5,6 +6,7 @@ import PropTypes from 'prop-types';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Grid from 'material-ui/Grid';
 
+// Own modules
 import PartBrowser from './PartBrowser';
 import AttributeEditor from './AttributeEditor';
 

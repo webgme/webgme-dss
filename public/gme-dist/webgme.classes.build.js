@@ -1,3 +1,10 @@
+/**
+ * This is a mock of the webgme.classes.js and used when running
+ *  - npm run mock
+ *
+ * Add new classes/methods as needed. (They do not have to maintain a consistent state)
+ */
+
 // Pure JavaScript equivalent to jQuery's $.ready() from https://github.com/jfriend00/docReady
 (function () {
 

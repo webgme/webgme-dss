@@ -15,9 +15,9 @@ export default class Project extends Component {
             activeNode: null,
             branch: null
         };
+    }
 
-        console.log('Got project', this.props.projectId);
-
+    componentDidMount() {
         this.props.gmeClient.selectProject(this.props.projectId, 'master', (err) => {
             if (err) {
                 console.error(err);

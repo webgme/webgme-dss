@@ -7,12 +7,17 @@ import Projects from './Projects';
 import Project from './Project';
 
 
-
 export default class App extends Component {
 
     constructor(props) {
         super(props);
 
+        this.state = {
+            initialConnect: false
+        }
+    }
+
+    componentDidMount() {
         window.onGMEInit = () => {
             window.gmeClient = new window.GME.classes.Client(window.GME.gmeConfig);
             window.gmeClient.connectToDatabase((err) => {
@@ -24,10 +29,6 @@ export default class App extends Component {
                 this.setState({initialConnect: true});
             });
         };
-
-        this.state = {
-            initialConnect: false
-        }
     }
 
     render() {
@@ -35,7 +36,16 @@ export default class App extends Component {
         let content = <div/>;
 
         if (initialConnect) {
-            content = <Projects gmeClient={window.gmeClient}/>;
+            content = (
+                <div>
+                    <Route exact={true} path="/" render={() => {
+                            return <Projects gmeClient={window.gmeClient}/>;
+                        }}/>
+                    <Route path="/p/:owner/:name" render={ ({match}) => (
+                            <Project projectId={`${match.params.owner}+${match.params.name}`}
+                                gmeClient={window.gmeClient}/>
+                        )}/>
+                </div>);
         }
 
         return (
@@ -45,15 +55,7 @@ export default class App extends Component {
                     <h1 className="App-title">{initialConnect ? "Welcome to WebGME-DSS" : "Connecting to WebGME"}</h1>
                 </header>
                 <Router>
-                    <div>
-                        <Route exact={true} path="/" render={() => (
-                            content
-                        )}/>
-                        <Route path="/p/:owner/:name" render={ ({match}) => (
-                            <Project projectId={`${match.params.owner}+${match.params.name}`}
-                                gmeClient={window.gmeClient}/>
-                        )}/>
-                    </div>
+                    {content}
                 </Router>
             </div>
         );

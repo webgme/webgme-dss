@@ -1,0 +1,14 @@
+{
+  "components": {
+    "routers": {
+      "AppRouter": {
+        "src": "src/routers/AppRouter",
+        "test": "test/routers/AppRouter",
+        "mount": "p"
+      }
+    }
+  },
+  "dependencies": {
+    "routers": {}
+  }
+}

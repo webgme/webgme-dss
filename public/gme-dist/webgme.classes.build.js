@@ -21,6 +21,14 @@
             'ElectricalCircuit',
             'Capacitor',
             'SinusSource'
+        ],
+        attrNames = [
+            'name',
+            'stringAttr',
+            'intAttr',
+            'boolAttr',
+            'assetAttr',
+            'enumAttr'
         ];
 
     function genProject(d) {
@@ -44,9 +52,18 @@
 
         return {
             getId: () => id,
+            getValidAttributeNames: () => {
+                return attrNames;
+            },
             getAttribute: (attrName) => {
                 cnt += 1;
-                return names[cnt % names.length];
+                if (attrName.indexOf('int') !== -1) {
+                    return cnt;
+                } else if (attrName.indexOf('bool') !== -1) {
+                    return cnt % 2 === 0;
+                } else {
+                    return names[cnt % names.length];
+                }
             },
             getValidChildrenTypesDetailed: () => {
                 return {
@@ -127,7 +144,6 @@
             }
         };
     };
-
 
     (function (funcName, baseObj) {
         // The public function name defaults to window.docReady

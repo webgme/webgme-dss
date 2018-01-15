@@ -44,7 +44,13 @@ export default class Project extends Component {
                 <h3>{`Branch ${branch} open for ${this.props.projectId}!`}</h3>
                 <Grid container spacing={24}>
                     <Grid item xs={12} sm={6}>
-                        <PartBrowser activeNode={activeNode} gmeClient={this.props.gmeClient}/>
+                        <PartBrowser activeNode={activeNode} gmeClient={this.props.gmeClient}
+                                     treePathGetter={(node) => {
+                                         let modelicaUri = node.getAttribute('ModelicaURI');
+                                         if (modelicaUri) {
+                                             return modelicaUri.split('.').slice(1).join('$');
+                                         }
+                                     }}/>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <AttributeEditor activeNode={activeNode} gmeClient={this.props.gmeClient}/>

@@ -18,7 +18,7 @@
             'FCO',
             'LogicGatesMetaLanguage',
             'Resistor',
-            'ElectricalCircuit',
+            'Inductor',
             'Capacitor',
             'SinusSource'
         ],
@@ -29,6 +29,12 @@
             'boolAttr',
             'assetAttr',
             'enumAttr'
+        ],
+        modelicaUris = [
+            'Modelica.Electrical.Analog.Basic.Resistor',
+            'Modelica.Electrical.Analog.Basic.Capacitor',
+            'Modelica.Electrical.Analog.Basic.Inductor',
+            'Modelica.Electrical.Analog.Sources.VoltageSource'
         ];
 
     function genProject(d) {
@@ -61,6 +67,8 @@
                     return cnt;
                 } else if (attrName.indexOf('bool') !== -1) {
                     return cnt % 2 === 0;
+                } else if (attrName === 'ModelicaURI') {
+                    return modelicaUris[cnt % modelicaUris.length];
                 } else {
                     return names[cnt % names.length];
                 }

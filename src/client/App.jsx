@@ -35,13 +35,25 @@ export default class App extends Component {
 
     render() {
         const {initialConnect} = this.state;
-        let content = <div/>;
+        let content = (
+            <header className="App-header">
+                <img src={logo} className={"App-logo-loading"} alt="logo"/>
+                <h1 className="App-title">{"Connecting to WebGME"}</h1>
+            </header>);
 
         if (initialConnect) {
             content = (
                 <div>
                     <Route exact={true} path="/" render={() => {
-                            return <Projects gmeClient={window.gmeClient}/>;
+                            return (
+                                <div>
+                                <header className="App-header">
+                                    <img src={logo} className={"App-logo"} alt="logo"/>
+                                    <h1 className="App-title">{"Welcome to WebGME-DSS"}</h1>
+                                </header>
+                                <Projects gmeClient={window.gmeClient}/>
+                                </div>
+                            );
                         }}/>
                     <Route path="/p/:owner/:name" render={ ({match}) => (
                             <Project projectId={`${match.params.owner}+${match.params.name}`}
@@ -52,10 +64,6 @@ export default class App extends Component {
 
         return (
             <div className="App">
-                <header className="App-header">
-                    <img src={logo} className={initialConnect ? "App-logo" : "App-logo-loading"} alt="logo"/>
-                    <h1 className="App-title">{initialConnect ? "Welcome to WebGME-DSS" : "Connecting to WebGME"}</h1>
-                </header>
                 <Router>
                     {content}
                 </Router>

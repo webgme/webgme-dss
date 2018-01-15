@@ -1,3 +1,4 @@
+//TODO: Consider using https://github.com/alexcurtis/react-treebeard for tree view.
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -73,9 +74,10 @@ export default class PartBrowser extends SingleConnectedNode {
                                 if (!treeNode.folders[path]) {
                                     treeNode.folders[path] = {
                                         isFolder: true,
+                                        isRoot: i === 0,
                                         name: path,
                                         path: treeNode.path + '$' + path,
-                                        description: 'Something is here',
+                                        description: 'This library is bla, bla, bla..',
                                         folders: {},
                                         children: []
                                     };
@@ -91,17 +93,26 @@ export default class PartBrowser extends SingleConnectedNode {
                 }
             });
 
-        function getExpPanelRec(treeNode) {
+        function buildTreeStructure(treeNode) {
             if (treeNode.isFolder) {
-                return (
-                    <ExpansionPanel key={treeNode.path}>
-                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                            {treeNode.name}
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                            {treeNode.children.sort(nameSort).map(getExpPanelRec)}
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>);
+                if (treeNode.isRoot) {
+                    return (
+                        <ExpansionPanel key={treeNode.path}>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                                {treeNode.name}
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                {treeNode.children.sort(nameSort).map(buildTreeStructure)}
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>);
+                } else {
+                    return (
+                        <div key={treeNode.path} style={{marginLeft: 30}}>
+                            <h6>{treeNode.name}</h6>
+                            {treeNode.children.sort(nameSort).map(buildTreeStructure)}
+                        </div>
+                    )
+                }
             } else {
                 // TODO: This should be a draggable item
                 return (
@@ -111,8 +122,8 @@ export default class PartBrowser extends SingleConnectedNode {
         }
 
         return (
-            <div>
-                {tree.children.map(getExpPanelRec)}
+            <div style={{width: '100%'}}>
+                {tree.children.map(buildTreeStructure)}
             </div>
         );
     }

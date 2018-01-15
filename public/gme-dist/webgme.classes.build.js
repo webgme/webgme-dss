@@ -34,7 +34,11 @@
             'Modelica.Electrical.Analog.Basic.Resistor',
             'Modelica.Electrical.Analog.Basic.Capacitor',
             'Modelica.Electrical.Analog.Basic.Inductor',
-            'Modelica.Electrical.Analog.Sources.VoltageSource'
+            'Modelica.Electrical.Analog.Sources.VoltageSource',
+            'Modelica.Mechanics.Rotational.Components.Inertia',
+            'Modelica.Mechanics.Rotational.Components.Damper',
+            'Modelica.Mechanics.Rotational.Components.Spring',
+            'Modelica.Mechanics.Rotational.Sources.Accelerate'
         ];
 
     function genProject(d) {
@@ -79,7 +83,10 @@
                     '/2': true,
                     '/2/1': true,
                     '/2/2': true,
-                    '/3': true
+                    '/3': true,
+                    '/3/1': true,
+                    '/3/2': true,
+                    '/3/3': true
                 };
             }
         }

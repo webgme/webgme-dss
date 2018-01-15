@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Button} from 'material-ui';
-import List, { ListItem, ListItemText } from 'material-ui/List';
 import {Link} from 'react-router-dom';
+
+import {Button} from 'material-ui';
+import {LinearProgress} from 'material-ui/Progress';
+import List, {ListItem, ListItemText} from 'material-ui/List';
+
 
 export default class Projects extends Component {
     constructor(props) {
@@ -15,6 +18,10 @@ export default class Projects extends Component {
         this.getProjects = this.getProjects.bind(this);
     }
 
+    componentDidMount() {
+        this.getProjects();
+    }
+
     getProjects() {
         this.props.gmeClient.getProjects({}, (err, projects) => {
             if (err) {
@@ -22,7 +29,6 @@ export default class Projects extends Component {
                 return;
             }
 
-            console.log('projects', projects);
             this.setState({projects: projects});
         });
     }
@@ -30,24 +36,30 @@ export default class Projects extends Component {
     render() {
         const {projects} = this.state;
 
-        let content = (<Button raised color="primary" onClick={this.getProjects}>
-            {"View Projects"}
-        </Button>);
+        let content = (
+            <div style={{
+                width: '100%',
+                marginTop: 30,
+            }}>
+                <LinearProgress/>
+                <br/>
+                <LinearProgress color="accent"/>
+            </div>);
 
         if (projects) {
             content = (<List>
                 {projects
                     .map(project => {
                         return (
-                        <Link key={project._id} to={`/p/${project.owner}/${project.name}`}>
-                            <ListItem button>
-                                <ListItemText primary={project.name}/>
-                            </ListItem>
-                        </Link>
+                            <Link key={project._id} to={`/p/${project.owner}/${project.name}`}>
+                                <ListItem button>
+                                    <ListItemText primary={project.name}/>
+                                </ListItem>
+                            </Link>
                         )
                     })
                 }
-            </List>)
+            </List>);
         }
 
         return content;

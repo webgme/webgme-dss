@@ -3,20 +3,31 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import List, { ListItem, ListItemText } from 'material-ui/List';
+import Drawer from 'material-ui/Drawer';
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
 import Grid from 'material-ui/Grid';
+import IconButton from 'material-ui/IconButton';
+import Button from 'material-ui/Button';
+import Typography from 'material-ui/Typography';
+import MenuIcon from 'material-ui-icons/Menu';
+import AssignmentIcon from 'material-ui-icons/Assignment';
+import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 
 // Own modules
 import PartBrowser from './PartBrowser';
 import AttributeEditor from './AttributeEditor';
 
 export default class Project extends Component {
+    state = {
+        activeNode: null,
+        branch: null,
+        sideMenu: true,
+        bottomMenu: true
+    };
+
     constructor(props) {
         super(props);
-        this.state = {
-            activeNode: null,
-            branch: null
-        };
     }
 
     componentDidMount() {
@@ -34,16 +45,52 @@ export default class Project extends Component {
         });
     }
 
+    onSideMenuOpen = () => {
+        this.setState({sideMenu: true});
+    };
+
+    onSideMenuClose = () => {
+        this.setState({sideMenu: false});
+    };
+
+    onBottomMenuOpen = () => {
+        this.setState({bottomMenu: true});
+    };
+
+    onBottomMenuClose = () => {
+        this.setState({bottomMenu: false});
+    };
+
     render() {
         const {activeNode, branch} = this.state;
+        const [owner, name] = this.props.projectId.split('+');
 
-        let content = <div>Loading in project ...</div>;
+        if (typeof activeNode !== 'string') {
+            return <div>Loading in project ...</div>;
+        }
 
-        if (typeof activeNode === 'string') {
-            content = (<div style={{flexGrow: 1, marginTop: 30}}>
-                <h3>{`Branch ${branch} open for ${this.props.projectId}!`}</h3>
-                <Grid container spacing={24}>
-                    <Grid item xs={12} sm={6}>
+        return (
+            <div style={{
+                position: 'relative',
+                display: 'flex',
+                width: '100%',
+                height: '100%'
+            }}>
+                <AppBar>
+                    <Toolbar disableGutters={this.state.sideMenu}>
+                        <IconButton color="contrast" aria-label="open side menu" onClick={this.onSideMenuOpen}>
+                            <MenuIcon/>
+                        </IconButton>
+                        <Typography type="title" color="inherit" noWrap>
+                            {`Branch ${branch} open for ${owner} / ${name}`}
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+                <Drawer type="persistent" anchor="left" open={this.state.sideMenu} style={{width: 240}}>
+                        <IconButton onClick={this.onSideMenuClose}>
+                            <ChevronLeftIcon/>
+                        </IconButton>
+                    <div style={{maxWidth: 240}}>
                         <PartBrowser activeNode={activeNode} gmeClient={this.props.gmeClient}
                                      treePathGetter={(node) => {
                                          let modelicaUri = node.getAttribute('ModelicaURI');
@@ -51,17 +98,22 @@ export default class Project extends Component {
                                              return modelicaUri.split('.').slice(1).join('$');
                                          }
                                      }}/>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <AttributeEditor activeNode={activeNode} gmeClient={this.props.gmeClient}/>
-                    </Grid>
-                </Grid>
-            </div>);
-        }
-
-        return (
-            <div>
-                {content}
+                    </div>
+                </Drawer>
+                <div style={{marginTop: 64}}>
+                    {this.state.bottomMenu ?
+                        <Button onClick={this.onBottomMenuClose}>
+                            HIDE ATTRIBUTES
+                        </Button>
+                        :
+                        <Button onClick={this.onBottomMenuOpen}>
+                            SHOW ATTRIBUTES
+                        </Button>
+                    }
+                </div>
+                <Drawer type="persistent" anchor="bottom" open={this.state.bottomMenu} onClose={this.onBottomMenuClose}>
+                    <AttributeEditor activeNode={activeNode} gmeClient={this.props.gmeClient}/>
+                </Drawer>
             </div>
         );
     }

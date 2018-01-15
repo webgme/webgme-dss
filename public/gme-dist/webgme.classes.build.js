@@ -13,6 +13,16 @@
 
     window.GME = GME;
 
+    let cnt = 0,
+        names = [
+            'FCO',
+            'LogicGatesMetaLanguage',
+            'Resistor',
+            'ElectricalCircuit',
+            'Capacitor',
+            'SinusSource'
+        ];
+
     function genProject(d) {
         return {
             owner: d.owner,
@@ -30,13 +40,34 @@
         }
     }
 
+    function GMENode(id) {
+
+        return {
+            getId: () => id,
+            getAttribute: (attrName) => {
+                cnt += 1;
+                return names[cnt % names.length];
+            },
+            getValidChildrenTypesDetailed: () => {
+                return {
+                    '/1': true,
+                    '/2': true,
+                    '/2/1': true,
+                    '/2/2': true,
+                    '/3': true
+                };
+            }
+        }
+    }
+
     GME.classes.Client = function () {
+        let users = {};
         return {
             connectToDatabase: (callback) => {
                 setTimeout(callback, 400);
             },
             getProjects: (opts, callback) => {
-                setTimeout(function () {
+                setTimeout(() => {
                     callback(null, [
                         {
                             owner: 'guest',
@@ -61,7 +92,39 @@
                 setTimeout(callback, 100);
             },
             getActiveProjectId: () => 'guest+ElectricalCircuit',
-            getActiveBranchName: () => 'master'
+            getActiveBranchName: () => 'master',
+            addUI: (uiId, eventHandler) => {
+                cnt += 1;
+                uiId = uiId ? uiId : 'user_' + cnt;
+                users[uiId] = eventHandler;
+
+                return uiId;
+            },
+            removeUI: (uiId) => {
+                delete users[uiId];
+            },
+            updateTerritory: (uiId, territory) => {
+                let terrDescs = Object.keys(territory),
+                    events = [];
+
+                terrDescs.forEach((id) => {
+                    events.push({eid: id, etype: 'load'});
+                    if (territory[id].children) {
+                        events.push({eid: id + '/1', etype: 'load'});
+                        events.push({eid: id + '/2', etype: 'load'});
+                        events.push({eid: id + '/3', etype: 'load'});
+                        events.push({eid: id + '/4', etype: 'load'});
+                        events.push({eid: id + '/5', etype: 'load'});
+                    }
+                });
+
+                events.push({etype: 'technical'});
+
+                setTimeout(users[uiId], 10, events);
+            },
+            getNode: (id) => {
+                return new GMENode(id);
+            }
         };
     };
 

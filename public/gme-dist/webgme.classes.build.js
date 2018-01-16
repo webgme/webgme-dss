@@ -77,6 +77,17 @@
                     return names[cnt % names.length];
                 }
             },
+            getAttributeMeta: (attrName) => {
+                if (attrName.indexOf('int') !== -1) {
+                    return {type: 'integer'};
+                } else if (attrName.indexOf('bool') !== -1) {
+                    return {type: 'bool'};
+                } else if (attrName.indexOf('enum') !== -1) {
+                    return {type: 'string', enum: names};
+                } else {
+                    return {type: 'string'};
+                }
+            },
             getValidChildrenTypesDetailed: () => {
                 return {
                     '/1': true,

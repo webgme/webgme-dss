@@ -2,6 +2,8 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
@@ -17,8 +19,9 @@ import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 // Own modules
 import PartBrowser from './PartBrowser';
 import AttributeEditor from './AttributeEditor';
+import Canvas from './Canvas';
 
-export default class Project extends Component {
+class Project extends Component {
     state = {
         activeNode: null,
         branch: null,
@@ -110,6 +113,9 @@ export default class Project extends Component {
                             SHOW ATTRIBUTES
                         </Button>
                     }
+                    <div style={{width: 400, height: 400, borderStyle: 'dotted'}}>
+                    <Canvas activeNode={this.state.activeNode} gmeClient={this.props.gmeClient}/>
+                    </div>
                 </div>
                 <Drawer type="persistent" anchor="bottom" open={this.state.bottomMenu} onClose={this.onBottomMenuClose}>
                     <AttributeEditor activeNode={activeNode} gmeClient={this.props.gmeClient}/>
@@ -123,3 +129,5 @@ Project.propTypes = {
     gmeClient: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired
 };
+
+export default DragDropContext(HTML5Backend)(Project);

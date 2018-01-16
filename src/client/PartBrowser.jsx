@@ -7,13 +7,15 @@ import ExpansionPanel, {
     ExpansionPanelSummary
 } from 'material-ui/ExpansionPanel';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
-import Chip from 'material-ui/Chip';
 
 import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
 import getObjectSorter from './gme/utils/getObjectSorter';
 
+import PartBrowserItem from './PartBrowserItem';
+
 const TREE_PATH_SEP = '$';
 const nameSort = getObjectSorter('name', true);
+
 
 export default class PartBrowser extends SingleConnectedNode {
     constructor(props) {
@@ -97,7 +99,7 @@ export default class PartBrowser extends SingleConnectedNode {
             if (treeNode.isFolder) {
                 if (treeNode.isRoot) {
                     return (
-                        <ExpansionPanel key={treeNode.path}>
+                        <ExpansionPanel key={treeNode.path} defaultExpanded>
                             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                                 {treeNode.name}
                             </ExpansionPanelSummary>
@@ -116,7 +118,7 @@ export default class PartBrowser extends SingleConnectedNode {
             } else {
                 // TODO: This should be a draggable item
                 return (
-                    <Chip label={treeNode.name} key={treeNode.id}/>
+                    <PartBrowserItem key={treeNode.id} treeNode={treeNode}/>
                 )
             }
         }

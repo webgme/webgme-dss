@@ -62,9 +62,7 @@
 
         return {
             getId: () => id,
-            getValidAttributeNames: () => {
-                return attrNames;
-            },
+            getValidAttributeNames: () => attrNames,
             getAttribute: (attrName) => {
                 cnt += 1;
                 if (attrName.indexOf('int') !== -1) {
@@ -99,7 +97,8 @@
                     '/3/2': true,
                     '/3/3': true
                 };
-            }
+            },
+            getChildrenIds: () => ['/2/1', '/2/2', '/2/3', '/2/4', '/2/5']
         }
     }
 

@@ -1,29 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Switch from 'material-ui/Switch';
-import List, {
-    ListItem,
-    ListItemIcon,
-    ListItemSecondaryAction,
-    ListItemText,
-    ListSubheader,
-} from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import Input, {InputLabel, InputAdornment} from 'material-ui/Input';
+import Card, {CardHeader, CardMedia, CardContent, CardActions} from 'material-ui/Card';
 
 import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
 
 export class LabelItem extends Component {
-    constructor(props) {
-        super(props);
-
-    }
-
-    onChange() {
-
-    }
-
     render() {
         return (
             <TextField
@@ -42,11 +26,6 @@ LabelItem.propTypes = {
 };
 
 export class EnumItem extends Component {
-    constructor(props) {
-        super(props);
-
-    }
-
     render() {
         return (
             <TextField
@@ -70,39 +49,11 @@ export class EnumItem extends Component {
 
 EnumItem.propTypes = {
     name: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.any.isRequired,
     values: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired
 };
 
-// export class BooleanItem extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {value: props.value};
-//
-//         this.onToggle = this.onToggle.bind(this);
-//     }
-//
-//     onToggle() {
-//         let value = this.state.value ? false : true;
-//         this.props.onChange(value);
-//         this.setState({value: value});
-//     }
-//
-//     render() {
-//         return (
-//             <ListItem>
-//                 <ListItemText primary={this.props.name}/>
-//                 <ListItemSecondaryAction>
-//                     <Switch
-//                         onChange={this.onToggle}
-//                         checked={this.state.value}
-//                     />
-//                 </ListItemSecondaryAction>
-//             </ListItem>
-//         );
-//     }
-// }
 export class BooleanItem extends Component {
     constructor(props) {
         super(props);
@@ -111,7 +62,7 @@ export class BooleanItem extends Component {
     }
 
     onSelection(event) {
-        console.log('whaaat', event);
+        this.props.onChange(event.target.value === 'true');
     }
 
     render() {
@@ -119,7 +70,7 @@ export class BooleanItem extends Component {
             <TextField
                 select
                 label={this.props.name}
-                value={this.props.value}
+                value={'' + this.props.value}
                 onChange={this.onSelection}
                 SelectProps={{native: true}}
                 disabled={false} //TODO show that later we might want to have options here
@@ -141,14 +92,51 @@ BooleanItem.propTypes = {
 export class StringItem extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            value: undefined
-        };
+        this.options = typeof props.options === 'object' ? props.options : {};
+        this.state = {value: undefined};
+
+        this.onChange = this.onChange.bind(this);
+        this.onKeyPress = this.onKeyPress.bind(this);
+        this.onBlur = this.onBlur.bind(this);
+    }
+
+    onChange(event) {
+        if (typeof this.props.onChange === 'function') {
+            this.props.onChange(event.target.value);
+        }
+        this.setState({value: event.target.value});
+    }
+
+    onKeyPress(event) {
+        if (event.charCode === 13 && typeof this.props.onFullChange === 'function') {
+            this.props.onFullChange(event.target.value);
+            this.setState({value: undefined});
+        }
+    }
+
+    onBlur(event) {
+        if (typeof this.props.onFullChange === 'function' && !this.options.onlyEnter) {
+            this.props.onFullChange(event.target.value);
+            this.setState({value: undefined});
+        }
     }
 
     render() {
+        let text = this.state.value;
+        if (text === undefined) {
+            text = this.props.value;
+        }
+
         return (
-            <ListItem/>
+            <TextField
+                label={this.props.name}
+                value={text}
+                disabled={false} //TODO show that later we might want to have options here
+                fullWidth={true}
+                onChange={this.onChange}
+                onKeyPress={this.onKeyPress}
+                onBlur={this.onBlur}
+            />
         );
     }
 }
@@ -156,7 +144,71 @@ export class StringItem extends Component {
 StringItem.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func,
+    onFullChange: PropTypes.func,
+    options: PropTypes.object
+};
+
+export class NumberItem extends Component {
+    constructor(props) {
+        super(props);
+        this.options = typeof props.options === 'object' ? props.options : {};
+        this.state = {value: undefined};
+
+        this.onChange = this.onChange.bind(this);
+        this.onKeyPress = this.onKeyPress.bind(this);
+        this.onBlur = this.onBlur.bind(this);
+    }
+
+    onChange(event) {
+        if (typeof this.props.onChange === 'function') {
+            this.props.onChange(event.target.value);
+        }
+        this.setState({value: event.target.value});
+    }
+
+    onKeyPress(event) {
+        if (event.charCode === 13 && typeof this.props.onFullChange === 'function') {
+            this.props.onFullChange(event.target.value);
+            this.setState({value: undefined});
+        }
+    }
+
+    onBlur(event) {
+        if (typeof this.props.onFullChange === 'function' && !this.options.onlyEnter) {
+            this.props.onFullChange(event.target.value);
+            this.setState({value: undefined});
+        }
+    }
+
+    render() {
+        let text = this.state.value;
+        if (text === undefined) {
+            text = this.props.value;
+        }
+
+        return (
+            <TextField
+                label={this.props.name}
+                value={text}
+                type={'number'}
+                error={!(Number(text) + '' === text + '')}
+                disabled={false} //TODO show that later we might want to have options here
+                fullWidth={true}
+                onChange={this.onChange}
+                onKeyPress={this.onKeyPress}
+                onBlur={this.onBlur}
+            />
+        );
+    }
+}
+
+NumberItem.propTypes = {
+    name: PropTypes.string.isRequired,
+    value: PropTypes.number.isRequired,
+    onChange: PropTypes.func,
+    onFullChange: PropTypes.func,
+    options: PropTypes.object
 };
 
 export default class AttributeEditor extends SingleConnectedNode {
@@ -204,23 +256,33 @@ export default class AttributeEditor extends SingleConnectedNode {
 
         attributes = this.state.attributes.map((attribute) => {
             if (attribute.enum !== null) {
-                return (<EnumItem name={attribute.name} value={attribute.value} values={attribute.enum}
-                                  onChange={(newValue) => {
-                                      this.somethingChanges(attribute.name, newValue);
-                                  }}/>);
+                return (
+                    <EnumItem key={attribute.name} name={attribute.name} value={attribute.value} values={attribute.enum}
+                              onChange={(newValue) => {
+                                  this.somethingChanges(attribute.name, newValue);
+                              }}/>);
             } else if (attribute.type === 'bool') {
-                return <BooleanItem name={attribute.name} value={attribute.value} onChange={(newValue) => {
-                    this.somethingChanges(attribute.name, newValue);
-                }}/>
+                return <BooleanItem key={attribute.name} name={attribute.name} value={attribute.value}
+                                    onChange={(newValue) => {
+                                        this.somethingChanges(attribute.name, newValue);
+                                    }}/>
+            } else if (attribute.type === 'string') {
+                return <StringItem key={attribute.name} name={attribute.name} value={attribute.value}
+                                   onFullChange={(newValue) => {
+                                       this.somethingChanges(attribute.name, newValue);
+                                   }}/>
+            } else if (attribute.type === 'integer' || attribute.type === 'float') {
+                return <NumberItem key={attribute.name} name={attribute.name} value={attribute.value}
+                                   onFullChange={(newValue) => {
+                                       this.somethingChanges(attribute.name, newValue);
+                                   }}/>
             }
-            return <LabelItem name={attribute.name} value={'' + attribute.value}/>;
+            return <LabelItem key={attribute.name} name={attribute.name} value={'' + attribute.value}/>;
         });
 
         return (
             <div>
-                <List dense={true}>
-                    {attributes}
-                </List>
+                {attributes}
             </div>
         );
     }

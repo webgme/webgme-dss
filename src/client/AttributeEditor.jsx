@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
-import IconButton from 'material-ui/IconButton';
-import Input, {InputLabel, InputAdornment} from 'material-ui/Input';
-import Card, {CardHeader, CardMedia, CardContent, CardActions} from 'material-ui/Card';
+import Card, {CardHeader, CardContent} from 'material-ui/Card';
 
 import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
 
@@ -26,13 +24,22 @@ LabelItem.propTypes = {
 };
 
 export class EnumItem extends Component {
+    constructor(props) {
+        super(props);
+        this.onChange = this.onChange.bind(this);
+    }
+
+    onChange(event) {
+        this.props.onChange(event.target.value);
+    }
+
     render() {
         return (
             <TextField
                 select
                 label={this.props.name}
                 value={this.props.value}
-                onChange={this.props.onChange}
+                onChange={this.onChange}
                 SelectProps={{native: true}}
                 disabled={false} //TODO show that later we might want to have options here
                 fullWidth={true}
@@ -153,6 +160,9 @@ export class NumberItem extends Component {
     constructor(props) {
         super(props);
         this.options = typeof props.options === 'object' ? props.options : {};
+        this.options.isValid = this.options.isValid || function (value) {
+            return Number(value) + '' === value + ''
+        };
         this.state = {value: undefined};
 
         this.onChange = this.onChange.bind(this);
@@ -162,21 +172,21 @@ export class NumberItem extends Component {
 
     onChange(event) {
         if (typeof this.props.onChange === 'function') {
-            this.props.onChange(event.target.value);
+            this.props.onChange(Number(event.target.value));
         }
         this.setState({value: event.target.value});
     }
 
     onKeyPress(event) {
         if (event.charCode === 13 && typeof this.props.onFullChange === 'function') {
-            this.props.onFullChange(event.target.value);
+            this.props.onFullChange(Number(event.target.value));
             this.setState({value: undefined});
         }
     }
 
     onBlur(event) {
         if (typeof this.props.onFullChange === 'function' && !this.options.onlyEnter) {
-            this.props.onFullChange(event.target.value);
+            this.props.onFullChange(Number(event.target.value));
             this.setState({value: undefined});
         }
     }
@@ -192,7 +202,7 @@ export class NumberItem extends Component {
                 label={this.props.name}
                 value={text}
                 type={'number'}
-                error={!(Number(text) + '' === text + '')}
+                error={!this.options.isValid(text)}
                 disabled={false} //TODO show that later we might want to have options here
                 fullWidth={true}
                 onChange={this.onChange}
@@ -221,6 +231,7 @@ export default class AttributeEditor extends SingleConnectedNode {
 
         this.onNodeLoad = this.refreshDescriptor;
         this.onNodeUpdate = this.refreshDescriptor;
+        this.somethingChanges = this.somethingChanges.bind(this);
     }
 
     refreshDescriptor() {
@@ -245,12 +256,15 @@ export default class AttributeEditor extends SingleConnectedNode {
     }
 
     somethingChanges(what, how) {
-        console.log('update root:', what, ':', how);
+        console.log('update root:', what, ':', how, ':', typeof how);
+        this.props.gmeClient.setAttribute(this.props.activeNode, what, how);
     }
 
     render() {
-        let attributes = [];
-        if (!this.state.loaded) {
+        let attributes,
+            node = this.props.gmeClient.getNode(this.props.activeNode);
+
+        if (!this.state.loaded || node === null) {
             return (<div>Loading node in Attribute Editor ...</div>);
         }
 
@@ -281,9 +295,12 @@ export default class AttributeEditor extends SingleConnectedNode {
         });
 
         return (
-            <div>
-                {attributes}
-            </div>
+            <Card>
+                <CardHeader title={'Attribute editor'} subheader={'GUID: ' + node.getGuid()}/>
+                <CardContent>
+                    {attributes}
+                </CardContent>
+            </Card>
         );
     }
 }

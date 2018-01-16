@@ -62,6 +62,7 @@
 
         return {
             getId: () => id,
+            getGuid: () => 'a5008758-e9e8-7eb1-e995-e1793ef92a37',
             getValidAttributeNames: () => attrNames,
             getAttribute: (attrName) => {
                 cnt += 1;
@@ -166,7 +167,13 @@
             },
             getNode: (id) => {
                 return new GMENode(id);
-            }
+            },
+            setAttribute: (nodeId/*, attributeName, attributeValue*/) => {
+                let events = [{etype: 'techincal'}, {eid: nodeId, etype: 'update'}];
+                Object.keys(users).forEach((user) => {
+                    setTimeout(users[user], 10, events);
+                });
+            },
         };
     };
 

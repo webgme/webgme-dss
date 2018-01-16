@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
-import {Button} from 'material-ui';
 import {LinearProgress} from 'material-ui/Progress';
 import List, {ListItem, ListItemText} from 'material-ui/List';
 

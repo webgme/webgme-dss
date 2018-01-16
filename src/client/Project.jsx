@@ -1,6 +1,5 @@
 // Libraries
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -8,12 +7,10 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
-import Grid from 'material-ui/Grid';
 import IconButton from 'material-ui/IconButton';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import MenuIcon from 'material-ui-icons/Menu';
-import AssignmentIcon from 'material-ui-icons/Assignment';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 
 // Own modules
@@ -29,9 +26,9 @@ class Project extends Component {
         bottomMenu: true
     };
 
-    constructor(props) {
-        super(props);
-    }
+    //constructor(props) {
+    //    super(props);
+    //}
 
     componentDidMount() {
         this.props.gmeClient.selectProject(this.props.projectId, 'master', (err) => {
@@ -40,7 +37,6 @@ class Project extends Component {
                 return;
             }
 
-            console.log('selectedProject', this.props.projectId);
             this.setState({
                 branch: this.props.gmeClient.getActiveBranchName(),
                 activeNode: ''
@@ -93,7 +89,7 @@ class Project extends Component {
                         <IconButton onClick={this.onSideMenuClose}>
                             <ChevronLeftIcon/>
                         </IconButton>
-                    <div style={{maxWidth: 240}}>
+                    <div style={{width: 240}}>
                         <PartBrowser activeNode={activeNode} gmeClient={this.props.gmeClient}
                                      treePathGetter={(node) => {
                                          let modelicaUri = node.getAttribute('ModelicaURI');

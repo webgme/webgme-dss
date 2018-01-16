@@ -22,9 +22,9 @@ function collect(connect, monitor) {
 }
 
 class PartBrowserItem extends Component {
-    constructor(props) {
-        super(props);
-    }
+    //constructor(props) {
+    //    super(props);
+    //}
 
     render() {
         const { treeNode, connectDragSource, isDragging } = this.props;

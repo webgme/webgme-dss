@@ -103,16 +103,13 @@ export default class PartBrowser extends SingleConnectedNode {
                             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                                 {treeNode.name}
                             </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
+                            <ExpansionPanelDetails style={{display: 'block'}}>
                                 {treeNode.children.sort(nameSort).map(buildTreeStructure)}
                             </ExpansionPanelDetails>
                         </ExpansionPanel>);
                 } else {
                     return (
-                        <div key={treeNode.path} style={{marginLeft: 30}}>
-                            <h6>{treeNode.name}</h6>
-                            {treeNode.children.sort(nameSort).map(buildTreeStructure)}
-                        </div>
+                            treeNode.children.sort(nameSort).map(buildTreeStructure)
                     )
                 }
             } else {

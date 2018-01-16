@@ -10,9 +10,9 @@ class Canvas extends SingleConnectedNode {
         nodeInfo: {}
     };
 
-    constructor(props) {
-        super(props);
-    }
+    //constructor(props) {
+    //    super(props);
+    //}
 
     onNodeLoad(nodeObj) {
         var childrenIds = nodeObj.getChildrenIds();
@@ -32,7 +32,6 @@ class Canvas extends SingleConnectedNode {
     }
 
     render() {
-        const {activeNode} = this.props;
         let children = this.state.children.map((child) => {
             return <Chip key={child.id} label={child.id}/>
         });

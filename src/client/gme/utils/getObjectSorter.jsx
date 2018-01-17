@@ -20,4 +20,10 @@ function getObjectSorter (key, ignoreCase, reverse) {
     };
 }
 
+let nameSort = getObjectSorter('name', true);
+
 export default getObjectSorter;
+
+export {
+    nameSort
+}

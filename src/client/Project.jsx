@@ -12,6 +12,7 @@ import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import MenuIcon from 'material-ui-icons/Menu';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
+import {LinearProgress} from 'material-ui/Progress';
 
 // Own modules
 import PartBrowser from './PartBrowser';
@@ -20,6 +21,7 @@ import Canvas from './Canvas';
 import PluginConfigDialog from './PluginConfigDialog';
 
 const SIDE_PANEL_WIDTH = 300;
+const START_NODE_ID = '/Z'; // FIXME: This should come from the project info or root-node registry
 
 var testConfig = [
     {
@@ -104,17 +106,42 @@ class Project extends Component {
     //}
 
     componentDidMount() {
-        this.props.gmeClient.selectProject(this.props.projectId, 'master', (err) => {
+        const client = this.props.gmeClient;
+
+        client.selectProject(this.props.projectId, 'master', (err) => {
             if (err) {
                 console.error(err);
                 return;
             }
 
-            this.setState({
-                branch: this.props.gmeClient.getActiveBranchName(),
-                activeNode: ''
+            const tempUI = client.addUI(null, (events) => {
+                let activeNode = ''; // Fall back on root-node
+
+                for (let i = 0; i < events.length; i += 1) {
+                    if (events[i].etype === 'load' && events[i].eid === START_NODE_ID) {
+                        activeNode = START_NODE_ID;
+                        break;
+                    }
+                }
+
+                client.removeUI(tempUI);
+
+                this.setState({
+                    branch: this.props.gmeClient.getActiveBranchName(),
+                    activeNode
+                });
             });
+
+            const territory = {
+                [START_NODE_ID]: {children: 0}
+            };
+
+            client.updateTerritory(tempUI, territory);
         });
+    }
+
+    componentWillUnmount() {
+        // FIXME: Client needs a closeProject method!
     }
 
     onSideMenuOpen = () => {
@@ -142,7 +169,12 @@ class Project extends Component {
         const [owner, name] = this.props.projectId.split('+');
 
         if (typeof activeNode !== 'string') {
-            return <div>Loading in project ...</div>;
+            return (
+                <div style={{position: 'absolute', top: '50%', width: '100%'}}>
+                    <LinearProgress/>
+                    <br/>
+                    <LinearProgress color="accent"/>
+                </div>);
         }
 
         return (

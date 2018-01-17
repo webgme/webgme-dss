@@ -76,7 +76,7 @@ class Canvas extends SingleConnectedNode {
         //     return <Chip key={child.id} label={child.id}/>
         // });
         let children = this.state.children.map((child) => {
-            return <CanvasItem key={child.id} gmeClient={this.props.gmeClient} nodeId={child.id}/>
+            return <CanvasItem key={child.id} gmeClient={this.props.gmeClient} activeNode={child.id}/>
         });
         return connectDropTarget(
             <div style={{backgroundColor: isOver ? 'lightgreen' : undefined, width: '100%', height: '100%'}}>

@@ -39,7 +39,8 @@
             'Modelica.Mechanics.Rotational.Components.Damper',
             'Modelica.Mechanics.Rotational.Components.Spring',
             'Modelica.Mechanics.Rotational.Sources.Accelerate'
-        ];
+        ],
+        childrenIds = ['/2/1', '/2/2', '/2/3', '/2/4', '/2/5'];
 
     function genProject(d) {
         return {
@@ -99,7 +100,7 @@
                     '/3/3': true
                 };
             },
-            getChildrenIds: () => ['/2/1', '/2/2', '/2/3', '/2/4', '/2/5']
+            getChildrenIds: () => childrenIds
         }
     }
 
@@ -169,11 +170,19 @@
                 return new GMENode(id);
             },
             setAttribute: (nodeId/*, attributeName, attributeValue*/) => {
-                let events = [{etype: 'techincal'}, {eid: nodeId, etype: 'update'}];
+                let events = [{etype: 'technical'}, {eid: nodeId, etype: 'update'}];
                 Object.keys(users).forEach((user) => {
                     setTimeout(users[user], 10, events);
                 });
             },
+            createNode: (parameters, desc, msg) => {
+                console.log('createNode msg:', msg);
+                let events = [{etype: 'technical'}, {eid: parameters.parentId, etype: 'update'}];
+                childrenIds.push('/2/' + cnt);
+                Object.keys(users).forEach((user) => {
+                    users[user](events);
+                });
+            }
         };
     };
 

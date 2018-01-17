@@ -11,6 +11,7 @@
     "react-dnd-html5-backend": "^2.5.4",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
+    "react-samy-svg": "^3.0.1",
     "react-scripts": "1.0.17",
     "react-treebeard": "^2.1.0",
     "webgme-engine": "^2.19.3"

@@ -6,6 +6,7 @@ import Chip from 'material-ui/Chip';
 
 import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
 import { DRAG_TYPES } from './CONSTANTS';
+import CanvasItem from "./CanvasItem";
 
 const canvasTarget = {
     drop(props, monitor) {
@@ -64,10 +65,12 @@ class Canvas extends SingleConnectedNode {
     render() {
         const {connectDropTarget, isOver} = this.props;
 
+        // let children = this.state.children.map((child) => {
+        //     return <Chip key={child.id} label={child.id}/>
+        // });
         let children = this.state.children.map((child) => {
-            return <Chip key={child.id} label={child.id}/>
+            return <CanvasItem key={child.id} gmeClient={this.props.gmeClient} nodeId={child.id}/>
         });
-
         return connectDropTarget(
             <div style={{backgroundColor: isOver ? 'lightgreen' : undefined , width: '100%', height: '100%'}}>
                 {`Node ${this.state.nodeInfo.name} open`}

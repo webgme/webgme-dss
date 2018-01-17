@@ -115,33 +115,63 @@ export default class PluginConfigDialog extends Component {
                 return (<LabelItem key={descriptor.name} name={descriptor.displayName}
                                    value={this.state[descriptor.name]} description={descriptor.description}/>);
             } else if (descriptor.valueItems) {
-                return (<EnumItem key={descriptor.name} name={descriptor.displayName}
-                                  value={this.state[descriptor.name]} values={descriptor.valueItems}
+                return (<EnumItem key={descriptor.name} name={descriptor.displayName} values={descriptor.valueItems}
+                                  value={this.state[descriptor.name]} description={descriptor.description}
                                   onChange={(newValue) => {
                                       this.onChange(descriptor.name, newValue)
                                   }}/>);
             } else if (descriptor.valueType === 'string') {
+                let isValid;
+                if (descriptor.regex) {
+                    isValid = (text) => {
+                        if (typeof text !== 'string') {
+                            return false;
+                        }
+
+                        return RegExp(descriptor.regex).test(text);
+                    };
+                }
                 return (<StringItem key={descriptor.name} name={descriptor.displayName}
-                                    value={this.state[descriptor.name]}
+                                    value={this.state[descriptor.name]} description={descriptor.description}
+                                    options={{isValid: isValid}}
                                     onChange={(newValue) => {
                                         this.onChange(descriptor.name, newValue)
                                     }}/>);
             } else if (descriptor.valueType === 'boolean') {
                 return (<BooleanItem key={descriptor.name} name={descriptor.displayName}
-                                     value={this.state[descriptor.name]}
+                                     value={this.state[descriptor.name]} description={descriptor.description}
                                      onChange={(newValue) => {
                                          this.onChange(descriptor.name, newValue)
                                      }}/>);
             } else if (descriptor.valueType === 'number') {
+                let isValid;
+                if (typeof descriptor.minValue === 'number' || typeof descriptor.maxValue === 'number') {
+                    isValid = (number) => {
+                        if (typeof number !== 'number') {
+                            return false;
+                        }
+
+                        if (typeof descriptor.minValue === 'number' && number < descriptor.minValue) {
+                            return false;
+                        }
+
+                        if (typeof descriptor.maxValue === 'number' && number > descriptor.maxValue) {
+                            return false;
+                        }
+
+                        return true;
+                    };
+                }
                 return (<NumberItem key={descriptor.name} name={descriptor.displayName}
-                                    value={this.state[descriptor.name]}
+                                    value={this.state[descriptor.name]} description={descriptor.description}
+                                    options={{isValid: isValid}}
                                     onChange={(newValue) => {
                                         this.onChange(descriptor.name, newValue)
                                     }}/>);
             }
 
             return (<LabelItem key={descriptor.name} name={descriptor.displayName}
-                               value={this.state[descriptor.name]}/>);
+                               value={this.state[descriptor.name]} description={descriptor.description}/>);
         });
         return (<Dialog open={true}>
             <DialogTitle>Plugin Configuration</DialogTitle>
@@ -152,9 +182,9 @@ export default class PluginConfigDialog extends Component {
                 {form}
             </DialogContent>
             <DialogActions>
-                <Button onClick={this.onReady} color="primary">Save & Run</Button>
+                <Button onClick={this.onReady} color='primary'>Save & Run</Button>
                 {typeof this.props.onCancel === 'function' ?
-                    <Button onClick={this.props.onCancel} color="secondary">Cancel</Button> : ''}
+                    <Button onClick={this.props.onCancel} color='accent'>Cancel</Button> : ''}
             </DialogActions>
         </Dialog>);
     }

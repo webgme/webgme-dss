@@ -41,6 +41,7 @@ export class EnumItem extends Component {
                 select
                 label={this.props.name}
                 value={this.props.value}
+                helperText={this.props.description}
                 onChange={this.onChange}
                 SelectProps={{native: true}}
                 disabled={false} //TODO show that later we might want to have options here
@@ -60,7 +61,8 @@ EnumItem.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.any.isRequired,
     values: PropTypes.array.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    description: PropTypes.string
 };
 
 export class BooleanItem extends Component {
@@ -84,6 +86,7 @@ export class BooleanItem extends Component {
                 SelectProps={{native: true}}
                 disabled={false} //TODO show that later we might want to have options here
                 fullWidth={true}
+                helperText={this.props.description}
             >
                 <option key={true} value={true}>true</option>
                 <option key={false} value={false}>false</option>
@@ -95,13 +98,18 @@ export class BooleanItem extends Component {
 BooleanItem.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.bool.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    description: PropTypes.string
 };
 
 export class StringItem extends Component {
     constructor(props) {
         super(props);
         this.options = typeof props.options === 'object' ? props.options : {};
+        this.options.isValid = this.options.isValid || function (text) {
+            return typeof text === 'string';
+        };
+
         this.state = {value: undefined};
 
         this.onChange = this.onChange.bind(this);
@@ -142,6 +150,8 @@ export class StringItem extends Component {
                 value={text}
                 disabled={false} //TODO show that later we might want to have options here
                 fullWidth={true}
+                error={!this.options.isValid(text)}
+                helperText={this.props.description}
                 onChange={this.onChange}
                 onKeyPress={this.onKeyPress}
                 onBlur={this.onBlur}
@@ -155,7 +165,8 @@ StringItem.propTypes = {
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func,
     onFullChange: PropTypes.func,
-    options: PropTypes.object
+    options: PropTypes.object,
+    description: PropTypes.string
 };
 
 export class NumberItem extends Component {
@@ -204,9 +215,10 @@ export class NumberItem extends Component {
                 label={this.props.name}
                 value={text}
                 type={'number'}
-                error={!this.options.isValid(text)}
+                error={!this.options.isValid(Number(text))}
                 disabled={false} //TODO show that later we might want to have options here
                 fullWidth={true}
+                helperText={this.props.description}
                 onChange={this.onChange}
                 onKeyPress={this.onKeyPress}
                 onBlur={this.onBlur}
@@ -220,7 +232,8 @@ NumberItem.propTypes = {
     value: PropTypes.number.isRequired,
     onChange: PropTypes.func,
     onFullChange: PropTypes.func,
-    options: PropTypes.object
+    options: PropTypes.object,
+    description: PropTypes.string
 };
 
 export default class AttributeEditor extends SingleConnectedNode {

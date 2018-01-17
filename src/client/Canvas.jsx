@@ -11,9 +11,13 @@ import CanvasItem from "./CanvasItem";
 const canvasTarget = {
     drop(props, monitor) {
         const dragItem = monitor.getItem();
-
         if (dragItem.move) {
-            props.gmeClient.setRegistry(dragItem.gmeId, 'position', {x: 200, y: 200});
+            let offset = monitor.getDifferenceFromInitialOffset(),
+                node = props.gmeClient.getNode(dragItem.gmeId),
+                position = node.getRegistry('position');
+            position.x = position.x + Math.trunc(offset.x);
+            position.y = position.y + Math.trunc(offset.y);
+            props.gmeClient.setRegistry(dragItem.gmeId, 'position', position);
         } else if (dragItem.create) {
             props.gmeClient.createNode({
                 parentId: props.activeNode,

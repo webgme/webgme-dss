@@ -113,6 +113,14 @@
                     return names[cnt % names.length];
                 }
             },
+            getRegistry: (regName) => {
+                switch (regName) {
+                    case 'position':
+                        return {x: cnt, y: cnt};
+                    default:
+                        return cnt;
+                }
+            },
             getAttributeMeta: (attrName) => {
                 if (attrName.indexOf('int') !== -1) {
                     return {type: 'integer'};

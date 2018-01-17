@@ -41,9 +41,18 @@ class CanvasItem extends Component {
         // return <Samy svgXML={testDiode} style={{height: '50px', width: '50px'}}/>;
 
         const {connectDragSource} = this.props;
+        let node = this.props.gmeClient.getNode(this.props.nodeId),
+            position = node.getRegistry('position');
 
         return connectDragSource(
-            <div style={{opacity: 0.99}}>
+            <div style={{
+                opacity: 0.99,
+                position: 'relative',
+                top: position.y,
+                left: position.y,
+                height: '50px',
+                width: '50px'
+            }}>
                 <Samy svgXML={testDiode} style={{height: '50px', width: '50px'}}/>
             </div>);
     }

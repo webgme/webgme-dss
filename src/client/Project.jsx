@@ -1,7 +1,7 @@
 // Libraries
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { DragDropContext } from 'react-dnd';
+import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 import Drawer from 'material-ui/Drawer';
@@ -17,13 +17,84 @@ import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import PartBrowser from './PartBrowser';
 import AttributeEditor from './AttributeEditor';
 import Canvas from './Canvas';
+import PluginConfigDialog from './PluginConfigDialog';
+
+var testConfig = [
+    {
+        "name": "species",
+        "displayName": "Animal Species",
+        "regex": "^[a-zA-Z]+$",
+        "regexMessage": "Name can only contain English characters!",
+        "description": "Which species does the animal belong to.",
+        "value": "Horse",
+        "valueType": "string",
+        "readOnly": false
+    },
+    {
+        "name": "age",
+        "displayName": "Age",
+        "description": "How old is the animal.",
+        "value": 3,
+        "valueType": "number",
+        "minValue": 0,
+        "maxValue": 10000,
+        "readOnly": false,
+        "writeAccessRequired": true
+    },
+    {
+        "name": "carnivore",
+        "displayName": "Carnivore",
+        "description": "Does the animal eat other animals?",
+        "value": false,
+        "valueType": "boolean",
+        "readOnly": false
+    },
+    {
+        "name": "isAnimal",
+        "displayName": "Is Animal",
+        "description": "Is this animal an animal? [Read-only]",
+        "value": true,
+        "valueType": "boolean",
+        "readOnly": true
+    },
+    {
+        "name": "classification",
+        "displayName": "Classification",
+        "description": "",
+        "value": "Vertebrates",
+        "valueType": "string",
+        "valueItems": [
+            "Vertebrates",
+            "Invertebrates",
+            "Unknown"
+        ]
+    },
+    {
+        "name": "color",
+        "displayName": "Color",
+        "description": "The hex color code for the animal.",
+        "readOnly": false,
+        "value": "#FF0000",
+        "regex": "^#([A-Fa-f0-9]{6})$",
+        "valueType": "string"
+    },
+    {
+        "name": "file",
+        "displayName": "File",
+        "description": "",
+        "value": "",
+        "valueType": "asset",
+        "readOnly": false
+    }
+];
 
 class Project extends Component {
     state = {
         activeNode: null,
         branch: null,
         sideMenu: true,
-        bottomMenu: true
+        bottomMenu: true,
+        dialogOpened: false
     };
 
     //constructor(props) {
@@ -60,6 +131,10 @@ class Project extends Component {
         this.setState({bottomMenu: false});
     };
 
+    onOpenDialog = () => {
+        this.setState({dialogOpened: true});
+    };
+
     render() {
         const {activeNode, branch} = this.state;
         const [owner, name] = this.props.projectId.split('+');
@@ -86,9 +161,9 @@ class Project extends Component {
                     </Toolbar>
                 </AppBar>
                 <Drawer type="persistent" anchor="left" open={this.state.sideMenu} style={{width: 240}}>
-                        <IconButton onClick={this.onSideMenuClose}>
-                            <ChevronLeftIcon/>
-                        </IconButton>
+                    <IconButton onClick={this.onSideMenuClose}>
+                        <ChevronLeftIcon/>
+                    </IconButton>
                     <div style={{width: 240}}>
                         <PartBrowser activeNode={activeNode} gmeClient={this.props.gmeClient}
                                      treePathGetter={(node) => {
@@ -109,13 +184,25 @@ class Project extends Component {
                             SHOW ATTRIBUTES
                         </Button>
                     }
+                    <Button onClick={this.onOpenDialog}>PopUpDialog</Button>
                     <div style={{width: 400, height: 400, borderStyle: 'dotted'}}>
-                    <Canvas activeNode={this.state.activeNode} gmeClient={this.props.gmeClient}/>
+                        <Canvas activeNode={this.state.activeNode} gmeClient={this.props.gmeClient}/>
                     </div>
                 </div>
-                <Drawer type="persistent" anchor="bottom" open={this.state.bottomMenu} onClose={this.onBottomMenuClose}>
+                <Drawer type="persistent" anchor="bottom" open={this.state.bottomMenu}
+                        onClose={this.onBottomMenuClose}>
                     <AttributeEditor activeNode={activeNode} gmeClient={this.props.gmeClient}/>
                 </Drawer>
+                {this.state.dialogOpened ? (<PluginConfigDialog configDescriptor={testConfig}
+                                                                onReady={(config) => {
+                                                                    console.log(config)
+                                                                    this.setState({dialogOpened: false});
+                                                                }}
+
+                                                                onCancel={() => {
+                                                                    console.log('canceled');
+                                                                    this.setState({dialogOpened: false});
+                                                                }}/>) : <div></div>}
             </div>
         );
     }

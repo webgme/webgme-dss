@@ -10,7 +10,8 @@ export class LabelItem extends Component {
         return (
             <TextField
                 label={this.props.name}
-                value={this.props.value}
+                value={this.props.value + ''}
+                helperText={typeof this.props.description === 'string' ? this.props.description : ''}
                 disabled={true} //TODO show that later we might want to have options here
                 fullWidth={true}
             />
@@ -20,7 +21,8 @@ export class LabelItem extends Component {
 
 LabelItem.propTypes = {
     name: PropTypes.string.isRequired,
-    value: PropTypes.any.isRequired
+    value: PropTypes.any.isRequired,
+    description: PropTypes.string
 };
 
 export class EnumItem extends Component {

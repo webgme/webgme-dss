@@ -7,7 +7,7 @@ import ExpansionPanel, {
     ExpansionPanelSummary
 } from 'material-ui/ExpansionPanel';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
-import {Treebeard} from 'react-treebeard';
+import {Treebeard, decorators} from 'react-treebeard';
 
 
 import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
@@ -17,6 +17,7 @@ import PartBrowserItem from './PartBrowserItem';
 
 const TREE_PATH_SEP = '$';
 const nameSort = getObjectSorter('name', true);
+
 
 export default class PartBrowser extends SingleConnectedNode {
     constructor(props) {
@@ -28,6 +29,16 @@ export default class PartBrowser extends SingleConnectedNode {
         };
 
         this.tree = {};
+
+        let defaultHeader = decorators.Header;
+
+        decorators.Header = (props) => {
+            if (props.node.isFolder) {
+                return defaultHeader(props);
+            }
+
+            return <PartBrowserItem treeNode={props.node}/>
+        }
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -123,7 +134,7 @@ export default class PartBrowser extends SingleConnectedNode {
                             {treeNode.name}
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails style={{display: 'block'}}>
-                            <Treebeard data={treeNode} onToggle={this.onTreeNodeToggle}/>
+                            <Treebeard data={treeNode} onToggle={this.onTreeNodeToggle} decorators={decorators}/>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>);
             } else {

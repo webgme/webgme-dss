@@ -15,8 +15,10 @@
 
     let cnt = 0,
         names = [
-            'FCO',
-            'LogicGatesMetaLanguage',
+            'Inertia',
+            'Damper',
+            'Spring',
+            'Mass',
             'Resistor',
             'Inductor',
             'Capacitor',
@@ -38,9 +40,43 @@
             'Modelica.Mechanics.Rotational.Components.Inertia',
             'Modelica.Mechanics.Rotational.Components.Damper',
             'Modelica.Mechanics.Rotational.Components.Spring',
-            'Modelica.Mechanics.Rotational.Sources.Accelerate'
+            'Modelica.Mechanics.Rotational.Sources.Accelerate',
+            'Modelica.Mechanics.Translational.Components.Damper',
+            'Modelica.Mechanics.Translational.Components.Spring',
+            'Modelica.Mechanics.Translational.Components.Mass'
         ],
-        childrenIds = ['/2/1', '/2/2', '/2/3', '/2/4', '/2/5'];
+        childrenIds = ['/2/1', '/2/2', '/2/3', '/2/4', '/2/5'],
+        validChildrenIds = {
+            '/1': true,
+            '/2': true,
+            '/2/1': true,
+            '/2/2': true,
+            '/3': true,
+            '/3/1': true,
+            '/3/2': true,
+            '/3/3': true,
+            '/3/4': true,
+            '/3/5': true,
+            '/3/6': true
+        },
+        projects = [
+            {
+                owner: 'guest',
+                name: 'ElectricalCircuit'
+            },
+            {
+                owner: 'guest',
+                name: 'RotatingMotor'
+            },
+            {
+                owner: 'olle',
+                name: 'Robot'
+            },
+            {
+                owner: 'hans',
+                name: 'SignalFlow'
+            }
+        ];
 
     function genProject(d) {
         return {
@@ -88,18 +124,7 @@
                     return {type: 'string'};
                 }
             },
-            getValidChildrenTypesDetailed: () => {
-                return {
-                    '/1': true,
-                    '/2': true,
-                    '/2/1': true,
-                    '/2/2': true,
-                    '/3': true,
-                    '/3/1': true,
-                    '/3/2': true,
-                    '/3/3': true
-                };
-            },
+            getValidChildrenTypesDetailed: () => validChildrenIds,
             getChildrenIds: () => childrenIds
         }
     }
@@ -112,24 +137,7 @@
             },
             getProjects: (opts, callback) => {
                 setTimeout(() => {
-                    callback(null, [
-                        {
-                            owner: 'guest',
-                            name: 'ElectricalCircuit'
-                        },
-                        {
-                            owner: 'guest',
-                            name: 'RotatingMotor'
-                        },
-                        {
-                            owner: 'olle',
-                            name: 'Robot'
-                        },
-                        {
-                            owner: 'hans',
-                            name: 'SignalFlow'
-                        }
-                    ].map(genProject));
+                    callback(null, projects.map(genProject));
                 }, 100);
             },
             selectProject: (projectId, branchName, callback) => {

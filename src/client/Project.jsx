@@ -19,6 +19,8 @@ import AttributeEditor from './AttributeEditor';
 import Canvas from './Canvas';
 import PluginConfigDialog from './PluginConfigDialog';
 
+const SIDE_PANEL_WIDTH = 300;
+
 var testConfig = [
     {
         "name": "species",
@@ -160,11 +162,11 @@ class Project extends Component {
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <Drawer type="persistent" anchor="left" open={this.state.sideMenu} style={{width: 240}}>
+                <Drawer type="persistent" anchor="left" open={this.state.sideMenu} style={{width: SIDE_PANEL_WIDTH}}>
                     <IconButton onClick={this.onSideMenuClose}>
                         <ChevronLeftIcon/>
                     </IconButton>
-                    <div style={{width: 240}}>
+                    <div style={{width: SIDE_PANEL_WIDTH, textAlign: 'left'}}>
                         <PartBrowser activeNode={activeNode} gmeClient={this.props.gmeClient}
                                      treePathGetter={(node) => {
                                          let modelicaUri = node.getAttribute('ModelicaURI');

@@ -183,6 +183,12 @@
                     setTimeout(users[user], 10, events);
                 });
             },
+            setRegistry: (nodeId/*, registryName, registryValue*/) => {
+                let events = [{etype: 'technical'}, {eid: nodeId, etype: 'update'}];
+                Object.keys(users).forEach((user) => {
+                    setTimeout(users[user], 10, events);
+                });
+            },
             createNode: (parameters, desc, msg) => {
                 console.log('createNode msg:', msg);
                 let events = [{etype: 'technical'}, {eid: parameters.parentId, etype: 'update'}];

@@ -9,7 +9,8 @@ import {DRAG_TYPES} from './CONSTANTS';
 const partBrowserItemSource = {
     beginDrag(props) {
         return {
-            gmeId: props.treeNode.id
+            gmeId: props.treeNode.id,
+            create: true
         };
     }
 };

@@ -1,25 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DropTarget } from 'react-dnd';
+import {DropTarget} from 'react-dnd';
 
 import Chip from 'material-ui/Chip';
 
 import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
-import { DRAG_TYPES } from './CONSTANTS';
+import {DRAG_TYPES} from './CONSTANTS';
 import CanvasItem from "./CanvasItem";
 
 const canvasTarget = {
     drop(props, monitor) {
         const dragItem = monitor.getItem();
 
-        props.gmeClient.createNode({
-            parentId: props.activeNode,
-            baseId: dragItem.gmeId
-        }, {
-            registry: {
-                position:{ x: 100, y: 100}
-            }
-        });
+        if (dragItem.move) {
+            props.gmeClient.setRegistry(dragItem.gmeId, 'position', {x: 200, y: 200});
+        } else if (dragItem.create) {
+            props.gmeClient.createNode({
+                parentId: props.activeNode,
+                baseId: dragItem.gmeId
+            }, {
+                registry: {
+                    position: {x: 100, y: 100}
+                }
+            });
+        }
     }
 };
 
@@ -29,7 +33,6 @@ function collect(connect, monitor) {
         isOver: monitor.isOver()
     };
 }
-
 
 class Canvas extends SingleConnectedNode {
     state = {
@@ -72,10 +75,10 @@ class Canvas extends SingleConnectedNode {
             return <CanvasItem key={child.id} gmeClient={this.props.gmeClient} nodeId={child.id}/>
         });
         return connectDropTarget(
-            <div style={{backgroundColor: isOver ? 'lightgreen' : undefined , width: '100%', height: '100%'}}>
+            <div style={{backgroundColor: isOver ? 'lightgreen' : undefined, width: '100%', height: '100%'}}>
                 {`Node ${this.state.nodeInfo.name} open`}
                 {children}
-        </div>);
+            </div>);
     }
 }
 

@@ -6,8 +6,7 @@
 var config = require('webgme-engine/config/config.default');
 
 // The paths can be loaded from the webgme-setup.json
-
-
+config.seedProjects.basePaths.push(__dirname + '/../src/seeds/Modelica');
 
 
 

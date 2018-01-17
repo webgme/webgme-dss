@@ -24,7 +24,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # webgme specific
+blob-local-storage
 server.log
 server-error.log
 
+
+# Temporary
 package-lock.json

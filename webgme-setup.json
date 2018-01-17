@@ -6,9 +6,15 @@
         "test": "test/routers/AppRouter",
         "mount": "p"
       }
+    },
+    "seeds": {
+      "Modelica": {
+        "src": "src/seeds/Modelica"
+      }
     }
   },
   "dependencies": {
-    "routers": {}
+    "routers": {},
+    "seeds": {}
   }
 }

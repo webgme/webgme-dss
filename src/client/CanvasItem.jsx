@@ -53,7 +53,7 @@ class CanvasItem extends SingleConnectedNode {
     render() {
         // return <Samy svgXML={testDiode} style={{height: '50px', width: '50px'}}/>;
 
-        const {connectDragSource} = this.props;
+        const {connectDragSource, isDragging} = this.props;
 
         if (this.state.position === null) {
             return <div/>/*loading...</div>*/;
@@ -61,14 +61,14 @@ class CanvasItem extends SingleConnectedNode {
 
         return connectDragSource(
             <div style={{
-                opacity: 0.99,
+                opacity: isDragging ? 0.3 : 0.99,
                 position: 'relative',
                 top: this.state.position.y,
                 left: this.state.position.x,
-                height: '50px',
-                width: '50px'
+                height: 120,
+                width: 120
             }}>
-                <Samy svgXML={testDiode} style={{height: '50px', width: '50px'}}/>
+                <Samy svgXML={testDiode} style={{height: 120, width: 120}}/>
             </div>);
     }
 

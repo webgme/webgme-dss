@@ -118,7 +118,7 @@
                     case 'position':
                         return {x: cnt, y: cnt};
                     default:
-                        return cnt;
+                        return 'RegValue_' + cnt;
                 }
             },
             getAttributeMeta: (attrName) => {

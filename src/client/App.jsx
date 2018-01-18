@@ -1,12 +1,19 @@
 // From libraries
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
 // Own modules
 import logo from './logo.svg';
 import './App.css';
 import Projects from './Projects';
 import Project from './Project';
+
+const theme = createMuiTheme({
+    palette: {
+        type: 'light'
+    }
+});
 
 
 export default class App extends Component {
@@ -65,7 +72,9 @@ export default class App extends Component {
         return (
             <div className="App">
                 <Router>
-                    {content}
+                    <MuiThemeProvider theme={theme}>
+                        {content}
+                    </MuiThemeProvider>
                 </Router>
             </div>
         );

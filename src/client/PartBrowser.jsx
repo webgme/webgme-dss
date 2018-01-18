@@ -7,16 +7,28 @@ import ExpansionPanel, {
     ExpansionPanelSummary
 } from 'material-ui/ExpansionPanel';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
-import {Treebeard, decorators} from 'react-treebeard';
+import {Treebeard, decorators, theme} from 'react-treebeard';
 
 
 import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
-import getObjectSorter from './gme/utils/getObjectSorter';
+import {nameSort} from './gme/utils/getObjectSorter';
 
 import PartBrowserItem from './PartBrowserItem';
 
 const TREE_PATH_SEP = '$';
-const nameSort = getObjectSorter('name', true);
+
+class TreeContainer extends decorators.Container {
+    renderToggleDecorator() {
+        const {style, node} = this.props;
+
+        if (node.isRoot) {
+            return <div/>;
+        }
+        else {
+            return <decorators.Toggle style={style.toggle}/>;
+        }
+    }
+}
 
 
 export default class PartBrowser extends SingleConnectedNode {
@@ -30,15 +42,29 @@ export default class PartBrowser extends SingleConnectedNode {
 
         this.tree = {};
 
-        let defaultHeader = decorators.Header;
+        // TODO: Match these with the theme from material-ui
+        theme.tree.base.backgroundColor = 'white';
+        theme.tree.base.color = 'black';
+        theme.tree.node.activeLink.background = 'lightgrey';
+        theme.tree.node.toggle.arrow.fill = 'grey';
+        theme.tree.node.header.base.color = 'black';
+        theme.tree.node.loading.color = 'orange';
+
+
+        this.theme = theme;
+
+        const defaultHeader = decorators.Header;
+        decorators.Container = TreeContainer;
 
         decorators.Header = (props) => {
-            if (props.node.isFolder) {
+            if (props.node.isRoot) {
+                return <div/>;
+            } else if (props.node.isFolder) {
                 return defaultHeader(props);
             }
 
             return <PartBrowserItem treeNode={props.node}/>
-        }
+        };
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -91,8 +117,8 @@ export default class PartBrowser extends SingleConnectedNode {
             let metaNode = client.getNode(id);
             return {
                 id: metaNode.getId(),
-                name: metaNode.getAttribute('name'),
-                treePath: typeof this.props.treePathGetter === 'function' ? this.props.treePathGetter(metaNode) : null,
+                name: metaNode.getAttribute('shortName') || metaNode.getAttribute('name'),
+                treePath: typeof this.props.treePathGetter === 'function' ? this.props.treePathGetter(metaNode) : null
                 //active: childrenDesc[id]
             };
         });
@@ -133,8 +159,11 @@ export default class PartBrowser extends SingleConnectedNode {
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                             {treeNode.name}
                         </ExpansionPanelSummary>
-                        <ExpansionPanelDetails style={{display: 'block'}}>
-                            <Treebeard data={treeNode} onToggle={this.onTreeNodeToggle} decorators={decorators}/>
+                        <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>
+                            <Treebeard data={treeNode}
+                                       onToggle={this.onTreeNodeToggle}
+                                       decorators={decorators}
+                                       style={this.theme}/>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>);
             } else {

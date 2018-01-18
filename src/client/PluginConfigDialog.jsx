@@ -8,7 +8,7 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
 
-import {BooleanItem, NumberItem, EnumItem, StringItem, LabelItem, ColorItem} from './AttributeEditor';
+import {AttributeItem, ColorItem} from './AttributeEditor';
 
 /*
 "configStructure": [
@@ -108,76 +108,32 @@ export default class PluginConfigDialog extends Component {
     }
 
     render() {
-        let form;
+        let form,
+            self = this;
 
         form = this.props.configDescriptor.map((descriptor) => {
-            if (descriptor.readOnly) {
-                return (<LabelItem key={descriptor.name} name={descriptor.displayName}
-                                   value={this.state[descriptor.name]} description={descriptor.description}/>);
-            } else if (descriptor.valueItems) {
-                return (<EnumItem key={descriptor.name} name={descriptor.displayName} values={descriptor.valueItems}
-                                  value={this.state[descriptor.name]} description={descriptor.description}
-                                  onChange={(newValue) => {
-                                      this.onChange(descriptor.name, newValue)
-                                  }}/>);
-            } else if (descriptor.name.indexOf('color') !== -1) {
+            let changeFn = (newValue) => {
+                    self.onChange(descriptor.name, newValue)
+                },
+                options = {readOnly: descriptor.readOnly};
+
+            if (descriptor.name.indexOf('color') !== -1) {
                 return (<ColorItem key={descriptor.name} name={descriptor.displayName}
                                    value={this.state[descriptor.name]} description={descriptor.description}
                                    onChange={(newValue) => {
                                        this.onChange(descriptor.name, newValue)
                                    }}/>);
-            } else if (descriptor.valueType === 'string') {
-                let isValid;
-                if (descriptor.regex) {
-                    isValid = (text) => {
-                        if (typeof text !== 'string') {
-                            return false;
-                        }
-
-                        return RegExp(descriptor.regex).test(text);
-                    };
-                }
-                return (<StringItem key={descriptor.name} name={descriptor.displayName}
-                                    value={this.state[descriptor.name]} description={descriptor.description}
-                                    options={{isValid: isValid}}
-                                    onChange={(newValue) => {
-                                        this.onChange(descriptor.name, newValue)
-                                    }}/>);
-            } else if (descriptor.valueType === 'boolean') {
-                return (<BooleanItem key={descriptor.name} name={descriptor.displayName}
-                                     value={this.state[descriptor.name]} description={descriptor.description}
-                                     onChange={(newValue) => {
-                                         this.onChange(descriptor.name, newValue)
-                                     }}/>);
-            } else if (descriptor.valueType === 'number') {
-                let isValid;
-                if (typeof descriptor.minValue === 'number' || typeof descriptor.maxValue === 'number') {
-                    isValid = (number) => {
-                        if (typeof number !== 'number') {
-                            return false;
-                        }
-
-                        if (typeof descriptor.minValue === 'number' && number < descriptor.minValue) {
-                            return false;
-                        }
-
-                        if (typeof descriptor.maxValue === 'number' && number > descriptor.maxValue) {
-                            return false;
-                        }
-
-                        return true;
-                    };
-                }
-                return (<NumberItem key={descriptor.name} name={descriptor.displayName}
-                                    value={this.state[descriptor.name]} description={descriptor.description}
-                                    options={{isValid: isValid}}
-                                    onChange={(newValue) => {
-                                        this.onChange(descriptor.name, newValue)
-                                    }}/>);
             }
 
-            return (<LabelItem key={descriptor.name} name={descriptor.displayName}
-                               value={this.state[descriptor.name]} description={descriptor.description}/>);
+            return (<AttributeItem
+                key={descriptor.name}
+                value={this.state[descriptor.name]}
+                name={descriptor.displayName}
+                values={descriptor.valueItems}
+                type={descriptor.valueType}
+                onChange={changeFn}
+                description={descriptor.description}
+                options={options}/>);
         });
         return (<Dialog open={true}>
             <DialogTitle>Plugin Configuration</DialogTitle>

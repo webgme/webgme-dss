@@ -79,7 +79,12 @@ class Canvas extends SingleConnectedNode {
             return <CanvasItem key={child.id} gmeClient={this.props.gmeClient} activeNode={child.id}/>
         });
         return connectDropTarget(
-            <div style={{backgroundColor: isOver ? 'lightgreen' : undefined, width: '100%', height: '100%'}}>
+            <div style={{
+                backgroundColor: isOver ? 'lightgreen' : undefined,
+                width: '100%',
+                height: '100%',
+                overflow: 'scroll'
+            }}>
                 {`Node ${this.state.nodeInfo.name} open`}
                 {children}
             </div>);

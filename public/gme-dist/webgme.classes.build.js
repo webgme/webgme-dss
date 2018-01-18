@@ -125,7 +125,7 @@
                 if (attrName.indexOf('int') !== -1) {
                     return {type: 'integer'};
                 } else if (attrName.indexOf('bool') !== -1) {
-                    return {type: 'bool'};
+                    return {type: 'boolean'};
                 } else if (attrName.indexOf('enum') !== -1) {
                     return {type: 'string', enum: names};
                 } else {

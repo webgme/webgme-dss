@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {Samy, SvgProxy} from 'react-samy-svg';
 import {DragSource} from 'react-dnd';

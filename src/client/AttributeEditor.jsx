@@ -2,6 +2,12 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import Card, {CardHeader, CardContent} from 'material-ui/Card';
+import Input, {InputLabel, InputAdornment} from 'material-ui/Input';
+import {FormControl, FormHelperText} from 'material-ui/Form';
+import InvertColors from 'material-ui-icons/InvertColors';
+import InvertColorsOff from 'material-ui-icons/InvertColorsOff';
+import IconButton from 'material-ui/IconButton';
+import {ChromePicker} from 'react-color';
 
 import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
 
@@ -235,6 +241,75 @@ NumberItem.propTypes = {
     options: PropTypes.object,
     description: PropTypes.string
 };
+
+export class ColorItem extends Component {
+    static propTypes = {
+        name: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired,
+        onChange: PropTypes.func,
+        options: PropTypes.object,
+        description: PropTypes.string
+    };
+
+    state = {value: this.props.value, picking: false};
+
+    onPickerClick = () => {
+        let newPicking = !this.state.picking;
+        if (!newPicking) {
+            this.props.onChange(this.state.value);
+        }
+        this.setState({picking: newPicking});
+    };
+
+    onColorChange = (newColor) => {
+        if (typeof this.props.onChange === 'function') {
+            this.props.onChange(newColor.hex);
+        }
+        this.setState({value: newColor.hex});
+    };
+
+    onKeyPress(event) {
+        if (event.charCode === 13 && typeof this.props.onFullChange === 'function') {
+            this.props.onFullChange(event.target.value);
+            this.setState({value: undefined});
+        }
+    }
+
+    onBlur = () => {
+        if (typeof this.props.onFullChange === 'function' && !this.options.onlyEnter) {
+            this.props.onFullChange(this.state.value);
+        }
+        this.setState({picking: false});
+    };
+
+    onFocus = () => {
+        this.setState({picking: true});
+    };
+
+    render() {
+        let picker;
+
+        if (this.state.picking) {
+            picker = <ChromePicker color={this.state.value} onChange={this.onColorChange}/>;
+        }
+
+        return (<FormControl fullWidth={true} onFocus={this.onFocus} onBlur={this.onBlur}>
+            <InputLabel htmlFor="password">{this.props.name}</InputLabel>
+            <Input
+                value={this.state.value}
+                endAdornment={
+                    <InputAdornment position="end">
+                        <IconButton onClick={this.onPickerClick}>
+                            {this.state.picking ? <InvertColorsOff/> : <InvertColors nativeColor={this.state.value}/>}
+                        </IconButton>
+                    </InputAdornment>
+                }
+            />
+            {picker}
+            <FormHelperText>{this.props.description}</FormHelperText>
+        </FormControl>);
+    }
+}
 
 export default class AttributeEditor extends SingleConnectedNode {
     constructor(props) {

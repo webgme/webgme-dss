@@ -8,7 +8,7 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
 
-import {BooleanItem, NumberItem, EnumItem, StringItem, LabelItem} from './AttributeEditor';
+import {BooleanItem, NumberItem, EnumItem, StringItem, LabelItem, ColorItem} from './AttributeEditor';
 
 /*
 "configStructure": [
@@ -120,6 +120,12 @@ export default class PluginConfigDialog extends Component {
                                   onChange={(newValue) => {
                                       this.onChange(descriptor.name, newValue)
                                   }}/>);
+            } else if (descriptor.name.indexOf('color') !== -1) {
+                return (<ColorItem key={descriptor.name} name={descriptor.displayName}
+                                   value={this.state[descriptor.name]} description={descriptor.description}
+                                   onChange={(newValue) => {
+                                       this.onChange(descriptor.name, newValue)
+                                   }}/>);
             } else if (descriptor.valueType === 'string') {
                 let isValid;
                 if (descriptor.regex) {

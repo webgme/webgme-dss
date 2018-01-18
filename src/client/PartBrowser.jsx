@@ -7,8 +7,10 @@ import ExpansionPanel, {
     ExpansionPanelSummary
 } from 'material-ui/ExpansionPanel';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
-import {Treebeard, decorators, theme} from 'react-treebeard';
+import { withTheme } from 'material-ui/styles';
+import Typography from 'material-ui/Typography';
 
+import {Treebeard, decorators, theme} from 'react-treebeard';
 
 import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
 import {nameSort} from './gme/utils/getObjectSorter';
@@ -31,7 +33,7 @@ class TreeContainer extends decorators.Container {
 }
 
 
-export default class PartBrowser extends SingleConnectedNode {
+class PartBrowser extends SingleConnectedNode {
     constructor(props) {
         super(props);
         this.state = {
@@ -42,8 +44,10 @@ export default class PartBrowser extends SingleConnectedNode {
 
         this.tree = {};
 
+        console.log(props.theme);
+
         // TODO: Match these with the theme from material-ui
-        theme.tree.base.backgroundColor = 'white';
+        theme.tree.base.backgroundColor = props.theme.palette.background.paper;
         theme.tree.base.color = 'black';
         theme.tree.node.activeLink.background = 'lightgrey';
         theme.tree.node.toggle.arrow.fill = 'grey';
@@ -157,7 +161,7 @@ export default class PartBrowser extends SingleConnectedNode {
                 return (
                     <ExpansionPanel key={treeNode.path} defaultExpanded>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                            {treeNode.name}
+                            <Typography type='subheading'>{treeNode.name}</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>
                             <Treebeard data={treeNode}
@@ -196,3 +200,5 @@ PartBrowser.propTypes = {
     activeNode: PropTypes.string.isRequired,
     treePathGetter: PropTypes.func
 };
+
+export default withTheme()(PartBrowser);

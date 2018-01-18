@@ -11,7 +11,7 @@ import Project from './Project';
 
 const theme = createMuiTheme({
     palette: {
-        type: 'light'
+        type: 'light' //dark
     }
 });
 

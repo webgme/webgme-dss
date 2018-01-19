@@ -76,7 +76,8 @@
                 owner: 'hans',
                 name: 'SignalFlow'
             }
-        ];
+        ],
+        inTransaction = false;
 
     function genProject(d) {
         return {
@@ -186,12 +187,24 @@
                 return new GMENode(id);
             },
             setAttribute: (nodeId/*, attributeName, attributeValue*/) => {
+                if (inTransaction)
+                    return;
                 let events = [{etype: 'technical'}, {eid: nodeId, etype: 'update'}];
                 Object.keys(users).forEach((user) => {
                     setTimeout(users[user], 10, events);
                 });
             },
             setRegistry: (nodeId/*, registryName, registryValue*/) => {
+                if (inTransaction)
+                    return;
+                let events = [{etype: 'technical'}, {eid: nodeId, etype: 'update'}];
+                Object.keys(users).forEach((user) => {
+                    setTimeout(users[user], 10, events);
+                });
+            },
+            setPointer: (nodeId/*, pointerName, pointerTarget*/) => {
+                if (inTransaction)
+                    return;
                 let events = [{etype: 'technical'}, {eid: nodeId, etype: 'update'}];
                 Object.keys(users).forEach((user) => {
                     setTimeout(users[user], 10, events);
@@ -201,13 +214,27 @@
                 console.log('createNode msg:', msg);
                 let events = [{etype: 'technical'}, {eid: parameters.parentId, etype: 'update'}];
                 childrenIds.push('/2/' + cnt);
+                if (inTransaction)
+                    return;
                 Object.keys(users).forEach((user) => {
                     users[user](events);
                 });
             },
             deleteNode: (nodeId) => {
+                if (inTransaction)
+                    return;
                 childrenIds.splice(childrenIds.indexOf(nodeId), 1);
                 let events = [{etype: 'technical'}, {eid: nodeId, etype: 'unload'}, {eid: '', etype: 'update'}];
+                Object.keys(users).forEach((user) => {
+                    users[user](events);
+                });
+            },
+            startTransaction: () => {
+                inTransaction = true;
+            },
+            completeTransaction: () => {
+                let events = [{etype: 'technical'}, {eid: '', etype: 'update'}];
+                inTransaction = false;
                 Object.keys(users).forEach((user) => {
                     users[user](events);
                 });

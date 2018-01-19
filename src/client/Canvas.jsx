@@ -5,6 +5,7 @@ import {DropTarget} from 'react-dnd';
 import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
 import {DRAG_TYPES} from './CONSTANTS';
 import CanvasItem from "./CanvasItem";
+import ConnectionManager from './gme/BaseComponents/ConnectionManager';
 
 const canvasTarget = {
     drop(props, monitor) {
@@ -42,9 +43,11 @@ class Canvas extends SingleConnectedNode {
         nodeInfo: {}
     };
 
-    //constructor(props) {
-    //    super(props);
-    //}
+    cm = null;
+    constructor(props) {
+       super(props);
+       this.cm = new ConnectionManager();
+    }
 
     populateChildren(nodeObj, initial) {
         var childrenIds = nodeObj.getChildrenIds();
@@ -68,13 +71,18 @@ class Canvas extends SingleConnectedNode {
     }
 
     render() {
-        const {connectDropTarget, isOver} = this.props;
-
+        const {connectDropTarget, isOver, activeNode} = this.props;
+        const cm = this.cm;
         // let children = this.state.children.map((child) => {
         //     return <Chip key={child.id} label={child.id}/>
         // });
         let children = this.state.children.map((child) => {
-            return <CanvasItem key={child.id} gmeClient={this.props.gmeClient} activeNode={child.id}/>
+            return (<CanvasItem
+                key={child.id}
+                gmeClient={this.props.gmeClient}
+                activeNode={child.id}
+                contextNode={activeNode}
+                connectionManager={cm}/>);
         });
         return connectDropTarget(
             <div style={{

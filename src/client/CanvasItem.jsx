@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Samy/*, SvgProxy*/} from 'react-samy-svg';
 import {DragSource} from 'react-dnd';
+import Button from 'material-ui/Button';
+import DeleteIcon from 'material-ui-icons/Delete';
 
 import {DRAG_TYPES} from './CONSTANTS';
 import SingleConnectedNode from "./gme/BaseComponents/SingleConnectedNode";
@@ -35,12 +37,26 @@ class CanvasItem extends SingleConnectedNode {
 
     state = {
         position: null,
-        name: null
+        name: null,
+        showActions: false
     };
 
     getNodeParameters(nodeObj) {
         this.setState({position: nodeObj.getRegistry('position'), name: nodeObj.getAttribute('name')});
     }
+
+    onMouseEnter = () => {
+        this.setState({showActions: true});
+    };
+
+    onMouseLeave = () => {
+        this.setState({showActions: false});
+    };
+
+    deleteNode = () => {
+        console.log(this.props.activeNode);
+        this.props.gmeClient.deleteNode(this.props.activeNode);
+    };
 
     onNodeLoad(nodeObj) {
         this.getNodeParameters(nodeObj);
@@ -67,8 +83,16 @@ class CanvasItem extends SingleConnectedNode {
                 left: this.state.position.x,
                 height: 120,
                 width: 120
-            }}>
+            }}
+                 onMouseEnter={this.onMouseEnter}
+                 onMouseLeave={this.onMouseLeave}
+            >
                 <Samy svgXML={testDiode} style={{height: 120, width: 120}}/>
+                {this.state.showActions ?
+                    <Button fab mini style={{position: 'absolute', right: '0px', top: '0px'}} onClick={this.deleteNode}>
+                        <DeleteIcon/>
+                    </Button> :
+                    null}
             </div>);
     }
 

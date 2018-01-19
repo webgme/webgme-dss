@@ -204,6 +204,13 @@
                 Object.keys(users).forEach((user) => {
                     users[user](events);
                 });
+            },
+            deleteNode: (nodeId) => {
+                childrenIds.splice(childrenIds.indexOf(nodeId), 1);
+                let events = [{etype: 'technical'}, {eid: nodeId, etype: 'unload'}, {eid: '', etype: 'update'}];
+                Object.keys(users).forEach((user) => {
+                    users[user](events);
+                });
             }
         };
     };

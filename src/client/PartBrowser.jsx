@@ -92,7 +92,7 @@ class PartBrowser extends SingleConnectedNode {
                                             toggled: i === 0,
                                             name: path,
                                             path: treeNode.path + '$' + path,
-                                            description: 'This library is bla, bla, bla..',
+                                            description: 'TODO: Fetch info',
                                             folders: {},
                                             children: []
                                         };
@@ -115,13 +115,15 @@ class PartBrowser extends SingleConnectedNode {
             childrenDesc = nodeObj.getValidChildrenTypesDetailed();
 
         // All children are meta-nodes -> thus available right away
-        let validChildren = Object.keys(childrenDesc).map((id) => {
-            let metaNode = client.getNode(id);
+        const validChildren = Object.keys(childrenDesc).map((id) => {
+            const metaNode = client.getNode(id),
+                modelicaUri = metaNode.getAttribute('ModelicaURI');
+
             return {
                 id: metaNode.getId(),
-                name: metaNode.getAttribute('shortName') || metaNode.getAttribute('name'),
-                treePath: typeof this.props.treePathGetter === 'function' ? this.props.treePathGetter(metaNode) : null
-                //active: childrenDesc[id]
+                name: metaNode.getAttribute('ShortName') || metaNode.getAttribute('name'),
+                treePath: modelicaUri ? modelicaUri.split('.').slice(1).join('$') : null,
+                iconUrl: modelicaUri ? `/assets/DecoratorSVG/${modelicaUri}.svg` : '/assets/DecoratorSVG/Default.svg'
             };
         });
 
@@ -195,8 +197,7 @@ class PartBrowser extends SingleConnectedNode {
 
 PartBrowser.propTypes = {
     gmeClient: PropTypes.object.isRequired,
-    activeNode: PropTypes.string.isRequired,
-    treePathGetter: PropTypes.func
+    activeNode: PropTypes.string.isRequired
 };
 
 export default withTheme()(PartBrowser);

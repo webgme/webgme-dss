@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {DragSource} from 'react-dnd';
+import { Samy, SvgProxy } from 'react-samy-svg';
 
-import Chip from 'material-ui/Chip';
+import Typography from 'material-ui/Typography';
 
 import {DRAG_TYPES} from './CONSTANTS';
 
@@ -26,17 +27,22 @@ class PartBrowserItem extends Component {
     //constructor(props) {
     //    super(props);
     //}
-
-    componentDidMount() {
-        console.log('componentDidMount PartBrowserItem', this.props.treeNode.name);
-    }
+    onSVGReady = (svgEl) => {
+        // FIXME: How are errors reported? so we can fall back on Default.svg
+        console.log(svgEl);
+    };
 
     render() {
         const {treeNode, connectDragSource, isDragging} = this.props;
-
+        // TODO: Change dragged element to svg
         return connectDragSource(
             <div style={{opacity: 0.99}}>
-                <Chip style={{fontWeight: isDragging ? 'bold' : 'normal'}} label={treeNode.name}/>
+                <Samy path={treeNode.iconUrl} onSVGReady={this.onSVGReady}
+                      style={{height: '100%', width: 40, verticalAlign: 'middle'}}>
+                    <SvgProxy selector="text" display={'none'} />
+                    <SvgProxy selector="*" stroke-width={'0.75mm'} />
+                </Samy>
+                <Typography style={{display: 'inline', verticalAlign: 'middle'}}>{treeNode.name}</Typography>
             </div>);
     }
 }
@@ -45,7 +51,7 @@ PartBrowserItem.propTypes = {
     treeNode: PropTypes.shape({
         id: PropTypes.string.isRequired,
         name: PropTypes.string,
-        active: PropTypes.boolean
+        iconUrl: PropTypes.string
     }),
 
     connectDragSource: PropTypes.func.isRequired,

@@ -11,6 +11,6 @@ config.seedProjects.defaultProject = 'Modelica';
 
 // Listing:     /assets/decoratorSVGList.json
 // Example:     /assets/DecoratorSVG/Modelica.Electrical.Analog.Basic.Ground.svg
-config.visualization.svgDirs = [path.join(__dirname, '..', 'msl_icons')];
+config.visualization.svgDirs = [path.join(__dirname, '../public/assets/DecoratorSVG')];
 
 module.exports = config;

@@ -194,18 +194,13 @@ class Project extends Component {
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <Drawer type="persistent" anchor="left" open={this.state.sideMenu} style={{width: SIDE_PANEL_WIDTH}}>
+                <Drawer type="persistent" anchor="left" open={this.state.sideMenu}
+                        style={{width: SIDE_PANEL_WIDTH, overflow: 'auto'}}>
                     <IconButton onClick={this.onSideMenuClose}>
                         <ChevronLeftIcon/>
                     </IconButton>
                     <div style={{width: SIDE_PANEL_WIDTH, textAlign: 'left'}}>
-                        <PartBrowser activeNode={activeNode} gmeClient={this.props.gmeClient}
-                                     treePathGetter={(node) => {
-                                         let modelicaUri = node.getAttribute('ModelicaURI');
-                                         if (modelicaUri) {
-                                             return modelicaUri.split('.').slice(1).join('$');
-                                         }
-                                     }}/>
+                        <PartBrowser activeNode={activeNode} gmeClient={this.props.gmeClient}/>
                     </div>
                 </Drawer>
                 <div style={{marginTop: 64}}>

@@ -27,6 +27,10 @@ class PartBrowserItem extends Component {
     //    super(props);
     //}
 
+    componentDidMount() {
+        console.log('componentDidMount PartBrowserItem', this.props.treeNode.name);
+    }
+
     render() {
         const {treeNode, connectDragSource, isDragging} = this.props;
 

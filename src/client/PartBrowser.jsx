@@ -44,8 +44,6 @@ class PartBrowser extends SingleConnectedNode {
 
         this.tree = {};
 
-        console.log(props.theme);
-
         // TODO: Match these with the theme from material-ui
         theme.tree.base.backgroundColor = props.theme.palette.background.paper;
         theme.tree.base.color = 'black';

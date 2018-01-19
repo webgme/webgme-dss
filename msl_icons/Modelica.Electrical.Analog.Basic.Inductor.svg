@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<svg baseProfile="full" height="210" version="1.1" viewBox="0 0 310.0 210" width="310.0"
+     xmlns="http://www.w3.org/2000/svg" xmlns:ev="http://www.w3.org/2001/xml-events"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs/>
+    <desc>Modelica.Electrical.Analog.Basic.Inductor</desc>
+    <path d="M 97.0 105.0 C 97.0 102.0 97.0 99.0 101.5 94.5 101.5 94.5 106.0 90.0 109.0 90.0 109.0 90.0 112.0 90.0 115.0 90.0 115.0 90.0 118.0 90.0 122.5 94.5 122.5 94.5 127.0 99.0 127.0 102.0 127.0 102.0 127.0 105.0 127.0 105.0"
+          fill="none" fill-opacity="0" stroke="rgb(0,0,255)" stroke-width="0.25mm"/>
+    <defs/>
+    <path d="M 127.0 105.0 C 127.0 102.0 127.0 99.0 131.5 94.5 131.5 94.5 136.0 90.0 139.0 90.0 139.0 90.0 142.0 90.0 145.0 90.0 145.0 90.0 148.0 90.0 152.5 94.5 152.5 94.5 157.0 99.0 157.0 102.0 157.0 102.0 157.0 105.0 157.0 105.0"
+          fill="none" fill-opacity="0" stroke="rgb(0,0,255)" stroke-width="0.25mm"/>
+    <defs/>
+    <path d="M 157.0 105.0 C 157.0 102.0 157.0 99.0 161.5 94.5 161.5 94.5 166.0 90.0 169.0 90.0 169.0 90.0 172.0 90.0 175.0 90.0 175.0 90.0 178.0 90.0 182.5 94.5 182.5 94.5 187.0 99.0 187.0 102.0 187.0 102.0 187.0 105.0 187.0 105.0"
+          fill="none" fill-opacity="0" stroke="rgb(0,0,255)" stroke-width="0.25mm"/>
+    <defs/>
+    <path d="M 187.0 105.0 C 187.0 102.0 187.0 99.0 191.5 94.5 191.5 94.5 196.0 90.0 199.0 90.0 199.0 90.0 202.0 90.0 205.0 90.0 205.0 90.0 208.0 90.0 212.5 94.5 212.5 94.5 217.0 99.0 217.0 102.0 217.0 102.0 217.0 105.0 217.0 105.0"
+          fill="none" fill-opacity="0" stroke="rgb(0,0,255)" stroke-width="0.25mm"/>
+    <defs/>
+    <polyline fill="none" fill-opacity="0" points="217.0,105.0 247.0,105.0" stroke="rgb(0,0,255)"
+              stroke-width="0.25mm"/>
+    <defs/>
+    <polyline fill="none" fill-opacity="0" points="67.0,105.0 97.0,105.0" stroke="rgb(0,0,255)" stroke-width="0.25mm"/>
+    <defs/>
+    <text alignment-baseline="middle" fill="rgb(0,0,0)" font-family="Verdana" font-size="18" text-anchor="middle"
+          x="160.0" y="182.0">L=L
+        <tspan class="bbox" display="none">19.0 165.0 301.0 199.0</tspan>
+        <tspan class="data-bind" display="none">L=%L</tspan>
+    </text>
+    <defs/>
+    <text alignment-baseline="middle" fill="rgb(0,0,255)" font-family="Verdana" font-size="18" text-anchor="middle"
+          x="155.0" y="46.0">Inductor
+        <tspan class="bbox" display="none">5.0 26.0 305.0 66.0</tspan>
+        <tspan class="data-bind" display="none">%name</tspan>
+    </text>
+    <defs/>
+    <g id="p">
+        <rect fill="rgb(0,0,255)" height="20.0" rx="0.0" ry="0.0" stroke="rgb(0,0,255)" stroke-width="0.25mm"
+              width="20.0" x="47.0" y="95.0"/>
+        <defs/>
+        <g display="none" id="info">
+            <text id="name">p</text>
+            <text id="type">Modelica.Electrical.Analog.Interfaces.PositivePin</text>
+            <text id="classDesc">Positive pin of an electric component</text>
+            <text id="desc">Positive pin (potential p.v &gt; n.v for positive voltage drop v)</text>
+        </g>
+    </g>
+    <g id="n">
+        <rect fill="rgb(255,255,255)" height="20.0" rx="0.0" ry="0.0" stroke="rgb(0,0,255)" stroke-width="0.25mm"
+              width="20.0" x="247.0" y="95.0"/>
+        <defs/>
+        <g display="none" id="info">
+            <text id="name">n</text>
+            <text id="type">Modelica.Electrical.Analog.Interfaces.NegativePin</text>
+            <text id="classDesc">Negative pin of an electric component</text>
+            <text id="desc">Negative pin</text>
+        </g>
+    </g>
+</svg>

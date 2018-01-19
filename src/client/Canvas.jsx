@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {DropTarget} from 'react-dnd';
 
-import Chip from 'material-ui/Chip';
-
 import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
 import {DRAG_TYPES} from './CONSTANTS';
 import CanvasItem from "./CanvasItem";

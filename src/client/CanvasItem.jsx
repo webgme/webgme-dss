@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Samy, SvgProxy} from 'react-samy-svg';
+import {Samy/*, SvgProxy*/} from 'react-samy-svg';
 import {DragSource} from 'react-dnd';
 
 import {DRAG_TYPES} from './CONSTANTS';

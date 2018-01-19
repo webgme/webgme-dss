@@ -1,84 +1,16 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Card, {CardHeader, CardContent} from 'material-ui/Card';
-import Input, {InputLabel, InputAdornment} from 'material-ui/Input';
-import {FormControl, FormHelperText} from 'material-ui/Form';
+import Input, {InputAdornment} from 'material-ui/Input';
+import {FormControl, FormControlLabel, FormHelperText, FormLabel} from 'material-ui/Form';
 import InvertColors from 'material-ui-icons/InvertColors';
 import InvertColorsOff from 'material-ui-icons/InvertColorsOff';
 import IconButton from 'material-ui/IconButton';
-import {ChromePicker} from 'react-color';
 import Select from 'material-ui/Select';
+import Switch from 'material-ui/Switch';
+import {GithubPicker} from 'react-color';
 
 import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
-
-export class ColorItem extends Component {
-    static propTypes = {
-        name: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired,
-        onChange: PropTypes.func,
-        options: PropTypes.object,
-        description: PropTypes.string
-    };
-
-    state = {value: this.props.value, picking: false};
-
-    onPickerClick = () => {
-        let newPicking = !this.state.picking;
-        if (!newPicking) {
-            this.props.onChange(this.state.value);
-        }
-        this.setState({picking: newPicking});
-    };
-
-    onColorChange = (newColor) => {
-        if (typeof this.props.onChange === 'function') {
-            this.props.onChange(newColor.hex);
-        }
-        this.setState({value: newColor.hex});
-    };
-
-    onKeyPress(event) {
-        if (event.charCode === 13 && typeof this.props.onFullChange === 'function') {
-            this.props.onFullChange(event.target.value);
-            this.setState({value: undefined});
-        }
-    }
-
-    onBlur = () => {
-        if (typeof this.props.onFullChange === 'function' && !this.options.onlyEnter) {
-            this.props.onFullChange(this.state.value);
-        }
-        this.setState({picking: false});
-    };
-
-    onFocus = () => {
-        this.setState({picking: true});
-    };
-
-    render() {
-        let picker;
-
-        if (this.state.picking) {
-            picker = <ChromePicker viscolor={this.state.value} onChange={this.onColorChange}/>;
-        }
-
-        return (<FormControl fullWidth={true} onFocus={this.onFocus} onBlur={this.onBlur}>
-            <InputLabel htmlFor="password">{this.props.name}</InputLabel>
-            <Input
-                value={this.state.value}
-                endAdornment={
-                    <InputAdornment position="end">
-                        <IconButton onClick={this.onPickerClick}>
-                            {this.state.picking ? <InvertColorsOff/> : <InvertColors nativeColor={this.state.value}/>}
-                        </IconButton>
-                    </InputAdornment>
-                }
-            />
-            {picker}
-            <FormHelperText>{this.props.description}</FormHelperText>
-        </FormControl>);
-    }
-}
 
 export const AttributeTypes = {
     'string': 'string',
@@ -101,14 +33,30 @@ export class AttributeItem extends Component {
     };
 
     state = {
-        value: this.props.value
+        value: this.props.value,
+        picking: false
     };
 
     options = {};
 
     componentWillReceiveProps(nextProps) {
-        this.setState({value: nextProps.value});
+        this.setState({value: nextProps.value, picking: false});
     }
+
+    onColorChange = (color) => {
+        let {onChange, onFullChange, value} = this.props;
+
+        if (color.hex !== value) {
+            if (typeof onChange === 'function') {
+                onChange(color.hex);
+            }
+            if (typeof onFullChange === 'function') {
+                onFullChange(color.hex);
+            }
+            this.setState({value: color.hex, picking: false});
+        }
+        this.setState({picking: false});
+    };
 
     onChange = (event) => {
         let {type, onChange, onFullChange, value, values} = this.props;
@@ -141,23 +89,34 @@ export class AttributeItem extends Component {
                 }
                 this.setState({value: event.target.value});
                 break;
+            default:
+                return null;
         }
     };
 
     onKeyPress = (event) => {
-        if (event.charCode === 13 && typeof this.props.onFullChange === 'function' &&
-            event.target.value !== this.props.value) {
-            this.props.onFullChange(event.target.value);
+        if (this.props.type !== AttributeTypes.color) {
+            if (event.charCode === 13 && typeof this.props.onFullChange === 'function' &&
+                event.target.value !== this.props.value) {
+                this.props.onFullChange(event.target.value);
+            }
+            this.setState({value: event.target.value});
         }
-        this.setState({value: event.target.value});
+    };
+
+    onFocus = () => {
+        if (this.props.type === AttributeTypes.color)
+            this.setState({picking: true});
     };
 
     onBlur = (event) => {
-        if (typeof this.props.onFullChange === 'function' && !this.options.onlyEnter &&
-            event.target.value !== this.props.value) {
-            this.props.onFullChange(event.target.value);
+        if (this.props.type !== AttributeTypes.color) {
+            if (typeof this.props.onFullChange === 'function' && !this.options.onlyEnter &&
+                event.target.value !== this.props.value) {
+                this.props.onFullChange(event.target.value);
+            }
+            this.setState({value: event.target.value});
         }
-        this.setState({value: event.target.value});
     };
 
     processProps = () => {
@@ -168,33 +127,63 @@ export class AttributeItem extends Component {
     };
 
     getContent = () => {
-        let {readOnly} = this.options,
+        let self = this,
+            {readOnly} = this.options,
             {type, values} = this.props,
-            {value} = this.state;
-
-        if (readOnly) {
-            return <Input value={this.state.value}/>;
-        }
+            {value, picking} = this.state;
 
         if (values && values.length > 0) {
             // enum case
-            return (<Select native={true} value={value} onChange={this.onChange}>
-                {values.map(option => (<option>{option}</option>))}
+            return (<Select disabled={readOnly} native={true} value={value} onChange={this.onChange}>
+                {values.map(option => (<option key={option}>{option}</option>))}
             </Select>);
         }
 
         switch (type) {
             case AttributeTypes.boolean:
-                return (<Select native={true} value={value + ''} onChange={this.onChange}>
-                    <option value={true}>true</option>
-                    <option value={false}>false</option>
-                </Select>);
+                return (<FormControlLabel
+                    disabled={readOnly}
+                    control={<Switch checked={value} onChange={this.onChange}/>}
+                />);
             case AttributeTypes.string:
-                return (
-                    <Input value={value} onChange={this.onChange} onKeyPress={this.onKeyPress} onBlur={this.onBlur}/>);
+                return (<Input
+                    disabled={readOnly}
+                    value={value}
+                    onChange={this.onChange}
+                    onKeyPress={this.onKeyPress}
+                    onBlur={this.onBlur}/>);
             case AttributeTypes.number:
-                return (<Input type={'number'} value={value} onChange={this.onChange} onKeyPress={this.onKeyPress}
-                               onBlur={this.onBlur}/>);
+                return (<Input
+                    disabled={readOnly}
+                    type={'number'}
+                    value={value}
+                    onChange={this.onChange}
+                    onKeyPress={this.onKeyPress}
+                    onBlur={this.onBlur}/>);
+            case AttributeTypes.color:
+                let content = [];
+                content.push(<Input
+                    key={'input'}
+                    value={this.state.value}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <IconButton onClick={() => {
+                                self.setState({picking: !picking});
+                            }}>
+                                {picking ? <InvertColorsOff/> :
+                                    <InvertColors nativeColor={value}/>}
+                            </IconButton>
+                        </InputAdornment>
+                    }/>);
+                if (picking) {
+                    content.push(<GithubPicker
+                        key={'picker'}
+                        color={this.state.value}
+                        onChange={self.onColorChange}/>);
+                }
+                return content;
+            default:
+                return null;
         }
     };
 
@@ -202,8 +191,8 @@ export class AttributeItem extends Component {
         this.processProps();
         let content = this.getContent();
 
-        return (<FormControl fullWidth={true} onFocus={this.onFocus} onBlur={this.onBlur}>
-            <InputLabel>{this.props.name}</InputLabel>
+        return (<FormControl fullWidth={false} onBlur={this.onBlur} onFocus={this.onFocus}>
+            <FormLabel>{this.props.name}</FormLabel>
             {content}
             <FormHelperText>{this.props.description}</FormHelperText>
         </FormControl>);
@@ -297,6 +286,8 @@ export default class AttributeEditor extends SingleConnectedNode {
                 case'float':
                     type = AttributeTypes.number;
                     break;
+                default:
+                    type = AttributeTypes.string;
             }
 
             return (<AttributeItem

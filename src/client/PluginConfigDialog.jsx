@@ -8,7 +8,7 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
 
-import {AttributeItem, ColorItem} from './AttributeEditor';
+import {AttributeItem, AttributeTypes} from './AttributeEditor';
 
 /*
 "configStructure": [
@@ -118,11 +118,7 @@ export default class PluginConfigDialog extends Component {
                 options = {readOnly: descriptor.readOnly};
 
             if (descriptor.name.indexOf('color') !== -1) {
-                return (<ColorItem key={descriptor.name} name={descriptor.displayName}
-                                   value={this.state[descriptor.name]} description={descriptor.description}
-                                   onChange={(newValue) => {
-                                       this.onChange(descriptor.name, newValue)
-                                   }}/>);
+                descriptor.valueType = AttributeTypes.color;
             }
 
             return (<AttributeItem

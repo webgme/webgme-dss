@@ -13,7 +13,8 @@ export default class CanvasItemPort extends Component {
     };
 
     state = {
-        freeze: false
+        freeze: false,
+        mouseOver: false
     };
 
     createConnection = (source, type) => {
@@ -47,20 +48,39 @@ export default class CanvasItemPort extends Component {
         }
     };
 
+    onMouseEnter = () => {
+        this.setState({mouseOver: true});
+    };
+
+    onMouseLeave = () => {
+        this.setState({mouseOver: false});
+    };
+
     render() {
         let {hidden, position, dimensions} = this.props,
-            {freeze} = this.state;
+            {freeze, mouseOver} = this.state,
+            left, top, width, height, border;
 
-        return hidden && !freeze ? null :
-            (<div style={{
-                position: 'absolute',
-                left: (position ? position.x : 0) + 'px',
-                top: (position ? position.y : 0) + 'px',
-                width: (dimensions ? dimensions.x : 5) + 'px',
-                height: (dimensions ? dimensions.y : 5) + 'px',
-                border: "1px solid #000000"
-            }}
-                  onClick={this.onClick}/>);
+        if (hidden && !freeze) {
+            return null;
+        }
+        left = mouseOver ? (position ? position.x - 5 : 0) + 'px' : (position ? position.x : 0) + 'px';
+        top = mouseOver ? (position ? position.y - 5 : 0) + 'px' : (position ? position.y : 0) + 'px';
+        width = mouseOver ? (dimensions ? dimensions.x + 10 : 15) + 'px' : (dimensions ? dimensions.x : 5) + 'px';
+        height = mouseOver ? (dimensions ? dimensions.y + 10 : 15) + 'px' : (dimensions ? dimensions.y : 5) + 'px';
+        border = mouseOver ? '2px solid #000000' : '1px solid #000000';
+
+        return (<div style={{
+            position: 'absolute',
+            left: left,
+            top: top,
+            width: width,
+            height: height,
+            border: border
+        }}
+                     onMouseEnter={this.onMouseEnter}
+                     onMouseLeave={this.onMouseLeave}
+                     onClick={this.onClick}/>);
     }
 
 }

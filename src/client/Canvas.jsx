@@ -75,7 +75,6 @@ class Canvas extends SingleConnectedNode {
     }
 
     onMouseClick = (event) => {
-        console.log(event.button);
         event.stopPropagation();
         event.preventDefault();
         if (this.cm.isConnecting) {
@@ -84,7 +83,6 @@ class Canvas extends SingleConnectedNode {
     };
 
     onMouseLeave = (event) => {
-        console.log(event);
         event.stopPropagation();
         if (this.cm.isConnecting) {
             this.cm.endConnection();

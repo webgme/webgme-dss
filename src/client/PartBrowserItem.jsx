@@ -30,7 +30,7 @@ class PartBrowserItem extends Component {
     //}
     onSVGReady = (svgEl) => {
         // FIXME: How are errors reported? so we can fall back on Default.svg
-        console.log(svgEl);
+        // console.log(svgEl);
     };
 
     render() {

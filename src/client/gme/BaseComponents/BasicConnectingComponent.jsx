@@ -33,15 +33,9 @@ export default class BasicConnectingComponent extends Component {
             left = Math.min(startPos.x, currentPos.x);
             height = Math.abs(currentPos.y - startPos.y) + 5;
             width = Math.abs(currentPos.x - startPos.x) + 5;
-            console.log(top - offset.y, left - offset.x);
             if (height > 0 && width > 0) {
                 return (
                     <svg
-                        ref={svgItem => {
-                            if (svgItem) {
-                                console.log(svgItem.getBBox());
-                            }
-                        }}
                         width={width}
                         height={height}
                         viewBox={0 + ' ' + 0 + ' ' + (width) + ' ' + (height)}

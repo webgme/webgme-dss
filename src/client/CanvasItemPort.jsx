@@ -53,9 +53,9 @@ export default class CanvasItemPort extends Component {
                 position: 'absolute',
                 left: (position ? position.x : 0) + 'px',
                 top: (position ? position.y : 0) + 'px',
-                width: (dimensions ? dimensions.x : 20) + 'px',
-                height: (dimensions ? dimensions.y : 20) + 'px',
-                border: "2px solid #000000"
+                width: (dimensions ? dimensions.x : 5) + 'px',
+                height: (dimensions ? dimensions.y : 5) + 'px',
+                border: "1px solid #000000"
             }}
                   onClick={this.onClick}/>);
     }

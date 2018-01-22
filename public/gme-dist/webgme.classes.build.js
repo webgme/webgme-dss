@@ -134,7 +134,8 @@
                 }
             },
             getValidChildrenTypesDetailed: () => validChildrenIds,
-            getChildrenIds: () => childrenIds
+            getChildrenIds: () => childrenIds,
+            getMetaTypeId: () => validChildrenIds[cnt % validChildrenIds.length]
         }
     }
 

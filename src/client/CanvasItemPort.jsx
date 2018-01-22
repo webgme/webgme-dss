@@ -27,7 +27,7 @@ export default class CanvasItemPort extends Component {
         gmeClient.completeTransaction('connection created');
     };
 
-    onClick = () => {
+    onClick = (event) => {
         let self = this,
             {connectionManager, activeNode} = this.props;
         if (connectionManager.isConnecting) {
@@ -37,7 +37,10 @@ export default class CanvasItemPort extends Component {
             }
             this.setState({freeze: false});
         } else {
-            connectionManager.startConnection(activeNode, 'someConnectionType', () => {
+            connectionManager.startConnection(activeNode, 'someConnectionType', {
+                x: event.clientX,
+                y: event.clientY
+            }, () => {
                 self.setState({freeze: false});
             });
             this.setState({freeze: true});

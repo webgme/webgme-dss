@@ -103,7 +103,8 @@ class CanvasItem extends SingleConnectedNode {
                 left: this.state.position.x,
                 height: baseDimensions.y * scale,
                 width: baseDimensions.x * scale,
-                border: showActions ? "1px dashed #000000" : "0px"
+                border: showActions ? "1px dashed #000000" : "0px",
+                zIndex: 10
             }}
                  onMouseEnter={this.onMouseEnter}
                  onMouseLeave={this.onMouseLeave}

@@ -6,6 +6,7 @@ import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
 import {DRAG_TYPES} from './CONSTANTS';
 import CanvasItem from "./CanvasItem";
 import ConnectionManager from './gme/BaseComponents/ConnectionManager';
+import BasicConnectingComponent from './gme/BaseComponents/BasicConnectingComponent';
 
 const canvasTarget = {
     drop(props, monitor) {
@@ -44,9 +45,12 @@ class Canvas extends SingleConnectedNode {
     };
 
     cm = null;
+
+    offset = null;
+
     constructor(props) {
-       super(props);
-       this.cm = new ConnectionManager();
+        super(props);
+        this.cm = new ConnectionManager();
     }
 
     populateChildren(nodeObj, initial) {
@@ -70,9 +74,32 @@ class Canvas extends SingleConnectedNode {
         this.populateChildren(nodeObj);
     }
 
+    onMouseClick = (event) => {
+        console.log(event.button);
+        event.stopPropagation();
+        event.preventDefault();
+        if (this.cm.isConnecting) {
+            this.cm.endConnection();
+        }
+    };
+
+    onMouseLeave = (event) => {
+        console.log(event);
+        event.stopPropagation();
+        if (this.cm.isConnecting) {
+            this.cm.endConnection();
+        }
+    };
+
+    onMouseMove = (event) => {
+        this.cm.onMouseMove({x: event.clientX, y: event.clientY});
+    };
+
     render() {
-        const {connectDropTarget, isOver, activeNode} = this.props;
-        const cm = this.cm;
+        const {connectDropTarget, isOver, activeNode} = this.props,
+            cm = this.cm,
+            self = this;
+
         // let children = this.state.children.map((child) => {
         //     return <Chip key={child.id} label={child.id}/>
         // });
@@ -85,12 +112,22 @@ class Canvas extends SingleConnectedNode {
                 connectionManager={cm}/>);
         });
         return connectDropTarget(
-            <div style={{
+            <div ref={canvas => {
+                if (canvas && self.offset === null) {
+                    self.offset = {x: canvas.offsetLeft, y: canvas.offsetTop};
+                }
+            }} style={{
                 backgroundColor: isOver ? 'lightgreen' : undefined,
                 width: '100%',
                 height: '100%',
-                overflow: 'scroll'
-            }}>
+                overflow: 'scroll',
+                zIndex: 1
+            }}
+                /*onClick={this.onMouseClick}*/
+                 onContextMenu={this.onMouseClick}
+                 onMouseLeave={this.onMouseLeave}
+                 onMouseMove={this.onMouseMove}>
+                <BasicConnectingComponent connectionManager={this.cm} offset={this.offset}/>
                 {`Node ${this.state.nodeInfo.name} open`}
                 {children}
             </div>);

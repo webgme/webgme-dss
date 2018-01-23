@@ -16,8 +16,10 @@ import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
 import {nameSort} from './gme/utils/getObjectSorter';
 
 import PartBrowserItem from './PartBrowserItem';
+// import PartBrowserDragPreview from './PartBrowserDragPreview';
 
 const TREE_PATH_SEP = '$';
+const EXPAND_ALL = true;
 
 class TreeContainer extends decorators.Container {
     renderToggleDecorator() {
@@ -65,7 +67,7 @@ class PartBrowser extends SingleConnectedNode {
                 return defaultHeader(props);
             }
 
-            return <PartBrowserItem treeNode={props.node}/>
+            return <PartBrowserItem treeNode={props.node} scale={this.props.scale}/>
         };
     }
 
@@ -89,7 +91,7 @@ class PartBrowser extends SingleConnectedNode {
                                         treeNode.folders[path] = {
                                             isFolder: true,
                                             isRoot: i === 0,
-                                            toggled: i === 0,
+                                            toggled: EXPAND_ALL || i === 0,
                                             name: path,
                                             path: treeNode.path + '$' + path,
                                             description: 'TODO: Fetch info',
@@ -177,7 +179,7 @@ class PartBrowser extends SingleConnectedNode {
             }
         } else {
             return (
-                <PartBrowserItem key={treeNode.id} treeNode={treeNode}/>
+                <PartBrowserItem key={treeNode.id} treeNode={treeNode} scale={this.props.scale}/>
             )
         }
     };
@@ -189,6 +191,7 @@ class PartBrowser extends SingleConnectedNode {
 
         return (
             <div style={{width: '100%'}}>
+                {/*<PartBrowserDragPreview scale={this.props.scale}/>*/}
                 {this.tree.children.map(this.buildTreeStructure)}
             </div>
         );
@@ -197,7 +200,8 @@ class PartBrowser extends SingleConnectedNode {
 
 PartBrowser.propTypes = {
     gmeClient: PropTypes.object.isRequired,
-    activeNode: PropTypes.string.isRequired
+    activeNode: PropTypes.string.isRequired,
+    scale: PropTypes.number.isRequired
 };
 
 export default withTheme()(PartBrowser);

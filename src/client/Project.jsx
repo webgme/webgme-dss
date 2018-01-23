@@ -16,6 +16,7 @@ import {LinearProgress} from 'material-ui/Progress';
 
 // Own modules
 import PartBrowser from './PartBrowser';
+import PartBrowserDragPreview from './PartBrowserDragPreview';
 import AttributeEditor from './AttributeEditor';
 import Canvas from './Canvas';
 import PluginConfigDialog from './PluginConfigDialog';
@@ -99,6 +100,7 @@ class Project extends Component {
         sideMenu: true,
         bottomMenu: true,
         dialogOpened: false,
+        scale: 0.6,
         scrollPos: {x: 0, y: 0}
     };
 
@@ -189,6 +191,7 @@ class Project extends Component {
                 width: '100%',
                 height: '100%'
             }}>
+                <PartBrowserDragPreview scale={this.state.scale}/>
                 <AppBar>
                     <Toolbar disableGutters={this.state.sideMenu}>
                         <IconButton color="contrast" aria-label="open side menu" onClick={this.onSideMenuOpen}>
@@ -205,7 +208,7 @@ class Project extends Component {
                         <ChevronLeftIcon/>
                     </IconButton>
                     <div style={{width: SIDE_PANEL_WIDTH, textAlign: 'left'}}>
-                        <PartBrowser activeNode={activeNode} gmeClient={this.props.gmeClient}/>
+                        <PartBrowser activeNode={activeNode} gmeClient={this.props.gmeClient} scale={this.state.scale}/>
                     </div>
                 </Drawer>
                 <div style={{marginTop: 64}}>
@@ -230,7 +233,7 @@ class Project extends Component {
                             overflow: 'auto'
                         }}>
                         <Canvas activeNode={this.state.activeNode} gmeClient={this.props.gmeClient}
-                                scrollPos={this.state.scrollPos}/>
+                                scrollPos={this.state.scrollPos} scale={this.state.scale}/>
                     </div>
                 </div>
                 <Drawer type="persistent" anchor="bottom" open={this.state.bottomMenu}

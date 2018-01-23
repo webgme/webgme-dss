@@ -24,10 +24,19 @@ const canvasTarget = {
             props.gmeClient.setRegistry(dragItem.gmeId, 'position', position);
         } else if (dragItem.create) {
             const dragOffset = monitor.getClientOffset();
-            const position = {
+            let position = {
                 x: dragOffset.x - canvas.offset.x + canvas.props.scrollPos.x,
                 y: dragOffset.y - canvas.offset.y + canvas.props.scrollPos.y
             };
+
+            if (dragItem.offset) {
+                position.x -= dragItem.offset.x;
+                position.y -= dragItem.offset.y;
+            }
+
+            // TODO: Fix when client accepts 0
+            position.x = position.x > 0 ? position.x : 1;
+            position.y = position.y > 0 ? position.y : 1;
 
             props.gmeClient.createNode({
                 parentId: props.activeNode,
@@ -119,6 +128,7 @@ class Canvas extends SingleConnectedNode {
                 gmeClient={this.props.gmeClient}
                 activeNode={child.id}
                 contextNode={activeNode}
+                scale={this.props.scale}
                 connectionManager={self.cm}
                 eventManager={self.em}/>);
         });
@@ -157,7 +167,8 @@ Canvas.propTypes = {
     scrollPos: PropTypes.object.isRequired,
 
     connectDropTarget: PropTypes.func.isRequired,
-    isOver: PropTypes.bool.isRequired
+    isOver: PropTypes.bool.isRequired,
+    scale: PropTypes.number.isRequired
 };
 
 export default DropTarget(DRAG_TYPES.GME_NODE, canvasTarget, collect)(Canvas);

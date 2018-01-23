@@ -32,6 +32,7 @@ class CanvasItem extends SingleConnectedNode {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
         activeNode: PropTypes.string.isRequired,
+        scale: PropTypes.number.isRequired,
         connectDragSource: PropTypes.func.isRequired,
         connectDragPreview: PropTypes.func.isRequired,
         isDragging: PropTypes.bool.isRequired,
@@ -125,7 +126,7 @@ class CanvasItem extends SingleConnectedNode {
             } = this.props,
             {showActions, modelicaUri, ports, position, svgReady} = this.state,
             baseDimensions = {x: 320, y: 210},
-            scale = 0.4,
+            scale = this.props.scale,
             svgPath = modelicaUri ? `/assets/DecoratorSVG/${modelicaUri}.svg` : '/assets/DecoratorSVG/Default.svg';
         let portComponents = [],
             i, keys;

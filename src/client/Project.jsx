@@ -214,7 +214,7 @@ class Project extends Component {
                         </Button>
                     }
                     <Button onClick={this.onOpenDialog}>PopUpDialog</Button>
-                    <div style={{width: 400, height: 400, borderStyle: 'dotted'}}>
+                    <div style={{width: 1200, height: 600, borderStyle: 'dotted'}}>
                         <Canvas activeNode={this.state.activeNode} gmeClient={this.props.gmeClient}/>
                     </div>
                 </div>

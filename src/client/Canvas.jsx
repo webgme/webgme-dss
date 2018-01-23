@@ -10,22 +10,29 @@ import BasicConnectingComponent from './gme/BaseComponents/BasicConnectingCompon
 import BasicEventManager from './gme/BaseComponents/BasicEventManager';
 
 const canvasTarget = {
-    drop(props, monitor) {
+    drop(props, monitor, canvas) {
         const dragItem = monitor.getItem();
         if (dragItem.move) {
             let offset = monitor.getDifferenceFromInitialOffset(),
                 node = props.gmeClient.getNode(dragItem.gmeId),
                 position = node.getRegistry('position');
+
             position.x = position.x + Math.trunc(offset.x);
             position.y = position.y + Math.trunc(offset.y);
             props.gmeClient.setRegistry(dragItem.gmeId, 'position', position);
         } else if (dragItem.create) {
+            const dragOffset = monitor.getClientOffset();
+            const position = {
+                x: dragOffset.x - canvas.offset.x,
+                y: dragOffset.y - canvas.offset.y
+            };
+
             props.gmeClient.createNode({
                 parentId: props.activeNode,
                 baseId: dragItem.gmeId
             }, {
                 registry: {
-                    position: {x: 100, y: 100}
+                    position
                 }
             });
         }

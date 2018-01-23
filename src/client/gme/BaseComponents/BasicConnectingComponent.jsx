@@ -3,15 +3,13 @@ import PropTypes from 'prop-types';
 
 export default class BasicConnectingComponent extends Component {
     static propTypes = {
-        connectionManager: PropTypes.object.isRequired,
-        offset: PropTypes.object
+        connectionManager: PropTypes.object.isRequired
     };
 
     state = {
         startPos: null,
         currentPos: null,
-        isConnecting: false,
-        realOffset: null
+        isConnecting: false
     };
 
     constructor(props) {
@@ -24,11 +22,10 @@ export default class BasicConnectingComponent extends Component {
     };
 
     render() {
-        let {isConnecting, startPos, currentPos} = this.state,
-            {offset} = this.props,
-            top, left, width, height;
+        const {isConnecting, startPos, currentPos} = this.state;
+        let top, left, width, height;
 
-        if (isConnecting && offset) {
+        if (isConnecting) {
             top = Math.min(startPos.y, currentPos.y);
             left = Math.min(startPos.x, currentPos.x);
             height = Math.abs(currentPos.y - startPos.y) + 5;

@@ -9,6 +9,8 @@ import ConnectionManager from './gme/BaseComponents/ConnectionManager';
 import BasicConnectingComponent from './gme/BaseComponents/BasicConnectingComponent';
 import BasicEventManager from './gme/BaseComponents/BasicEventManager';
 
+import BasicConnection from './BasicConnection';
+
 const canvasTarget = {
     drop(props, monitor, canvas) {
         const dragItem = monitor.getItem();
@@ -23,8 +25,8 @@ const canvasTarget = {
         } else if (dragItem.create) {
             const dragOffset = monitor.getClientOffset();
             const position = {
-                x: dragOffset.x - canvas.offset.x,
-                y: dragOffset.y - canvas.offset.y
+                x: dragOffset.x - canvas.offset.x + canvas.props.scrollPos.x,
+                y: dragOffset.y - canvas.offset.y + canvas.props.scrollPos.y
             };
 
             props.gmeClient.createNode({
@@ -55,7 +57,7 @@ class Canvas extends SingleConnectedNode {
     cm = null;
     em = null;
 
-    offset = null;
+    offset = {x: 0, y: 0};
 
     constructor(props) {
         super(props);
@@ -100,16 +102,17 @@ class Canvas extends SingleConnectedNode {
     };
 
     onMouseMove = (event) => {
-        this.cm.onMouseMove({x: event.clientX, y: event.clientY});
+        // console.log('e:', event.clientX, 's:', this.props.scrollPos.x, 'o:', this.offset.x);
+        this.cm.onMouseMove({
+            x: event.clientX + this.props.scrollPos.x - this.offset.x,
+            y: event.clientY + this.props.scrollPos.y - this.offset.y
+        });
     };
 
     render() {
         const {connectDropTarget, isOver, activeNode} = this.props,
             self = this;
 
-        // let children = this.state.children.map((child) => {
-        //     return <Chip key={child.id} label={child.id}/>
-        // });
         let children = this.state.children.map((child) => {
             return (<CanvasItem
                 key={child.id}
@@ -120,24 +123,30 @@ class Canvas extends SingleConnectedNode {
                 eventManager={self.em}/>);
         });
         return connectDropTarget(
-            <div ref={canvas => {
-                if (canvas && self.offset === null) {
-                    self.offset = {x: canvas.offsetLeft, y: canvas.offsetTop};
-                }
-            }} style={{
-                backgroundColor: isOver ? 'lightgreen' : undefined,
-                width: '100%',
-                height: '100%',
-                overflow: 'scroll',
-                zIndex: 1
+            <div ref={(canvas) => {
+                if (canvas)
+                    self.offset = {x: canvas.offsetParent.offsetLeft, y: canvas.offsetParent.offsetTop};
             }}
+                 style={{
+                     backgroundColor: isOver ? 'lightgreen' : undefined,
+                     width: '100%',
+                     height: '100%',
+                     overflow: 'scroll',
+                     zIndex: 1,
+                     position: 'absolute'
+                 }}
                 /*onClick={this.onMouseClick}*/
                  onContextMenu={this.onMouseClick}
                  onMouseLeave={this.onMouseLeave}
                  onMouseMove={this.onMouseMove}>
-                <BasicConnectingComponent connectionManager={this.cm} offset={this.offset}/>
-                <div style={{position: 'sticky', top: '10px'}}>{`Node ${this.state.nodeInfo.name} open`}</div>
+                <BasicConnectingComponent connectionManager={this.cm}/>
+                <div style={{
+                    position: 'sticky',
+                    top: '10px',
+                    left: '10px'
+                }}>{`Node ${this.state.nodeInfo.name} open`}</div>
                 {children}
+                <BasicConnection path={[{x: 100, y: 100}, {x: 150, y: 100}, {x: 150, y: 150}]}/>
             </div>);
     }
 }
@@ -145,6 +154,7 @@ class Canvas extends SingleConnectedNode {
 Canvas.propTypes = {
     gmeClient: PropTypes.object.isRequired,
     activeNode: PropTypes.string.isRequired,
+    scrollPos: PropTypes.object.isRequired,
 
     connectDropTarget: PropTypes.func.isRequired,
     isOver: PropTypes.bool.isRequired

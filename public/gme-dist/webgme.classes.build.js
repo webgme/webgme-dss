@@ -102,6 +102,14 @@
             getId: () => id,
             getGuid: () => 'a5008758-e9e8-7eb1-e995-e1793ef92a37',
             getValidAttributeNames: () => attrNames,
+            getValidPointerNames: () => {
+                if (cnt % 5 === 0)
+                    return ['src', 'dst'];
+                return [];
+            },
+            getPointerPath: (name) => {
+                return childrenIds[cnt % 5];
+            },
             getAttribute: (attrName) => {
                 cnt += 1;
                 if (attrName.indexOf('int') !== -1) {
@@ -115,9 +123,10 @@
                 }
             },
             getRegistry: (regName) => {
+                let pos = cnt % 100;
                 switch (regName) {
                     case 'position':
-                        return {x: cnt, y: cnt};
+                        return {y: (Math.trunc(pos / 10)) * 40, x: (pos % 10) * 100};
                     default:
                         return 'RegValue_' + cnt;
                 }

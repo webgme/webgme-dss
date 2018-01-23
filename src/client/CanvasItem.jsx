@@ -8,6 +8,7 @@ import DeleteIcon from 'material-ui-icons/Delete';
 import {DRAG_TYPES} from './CONSTANTS';
 import SingleConnectedNode from "./gme/BaseComponents/SingleConnectedNode";
 import CanvasItemPort from './CanvasItemPort';
+// import BasicConnection from './BasicConnection';
 
 const canvasItemSource = {
     beginDrag(props) {
@@ -47,16 +48,29 @@ class CanvasItem extends SingleConnectedNode {
         modelicaUri: null,
         svgReady: false,
         ports: {},
-        childrenName2Id: {}
+        childrenName2Id: {},
+        isConnection: false,
+        currentRootHash: null,
+        endPoints: null
     };
 
     getNodeParameters(nodeObj) {
-        const metaNode = this.props.gmeClient.getNode(nodeObj.getMetaTypeId());
+        const metaNode = this.props.gmeClient.getNode(nodeObj.getMetaTypeId()),
+            validPointers = nodeObj.getValidPointerNames();
+        let isConnection = validPointers.indexOf('src') !== -1 && validPointers.indexOf('dst') !== -1,
+            endPoints = null;
 
+        if (isConnection)
+            endPoints = {
+                src: nodeObj.getPointerPath('src'),
+                dst: nodeObj.getPointerPath('dst')
+            };
         this.setState({
             position: nodeObj.getRegistry('position'),
             name: nodeObj.getAttribute('name'),
-            modelicaUri: metaNode.getAttribute('ModelicaURI')
+            modelicaUri: metaNode.getAttribute('ModelicaURI'),
+            isConnection: isConnection,
+            endPoints: endPoints
         });
     }
 
@@ -100,8 +114,7 @@ class CanvasItem extends SingleConnectedNode {
         this.setState({svgReady: true, ports: ports});
     };
 
-    render() {
-
+    boxRender() {
         const {
                 connectDragSource,
                 isDragging,
@@ -136,13 +149,17 @@ class CanvasItem extends SingleConnectedNode {
                 contextNode={contextNode}
                 position={{x: scale * ports[keys[i]].x, y: scale * ports[keys[i]].y}}
                 dimensions={{x: scale * ports[keys[i]].width, y: scale * ports[keys[i]].height}}
-                hidden={!showActions}/>));
+                hidden={!showActions}
+                absolutePosition={{
+                    x: position.x + (scale * ports[keys[i]].x),
+                    y: position.y + (scale * ports[keys[i]].y)
+                }}/>));
         }
 
         return connectDragSource(
             <div style={{
                 opacity: isDragging ? 0.3 : 0.99,
-                position: 'relative',
+                position: 'absolute',
                 top: this.state.position.y,
                 left: this.state.position.x,
                 height: baseDimensions.y * scale,
@@ -167,6 +184,19 @@ class CanvasItem extends SingleConnectedNode {
                     </IconButton> :
                     null}
             </div>);
+    }
+
+    connectionRender() {
+        return null;
+    }
+
+    render() {
+        if (this.state.isConnection) {
+            return this.connectionRender();
+        } else {
+            return this.boxRender();
+        }
+
     }
 
 }

@@ -9,7 +9,8 @@ export default class CanvasItemPort extends Component {
         contextNode: PropTypes.string.isRequired,
         position: PropTypes.object,
         dimensions: PropTypes.object,
-        hidden: PropTypes.bool.isRequired
+        hidden: PropTypes.bool.isRequired,
+        absolutePosition: PropTypes.object.isRequired
     };
 
     state = {
@@ -28,9 +29,10 @@ export default class CanvasItemPort extends Component {
         gmeClient.completeTransaction('connection created');
     };
 
-    onClick = (event) => {
+    onClick = (/*event*/) => {
         let self = this,
-            {connectionManager, activeNode} = this.props;
+            {connectionManager, activeNode, absolutePosition, dimensions} = this.props;
+
         if (connectionManager.isConnecting) {
             let connectionParams = connectionManager.endConnection();
             if (connectionParams.source !== activeNode) {
@@ -38,9 +40,14 @@ export default class CanvasItemPort extends Component {
             }
             this.setState({freeze: false});
         } else {
+
+            console.log(
+                'x:', absolutePosition.x + (dimensions.x / 2),
+                'y', absolutePosition.y + (dimensions.y / 2)
+            );
             connectionManager.startConnection(activeNode, 'someConnectionType', {
-                x: event.clientX,
-                y: event.clientY
+                x: absolutePosition.x + (dimensions.x / 2),
+                y: absolutePosition.y + (dimensions.y / 2)
             }, () => {
                 self.setState({freeze: false});
             });

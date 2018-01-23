@@ -98,7 +98,8 @@ class Project extends Component {
         branch: null,
         sideMenu: true,
         bottomMenu: true,
-        dialogOpened: false
+        dialogOpened: false,
+        scrollPos: {x: 0, y: 0}
     };
 
     //constructor(props) {
@@ -164,6 +165,10 @@ class Project extends Component {
         this.setState({dialogOpened: true});
     };
 
+    onScroll = (event) => {
+        this.setState({scrollPos: {x: event.target.scrollLeft, y: event.target.scrollTop}});
+    };
+
     render() {
         const {activeNode, branch} = this.state;
         const [owner, name] = this.props.projectId.split('+');
@@ -214,8 +219,18 @@ class Project extends Component {
                         </Button>
                     }
                     <Button onClick={this.onOpenDialog}>PopUpDialog</Button>
-                    <div style={{width: 1200, height: 600, borderStyle: 'dotted'}}>
-                        <Canvas activeNode={this.state.activeNode} gmeClient={this.props.gmeClient}/>
+                    <div
+                        onScroll={this.onScroll}
+                        style={{
+                            width: 600,
+                            height: 600,
+                            left: '320px',
+                            position: 'fixed',
+                            borderStyle: 'dotted',
+                            overflow: 'auto'
+                        }}>
+                        <Canvas activeNode={this.state.activeNode} gmeClient={this.props.gmeClient}
+                                scrollPos={this.state.scrollPos}/>
                     </div>
                 </div>
                 <Drawer type="persistent" anchor="bottom" open={this.state.bottomMenu}

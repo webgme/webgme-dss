@@ -35,7 +35,8 @@ class CanvasItem extends SingleConnectedNode {
         connectDragPreview: PropTypes.func.isRequired,
         isDragging: PropTypes.bool.isRequired,
         contextNode: PropTypes.string.isRequired,
-        connectionManager: PropTypes.object.isRequired
+        connectionManager: PropTypes.object.isRequired,
+        eventManager: PropTypes.object.isRequired
     };
 
     //TODO we need to gather the children info (new base class maybe)
@@ -44,7 +45,9 @@ class CanvasItem extends SingleConnectedNode {
         name: null,
         showActions: false,
         modelicaUri: null,
-        ports: []
+        svgReady: false,
+        ports: {},
+        childrenName2Id: {}
     };
 
     getNodeParameters(nodeObj) {
@@ -82,20 +85,19 @@ class CanvasItem extends SingleConnectedNode {
         //TODO there is some small offset still
 
         let gItems = svgEl.querySelectorAll('g'),
-            ports = [];
+            ports = {};
         gItems.forEach((item) => {
             if (item.id !== 'info') {
                 let itemBox = item.getBBox();
-                ports.push({
-                    id: item.id,
+                ports[item.id] = {
                     x: itemBox.x,
                     y: itemBox.y,
                     width: itemBox.width,
                     height: itemBox.height
-                });
+                };
             }
         });
-        this.setState({ports: ports});
+        this.setState({svgReady: true, ports: ports});
     };
 
     render() {
@@ -108,27 +110,34 @@ class CanvasItem extends SingleConnectedNode {
                 connectionManager,
                 activeNode
             } = this.props,
-            {showActions, modelicaUri, ports} = this.state,
+            {showActions, modelicaUri, ports, position, svgReady} = this.state,
             baseDimensions = {x: 320, y: 210},
-            scale = 0.3,
+            scale = 0.4,
             svgPath = modelicaUri ? `/assets/DecoratorSVG/${modelicaUri}.svg` : '/assets/DecoratorSVG/Default.svg';
-        let portComponents;
+        let portComponents = [],
+            i, keys;
 
-        if (this.state.position === null) {
+        if (position === null) {
             return <div>loading...</div>;
         }
 
-        portComponents = ports.map((port, index) => {
-            return (<CanvasItemPort
-                key={index}
+        if (svgReady) {
+            //we can event as all position related info should be known
+
+        }
+
+        keys = Object.keys(ports);
+        for (i = 0; i < keys.length; i += 1) {
+            portComponents.push((<CanvasItemPort
+                key={keys[i]}
                 gmeClient={gmeClient}
                 connectionManager={connectionManager}
                 activeNode={activeNode}
                 contextNode={contextNode}
-                position={{x: scale * port.x, y: scale * port.y}}
-                dimensions={{x: scale * port.width, y: scale * port.height}}
-                hidden={!showActions}/>);
-        });
+                position={{x: scale * ports[keys[i]].x, y: scale * ports[keys[i]].y}}
+                dimensions={{x: scale * ports[keys[i]].width, y: scale * ports[keys[i]].height}}
+                hidden={!showActions}/>));
+        }
 
         return connectDragSource(
             <div style={{
@@ -138,7 +147,7 @@ class CanvasItem extends SingleConnectedNode {
                 left: this.state.position.x,
                 height: baseDimensions.y * scale,
                 width: baseDimensions.x * scale,
-                border: showActions ? "1px dashed #000000" : "0px",
+                border: showActions ? "1px dashed #000000" : "1px solid transparent",
                 zIndex: 10
             }}
                  onMouseEnter={this.onMouseEnter}

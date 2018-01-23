@@ -7,6 +7,7 @@ import {DRAG_TYPES} from './CONSTANTS';
 import CanvasItem from "./CanvasItem";
 import ConnectionManager from './gme/BaseComponents/ConnectionManager';
 import BasicConnectingComponent from './gme/BaseComponents/BasicConnectingComponent';
+import BasicEventManager from './gme/BaseComponents/BasicEventManager';
 
 const canvasTarget = {
     drop(props, monitor) {
@@ -45,12 +46,14 @@ class Canvas extends SingleConnectedNode {
     };
 
     cm = null;
+    em = null;
 
     offset = null;
 
     constructor(props) {
         super(props);
         this.cm = new ConnectionManager();
+        this.em = new BasicEventManager();
     }
 
     populateChildren(nodeObj, initial) {
@@ -95,7 +98,6 @@ class Canvas extends SingleConnectedNode {
 
     render() {
         const {connectDropTarget, isOver, activeNode} = this.props,
-            cm = this.cm,
             self = this;
 
         // let children = this.state.children.map((child) => {
@@ -107,7 +109,8 @@ class Canvas extends SingleConnectedNode {
                 gmeClient={this.props.gmeClient}
                 activeNode={child.id}
                 contextNode={activeNode}
-                connectionManager={cm}/>);
+                connectionManager={self.cm}
+                eventManager={self.em}/>);
         });
         return connectDropTarget(
             <div ref={canvas => {
@@ -126,7 +129,7 @@ class Canvas extends SingleConnectedNode {
                  onMouseLeave={this.onMouseLeave}
                  onMouseMove={this.onMouseMove}>
                 <BasicConnectingComponent connectionManager={this.cm} offset={this.offset}/>
-                {`Node ${this.state.nodeInfo.name} open`}
+                <div style={{position: 'sticky', top: '10px'}}>{`Node ${this.state.nodeInfo.name} open`}</div>
                 {children}
             </div>);
     }

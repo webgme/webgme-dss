@@ -9,6 +9,7 @@ import {DRAG_TYPES} from './CONSTANTS';
 import CanvasItemPort from './CanvasItemPort';
 // import BasicConnection from './BasicConnection';
 import Territory from './gme/BaseComponents/Territory';
+import BasicConnection from "./BasicConnection";
 
 const canvasItemSource = {
     beginDrag(props) {
@@ -54,8 +55,7 @@ class CanvasItem extends Component {
         currentRootHash: null,
         endPoints: null,
         territory: null,
-        justRemovedIds: [],
-        actualRootHash: null
+        justRemovedIds: []
     };
 
     constructor(props) {
@@ -81,7 +81,6 @@ class CanvasItem extends Component {
         if (this.state.svgReady)
             return;
 
-        console.log('svgReady', svgEl.dataset.src);
         //TODO probably we need to move this to another function
         //TODO there is some small offset still
 
@@ -101,12 +100,46 @@ class CanvasItem extends Component {
         this.setState({ports: ports, svgReady: true});
     };
 
-    territoryUpdates = (hash, loads, updates, unloads) => {
-        const {activeNode, gmeClient} = this.props;
+    srcEvent = (id, event) => {
+        const {position} = this.state.endPoints.src;
 
-        console.log('event-', hash, loads, updates, unloads);
+        if (id !== this.state.endPoints.src.id)
+            return;
+        if (event.position === null || position === null ||
+            event.position.x !== position.x || event.position.y !== position.y) {
+            let endPoints = this.state.endPoints;
+            endPoints.src.position = event.position;
+            this.setState({endPoints: endPoints});
+        }
+    };
+
+    dstEvent = (id, event) => {
+        const {position} = this.state.endPoints.dst;
+        if (id !== this.state.endPoints.dst.id)
+            return;
+        if (event.position === null || position === null ||
+            event.position.x !== position.x || event.position.y !== position.y) {
+            let endPoints = this.state.endPoints;
+            endPoints.dst.position = event.position;
+            this.setState({endPoints: endPoints});
+        }
+    };
+
+    territoryUpdates = (hash, loads, updates, unloads) => {
+        const {activeNode, gmeClient, eventManager} = this.props;
+
+        // console.log('event-', hash, loads, updates, unloads);
         if (unloads.indexOf(activeNode) !== -1) {
             //main object have been unloaded so remove everything...
+            let endPoints = this.state.endPoints;
+
+            if (endPoints.src.event) {
+                eventManager.unsubscribe(endPoints.src.id, endPoints.src.event);
+            }
+            if (endPoints.dst.event) {
+                eventManager.unsubscribe(endPoints.dst.id, endPoints.dst.event);
+            }
+
             this.setState({
                 position: null,
                 name: null,
@@ -119,8 +152,7 @@ class CanvasItem extends Component {
                 currentRootHash: null,
                 endPoints: null,
                 territory: null,
-                justRemovedIds: [],
-                actualRootHash: null
+                justRemovedIds: []
             });
             return;
         }
@@ -137,21 +169,30 @@ class CanvasItem extends Component {
 
         if (isConnection) {
             endPoints = {
-                src: nodeObj.getPointerId('src'),
-                dst: nodeObj.getPointerId('dst')
+                src: {id: nodeObj.getPointerId('src'), position: null, event: null},
+                dst: {id: nodeObj.getPointerId('dst'), position: null, event: null}
             };
             territory[activeNode] = {children: 0};
         } else {
+            childrenName2Id = this.state.childrenName2Id;
             modelicaUri = metaNode.getAttribute('ModelicaURI');
             childrenPaths.forEach((childPath) => {
                 if (loads.indexOf(childPath) !== -1 || updates.indexOf(childPath) !== -1) {
                     let childNode = gmeClient.getNode(childPath);
                     childrenName2Id[childNode.getAttribute('name')] = childPath;
+                } else if (unloads.indexOf(childPath) !== -1) {
+                    let name;
+                    for (name in childrenName2Id) {
+                        if (childrenName2Id[name] === childPath) {
+                            delete childrenName2Id[name];
+                        }
+                    }
                 }
             });
             territory[activeNode] = {children: 1};
         }
 
+        // console.log(activeNode, ':', this.state.position, '->', nodeObj.getRegistry('position'));
         this.setState({
             position: nodeObj.getRegistry('position'),
             name: nodeObj.getAttribute('name'),
@@ -160,8 +201,7 @@ class CanvasItem extends Component {
             endPoints: endPoints,
             childrenName2Id: childrenName2Id,
             territory: territory,
-            justRemovedIds: unloads,
-            actualRootHash: hash
+            justRemovedIds: unloads
         });
 
     };
@@ -183,8 +223,7 @@ class CanvasItem extends Component {
                 ports,
                 position,
                 childrenName2Id,
-                justRemovedIds,
-                actualRootHash
+                justRemovedIds
             } = this.state,
             baseDimensions = {x: 320, y: 210};
         let portComponents = [],
@@ -224,11 +263,9 @@ class CanvasItem extends Component {
         }
 
         events.forEach((event) => {
-            eventManager.fire(event.id, {hash: actualRootHash, position: event.position});
+            eventManager.fire(event.id, {position: event.position});
         });
 
-        // console.log('SP:', svgPath);
-        // svgPath = '/assets/DecoratorSVG/Modelica.Electrical.Analog.Basic.Resistor.svg';
         return connectDragSource(
             <div style={{
                 opacity: isDragging ? 0.3 : 0.99,
@@ -259,7 +296,34 @@ class CanvasItem extends Component {
     };
 
     connectionRender = () => {
-        console.log('connection');
+        const {eventManager} = this.props;
+        let {endPoints} = this.state,
+            event;
+        //subscription to events
+        if (endPoints.src.id && endPoints.src.event === null &&
+            endPoints.dst.id && endPoints.dst.event === null) {
+            endPoints.src.event = this.srcEvent;
+            endPoints.dst.event = this.dstEvent;
+
+            event = eventManager.subscribe(endPoints.src.id, endPoints.src.event);
+            if (event) {
+                endPoints.src.position = event.position;
+            }
+            event = eventManager.subscribe(endPoints.dst.id, endPoints.dst.event);
+            if (event) {
+                endPoints.dst.position = event.position;
+            }
+
+            this.setState({endPoints: endPoints});
+            return null;
+        }
+
+        if (endPoints.src.position && endPoints.dst.position) {
+            return (<BasicConnection
+                key={this.props.activeNode}
+                path={[endPoints.src.position, endPoints.dst.position]}/>);
+        }
+
         return null;
     };
 

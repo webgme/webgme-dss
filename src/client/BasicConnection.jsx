@@ -47,7 +47,7 @@ export default class BasicConnection extends Component {
             x: minX,
             y: minY,
             width: maxX - minX,
-            height: maxX - minY
+            height: maxY - minY
         };
     };
 
@@ -64,10 +64,10 @@ export default class BasicConnection extends Component {
             sections.push(<path
                 key={i}
                 d={'M' +
-                (path[i].x - box.x) + ' ' +
-                (path[i].y - box.y) + ' L' +
-                (path[i + 1].x - box.x) + ' ' +
-                (path[i + 1].y - box.y)}
+                (path[i].x) + ' ' +
+                (path[i].y) + ' L' +
+                (path[i + 1].x) + ' ' +
+                (path[i + 1].y)}
                 strokeWidth={1}
                 stroke={'black'}/>)
         }
@@ -75,8 +75,8 @@ export default class BasicConnection extends Component {
         return (<svg
             width={box.width}
             height={box.height}
-            style={{position: 'absolute', top: box.y, left: box.y}}
-            viewBox={'0 0 ' + box.width + ' ' + box.height}>
+            style={{position: 'absolute', top: box.y, left: box.x}}
+            viewBox={box.x + ' ' + box.y + ' ' + box.width + ' ' + box.height}>
             {sections}
         </svg>);
     }

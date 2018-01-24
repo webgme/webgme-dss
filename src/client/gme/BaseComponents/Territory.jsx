@@ -17,8 +17,6 @@ export default class Territory extends Component {
     uiId = null;
 
     componentDidMount() {
-
-        console.log('T:', this.props.territory);
         const {gmeClient, territory, onUpdate} = this.props;
 
         this.uiId = gmeClient.addUI(null, (events) => {
@@ -52,7 +50,6 @@ export default class Territory extends Component {
         const {gmeClient} = newProps,
             {territory} = this.props;
         if (JSON.stringify(territory) !== JSON.stringify(newProps.territory)) {
-            console.log('UT:', newProps.territory);
             gmeClient.updateTerritory(this.uiId, newProps.territory);
         }
     }

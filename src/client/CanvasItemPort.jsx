@@ -41,10 +41,6 @@ export default class CanvasItemPort extends Component {
             this.setState({freeze: false});
         } else {
 
-            console.log(
-                'x:', absolutePosition.x + (dimensions.x / 2),
-                'y', absolutePosition.y + (dimensions.y / 2)
-            );
             connectionManager.startConnection(activeNode, 'someConnectionType', {
                 x: absolutePosition.x + (dimensions.x / 2),
                 y: absolutePosition.y + (dimensions.y / 2)

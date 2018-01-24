@@ -12,10 +12,13 @@ export default class BasicEventManager {
     }
 
     fire(id, event) {
+        let oldEvent = this.lastEvents[id];
         this.lastEvents[id] = event;
-        (this.subscribers[id] || []).forEach((eventFn) => {
-            eventFn(id, event);
-        });
+        if (JSON.stringify(oldEvent) !== JSON.stringify(event)) {
+            (this.subscribers[id] || []).forEach((eventFn) => {
+                eventFn(id, event);
+            });
+        }
     }
 
     subscribe(id, eventFn) {

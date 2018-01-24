@@ -9,8 +9,6 @@ import ConnectionManager from './gme/BaseComponents/ConnectionManager';
 import BasicConnectingComponent from './gme/BaseComponents/BasicConnectingComponent';
 import BasicEventManager from './gme/BaseComponents/BasicEventManager';
 
-import BasicConnection from './BasicConnection';
-
 const canvasTarget = {
     drop(props, monitor, canvas) {
         const dragItem = monitor.getItem();
@@ -75,12 +73,18 @@ class Canvas extends SingleConnectedNode {
     }
 
     populateChildren(nodeObj, initial) {
-        var childrenIds = nodeObj.getChildrenIds();
+        let childrenIds = nodeObj.getChildrenIds(),
+            newChildren, newNodeInfo;
+        const {children, nodeInfo} = this.state;
 
+        newChildren = childrenIds.map((id) => {
+            return {id: id};
+        });
+        newNodeInfo = {
+            name: nodeObj.getAttribute('name')
+        };
         this.setState({
-            children: childrenIds.map((id) => {
-                return {id: id};
-            }),
+            children: newChildren,
             nodeInfo: {
                 name: nodeObj.getAttribute('name')
             }
@@ -111,7 +115,6 @@ class Canvas extends SingleConnectedNode {
     };
 
     onMouseMove = (event) => {
-        // console.log('e:', event.clientX, 's:', this.props.scrollPos.x, 'o:', this.offset.x);
         this.cm.onMouseMove({
             x: event.clientX + this.props.scrollPos.x - this.offset.x,
             y: event.clientY + this.props.scrollPos.y - this.offset.y
@@ -156,7 +159,6 @@ class Canvas extends SingleConnectedNode {
                     left: '10px'
                 }}>{`Node ${this.state.nodeInfo.name} open`}</div>
                 {children}
-                <BasicConnection path={[{x: 100, y: 100}, {x: 150, y: 100}, {x: 150, y: 150}]}/>
             </div>);
     }
 }

@@ -34,16 +34,24 @@
         ],
         modelicaUris = [
             'Modelica.Electrical.Analog.Basic.Resistor',
-            'Modelica.Electrical.Analog.Basic.Capacitor',
+            'Modelica.Electrical.Analog.Basic.Ground',
             'Modelica.Electrical.Analog.Basic.Inductor',
-            'Modelica.Electrical.Analog.Sources.VoltageSource',
+            'Modelica.Electrical.Analog.Sources.SineVoltage',
             'Modelica.Mechanics.Rotational.Components.Inertia',
             'Modelica.Mechanics.Rotational.Components.Damper',
             'Modelica.Mechanics.Rotational.Components.Spring',
-            'Modelica.Mechanics.Rotational.Sources.Accelerate',
+            // 'Modelica.Mechanics.Rotational.Sources.Accelerate',
             'Modelica.Mechanics.Translational.Components.Damper',
             'Modelica.Mechanics.Translational.Components.Spring',
             'Modelica.Mechanics.Translational.Components.Mass'
+        ],
+        portNames = [
+            'p',
+            'n'/*,
+            'v',
+            'flange_a',
+            'flange_b'*/,
+            'heatPort'
         ],
         childrenIds = ['/2/1', '/2/2', '/2/3', '/2/4', '/2/5'],
         validChildrenIds = {
@@ -107,7 +115,7 @@
                     return ['src', 'dst'];
                 return [];
             },
-            getPointerPath: (name) => {
+            getPointerId: (name) => {
                 return childrenIds[cnt % 5];
             },
             getAttribute: (attrName) => {
@@ -118,6 +126,8 @@
                     return cnt % 2 === 0;
                 } else if (attrName === 'ModelicaURI') {
                     return modelicaUris[cnt % modelicaUris.length];
+                } else if (attrName === 'name' && id.split('/').length > 3) {
+                    return portNames[cnt % portNames.length];
                 } else {
                     return names[cnt % names.length];
                 }
@@ -143,7 +153,12 @@
                 }
             },
             getValidChildrenTypesDetailed: () => validChildrenIds,
-            getChildrenIds: () => childrenIds,
+            getChildrenIds: () => {
+                if (id.split('/').length > 2) {
+                    return [id + '/1', id + '/2', id + '/3', id + '/4', id + '/5'];
+                }
+                return childrenIds;
+            },
             getMetaTypeId: () => validChildrenIds[cnt % validChildrenIds.length]
         }
     }

@@ -13,7 +13,7 @@ export default class BasicEventManager {
 
     fire(id, event) {
         this.lastEvents[id] = event;
-        this.subscribers[id].forEach((eventFn) => {
+        (this.subscribers[id] || []).forEach((eventFn) => {
             eventFn(id, event);
         });
     }

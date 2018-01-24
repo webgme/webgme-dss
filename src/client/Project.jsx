@@ -13,6 +13,7 @@ import Typography from 'material-ui/Typography';
 import MenuIcon from 'material-ui-icons/Menu';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import {LinearProgress} from 'material-ui/Progress';
+import { withStyles } from 'material-ui/styles';
 
 // Own modules
 import PartBrowser from './PartBrowser';
@@ -22,6 +23,7 @@ import Canvas from './Canvas';
 import PluginConfigDialog from './PluginConfigDialog';
 
 const SIDE_PANEL_WIDTH = 300;
+const HEADER_HEIGHT = 64;
 const START_NODE_ID = '/Z'; // FIXME: This should come from the project info or root-node registry
 
 var testConfig = [
@@ -93,12 +95,50 @@ var testConfig = [
     }
 ];
 
+const styles = theme => ({
+    root: {
+        width: '100%',
+        height: 430,
+        marginTop: theme.spacing.unit * 3,
+        zIndex: 1,
+        overflow: 'hidden',
+    },
+    appFrame: {
+        position: 'relative',
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+    },
+    appBar: {
+        position: 'absolute',
+        width: `calc(100% - ${SIDE_PANEL_WIDTH}px)`,
+    },
+    drawerPaper: {
+        width: SIDE_PANEL_WIDTH,
+        overflow: 'auto',
+        top: HEADER_HEIGHT
+    },
+    drawerHeader: theme.mixins.toolbar,
+    content: {
+        backgroundColor: theme.palette.background.default,
+        width: '100%',
+        padding: theme.spacing.unit * 3,
+        height: 'calc(100% - 56px)',
+        marginTop: 56,
+        [theme.breakpoints.up('sm')]: {
+            height: 'calc(100% - 64px)',
+            marginTop: 64,
+        },
+    },
+});
+
+
 class Project extends Component {
     state = {
         activeNode: null,
         branch: null,
-        sideMenu: true,
-        bottomMenu: true,
+        leftMenu: true,
+        rightMenu: true,
         dialogOpened: false,
         scale: 0.6,
         scrollPos: {x: 0, y: 0}
@@ -147,20 +187,20 @@ class Project extends Component {
         // FIXME: Client needs a closeProject method!
     }
 
-    onSideMenuOpen = () => {
-        this.setState({sideMenu: true});
+    onLeftMenuOpen = () => {
+        this.setState({leftMenu: true});
     };
 
-    onSideMenuClose = () => {
-        this.setState({sideMenu: false});
+    onLeftMenuClose = () => {
+        this.setState({leftMenu: false});
     };
 
-    onBottomMenuOpen = () => {
-        this.setState({bottomMenu: true});
+    onRightMenuOpen = () => {
+        this.setState({rightMenu: true});
     };
 
-    onBottomMenuClose = () => {
-        this.setState({bottomMenu: false});
+    onRightMenuClose = () => {
+        this.setState({rightMenu: false});
     };
 
     onOpenDialog = () => {
@@ -172,6 +212,7 @@ class Project extends Component {
     };
 
     render() {
+        const {classes} = this.props;
         const {activeNode, branch} = this.state;
         const [owner, name] = this.props.projectId.split('+');
 
@@ -186,15 +227,14 @@ class Project extends Component {
 
         return (
             <div style={{
-                position: 'relative',
-                display: 'flex',
+                position: 'absolute',
                 width: '100%',
                 height: '100%'
             }}>
                 <PartBrowserDragPreview scale={this.state.scale}/>
                 <AppBar>
-                    <Toolbar disableGutters={this.state.sideMenu}>
-                        <IconButton color="contrast" aria-label="open side menu" onClick={this.onSideMenuOpen}>
+                    <Toolbar disableGutters={this.state.leftMenu}>
+                        <IconButton color="contrast" aria-label="open side menu" onClick={this.onLeftMenuOpen}>
                             <MenuIcon/>
                         </IconButton>
                         <Typography type="title" color="inherit" noWrap>
@@ -202,47 +242,46 @@ class Project extends Component {
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <Drawer type="persistent" anchor="left" open={this.state.sideMenu}
-                        style={{width: SIDE_PANEL_WIDTH, overflow: 'auto'}}>
-                    <IconButton onClick={this.onSideMenuClose}>
+                <Drawer type="persistent" anchor="left" open={this.state.leftMenu}
+                        classes={{paper: classes.drawerPaper}}>
+                    <IconButton onClick={this.onLeftMenuClose}>
                         <ChevronLeftIcon/>
                     </IconButton>
-                    <div style={{width: SIDE_PANEL_WIDTH, textAlign: 'left'}}>
-                        <PartBrowser activeNode={activeNode} gmeClient={this.props.gmeClient} scale={this.state.scale}/>
-                    </div>
+                    <PartBrowser activeNode={activeNode} gmeClient={this.props.gmeClient} scale={this.state.scale}/>
                 </Drawer>
-                <div style={{marginTop: 64}}>
-                    {this.state.bottomMenu ?
-                        <Button onClick={this.onBottomMenuClose}>
-                            HIDE ATTRIBUTES
-                        </Button>
-                        :
-                        <Button onClick={this.onBottomMenuOpen}>
-                            SHOW ATTRIBUTES
-                        </Button>
-                    }
-                    <Button onClick={this.onOpenDialog}>PopUpDialog</Button>
-                    <div
-                        onScroll={this.onScroll}
-                        style={{
-                            width: 600,
-                            height: 600,
-                            left: '320px',
-                            position: 'fixed',
-                            borderStyle: 'dotted',
-                            overflow: 'auto'
-                        }}>
-                        <Canvas activeNode={this.state.activeNode} gmeClient={this.props.gmeClient}
-                                scrollPos={this.state.scrollPos} scale={this.state.scale}/>
-                    </div>
+
+                <div
+                    onScroll={this.onScroll}
+                    style={{
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100vh',
+                        position: 'absolute',
+                        overflow: 'auto'
+                    }}>
+                    {/*{this.state.rightMenu ?*/}
+                        {/*<Button onClick={this.onRightMenuClose}>*/}
+                            {/*HIDE ATTRIBUTES*/}
+                        {/*</Button>*/}
+                        {/*:*/}
+                        {/*<Button onClick={this.onRightMenuOpen}>*/}
+                            {/*SHOW ATTRIBUTES*/}
+                        {/*</Button>*/}
+                    {/*}*/}
+                    {/*<Button onClick={this.onOpenDialog}>PopUpDialog</Button>*/}
+                    <Canvas activeNode={this.state.activeNode} gmeClient={this.props.gmeClient}
+                            scrollPos={this.state.scrollPos} scale={this.state.scale}/>
                 </div>
-                <Drawer type="persistent" anchor="bottom" open={this.state.bottomMenu}
-                        onClose={this.onBottomMenuClose}>
+                <Drawer type="persistent" anchor="right" open={this.state.rightMenu}
+                        classes={{paper: classes.drawerPaper}}>
+                    <IconButton onClick={this.onRightMenuClose}>
+                        <ChevronLeftIcon/>
+                    </IconButton>
                     <AttributeEditor activeNode={activeNode} gmeClient={this.props.gmeClient}/>
                 </Drawer>
                 {this.state.dialogOpened ? (<PluginConfigDialog configDescriptor={testConfig}
                                                                 onReady={(config) => {
-                                                                    console.log(config)
                                                                     this.setState({dialogOpened: false});
                                                                 }}
 
@@ -257,7 +296,8 @@ class Project extends Component {
 
 Project.propTypes = {
     gmeClient: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired
+    projectId: PropTypes.string.isRequired,
+    classes: PropTypes.object.isRequired
 };
 
-export default DragDropContext(HTML5Backend)(Project);
+export default withStyles(styles)(DragDropContext(HTML5Backend)(Project));

@@ -88,6 +88,21 @@
         inTransaction = false;
 
     function genProject(d) {
+        let kind = 'DSS:Modelica.Electrical.Analog';
+        cnt += 3;
+
+        if (cnt % 2 === 0) {
+            kind += ':Modelica.Mechanics.Rotational';
+        }
+
+        if (cnt % 3 === 0) {
+            kind += ':Modelica.Mechanics.Translational';
+        }
+
+        if (cnt % 4 === 0) {
+            kind += ':Modelica.Thermal.HeatTransfer';
+        }
+
         return {
             owner: d.owner,
             name: d.name,
@@ -99,7 +114,7 @@
                 "creator": d.owner,
                 "viewer": "olle",
                 "modifier": "hans",
-                "kind": "DSS"
+                "kind": kind
             }
         }
     }

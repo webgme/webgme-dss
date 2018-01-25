@@ -252,7 +252,9 @@ class Project extends Component {
                 <div style={{position: 'absolute', top: '50%', width: '100%'}}>
                     <LinearProgress/>
                     <br/>
-                    <LinearProgress color="accent"/>
+                    <LinearProgress color="secondary"/>
+                    <br/>
+                    <LinearProgress/>
                 </div>);
         }
 

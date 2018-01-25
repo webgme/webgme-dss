@@ -1,30 +1,31 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
-
-import {LinearProgress} from 'material-ui/Progress';
-import List, {ListItem, ListItemText} from 'material-ui/List';
 
 import {nameSort} from './gme/utils/getObjectSorter';
+import ProjectList from './ProjectList';
+import CreateProject from './CreateProject';
+
+import Grid from 'material-ui/Grid';
+import Paper from 'material-ui/Paper';
+import Typography from 'material-ui/Typography';
 
 
 export default class Projects extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            err: null,
-            projects: null
-        };
+    static propTypes = {
+        gmeClient: PropTypes.object.isRequired
+    };
 
-        this.getProjects = this.getProjects.bind(this);
-    }
+    state = {
+        err: null,
+        projects: null
+    };
 
     componentDidMount() {
         this.getProjects();
     }
 
-    getProjects() {
-        this.props.gmeClient.getProjects({}, (err, projects) => {
+    getProjects = () => {
+        this.props.gmeClient.getProjects({info: true, rights: true}, (err, projects) => {
             if (err) {
                 console.error(err);
                 return;
@@ -34,38 +35,27 @@ export default class Projects extends Component {
 
             this.setState({projects: projects});
         });
-    }
+    };
 
     render() {
-        const {projects} = this.state;
-
-        let content = (
-            <div style={{
-                width: '100%',
-                marginTop: 30
-            }}>
-                <LinearProgress/>
-                <br/>
-                <LinearProgress color="accent"/>
+        return (
+            <div style={{flexGrow: 1, margin: 20}}>
+                <Grid container spacing={24}>
+                    <Grid item lg={7}>
+                        {/*<Paper elevation={4}>*/}
+                        <CreateProject gmeClient={this.props.gmeClient} projects={this.state.projects}/>
+                        {/*</Paper>*/}
+                    </Grid>
+                    <Grid item lg={5}>
+                        {/*<Paper elevation={4}>*/}
+                            <Typography type="title">
+                                CURRENT PROJECTS
+                            </Typography>
+                            <ProjectList gmeClient={this.props.gmeClient} projects={this.state.projects}/>
+                        {/*</Paper>*/}
+                    </Grid>
+                </Grid>
             </div>);
-
-        if (projects) {
-            content = (<List>
-                {projects
-                    .map(project => {
-                        return (
-                            <Link key={project._id} to={`/p/${project.owner}/${project.name}`}>
-                                <ListItem button>
-                                    <ListItemText primary={project.name}/>
-                                </ListItem>
-                            </Link>
-                        )
-                    })
-                }
-            </List>);
-        }
-
-        return content;
     }
 }
 

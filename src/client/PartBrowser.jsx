@@ -1,4 +1,4 @@
-//TODO: Consider using https://github.com/alexcurtis/react-treebeard for tree view.
+//https://github.com/alexcurtis/react-treebeard
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -16,7 +16,6 @@ import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
 import {nameSort} from './gme/utils/getObjectSorter';
 
 import PartBrowserItem from './PartBrowserItem';
-// import PartBrowserDragPreview from './PartBrowserDragPreview';
 
 const TREE_PATH_SEP = '$';
 const EXPAND_ALL = true;
@@ -51,6 +50,8 @@ class PartBrowser extends SingleConnectedNode {
         theme.tree.base.color = 'black';
         theme.tree.node.activeLink.background = 'lightgrey';
         theme.tree.node.toggle.arrow.fill = 'grey';
+        theme.tree.node.toggle.width = 10;
+        theme.tree.node.toggle.height = 10;
         theme.tree.node.header.base.color = 'black';
         theme.tree.node.loading.color = 'orange';
 

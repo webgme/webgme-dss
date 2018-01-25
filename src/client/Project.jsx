@@ -8,12 +8,11 @@ import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
-import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import MenuIcon from 'material-ui-icons/Menu';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import {LinearProgress} from 'material-ui/Progress';
-import { withStyles } from 'material-ui/styles';
+import {withStyles} from 'material-ui/styles';
 
 // Own modules
 import PartBrowser from './PartBrowser';
@@ -132,13 +131,19 @@ const styles = theme => ({
     },
 });
 
-
 class Project extends Component {
+    static propTypes = {
+        gmeClient: PropTypes.object.isRequired,
+        projectId: PropTypes.string.isRequired,
+        classes: PropTypes.object.isRequired
+    };
+
     state = {
         activeNode: null,
         branch: null,
         leftMenu: true,
-        rightMenu: true,
+        rightMenu: false,
+        selection: [],
         dialogOpened: false,
         scale: 0.6,
         scrollPos: {x: 0, y: 0}
@@ -195,13 +200,9 @@ class Project extends Component {
         this.setState({leftMenu: false});
     };
 
-    onRightMenuOpen = () => {
-        this.setState({rightMenu: true});
-    };
-
-    onRightMenuClose = () => {
-        this.setState({rightMenu: false});
-    };
+    // onRightMenuOpen = () => {
+    //     this.setState({rightMenu: true});
+    // };
 
     onOpenDialog = () => {
         this.setState({dialogOpened: true});
@@ -211,10 +212,40 @@ class Project extends Component {
         this.setState({scrollPos: {x: event.target.scrollLeft, y: event.target.scrollTop}});
     };
 
+    // Attribute drawer functionality
+    attributeDrawerTimerId = null;
+
+    activateAttributeDrawer = (nodeId) => {
+        if (this.attributeDrawerTimerId) {
+            clearTimeout(this.attributeDrawerTimerId);
+            this.attributeDrawerTimerId = null;
+        }
+        this.attributeDrawerTimerId = setTimeout(this.onAttributeDrawerClose, 5000);
+        this.setState({rightMenu: true, selection: [nodeId]});
+    };
+
+    onAttributeDrawerClose = () => {
+        if (this.attributeDrawerTimerId) {
+            clearTimeout(this.attributeDrawerTimerId);
+            this.attributeDrawerTimerId = null;
+        }
+        this.setState({rightMenu: false});
+    };
+
+    //TODO this should be handled on the AttributeEditor level, so maybe a single
+    //     property with onAutoClose should be enough...
+    onAttributeDrawerAction = () => {
+        if (this.attributeDrawerTimerId) {
+            clearTimeout(this.attributeDrawerTimerId);
+            this.attributeDrawerTimerId = null;
+        }
+        this.attributeDrawerTimerId = setTimeout(this.onAttributeDrawerClose, 5000);
+    };
+
     render() {
-        const {classes} = this.props;
-        const {activeNode, branch} = this.state;
-        const [owner, name] = this.props.projectId.split('+');
+        const {classes, gmeClient, projectId} = this.props;
+        const {activeNode, branch, selection, rightMenu, scale, leftMenu, scrollPos} = this.state;
+        const [owner, name] = projectId.split('+');
 
         if (typeof activeNode !== 'string') {
             return (
@@ -231,9 +262,9 @@ class Project extends Component {
                 width: '100%',
                 height: '100%'
             }}>
-                <PartBrowserDragPreview scale={this.state.scale}/>
+                <PartBrowserDragPreview scale={scale}/>
                 <AppBar>
-                    <Toolbar disableGutters={this.state.leftMenu}>
+                    <Toolbar disableGutters={leftMenu}>
                         <IconButton color="contrast" aria-label="open side menu" onClick={this.onLeftMenuOpen}>
                             <MenuIcon/>
                         </IconButton>
@@ -242,12 +273,12 @@ class Project extends Component {
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <Drawer type="persistent" anchor="left" open={this.state.leftMenu}
+                <Drawer type="persistent" anchor="left" open={leftMenu}
                         classes={{paper: classes.drawerPaper}}>
                     <IconButton onClick={this.onLeftMenuClose}>
                         <ChevronLeftIcon/>
                     </IconButton>
-                    <PartBrowser activeNode={activeNode} gmeClient={this.props.gmeClient} scale={this.state.scale}/>
+                    <PartBrowser activeNode={activeNode} gmeClient={gmeClient} scale={scale}/>
                 </Drawer>
 
                 <div
@@ -261,27 +292,29 @@ class Project extends Component {
                         overflow: 'auto'
                     }}>
                     {/*{this.state.rightMenu ?*/}
-                        {/*<Button onClick={this.onRightMenuClose}>*/}
-                            {/*HIDE ATTRIBUTES*/}
-                        {/*</Button>*/}
-                        {/*:*/}
-                        {/*<Button onClick={this.onRightMenuOpen}>*/}
-                            {/*SHOW ATTRIBUTES*/}
-                        {/*</Button>*/}
+                    {/*<Button onClick={this.onAttributeDrawerClose}>*/}
+                    {/*HIDE ATTRIBUTES*/}
+                    {/*</Button>*/}
+                    {/*:*/}
+                    {/*<Button onClick={this.onRightMenuOpen}>*/}
+                    {/*SHOW ATTRIBUTES*/}
+                    {/*</Button>*/}
                     {/*}*/}
                     {/*<Button onClick={this.onOpenDialog}>PopUpDialog</Button>*/}
-                    <Canvas activeNode={this.state.activeNode} gmeClient={this.props.gmeClient}
-                            scrollPos={this.state.scrollPos} scale={this.state.scale}/>
+                    <Canvas activeNode={activeNode} gmeClient={gmeClient}
+                            scrollPos={scrollPos} scale={scale}
+                            activateAttributeDrawer={this.activateAttributeDrawer}/>
                 </div>
-                <Drawer type="persistent" anchor="right" open={this.state.rightMenu}
-                        classes={{paper: classes.drawerPaper}}>
-                    <IconButton onClick={this.onRightMenuClose}>
+                <Drawer type="persistent" anchor="right" open={rightMenu && selection.length > 0}
+                        classes={{paper: classes.drawerPaper}} onMouseOver={this.onAttributeDrawerAction}>
+                    <IconButton onClick={this.onAttributeDrawerClose}>
                         <ChevronLeftIcon/>
                     </IconButton>
-                    <AttributeEditor activeNode={activeNode} gmeClient={this.props.gmeClient}/>
+                    <AttributeEditor selection={selection} gmeClient={gmeClient}/>
                 </Drawer>
                 {this.state.dialogOpened ? (<PluginConfigDialog configDescriptor={testConfig}
                                                                 onReady={(config) => {
+                                                                    console.log('config set:', config);
                                                                     this.setState({dialogOpened: false});
                                                                 }}
 
@@ -293,11 +326,5 @@ class Project extends Component {
         );
     }
 }
-
-Project.propTypes = {
-    gmeClient: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
-    classes: PropTypes.object.isRequired
-};
 
 export default withStyles(styles)(DragDropContext(HTML5Backend)(Project));

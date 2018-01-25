@@ -56,6 +56,17 @@ function collect(connect, monitor) {
 }
 
 class Canvas extends SingleConnectedNode {
+    static propTypes = {
+        gmeClient: PropTypes.object.isRequired,
+        activeNode: PropTypes.string.isRequired,
+        scrollPos: PropTypes.object.isRequired,
+
+        connectDropTarget: PropTypes.func.isRequired,
+        isOver: PropTypes.bool.isRequired,
+        scale: PropTypes.number.isRequired,
+        activateAttributeDrawer: PropTypes.func.isRequired
+    };
+
     state = {
         children: [],
         nodeInfo: {}
@@ -122,7 +133,7 @@ class Canvas extends SingleConnectedNode {
     };
 
     render() {
-        const {connectDropTarget, isOver, activeNode} = this.props,
+        const {connectDropTarget, isOver, activeNode, activateAttributeDrawer} = this.props,
             self = this;
 
         let children = this.state.children.map((child) => {
@@ -133,7 +144,8 @@ class Canvas extends SingleConnectedNode {
                 contextNode={activeNode}
                 scale={this.props.scale}
                 connectionManager={self.cm}
-                eventManager={self.em}/>);
+                eventManager={self.em}
+                activateAttributeDrawer={activateAttributeDrawer}/>);
         });
         return connectDropTarget(
             <div ref={(canvas) => {
@@ -162,15 +174,5 @@ class Canvas extends SingleConnectedNode {
             </div>);
     }
 }
-
-Canvas.propTypes = {
-    gmeClient: PropTypes.object.isRequired,
-    activeNode: PropTypes.string.isRequired,
-    scrollPos: PropTypes.object.isRequired,
-
-    connectDropTarget: PropTypes.func.isRequired,
-    isOver: PropTypes.bool.isRequired,
-    scale: PropTypes.number.isRequired
-};
 
 export default DropTarget(DRAG_TYPES.GME_NODE, canvasTarget, collect)(Canvas);

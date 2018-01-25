@@ -4,6 +4,7 @@ import ReactSVG from 'react-svg';
 import {DragSource} from 'react-dnd';
 import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui-icons/Delete';
+import ModeEdit from 'material-ui-icons/ModeEdit';
 
 import {DRAG_TYPES} from './CONSTANTS';
 import CanvasItemPort from './CanvasItemPort';
@@ -39,7 +40,8 @@ class CanvasItem extends Component {
         isDragging: PropTypes.bool.isRequired,
         contextNode: PropTypes.string.isRequired,
         connectionManager: PropTypes.object.isRequired,
-        eventManager: PropTypes.object.isRequired
+        eventManager: PropTypes.object.isRequired,
+        activateAttributeDrawer: PropTypes.func.isRequired
     };
 
     //TODO we need to gather the children info (new base class maybe)
@@ -215,7 +217,8 @@ class CanvasItem extends Component {
                 connectionManager,
                 scale,
                 activeNode,
-                eventManager
+                eventManager,
+                activateAttributeDrawer
             } = this.props,
             {
                 showActions,
@@ -290,6 +293,14 @@ class CanvasItem extends Component {
                     <IconButton style={{height: '20px', width: '20px', position: 'absolute', top: '0px', right: '0px'}}
                                 onClick={this.deleteNode}>
                         <DeleteIcon style={{height: '20px', width: '20px'}}/>
+                    </IconButton> :
+                    null}
+                {showActions ?
+                    <IconButton style={{height: '20px', width: '20px', position: 'absolute', top: '0px', right: '20px'}}
+                                onClick={() => {
+                                    activateAttributeDrawer(activeNode);
+                                }}>
+                        <ModeEdit style={{height: '20px', width: '20px'}}/>
                     </IconButton> :
                     null}
             </div>);

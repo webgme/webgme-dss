@@ -10,7 +10,7 @@ import Select from 'material-ui/Select';
 import Switch from 'material-ui/Switch';
 import {GithubPicker} from 'react-color';
 
-import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
+import Territory from "./gme/BaseComponents/Territory";
 
 export const AttributeTypes = {
     'string': 'string',
@@ -223,55 +223,96 @@ export class AttributeItem extends Component {
     // }
 }
 
-export default class AttributeEditor extends SingleConnectedNode {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loaded: false,
-            attributes: []
-        };
+export default class AttributeEditor extends Component {
+    static propTypes = {
+        gmeClient: PropTypes.object.isRequired,
+        selection: PropTypes.array.isRequired
+    };
 
-        this.onNodeLoad = this.refreshDescriptor;
-        this.onNodeUpdate = this.refreshDescriptor;
-        this.somethingChanges = this.somethingChanges.bind(this);
-    }
+    state = {
+        loadedNodes: [],
+        territory: {},
+        attributes: []
+    };
 
-    refreshDescriptor() {
-        let nodeObj = this.props.gmeClient.getNode(this.props.activeNode),
-            names = nodeObj.getValidAttributeNames(),
-            attributes;
+    onComponentDidMount() {
+        const {selection} = this.props;
+        let territory = {};
 
-        // All children are meta-nodes -> thus available right away
-        attributes = names.map((id) => {
-            return {
-                name: id,
-                value: nodeObj.getAttribute(id),
-                type: nodeObj.getAttributeMeta(id).type || 'string',
-                enum: nodeObj.getAttributeMeta(id).enum || null
-            };
+        selection.forEach((item) => {
+            territory[item] = {children: 0};
         });
 
-        this.setState({
-            loaded: true,
-            attributes: attributes
-        });
+        this.setState({territory: territory});
     }
 
-    somethingChanges(what, how) {
-        console.log('update root:', what, ':', how, ':', typeof how);
-        this.props.gmeClient.setAttribute(this.props.activeNode, what, how);
+    handleEvents = (hash, loads, updates, unloads) => {
+        //TODO update to handle multiple objects as well
+        const {selection, gmeClient} = this.props;
+        let {loadedNodes, attributes} = this.state;
+
+        selection.forEach((nodeId) => {
+            if (loads.indexOf(nodeId) !== -1 || updates.indexOf(nodeId) !== -1)
+                loadedNodes.push(nodeId);
+            if (unloads.indexOf(nodeId) !== -1) {
+                loadedNodes.splice(loadedNodes.indexOf(nodeId), 1);
+            }
+        });
+
+        if (loadedNodes.length > 0) {
+            let nodeObj = gmeClient.getNode(loadedNodes[0]),
+                attributeNames = nodeObj.getValidAttributeNames();
+
+            attributes = attributeNames.map((id) => {
+                return {
+                    name: id,
+                    value: nodeObj.getAttribute(id),
+                    type: nodeObj.getAttributeMeta(id).type || 'string',
+                    enum: nodeObj.getAttributeMeta(id).enum || null
+                };
+            });
+
+        } else {
+            attributes = [];
+        }
+
+        this.setState({loadedNodes: loadedNodes, attributes: attributes});
+    };
+
+    somethingChanges = (what, how) => {
+        const {selection, gmeClient} = this.props;
+        let transaction = selection.length > 1;
+
+        if (transaction)
+            gmeClient.startTransaction('Updating attributes of the selection');
+
+        selection.forEach((nodeId) => {
+            gmeClient.setAttribute(nodeId, what, how);
+        });
+
+        if (transaction)
+            gmeClient.completeTransaction('Update multiple attributes finished.');
+    };
+
+    componentWillReceiveProps(newProps) {
+        const {selection} = newProps;
+        let territory = {};
+
+        selection.forEach((item) => {
+            territory[item] = {children: 0};
+        });
+        //TODO clearing the loadedNodes should not be necessary, where are the unload events???
+        this.setState({loadedNodes: [], territory: territory});
     }
 
     render() {
-        let attributes,
+        const {selection, gmeClient} = this.props,
+            {territory, attributes} = this.state;
+        let attributeItems,
             self = this,
-            node = this.props.gmeClient.getNode(this.props.activeNode);
+            node = gmeClient.getNode(selection[0]);
 
-        if (!this.state.loaded || node === null) {
-            return (<div>Loading node in Attribute Editor ...</div>);
-        }
-
-        attributes = this.state.attributes.map((attribute) => {
+        attributeItems = attributes.map((attribute) => {
             let onChangeFn = (newValue) => {
                 self.somethingChanges(attribute.name, newValue);
             }, options, type;
@@ -303,16 +344,14 @@ export default class AttributeEditor extends SingleConnectedNode {
 
         return (
             <Card>
-                <CardHeader title={'Attribute editor'} subheader={'GUID: ' + node.getGuid()}/>
+                <Territory activeNode={selection[0]} gmeClient={gmeClient} territory={territory}
+                           onUpdate={this.handleEvents}/>
+                <CardHeader title={'Attribute editor'}
+                            subheader={node === null ? 'loading node content...' : 'GUID: ' + node.getGuid()}/>
                 <CardContent>
-                    {attributes}
+                    {attributeItems}
                 </CardContent>
             </Card>
         );
     }
 }
-
-AttributeEditor.propTypes = {
-    gmeClient: PropTypes.object.isRequired,
-    activeNode: PropTypes.string.isRequired
-};

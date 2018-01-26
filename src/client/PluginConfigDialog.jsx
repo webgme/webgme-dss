@@ -139,7 +139,7 @@ export default class PluginConfigDialog extends Component {
                 <DialogActions>
                     <Button onClick={this.onReady} color='primary'>Save & Run</Button>
                     {typeof this.props.onCancel === 'function' ?
-                        <Button onClick={this.props.onCancel} color='accent'>Cancel</Button> : ''}
+                        <Button onClick={this.props.onCancel} color='secondary'>Cancel</Button> : ''}
                 </DialogActions>
             </Dialog>
         );

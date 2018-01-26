@@ -1,9 +1,16 @@
 // From libraries
 import React, {Component} from 'react';
+
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+
 import {BrowserRouter as Router, Route} from 'react-router-dom';
+
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
 // Own modules
+import reducers from "./reducers";
+
 import logo from './logo.svg';
 import './App.css';
 import Projects from './Projects';
@@ -15,6 +22,7 @@ const theme = createMuiTheme({
     }
 });
 
+let store = createStore(reducers);
 
 export default class App extends Component {
 
@@ -70,13 +78,15 @@ export default class App extends Component {
         }
 
         return (
-            <div className="App">
-                <Router>
-                    <MuiThemeProvider theme={theme}>
-                        {content}
-                    </MuiThemeProvider>
-                </Router>
-            </div>
+            <Provider store={store}>
+                <div className="App">
+                    <Router>
+                        <MuiThemeProvider theme={theme}>
+                            {content}
+                        </MuiThemeProvider>
+                    </Router>
+                </div>
+            </Provider>
         );
     }
 }

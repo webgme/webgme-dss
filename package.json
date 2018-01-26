@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "classnames": "^2.2.5",
     "ejs": "^2.5.7",
     "material-ui": "^1.0.0-beta.30",
     "material-ui-icons": "^1.0.0-beta.17",

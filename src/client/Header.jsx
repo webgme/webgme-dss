@@ -28,7 +28,7 @@ class Header extends Component {
         return (
             <AppBar>
                 <Toolbar>
-                    <IconButton color="contrast" aria-label="open side menu">
+                    <IconButton aria-label="open side menu">
                         <MenuIcon/>
                     </IconButton>
                     <Typography type="title" color="inherit" noWrap>

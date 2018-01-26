@@ -1,32 +1,69 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
+import classNames from 'classnames';
 import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
-import Button from 'material-ui/Button';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
+import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 import PlayCircleOutline from 'material-ui-icons/PlayCircleOutline';
 import CheckCircle from 'material-ui-icons/CheckCircle';
 import AddCircle from 'material-ui-icons/AddCircle';
 import {withStyles} from 'material-ui/styles';
 
+import {toggleLeftDrawer} from './actions';
+
 import PartBrowser from './PartBrowser';
 import PluginConfigDialog from './PluginConfigDialog';
 
-const SIDE_PANEL_WIDTH = 300;
+const SIDE_PANEL_WIDTH = 240;
 const HEADER_HEIGHT = 64;
 
-const styles = {
+// FIXME: This transition is awful..
+const styles = theme => ({
     drawerPaper: {
         width: SIDE_PANEL_WIDTH,
         overflow: 'auto',
-        top: HEADER_HEIGHT
+        top: HEADER_HEIGHT,
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        })
+    },
+    drawerPaperClose: {
+        width: 60,
+        overflowX: 'hidden',
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        })
+    }
+});
+
+const mapStateToProps = state => {
+    return {
+        open: state.leftDrawer,
+        activeNode: state.activeNode,
+        scale: state.scale
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        hide: () => {
+            dispatch(toggleLeftDrawer(false));
+        },
+        show: () => {
+            dispatch(toggleLeftDrawer(true));
+        }
     }
 };
 
 class LeftDrawer extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
+
         activeNode: PropTypes.string.isRequired,
         scale: PropTypes.number.isRequired,
         open: PropTypes.bool.isRequired,
@@ -40,13 +77,15 @@ class LeftDrawer extends Component {
 
     render() {
         const {classes, activeNode, gmeClient, scale, open} = this.props;
-
         return (
             <div>
-            <Drawer type="persistent" anchor="left" open={open} classes={{paper: classes.drawerPaper}}>
+            <Drawer type="permanent"
+                    anchor="left"
+                    open={open}
+                    classes={{paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose)}}>
                 <span>
-                <IconButton onClick={this.onLeftMenuClose}>
-                    <ChevronLeftIcon/>
+                <IconButton onClick={open ? this.props.hide : this.props.show}>
+                    {open ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                 </IconButton>
                 <IconButton onClick={() => { this.setState({simulateDialog: true}); }}>
                     <CheckCircle/>
@@ -58,7 +97,8 @@ class LeftDrawer extends Component {
                     <AddCircle/>
                 </IconButton>
                 </span>
-                <PartBrowser activeNode={activeNode} gmeClient={gmeClient} scale={scale}/>
+                {open ? <PartBrowser activeNode={activeNode} gmeClient={gmeClient} scale={scale}/> : null}
+
             </Drawer>
                 {this.state.simulateDialog ? (<PluginConfigDialog onReady={(config) => {
                                                                     console.log('config set:', config);
@@ -73,5 +113,4 @@ class LeftDrawer extends Component {
     }
 }
 
-
-export default withStyles(styles)(LeftDrawer);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LeftDrawer));

@@ -20,6 +20,16 @@ import PartBrowserItem from './PartBrowserItem';
 const TREE_PATH_SEP = '$';
 const EXPAND_ALL = true;
 
+//theme.tree.base.backgroundColor = props.theme.palette.background.paper;
+theme.tree.base.backgroundColor = 'white';
+theme.tree.base.color = 'black';
+theme.tree.node.activeLink.background = 'lightgrey';
+theme.tree.node.toggle.arrow.fill = 'grey';
+theme.tree.node.toggle.width = 10;
+theme.tree.node.toggle.height = 10;
+theme.tree.node.header.base.color = 'black';
+theme.tree.node.loading.color = 'orange';
+
 class TreeContainer extends decorators.Container {
     renderToggleDecorator() {
         const {style, node} = this.props;
@@ -44,19 +54,10 @@ class PartBrowser extends SingleConnectedNode {
         };
 
         this.tree = {};
+        this.theme = theme;
 
         // TODO: Match these with the theme from material-ui
-        theme.tree.base.backgroundColor = props.theme.palette.background.paper;
-        theme.tree.base.color = 'black';
-        theme.tree.node.activeLink.background = 'lightgrey';
-        theme.tree.node.toggle.arrow.fill = 'grey';
-        theme.tree.node.toggle.width = 10;
-        theme.tree.node.toggle.height = 10;
-        theme.tree.node.header.base.color = 'black';
-        theme.tree.node.loading.color = 'orange';
 
-
-        this.theme = theme;
 
         const defaultHeader = decorators.Header;
         decorators.Container = TreeContainer;

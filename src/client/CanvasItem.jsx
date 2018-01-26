@@ -55,18 +55,11 @@ class CanvasItem extends Component {
         childrenName2Id: {},
         isConnection: null,
         currentRootHash: null,
-        endPoints: null,
+        endPoints: {src: {id: null}, dst: {id: null}},
         territory: null,
         justRemovedIds: [],
         svgXml: ''
     };
-
-    constructor(props) {
-        super(props);
-
-        this.state.territory = {};
-        this.state.territory[this.props.activeNode] = {children: 0};
-    }
 
     onMouseEnter = () => {
         this.setState({showActions: true});
@@ -75,6 +68,12 @@ class CanvasItem extends Component {
     onMouseLeave = () => {
         this.setState({showActions: false});
     };
+
+    componentDidMount() {
+        let territory = {};
+        territory[this.props.activeNode] = {children: 0};
+        this.setState({territory: territory});
+    }
 
     deleteNode = () => {
         this.props.gmeClient.deleteNode(this.props.activeNode);
@@ -106,7 +105,8 @@ class CanvasItem extends Component {
     };
 
     territoryUpdates = (hash, loads, updates, unloads) => {
-        const {activeNode, gmeClient, eventManager} = this.props;
+        const {activeNode, gmeClient, eventManager} = this.props,
+            {endPoints} = this.state;
 
         // console.log('event-', hash, loads, updates, unloads);
         if (unloads.indexOf(activeNode) !== -1) {
@@ -129,7 +129,7 @@ class CanvasItem extends Component {
                 childrenName2Id: {},
                 isConnection: null,
                 currentRootHash: null,
-                endPoints: null,
+                endPoints: {src: {id: null}, dst: {id: null}},
                 territory: null,
                 justRemovedIds: [],
                 svgXml: ''
@@ -141,7 +141,7 @@ class CanvasItem extends Component {
             metaNode = gmeClient.getNode(nodeObj.getMetaTypeId()),
             validPointers = nodeObj.getValidPointerNames(),
             isConnection = validPointers.indexOf('src') !== -1 && validPointers.indexOf('dst') !== -1,
-            endPoints = null,
+            newEndpoints = null,
             modelicaUri = 'Default',
             territory = {},
             childrenPaths = nodeObj.getChildrenIds(),
@@ -149,12 +149,30 @@ class CanvasItem extends Component {
             svgXml = '';
 
         if (isConnection) {
-            endPoints = {
-                src: {id: nodeObj.getPointerId('src'), position: null, event: null},
-                dst: {id: nodeObj.getPointerId('dst'), position: null, event: null}
+            newEndpoints = {
+                src: {id: nodeObj.getPointerId('src'), position: null, event: this.srcEvent},
+                dst: {id: nodeObj.getPointerId('dst'), position: null, event: this.dstEvent}
             };
+
+            if (endPoints.src.id !== newEndpoints.src.id || endPoints.dst.id !== newEndpoints.dst.id) {
+                //subscription to events
+                let event;
+
+                event = eventManager.subscribe(newEndpoints.src.id, newEndpoints.src.event);
+                if (event) {
+                    newEndpoints.src.position = event.position;
+                }
+                event = eventManager.subscribe(newEndpoints.dst.id, newEndpoints.dst.event);
+                if (event) {
+                    newEndpoints.dst.position = event.position;
+                }
+            } else {
+                newEndpoints = endPoints;
+            }
             territory[activeNode] = {children: 0};
+
         } else {
+            newEndpoints = endPoints;
             childrenName2Id = this.state.childrenName2Id;
             modelicaUri = metaNode.getAttribute('ModelicaURI') || 'Default';
             childrenPaths.forEach((childPath) => {
@@ -180,7 +198,7 @@ class CanvasItem extends Component {
             name: nodeObj.getAttribute('name'),
             modelicaUri: modelicaUri,
             isConnection: isConnection,
-            endPoints: endPoints,
+            endPoints: newEndpoints,
             childrenName2Id: childrenName2Id,
             territory: territory,
             justRemovedIds: unloads,
@@ -286,31 +304,12 @@ class CanvasItem extends Component {
     };
 
     connectionRender = () => {
-        const {eventManager} = this.props;
-        let {endPoints} = this.state,
-            event;
-        //subscription to events
-        if (endPoints.src.id && endPoints.src.event === null &&
-            endPoints.dst.id && endPoints.dst.event === null) {
-            endPoints.src.event = this.srcEvent;
-            endPoints.dst.event = this.dstEvent;
-
-            event = eventManager.subscribe(endPoints.src.id, endPoints.src.event);
-            if (event) {
-                endPoints.src.position = event.position;
-            }
-            event = eventManager.subscribe(endPoints.dst.id, endPoints.dst.event);
-            if (event) {
-                endPoints.dst.position = event.position;
-            }
-
-            this.setState({endPoints: endPoints});
-            return null;
-        }
+        const {endPoints} = this.state,
+            {activeNode} = this.props;
 
         if (endPoints.src.position && endPoints.dst.position) {
             return (<BasicConnection
-                key={this.props.activeNode}
+                key={activeNode}
                 path={[endPoints.src.position, endPoints.dst.position]}/>);
         }
 

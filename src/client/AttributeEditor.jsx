@@ -345,7 +345,7 @@ export default class AttributeEditor extends Component {
         return (
             <Card>
                 <Territory activeNode={selection[0]} gmeClient={gmeClient} territory={territory}
-                           onUpdate={this.handleEvents}/>
+                           onUpdate={this.handleEvents} onlyActualEvents={true}/>
                 <CardHeader title={'Attribute editor'}
                             subheader={node === null ? 'loading node content...' : 'GUID: ' + node.getGuid()}/>
                 <CardContent>

@@ -8,9 +8,9 @@ import PropTypes from 'prop-types';
  */
 export default class Territory extends Component {
     static propTypes = {
-        activeNode: PropTypes.string.isRequired,
+        activeNode: PropTypes.string,
         gmeClient: PropTypes.object.isRequired,
-        territory: PropTypes.object.isRequired,
+        territory: PropTypes.object,
         onUpdate: PropTypes.func,
         onlyActualEvents: PropTypes.bool.isRequired
     };
@@ -44,14 +44,15 @@ export default class Territory extends Component {
             }
         });
 
-        gmeClient.updateTerritory(this.uiId, territory);
+        if (territory)
+            gmeClient.updateTerritory(this.uiId, territory);
     }
 
     componentWillReceiveProps(newProps) {
         const {gmeClient} = newProps,
             {territory} = this.props;
         if (JSON.stringify(territory) !== JSON.stringify(newProps.territory)) {
-            gmeClient.updateTerritory(this.uiId, newProps.territory);
+            gmeClient.updateTerritory(this.uiId, newProps.territory || {});
         }
     }
 

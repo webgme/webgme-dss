@@ -4,22 +4,15 @@ import PropTypes from 'prop-types';
 import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
-import Drawer from 'material-ui/Drawer';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
-import Typography from 'material-ui/Typography';
-import MenuIcon from 'material-ui-icons/Menu';
-import Button from 'material-ui/Button';
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import {LinearProgress} from 'material-ui/Progress';
 import {withStyles} from 'material-ui/styles';
 
 // Own modules
 import PartBrowserDragPreview from './PartBrowserDragPreview';
-import AttributeEditor from './AttributeEditor';
+import Header from './Header';
 import Canvas from './Canvas';
 import LeftDrawer from './LeftDrawer';
+import RightDrawer from './RightDrawer';
 
 const SIDE_PANEL_WIDTH = 300;
 const HEADER_HEIGHT = 64;
@@ -76,14 +69,9 @@ class Project extends Component {
         rightMenu: false,
         modelView: true,
         selection: [],
-        dialogOpened: false,
         scale: 0.6,
         scrollPos: {x: 0, y: 0}
     };
-
-    //constructor(props) {
-    //    super(props);
-    //}
 
     componentDidMount() {
         const client = this.props.gmeClient;
@@ -124,22 +112,6 @@ class Project extends Component {
         // FIXME: Client needs a closeProject method!
     }
 
-    onLeftMenuOpen = () => {
-        this.setState({leftMenu: true});
-    };
-
-    onLeftMenuClose = () => {
-        this.setState({leftMenu: false});
-    };
-
-    // onRightMenuOpen = () => {
-    //     this.setState({rightMenu: true});
-    // };
-
-    onOpenDialog = () => {
-        this.setState({dialogOpened: true});
-    };
-
     onScroll = (event) => {
         this.setState({scrollPos: {x: event.target.scrollLeft, y: event.target.scrollTop}});
     };
@@ -175,7 +147,7 @@ class Project extends Component {
     };
 
     render() {
-        const {classes, gmeClient, projectId} = this.props;
+        const {gmeClient, projectId} = this.props;
         const {activeNode, branch, selection, rightMenu, scale, leftMenu, scrollPos} = this.state;
         const [owner, name] = projectId.split('+');
 
@@ -197,19 +169,10 @@ class Project extends Component {
                 height: '100%'
             }}>
                 <PartBrowserDragPreview scale={scale}/>
-                <AppBar>
-                    <Toolbar disableGutters={leftMenu}>
-                        <IconButton color="contrast" aria-label="open side menu" onClick={this.onLeftMenuOpen}>
-                            <MenuIcon/>
-                        </IconButton>
-                        <Typography type="title" color="inherit" noWrap>
-                            {`Branch ${branch} open for ${owner} / ${name}`}
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-
+                <Header gmeClient={gmeClient} owner={owner} projectName={name} branchName={branch}/>
                 <LeftDrawer activeNode={activeNode} gmeClient={gmeClient} scale={scale} open={leftMenu}/>
 
+                {/*TODO: Move this to center panel*/}
                 <div onScroll={this.onScroll}
                     style={{
                         top: 0,
@@ -223,13 +186,7 @@ class Project extends Component {
                             scrollPos={scrollPos} scale={scale}
                             activateAttributeDrawer={this.activateAttributeDrawer}/>
                 </div>
-                <Drawer type="persistent" anchor="right" open={rightMenu && selection.length > 0}
-                        classes={{paper: classes.drawerPaper}} onMouseOver={this.onAttributeDrawerAction}>
-                    <IconButton onClick={this.onAttributeDrawerClose}>
-                        <ChevronLeftIcon/>
-                    </IconButton>
-                    <AttributeEditor selection={selection} gmeClient={gmeClient}/>
-                </Drawer>
+                <RightDrawer selection={selection} gmeClient={gmeClient} scale={scale} open={rightMenu}/>
             </div>
         );
     }

@@ -10,89 +10,20 @@ import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
 import Typography from 'material-ui/Typography';
 import MenuIcon from 'material-ui-icons/Menu';
+import Button from 'material-ui/Button';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import {LinearProgress} from 'material-ui/Progress';
 import {withStyles} from 'material-ui/styles';
 
 // Own modules
-import PartBrowser from './PartBrowser';
 import PartBrowserDragPreview from './PartBrowserDragPreview';
 import AttributeEditor from './AttributeEditor';
 import Canvas from './Canvas';
-import PluginConfigDialog from './PluginConfigDialog';
+import LeftDrawer from './LeftDrawer';
 
 const SIDE_PANEL_WIDTH = 300;
 const HEADER_HEIGHT = 64;
 const START_NODE_ID = '/Z'; // FIXME: This should come from the project info or root-node registry
-
-var testConfig = [
-    {
-        "name": "species",
-        "displayName": "Animal Species",
-        "regex": "^[a-zA-Z]+$",
-        "regexMessage": "Name can only contain English characters!",
-        "description": "Which species does the animal belong to.",
-        "value": "Horse",
-        "valueType": "string",
-        "readOnly": false
-    },
-    {
-        "name": "age",
-        "displayName": "Age",
-        "description": "How old is the animal.",
-        "value": 3,
-        "valueType": "number",
-        "minValue": 0,
-        "maxValue": 10000,
-        "readOnly": false,
-        "writeAccessRequired": true
-    },
-    {
-        "name": "carnivore",
-        "displayName": "Carnivore",
-        "description": "Does the animal eat other animals?",
-        "value": false,
-        "valueType": "boolean",
-        "readOnly": false
-    },
-    {
-        "name": "isAnimal",
-        "displayName": "Is Animal",
-        "description": "Is this animal an animal? [Read-only]",
-        "value": true,
-        "valueType": "boolean",
-        "readOnly": true
-    },
-    {
-        "name": "classification",
-        "displayName": "Classification",
-        "description": "",
-        "value": "Vertebrates",
-        "valueType": "string",
-        "valueItems": [
-            "Vertebrates",
-            "Invertebrates",
-            "Unknown"
-        ]
-    },
-    {
-        "name": "color",
-        "displayName": "Color",
-        "description": "The hex color code for the animal.",
-        "readOnly": false,
-        "value": "#FF0000",
-        "regex": "^#([A-Fa-f0-9]{6})$",
-        "valueType": "string"
-    },
-    {
-        "name": "file",
-        "displayName": "File",
-        "description": "",
-        "value": "",
-        "valueType": "asset",
-        "readOnly": false
-    }
-];
 
 const styles = theme => ({
     root: {
@@ -143,6 +74,7 @@ class Project extends Component {
         branch: null,
         leftMenu: true,
         rightMenu: false,
+        modelView: true,
         selection: [],
         dialogOpened: false,
         scale: 0.6,
@@ -275,16 +207,10 @@ class Project extends Component {
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <Drawer type="persistent" anchor="left" open={leftMenu}
-                        classes={{paper: classes.drawerPaper}}>
-                    <IconButton onClick={this.onLeftMenuClose}>
-                        <ChevronLeftIcon/>
-                    </IconButton>
-                    <PartBrowser activeNode={activeNode} gmeClient={gmeClient} scale={scale}/>
-                </Drawer>
 
-                <div
-                    onScroll={this.onScroll}
+                <LeftDrawer activeNode={activeNode} gmeClient={gmeClient} scale={scale} open={leftMenu}/>
+
+                <div onScroll={this.onScroll}
                     style={{
                         top: 0,
                         left: 0,
@@ -293,16 +219,6 @@ class Project extends Component {
                         position: 'absolute',
                         overflow: 'auto'
                     }}>
-                    {/*{this.state.rightMenu ?*/}
-                    {/*<Button onClick={this.onAttributeDrawerClose}>*/}
-                    {/*HIDE ATTRIBUTES*/}
-                    {/*</Button>*/}
-                    {/*:*/}
-                    {/*<Button onClick={this.onRightMenuOpen}>*/}
-                    {/*SHOW ATTRIBUTES*/}
-                    {/*</Button>*/}
-                    {/*}*/}
-                    {/*<Button onClick={this.onOpenDialog}>PopUpDialog</Button>*/}
                     <Canvas activeNode={activeNode} gmeClient={gmeClient}
                             scrollPos={scrollPos} scale={scale}
                             activateAttributeDrawer={this.activateAttributeDrawer}/>
@@ -314,16 +230,6 @@ class Project extends Component {
                     </IconButton>
                     <AttributeEditor selection={selection} gmeClient={gmeClient}/>
                 </Drawer>
-                {this.state.dialogOpened ? (<PluginConfigDialog configDescriptor={testConfig}
-                                                                onReady={(config) => {
-                                                                    console.log('config set:', config);
-                                                                    this.setState({dialogOpened: false});
-                                                                }}
-
-                                                                onCancel={() => {
-                                                                    console.log('canceled');
-                                                                    this.setState({dialogOpened: false});
-                                                                }}/>) : <div></div>}
             </div>
         );
     }

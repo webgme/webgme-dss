@@ -10,8 +10,7 @@ import Button from 'material-ui/Button';
 
 import {AttributeItem, AttributeTypes} from './AttributeEditor';
 
-/*
-"configStructure": [
+const testConfig = [
     {
         "name": "species",
         "displayName": "Animal Species",
@@ -78,44 +77,38 @@ import {AttributeItem, AttributeTypes} from './AttributeEditor';
         "valueType": "asset",
         "readOnly": false
     }
-]
-
-*/
+];
 
 export default class PluginConfigDialog extends Component {
+    static propTypes = {
+        // configDescriptor: PropTypes.array.isRequired,
+        onReady: PropTypes.func.isRequired,
+        onCancel: PropTypes.func
+    };
+
+    state = {
+        configItems: {}
+    };
+
     constructor(props) {
         super(props);
-        let state = {};
-
-        this.props.configDescriptor.forEach((descriptor) => {
-            state[descriptor.name] = descriptor.value;
+        testConfig.forEach((descriptor) => {
+            this.state.configItems[descriptor.name] = descriptor.value;
         });
-
-        this.state = state;
-
-        this.onReady = this.onReady.bind(this);
-        this.onChange = this.onChange.bind(this);
     }
 
-    onReady() {
+    onReady = () => {
         this.props.onReady(this.state);
-    }
+    };
 
-    onChange(what, how) {
+    onChange = (what, how) => {
         let update = {};
         update[what] = how;
-        this.setState(update);
-    }
+        this.setState('configItems', update);
+    };
 
     render() {
-        let form,
-            self = this;
-
-        form = this.props.configDescriptor.map((descriptor) => {
-            let changeFn = (newValue) => {
-                    self.onChange(descriptor.name, newValue)
-                },
-                options = {readOnly: descriptor.readOnly};
+        let form = testConfig.map((descriptor) => {
 
             if (descriptor.name.indexOf('color') !== -1) {
                 descriptor.valueType = AttributeTypes.color;
@@ -123,33 +116,32 @@ export default class PluginConfigDialog extends Component {
 
             return (<AttributeItem
                 key={descriptor.name}
-                value={this.state[descriptor.name]}
+                value={this.state.configItems[descriptor.name]}
                 name={descriptor.displayName}
                 values={descriptor.valueItems}
                 type={descriptor.valueType}
-                onChange={changeFn}
+                onChange={(newValue) => {
+                    this.onChange(descriptor.name, newValue)
+                }}
                 description={descriptor.description}
-                options={options}/>);
+                options={{readOnly: descriptor.readOnly}}/>);
         });
-        return (<Dialog open={true}>
-            <DialogTitle>Plugin Configuration</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    Before executing the plugin, please set the available configuration appropriately.
-                </DialogContentText>
-                {form}
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={this.onReady} color='primary'>Save & Run</Button>
-                {typeof this.props.onCancel === 'function' ?
-                    <Button onClick={this.props.onCancel} color='accent'>Cancel</Button> : ''}
-            </DialogActions>
-        </Dialog>);
-    }
-};
 
-PluginConfigDialog.propTypes = {
-    configDescriptor: PropTypes.array.isRequired,
-    onReady: PropTypes.func.isRequired,
-    onCancel: PropTypes.func
+        return (
+            <Dialog open={true}>
+                <DialogTitle>Plugin Configuration</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Before executing the plugin, please set the available configuration appropriately.
+                    </DialogContentText>
+                    {form}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.onReady} color='primary'>Save & Run</Button>
+                    {typeof this.props.onCancel === 'function' ?
+                        <Button onClick={this.props.onCancel} color='accent'>Cancel</Button> : ''}
+                </DialogActions>
+            </Dialog>
+        );
+    }
 };

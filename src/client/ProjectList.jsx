@@ -5,9 +5,6 @@ import {Link} from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
 import {LinearProgress} from 'material-ui/Progress';
 import List, {ListItem, ListItemText, ListItemSecondaryAction} from 'material-ui/List';
-import Avatar from 'material-ui/Avatar';
-
-import {nameSort} from './gme/utils/getObjectSorter';
 
 const styles = {
     domainBadge: {
@@ -55,6 +52,7 @@ class ProjectList extends Component {
                                 .reverse()
                                 .map(function (domainUri) {
                                     return (<img key={domainUri}
+                                                 alt={domainUri}
                                                     src={`/assets/DecoratorSVG/${domainUri}.mini.png`}
                                                     className={classes.domainBadge}/>)
                                 });

@@ -94,23 +94,24 @@ class CreateProject extends Component {
         let cards = SEEDS.map(seedInfo => {
             let buttons = [];
             if (projects) {
-                buttons.push(<Button dense color="primary" onClick={() => {
+                buttons.push(<Button key="createBtn" dense color="primary" onClick={() => {
                     this.createNew(seedInfo.createData)
                 }}>
                     Create
                 </Button>);
 
                 if (seedInfo.infoUrl) {
-                    buttons.push(<Button dense color="primary" component={Link} to={seedInfo.infoUrl} target="_blank">
+                    buttons.push(<Button key="infoBtn" dense color="primary" component={Link} to={seedInfo.infoUrl}
+                                         target="_blank">
                         Learn More
                     </Button>);
                 }
             } else {
-                buttons.push(<CircularProgress className={classes.progress}/>);
+                buttons.push(<CircularProgress key="progress" className={classes.progress}/>);
             }
 
             return (
-                <Grid item lg={6}>
+                <Grid item lg={6} key={seedInfo.title}>
                     <Card>
                         <CardMedia
                             className={classes.media}

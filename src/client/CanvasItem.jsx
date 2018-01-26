@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import ReactSVG from 'react-svg';
+import {Samy, SvgProxy} from 'react-samy-svg';
 import {DragSource} from 'react-dnd';
 import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui-icons/Delete';
 import ModeEdit from 'material-ui-icons/ModeEdit';
+import ejs from 'ejs';
 
 import {DRAG_TYPES} from './CONSTANTS';
 import CanvasItemPort from './CanvasItemPort';
-// import BasicConnection from './BasicConnection';
 import Territory from './gme/BaseComponents/Territory';
-import BasicConnection from "./BasicConnection";
+import BasicConnection from './BasicConnection';
+import SVGCACHE from './../svgcache';
 
 const canvasItemSource = {
     beginDrag(props) {
@@ -49,15 +50,15 @@ class CanvasItem extends Component {
         position: null,
         name: null,
         showActions: false,
-        modelicaUri: null,
+        modelicaUri: 'Default',
         svgReady: false,
-        ports: {},
         childrenName2Id: {},
         isConnection: null,
         currentRootHash: null,
         endPoints: null,
         territory: null,
-        justRemovedIds: []
+        justRemovedIds: [],
+        svgXml: ''
     };
 
     constructor(props) {
@@ -77,29 +78,6 @@ class CanvasItem extends Component {
 
     deleteNode = () => {
         this.props.gmeClient.deleteNode(this.props.activeNode);
-    };
-
-    onSvgReady = (svgEl) => {
-        if (this.state.svgReady)
-            return;
-
-        //TODO probably we need to move this to another function
-        //TODO there is some small offset still
-
-        let gItems = svgEl.querySelectorAll('g'),
-            ports = {};
-        gItems.forEach((item) => {
-            if (item.id !== 'info') {
-                let itemBox = item.getBBox();
-                ports[item.id] = {
-                    x: itemBox.x,
-                    y: itemBox.y,
-                    width: itemBox.width,
-                    height: itemBox.height
-                };
-            }
-        });
-        this.setState({ports: ports, svgReady: true});
     };
 
     srcEvent = (id, event) => {
@@ -146,15 +124,15 @@ class CanvasItem extends Component {
                 position: null,
                 name: null,
                 showActions: false,
-                modelicaUri: null,
+                modelicaUri: 'Default',
                 svgReady: false,
-                ports: {},
                 childrenName2Id: {},
                 isConnection: null,
                 currentRootHash: null,
                 endPoints: null,
                 territory: null,
-                justRemovedIds: []
+                justRemovedIds: [],
+                svgXml: ''
             });
             return;
         }
@@ -164,10 +142,11 @@ class CanvasItem extends Component {
             validPointers = nodeObj.getValidPointerNames(),
             isConnection = validPointers.indexOf('src') !== -1 && validPointers.indexOf('dst') !== -1,
             endPoints = null,
-            modelicaUri = null,
+            modelicaUri = 'Default',
             territory = {},
             childrenPaths = nodeObj.getChildrenIds(),
-            childrenName2Id = {};
+            childrenName2Id = {},
+            svgXml = '';
 
         if (isConnection) {
             endPoints = {
@@ -177,7 +156,7 @@ class CanvasItem extends Component {
             territory[activeNode] = {children: 0};
         } else {
             childrenName2Id = this.state.childrenName2Id;
-            modelicaUri = metaNode.getAttribute('ModelicaURI');
+            modelicaUri = metaNode.getAttribute('ModelicaURI') || 'Default';
             childrenPaths.forEach((childPath) => {
                 if (loads.indexOf(childPath) !== -1 || updates.indexOf(childPath) !== -1) {
                     let childNode = gmeClient.getNode(childPath);
@@ -192,6 +171,7 @@ class CanvasItem extends Component {
                 }
             });
             territory[activeNode] = {children: 1};
+            svgXml = ejs.render(SVGCACHE[modelicaUri].template, nodeObj);
         }
 
         // console.log(activeNode, ':', this.state.position, '->', nodeObj.getRegistry('position'));
@@ -203,9 +183,9 @@ class CanvasItem extends Component {
             endPoints: endPoints,
             childrenName2Id: childrenName2Id,
             territory: territory,
-            justRemovedIds: unloads
+            justRemovedIds: unloads,
+            svgXml: svgXml
         });
-
     };
 
     boxRender = () => {
@@ -223,16 +203,16 @@ class CanvasItem extends Component {
             {
                 showActions,
                 modelicaUri,
-                ports,
                 position,
                 childrenName2Id,
-                justRemovedIds
+                justRemovedIds,
+                svgXml
             } = this.state,
+            ports = SVGCACHE[modelicaUri].ports,
             baseDimensions = {x: 320, y: 210};
         let portComponents = [],
             i, keys,
-            svgPath = modelicaUri ? `/assets/DecoratorSVG/${modelicaUri}.svg` :
-                '/assets/DecoratorSVG/Default.svg',
+            nodeObj = gmeClient.getNode(activeNode),
             events = [];
 
         justRemovedIds.forEach((removedId) => {
@@ -283,12 +263,11 @@ class CanvasItem extends Component {
                  onMouseEnter={this.onMouseEnter}
                  onMouseLeave={this.onMouseLeave}>
                 {portComponents}
-                <ReactSVG path={svgPath}
-                          callback={this.onSvgReady}
-                          style={{
-                              height: baseDimensions.y * scale,
-                              width: baseDimensions.x * scale
-                          }}/>
+                <Samy svgXML={svgXml}
+                      style={{
+                          height: baseDimensions.y * scale,
+                          width: baseDimensions.x * scale
+                      }}/>
                 {showActions ?
                     <IconButton style={{height: '20px', width: '20px', position: 'absolute', top: '0px', right: '0px'}}
                                 onClick={this.deleteNode}>
@@ -360,6 +339,7 @@ class CanvasItem extends Component {
                 activeNode={activeNode}
                 gmeClient={gmeClient}
                 territory={territory}
+                onlyActualEvents={true}
                 onUpdate={this.territoryUpdates}/>
             {content}
         </div>);

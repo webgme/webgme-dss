@@ -11,13 +11,14 @@ export default class Territory extends Component {
         activeNode: PropTypes.string.isRequired,
         gmeClient: PropTypes.object.isRequired,
         territory: PropTypes.object.isRequired,
-        onUpdate: PropTypes.func
+        onUpdate: PropTypes.func,
+        onlyActualEvents: PropTypes.bool.isRequired
     };
 
     uiId = null;
 
     componentDidMount() {
-        const {gmeClient, territory, onUpdate} = this.props;
+        const {gmeClient, territory, onUpdate, onlyActualEvents} = this.props;
 
         this.uiId = gmeClient.addUI(null, (events) => {
             let load = [], update = [], unload = [], hash;
@@ -38,7 +39,7 @@ export default class Territory extends Component {
                 }
             });
             hash = gmeClient.getNode('').getId();
-            if (onUpdate) {
+            if (onUpdate && (!onlyActualEvents || load.length > 0 || update.length > 0 || unload.length > 0)) {
                 onUpdate(hash, load, update, unload);
             }
         });

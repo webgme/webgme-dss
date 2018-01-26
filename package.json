@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ejs": "^2.5.7",
     "material-ui": "^1.0.0-beta.30",
     "material-ui-icons": "^1.0.0-beta.17",
     "prop-types": "^15.6.0",
@@ -27,5 +28,8 @@
     "eject": "react-scripts eject",
     "build-dev": "node scripts/build.js",
     "nodemon": "nodemon scripts/build.js"
+  },
+  "devDependencies": {
+    "xml2js": "^0.4.19"
   }
 }

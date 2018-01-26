@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Samy, SvgProxy} from 'react-samy-svg';
+import {Samy} from 'react-samy-svg';
 import {DragSource} from 'react-dnd';
 import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui-icons/Delete';
@@ -230,7 +230,6 @@ class CanvasItem extends Component {
             baseDimensions = {x: 320, y: 210};
         let portComponents = [],
             i, keys,
-            nodeObj = gmeClient.getNode(activeNode),
             events = [];
 
         justRemovedIds.forEach((removedId) => {

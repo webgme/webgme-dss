@@ -85,15 +85,11 @@ class Canvas extends SingleConnectedNode {
 
     populateChildren(nodeObj, initial) {
         let childrenIds = nodeObj.getChildrenIds(),
-            newChildren, newNodeInfo;
-        const {children, nodeInfo} = this.state;
+            newChildren;
 
         newChildren = childrenIds.map((id) => {
             return {id: id};
         });
-        newNodeInfo = {
-            name: nodeObj.getAttribute('name')
-        };
         this.setState({
             children: newChildren,
             nodeInfo: {

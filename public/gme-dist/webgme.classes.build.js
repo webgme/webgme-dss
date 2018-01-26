@@ -126,7 +126,7 @@
             getGuid: () => 'a5008758-e9e8-7eb1-e995-e1793ef92a37',
             getValidAttributeNames: () => attrNames,
             getValidPointerNames: () => {
-                if (cnt % 5 === 0)
+                if (id.indexOf('/0') !== -1)
                     return ['src', 'dst'];
                 return [];
             },

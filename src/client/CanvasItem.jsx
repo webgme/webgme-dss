@@ -61,6 +61,11 @@ class CanvasItem extends Component {
         svgXml: ''
     };
 
+    constructor(props) {
+        super(props);
+        console.count('CanvasItem:ctor');
+    }
+
     onMouseEnter = () => {
         this.setState({showActions: true});
     };

@@ -18,6 +18,11 @@ export default class CanvasItemPort extends Component {
         mouseOver: false
     };
 
+    constructor(props) {
+        super(props);
+        console.count('CanvasItemPort:ctor');
+    }
+
     createConnection = (source, type) => {
         let {gmeClient, activeNode, contextNode} = this.props,
             connectionId;

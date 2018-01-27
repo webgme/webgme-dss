@@ -21,14 +21,14 @@ class PartBrowserDragPreview extends Component {
     render() {
         const { item, itemType, isDragging, currentOffset, initialOffset, scale } = this.props;
         if (!isDragging || !item || itemType !== DRAG_TYPES.GME_NODE ||
-            !item.treeNode || !currentOffset || !initialOffset) {
+            !item.nodeData || !currentOffset || !initialOffset) {
             return null;
         }
 
         const { x, y } = { x: currentOffset.x - initialOffset.x, y: currentOffset.y - initialOffset.y};
         const transform = `translate(${x}px, ${y}px)`;
         return (
-            <Samy path={item.treeNode.iconUrl}
+            <Samy path={item.nodeData.iconUrl}
                   style={{
                       position: 'absolute',
                       top: initialOffset.y - item.offset.y,

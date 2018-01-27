@@ -1,15 +1,12 @@
 //https://github.com/alexcurtis/react-treebeard
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import ExpansionPanel, {
-    ExpansionPanelDetails,
-    ExpansionPanelSummary
-} from 'material-ui/ExpansionPanel';
+import ExpansionPanel, {ExpansionPanelDetails, ExpansionPanelSummary} from 'material-ui/ExpansionPanel';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import { withTheme } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
-
 import {Treebeard, decorators, theme} from 'react-treebeard';
 
 import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
@@ -43,17 +40,34 @@ class TreeContainer extends decorators.Container {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        activeNode: state.activeNode,
+        scale: state.scale
+    }
+};
 
 class PartBrowser extends SingleConnectedNode {
+    static propTypes = {
+        gmeClient: PropTypes.object.isRequired,
+
+        activeNode: PropTypes.string.isRequired,
+        scale: PropTypes.number.isRequired,
+        minimized: PropTypes.bool.isRequired
+    };
+
+    state = {
+        loaded: false,
+        validChildren: [],
+        cursor: null
+    };
+
     constructor(props) {
         super(props);
-        this.state = {
-            loaded: false,
-            validChildren: [],
-            cursor: null
-        };
+        console.count('PartBrowser:constructor');
 
         this.tree = {};
+        this.items = [];
         this.theme = theme;
 
         // TODO: Match these with the theme from material-ui
@@ -69,7 +83,7 @@ class PartBrowser extends SingleConnectedNode {
                 return defaultHeader(props);
             }
 
-            return <PartBrowserItem treeNode={props.node} scale={this.props.scale}/>
+            return <PartBrowserItem nodeData={props.node} scale={this.props.scale}/>
         };
     }
 
@@ -82,6 +96,7 @@ class PartBrowser extends SingleConnectedNode {
             nextState.validChildren
                 .forEach((childDesc) => {
                     let treeNode = this.tree;
+                    this.items.push(childDesc);
 
                     if (typeof childDesc.treePath === 'string') {
                         childDesc.treePath.split(TREE_PATH_SEP)
@@ -181,29 +196,40 @@ class PartBrowser extends SingleConnectedNode {
             }
         } else {
             return (
-                <PartBrowserItem key={treeNode.id} treeNode={treeNode} scale={this.props.scale}/>
+                <PartBrowserItem key={treeNode.id} nodeData={treeNode} scale={this.props.scale}/>
             )
         }
     };
 
     render() {
+        const {minimized} = this.props;
+        let cnt = 0;
+
         if (!this.state.loaded) {
-            return (<div>Loading node in Part Browser ...</div>);
+            return null;
         }
 
         return (
-            <div style={{width: '100%'}}>
-                {/*<PartBrowserDragPreview scale={this.props.scale}/>*/}
-                {this.tree.children.map(this.buildTreeStructure)}
+            <div style={{width: '100%', textAlign: minimized ? 'center' : undefined}}>
+                <div style={{display: minimized ? 'none' : undefined}}>
+                    {this.tree.children.map(this.buildTreeStructure)}
+                </div>
+                <div style={{display: minimized ? undefined : 'none'}}>
+                    {this.items
+                        .filter(child => {
+                            // TODO: These should be filtered based on recent components used..
+                            cnt += 1;
+                            return cnt <= 10;
+                        })
+                        .map(child => {
+                            return <PartBrowserItem key={child.id} nodeData={child} scale={this.props.scale}
+                                                    listView={true}/>;
+                        })
+                    }
+                </div>
             </div>
         );
     }
 }
 
-PartBrowser.propTypes = {
-    gmeClient: PropTypes.object.isRequired,
-    activeNode: PropTypes.string.isRequired,
-    scale: PropTypes.number.isRequired
-};
-
-export default withTheme()(PartBrowser);
+export default connect(mapStateToProps)(withTheme()(PartBrowser));

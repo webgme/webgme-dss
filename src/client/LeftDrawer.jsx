@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import classNames from 'classnames';
 import Drawer from 'material-ui/Drawer';
+import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
@@ -18,26 +19,18 @@ import PartBrowser from './PartBrowser';
 import PluginConfigDialog from './PluginConfigDialog';
 
 const SIDE_PANEL_WIDTH = 240;
+const SIDE_PANEL_WIDTH_MINIMIZED = 50;
 const HEADER_HEIGHT = 64;
 
-// FIXME: This transition is awful..
 const styles = theme => ({
     drawerPaper: {
         width: SIDE_PANEL_WIDTH,
         overflow: 'auto',
-        top: HEADER_HEIGHT,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        })
+        top: HEADER_HEIGHT
     },
     drawerPaperClose: {
-        width: 60,
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        })
+        width: SIDE_PANEL_WIDTH_MINIMIZED,
+        overflowX: 'hidden'
     }
 });
 
@@ -97,7 +90,8 @@ class LeftDrawer extends Component {
                     <AddCircle/>
                 </IconButton>
                 </span>
-                {open ? <PartBrowser activeNode={activeNode} gmeClient={gmeClient} scale={scale}/> : null}
+                <Divider/>
+                <PartBrowser gmeClient={gmeClient} minimized={!open}/>
 
             </Drawer>
                 {this.state.simulateDialog ? (<PluginConfigDialog onReady={(config) => {

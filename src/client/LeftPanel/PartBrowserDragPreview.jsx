@@ -4,7 +4,7 @@ import {DragLayer} from 'react-dnd';
 
 import {Samy} from 'react-samy-svg';
 
-import {DRAG_TYPES} from './CONSTANTS';
+import {DRAG_TYPES} from '../CONSTANTS';
 
 // DragLayer
 function collect(monitor) {

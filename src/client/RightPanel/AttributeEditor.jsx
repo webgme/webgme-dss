@@ -10,7 +10,7 @@ import Select from 'material-ui/Select';
 import Switch from 'material-ui/Switch';
 import {GithubPicker} from 'react-color';
 
-import Territory from "./gme/BaseComponents/Territory";
+import Territory from '../gme/BaseComponents/Territory';
 
 export const AttributeTypes = {
     'string': 'string',

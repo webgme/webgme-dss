@@ -11,14 +11,14 @@ import {LinearProgress} from 'material-ui/Progress';
 // Own modules
 import {setActiveNode} from "./actions";
 
-import PartBrowserDragPreview from './PartBrowserDragPreview';
+import PartBrowserDragPreview from './LeftPanel/PartBrowserDragPreview';
 import Header from './Header';
-import Canvas from './Canvas';
-import LeftDrawer from './LeftDrawer';
-import RightDrawer from './RightDrawer';
+import CenterPanel from './CenterPanel/CenterPanel';
+import LeftDrawer from './LeftPanel/LeftDrawer';
+import RightDrawer from './RightPanel/RightDrawer';
 
-const SIDE_PANEL_WIDTH = 300;
-const HEADER_HEIGHT = 64;
+// const SIDE_PANEL_WIDTH = 300;
+// const HEADER_HEIGHT = 64;
 const START_NODE_ID = '/Z'; // FIXME: This should come from the project info or root-node registry
 
 const mapStateToProps = state => {
@@ -42,12 +42,7 @@ class Project extends Component {
     };
 
     state = {
-        leftDrawer: true,
-        rightDrawer: false,
-        modelView: true,
-        selection: [],
-        scale: 0.6,
-        scrollPos: {x: 0, y: 0}
+        scale: 0.6
     };
 
     componentDidMount() {
@@ -86,44 +81,10 @@ class Project extends Component {
         // FIXME: Client needs a closeProject method!
     }
 
-    onScroll = (event) => {
-        this.setState({scrollPos: {x: event.target.scrollLeft, y: event.target.scrollTop}});
-    };
-
-    // Attribute drawer functionality
-    attributeDrawerTimerId = null;
-
-    activateAttributeDrawer = (nodeId) => {
-        if (this.attributeDrawerTimerId) {
-            clearTimeout(this.attributeDrawerTimerId);
-            this.attributeDrawerTimerId = null;
-        }
-        this.attributeDrawerTimerId = setTimeout(this.onAttributeDrawerClose, 5000);
-        this.setState({rightDrawer: true, selection: [nodeId]});
-    };
-
-    onAttributeDrawerClose = () => {
-        if (this.attributeDrawerTimerId) {
-            clearTimeout(this.attributeDrawerTimerId);
-            this.attributeDrawerTimerId = null;
-        }
-        this.setState({rightDrawer: false});
-    };
-
-    //TODO this should be handled on the AttributeEditor level, so maybe a single
-    //     property with onAutoClose should be enough...
-    onAttributeDrawerAction = () => {
-        if (this.attributeDrawerTimerId) {
-            clearTimeout(this.attributeDrawerTimerId);
-            this.attributeDrawerTimerId = null;
-        }
-        this.attributeDrawerTimerId = setTimeout(this.onAttributeDrawerClose, 5000);
-    };
-
     render() {
         let content;
         const {gmeClient, projectId, activeNode} = this.props;
-        const {selection, rightDrawer, scale, scrollPos} = this.state;
+        const {scale} = this.state;
         const [owner, name] = projectId.split('+');
 
         if (typeof activeNode !== 'string') {
@@ -143,24 +104,14 @@ class Project extends Component {
                     height: '100%'
                 }}>
                     <PartBrowserDragPreview scale={scale}/>
-                    <Header gmeClient={gmeClient} projectOwner={owner} projectName={name} branchName={'master'}/>
-                    <LeftDrawer activeNode={activeNode} gmeClient={gmeClient}/>
 
-                    {/*TODO: Move this to center panel*/}
-                    <div onScroll={this.onScroll}
-                         style={{
-                             top: 0,
-                             left: 0,
-                             width: '100%',
-                             height: '100vh',
-                             position: 'absolute',
-                             overflow: 'auto'
-                         }}>
-                        <Canvas activeNode={activeNode} gmeClient={gmeClient}
-                                scrollPos={scrollPos} scale={scale}
-                                activateAttributeDrawer={this.activateAttributeDrawer}/>
-                    </div>
-                    <RightDrawer selection={selection} gmeClient={gmeClient} scale={scale} open={rightDrawer}/>
+                    <Header gmeClient={gmeClient} projectOwner={owner} projectName={name} branchName={'master'}/>
+
+                    <LeftDrawer gmeClient={gmeClient}/>
+
+                    <CenterPanel gmeClient={gmeClient}/>
+
+                    <RightDrawer gmeClient={gmeClient}/>
                 </div>
             );
         }

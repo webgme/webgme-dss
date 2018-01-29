@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
@@ -7,6 +8,7 @@ import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import {withStyles} from 'material-ui/styles';
 
 import AttributeEditor from './AttributeEditor';
+import {toggleRightDrawer} from '../actions';
 
 const SIDE_PANEL_WIDTH = 300;
 const HEADER_HEIGHT = 64;
@@ -19,18 +21,33 @@ const styles = {
     }
 };
 
+const mapStateToProps = state => {
+    return {
+        open: state.rightDrawer,
+        selection: state.activeSelection
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        hide: () => {
+            dispatch(toggleRightDrawer(false));
+        }
+    }
+};
+
 class RightDrawer extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
+
         selection: PropTypes.array.isRequired,
-        scale: PropTypes.number.isRequired,
         open: PropTypes.bool.isRequired,
 
         classes: PropTypes.object.isRequired
     };
 
     render() {
-        const {classes, selection, gmeClient, scale, open} = this.props;
+        const {classes, selection, gmeClient, open} = this.props;
 
         return (
             <div>
@@ -49,4 +66,4 @@ class RightDrawer extends Component {
 }
 
 
-export default withStyles(styles)(RightDrawer);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(RightDrawer));

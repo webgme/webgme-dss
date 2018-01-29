@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import {DropTarget} from 'react-dnd';
 
-import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
-import {DRAG_TYPES} from './CONSTANTS';
+import SingleConnectedNode from '../gme/BaseComponents/SingleConnectedNode';
+import {DRAG_TYPES} from '../CONSTANTS';
 import CanvasItem from "./CanvasItem";
-import ConnectionManager from './gme/BaseComponents/ConnectionManager';
-import BasicConnectingComponent from './gme/BaseComponents/BasicConnectingComponent';
-import BasicEventManager from './gme/BaseComponents/BasicEventManager';
+import ConnectionManager from '../gme/BaseComponents/ConnectionManager';
+import BasicConnectingComponent from '../gme/BaseComponents/BasicConnectingComponent';
+import BasicEventManager from '../gme/BaseComponents/BasicEventManager';
+import {toggleRightDrawer} from "../actions";
 
 const canvasTarget = {
     drop(props, monitor, canvas) {
@@ -55,16 +57,31 @@ function collect(connect, monitor) {
     };
 }
 
+const mapStateToProps = state => {
+    return {
+        activeNode: state.activeNode,
+        scale: state.scale
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        hide: () => {
+            dispatch(toggleRightDrawer(false));
+        }
+    }
+};
+
 class Canvas extends SingleConnectedNode {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
-        activeNode: PropTypes.string.isRequired,
         scrollPos: PropTypes.object.isRequired,
 
-        connectDropTarget: PropTypes.func.isRequired,
-        isOver: PropTypes.bool.isRequired,
+        activeNode: PropTypes.string.isRequired,
         scale: PropTypes.number.isRequired,
-        activateAttributeDrawer: PropTypes.func.isRequired
+
+        connectDropTarget: PropTypes.func.isRequired,
+        isOver: PropTypes.bool.isRequired
     };
 
     state = {
@@ -129,7 +146,7 @@ class Canvas extends SingleConnectedNode {
     };
 
     render() {
-        const {connectDropTarget, isOver, activeNode, activateAttributeDrawer} = this.props,
+        const {connectDropTarget, isOver, activeNode} = this.props,
             self = this;
 
         let children = this.state.children.map((child) => {
@@ -140,8 +157,7 @@ class Canvas extends SingleConnectedNode {
                 contextNode={activeNode}
                 scale={this.props.scale}
                 connectionManager={self.cm}
-                eventManager={self.em}
-                activateAttributeDrawer={activateAttributeDrawer}/>);
+                eventManager={self.em}/>);
         });
         return connectDropTarget(
             <div ref={(canvas) => {
@@ -171,4 +187,4 @@ class Canvas extends SingleConnectedNode {
     }
 }
 
-export default DropTarget(DRAG_TYPES.GME_NODE, canvasTarget, collect)(Canvas);
+export default connect(mapStateToProps, mapDispatchToProps)(DropTarget(DRAG_TYPES.GME_NODE, canvasTarget, collect)(Canvas));

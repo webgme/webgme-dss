@@ -6,7 +6,7 @@ import {getEmptyImage} from 'react-dnd-html5-backend'
 import {Samy, SvgProxy} from 'react-samy-svg';
 import Typography from 'material-ui/Typography';
 
-import {DRAG_TYPES} from './CONSTANTS';
+import {DRAG_TYPES} from '../CONSTANTS';
 
 /// End of DragLayer..
 const partBrowserItemSource = {

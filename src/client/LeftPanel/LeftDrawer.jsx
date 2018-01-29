@@ -13,10 +13,10 @@ import CheckCircle from 'material-ui-icons/CheckCircle';
 import AddCircle from 'material-ui-icons/AddCircle';
 import {withStyles} from 'material-ui/styles';
 
-import {toggleLeftDrawer} from './actions';
+import {toggleLeftDrawer} from '../actions';
 
 import PartBrowser from './PartBrowser';
-import PluginConfigDialog from './PluginConfigDialog';
+import PluginConfigDialog from '../PluginConfigDialog';
 
 const SIDE_PANEL_WIDTH = 240;
 const SIDE_PANEL_WIDTH_MINIMIZED = 50;
@@ -36,9 +36,7 @@ const styles = theme => ({
 
 const mapStateToProps = state => {
     return {
-        open: state.leftDrawer,
-        activeNode: state.activeNode,
-        scale: state.scale
+        open: state.leftDrawer
     }
 };
 
@@ -57,8 +55,6 @@ class LeftDrawer extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
 
-        activeNode: PropTypes.string.isRequired,
-        scale: PropTypes.number.isRequired,
         open: PropTypes.bool.isRequired,
 
         classes: PropTypes.object.isRequired
@@ -69,7 +65,7 @@ class LeftDrawer extends Component {
     };
 
     render() {
-        const {classes, activeNode, gmeClient, scale, open} = this.props;
+        const {classes, gmeClient, open} = this.props;
         return (
             <div>
             <Drawer type="permanent"

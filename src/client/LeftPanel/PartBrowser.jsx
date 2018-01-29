@@ -9,8 +9,8 @@ import { withTheme } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 import {Treebeard, decorators, theme} from 'react-treebeard';
 
-import SingleConnectedNode from './gme/BaseComponents/SingleConnectedNode';
-import {nameSort} from './gme/utils/getObjectSorter';
+import SingleConnectedNode from '../gme/BaseComponents/SingleConnectedNode';
+import {nameSort} from '../gme/utils/getObjectSorter';
 
 import PartBrowserItem from './PartBrowserItem';
 
@@ -53,6 +53,7 @@ class PartBrowser extends SingleConnectedNode {
 
         activeNode: PropTypes.string.isRequired,
         scale: PropTypes.number.isRequired,
+
         minimized: PropTypes.bool.isRequired
     };
 

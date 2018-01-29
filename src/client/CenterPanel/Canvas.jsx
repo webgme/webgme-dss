@@ -9,7 +9,7 @@ import CanvasItem from "./CanvasItem";
 import ConnectionManager from '../gme/BaseComponents/ConnectionManager';
 import BasicConnectingComponent from '../gme/BaseComponents/BasicConnectingComponent';
 import BasicEventManager from '../gme/BaseComponents/BasicEventManager';
-import {toggleRightDrawer} from "../actions";
+import {toggleRightDrawer} from '../actions';
 
 const canvasTarget = {
     drop(props, monitor, canvas) {
@@ -155,7 +155,6 @@ class Canvas extends SingleConnectedNode {
                 gmeClient={this.props.gmeClient}
                 activeNode={child.id}
                 contextNode={activeNode}
-                scale={this.props.scale}
                 connectionManager={self.cm}
                 eventManager={self.em}/>);
         });

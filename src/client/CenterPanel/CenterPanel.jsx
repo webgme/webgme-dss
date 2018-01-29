@@ -5,7 +5,7 @@ import Canvas from './Canvas';
 
 class CenterPanel extends Component {
     static propTypes = {
-        gmeClient: PropTypes.Object
+        gmeClient: PropTypes.object.isRequired
     };
 
     state = {

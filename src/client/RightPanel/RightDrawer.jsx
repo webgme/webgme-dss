@@ -43,6 +43,8 @@ class RightDrawer extends Component {
         selection: PropTypes.array.isRequired,
         open: PropTypes.bool.isRequired,
 
+        hide: PropTypes.func.isRequired,
+
         classes: PropTypes.object.isRequired
     };
 
@@ -55,7 +57,7 @@ class RightDrawer extends Component {
                         open={open && selection.length > 0}
                         classes={{paper: classes.drawerPaper}}
                         onMouseOver={() => {console.log('dispatch: reset right drawer timer')}}>
-                    <IconButton onClick={() => {console.log('dispatch hiding right drawer')}}>
+                    <IconButton onClick={this.props.hide}>
                         <ChevronLeftIcon/>
                     </IconButton>
                     <AttributeEditor selection={selection} gmeClient={gmeClient}/>

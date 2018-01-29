@@ -1,17 +1,21 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Samy} from 'react-samy-svg';
+import {connect} from 'react-redux';
+
 import {DragSource} from 'react-dnd';
+import {Samy} from 'react-samy-svg';
+import ejs from 'ejs';
+
 import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui-icons/Delete';
 import ModeEdit from 'material-ui-icons/ModeEdit';
-import ejs from 'ejs';
 
 import {DRAG_TYPES} from '../CONSTANTS';
 import CanvasItemPort from './CanvasItemPort';
 import Territory from '../gme/BaseComponents/Territory';
 import BasicConnection from './BasicConnection';
 import SVGCACHE from './../../svgcache';
+import {toggleRightDrawer, setActiveSelection} from '../actions';
 
 const canvasItemSource = {
     beginDrag(props) {
@@ -31,10 +35,25 @@ function collect(connect, monitor) {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        scale: state.scale
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        activateAttributeDrawer: id => {
+            dispatch(toggleRightDrawer(true));
+            dispatch(setActiveSelection([id]));
+        }
+    }
+};
+
 class CanvasItem extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
-        activeNode: PropTypes.string.isRequired,
+        activeNode: PropTypes.string.isRequired, // This is not the same as the state.activeNode..
         scale: PropTypes.number.isRequired,
         connectDragSource: PropTypes.func.isRequired,
         connectDragPreview: PropTypes.func.isRequired,
@@ -42,6 +61,7 @@ class CanvasItem extends Component {
         contextNode: PropTypes.string.isRequired,
         connectionManager: PropTypes.object.isRequired,
         eventManager: PropTypes.object.isRequired,
+
         activateAttributeDrawer: PropTypes.func.isRequired
     };
 
@@ -350,4 +370,6 @@ class CanvasItem extends Component {
 
 }
 
-export default DragSource(DRAG_TYPES.GME_NODE, canvasItemSource, collect)(CanvasItem);
+export default connect(mapStateToProps, mapDispatchToProps)(
+    DragSource(DRAG_TYPES.GME_NODE, canvasItemSource, collect)(CanvasItem)
+);

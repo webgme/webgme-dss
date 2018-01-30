@@ -1,14 +1,17 @@
 /*jshint node:true, mocha:true*/
-describe('DomainManager', function() {
-    var testFixture = require('../../globals'),  // TODO: May need to change this if not created from webgme-cli
+describe('DomainManager', function () {
+    let testFixture = require('../../globals'),
+        Q = testFixture.Q,
         superagent = testFixture.superagent,
         expect = testFixture.expect,
         gmeConfig = testFixture.getGmeConfig(),
         server = testFixture.WebGME.standaloneServer(gmeConfig),
-        // TODO: If not using webgme-cli, replace the mntPt w/ the desired mount point
-        // If using the webgme-cli, this will look up the mount point for the given router
-        mntPt = require('../../../webgme-setup.json').components.routers['DomainManager'].mount,
-        urlFor = function(action) {
+        mntPt = gmeConfig.rest.components['DomainManager'].mount,
+        logger = testFixture.logger.fork('DomainManager'),
+        SEED_INFO = require('../../../src/seeds/Modelica/metadata.json'),
+        gmeAuth,
+        storage,
+        urlFor = function (action) {
             return [
                 server.getUrl(),
                 mntPt,
@@ -16,72 +19,120 @@ describe('DomainManager', function() {
             ].join('/');
         };
 
-    before(function(done) {
-        server.start(done);
-    });
+    before(function (done) {
+        this.timeout(5000);
+        testFixture.clearDBAndGetGMEAuth(gmeConfig)
+            .then(function (gmeAuth_) {
+                let deferred = Q.defer();
+                server.start(deferred.makeNodeResolver());
+                gmeAuth = gmeAuth_;
 
-    after(function(done) {
-        server.stop(done);
-    });
+                storage = testFixture.getMongoStorage(logger, gmeConfig, gmeAuth);
 
-    it('should post to /postExample', function(done) {
-        superagent.post(urlFor('postExample'))
-            .end(function(err, res) {
-                try {
-                    expect(res.statusCode).to.equal(201);
+                return Q.allDone([
+                    storage.openDatabase(),
+                    deferred.promise
+                ]);
+            })
+            .then(function () {
+                // FIXME: The server worker manager does not start as it should..
+                setTimeout(()=>{
                     done();
-                } catch (e) {
-                    done(e);
-                }
-            });
+                }, 500);
+            })
+            .catch(done);
     });
 
-    it('should delete to /deleteExample', function(done) {
-        superagent.delete(urlFor('deleteExample'))
-            .end(function(err, res) {
-                try {
-                    expect(res.statusCode).to.equal(204);
-                    done();
-                } catch (e) {
-                    done(e);
-                }
-            });
+    after(function (done) {
+        let deferred = Q.defer();
+        server.start(deferred.makeNodeResolver());
+        Q.allDone([
+            gmeAuth.unload(),
+            storage.closeDatabase(),
+            server.stop(deferred.promise)
+        ])
+            .nodeify(done);
     });
 
-    it('should patch to /patchExample', function(done) {
-        superagent.patch(urlFor('patchExample'))
-            .end(function(err, res) {
-                try {
-                    expect(res.statusCode).to.equal(200);
-                    done();
-                } catch (e) {
-                    done(e);
-                }
-            });
+    it('should get seedInfo', function (done) {
+        let deferred = Q.defer();
+        superagent.get(urlFor('seedInfo'))
+            .end(deferred.makeNodeResolver());
+
+        deferred.promise
+            .then((res) => {
+                expect(res.body).to.deep.equal(SEED_INFO);
+            })
+            .nodeify(done);
     });
 
-    it('should get to /getExample', function(done) {
-        superagent.get(urlFor('getExample'))
-            .end(function(err, res) {
-                try {
-                    expect(res.statusCode).to.equal(200);
-                    done();
-                } catch (e) {
-                    done(e);
-                }
-            });
+    it('should create project with one domain and set the kind accordingly', function (done) {
+        let deferred = Q.defer();
+
+        superagent.post(urlFor('createProject'))
+            .send({
+                projectName: 'testProject1',
+                domains: ['Modelica.Electrical.Analog']
+            })
+            .end(deferred.makeNodeResolver());
+
+        deferred.promise
+            .then((res) => {
+                expect(res.body).to.deep.equal({
+                    projectId: 'guest+testProject1'
+                });
+
+                return storage.getProjects({
+                    projectId: 'guest+testProject1',
+                    info: true
+                });
+            })
+            .then((res) => {
+                expect(res[0].info.kind).to.equal('DSS:Modelica.Electrical.Analog');
+                return storage.getTags({
+                    projectId: 'guest+testProject1'
+                });
+            })
+            .then((res) => {
+                let tagNames = Object.keys(res);
+                expect(tagNames.length).to.equal(1);
+                expect(tagNames[0]).to.equal('Domain_1_1');
+            })
+            .nodeify(done);
     });
 
-    it('should get to /error', function(done) {
-        superagent.get(urlFor('error'))
-            .end(function(err, res) {
-                try {
-                    expect(res.statusCode).to.equal(500);
-                    done();
-                } catch (e) {
-                    done(e);
-                }
-            });
-    });
+    it('should update project with new domain and set the kind accordingly', function (done) {
+        let deferred = Q.defer();
 
+        superagent.post(urlFor('updateProject'))
+            .send({
+                projectId: 'guest+testProject1',
+                domains: ['Modelica.Mechanics.Rotational']
+            })
+            .end(deferred.makeNodeResolver());
+
+        deferred.promise
+            .then((res) => {
+                // expect(res.body).to.deep.equal({
+                //     projectId: 'guest+testProject1'
+                // });
+
+                return storage.getProjects({
+                    projectId: 'guest+testProject1',
+                    info: true
+                })
+            })
+            .then((res) => {
+                //expect(res[0].info.kind).to.equal('DSS:Modelica.Mechanics.Rotational');
+                return storage.getTags({
+                    projectId: 'guest+testProject1'
+                });
+            })
+            .then((res) => {
+                let tagNames = Object.keys(res);
+                expect(tagNames.length).to.equal(2);
+                expect(tagNames.sort()).to.deep.equal(['Domain_1_1', 'Domain_1_2']);
+            })
+            .nodeify(done);
+    });
 });

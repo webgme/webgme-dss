@@ -90,9 +90,10 @@ class CreateProject extends Component {
 
         let path = [
             this.props.gmeClient.gmeConfig.rest.components.DomainManager.mount,
-            'createProject',
-            createData.defaultName  // TODO: we should prompt for a name
+            'createProject'
         ].join('/');
+
+        createData.projectName = createData.defaultName;
 
         superagent.post(path)
             .send(createData)

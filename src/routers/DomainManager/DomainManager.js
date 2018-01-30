@@ -15,7 +15,7 @@ const express = require('express'),
     SEED_INFO = require('../../seeds/Modelica/metadata.json');
 
 function getDomainTagName(previousVersion) {
-    return 'Domain_' + SEED_INFO.version + '_' + previousVersion + 1;
+    return 'Domain_' + SEED_INFO.version + '_' + (previousVersion + 1);
 }
 
 /**
@@ -36,6 +36,7 @@ function initialize(middlewareOpts) {
     let logger = middlewareOpts.logger.fork('DomainManager'),
         ensureAuthenticated = middlewareOpts.ensureAuthenticated,
         swm = middlewareOpts.workerManager,
+        safeStorage = middlewareOpts.safeStorage,
         getUserId = middlewareOpts.getUserId;
 
     function getNewJWToken(userId) {
@@ -64,16 +65,25 @@ function initialize(middlewareOpts) {
         res.json(SEED_INFO);
     });
 
-    router.post('/createProject/:name', function (req, res, next) {
+
+    router.post('/createProject', function (req, res, next) {
         const userId = getUserId(req);
         let webgmeToken = null,
-            returnData;
+            returnData = {
+                projectId: null
+            };
 
-        logger.info('createProject', req.params.name, req.body);
+        /*
+        * body  {
+        *  projectName: 'MyProject',
+        *  domains: ['Modelica.Electrical.Analog']
+        * }
+        */
+        logger.info('createProject', req.body);
 
         getNewJWToken(userId)
             .then(token => {
-                req.body.domains.forEach((domain)=> {
+                req.body.domains.forEach((domain) => {
                     if (!SEED_INFO.domains.includes(domain)) {
                         throw new Error('Selected domain [' + domain + '] not available in seed!');
                     }
@@ -83,14 +93,14 @@ function initialize(middlewareOpts) {
                     command: CONSTANTS.SERVER_WORKER_REQUESTS.SEED_PROJECT,
                     webgmeToken: token,
                     type: 'file',
-                    seedName: req.body.seed,
-                    projectName: req.params.name,
+                    seedName: 'Modelica',
+                    projectName: req.body.projectName,
                     branchName: 'master',
                     kind: 'DSS:' + req.body.domains.join(':')
                 };
 
                 webgmeToken = token;
-
+                logger.info('Seeding', seedProjectParameters);
                 return Q.ninvoke(swm, 'request', seedProjectParameters);
             })
             .then(result => {
@@ -113,8 +123,105 @@ function initialize(middlewareOpts) {
                     }
                 };
 
-                returnData = result;
+                returnData.projectId = result.projectId;
                 logger.info('seed result', result);
+                logger.info('Selecting domains', pluginParameters);
+                return Q.ninvoke(swm, 'request', pluginParameters);
+            })
+            .then(result => {
+                logger.info('plugin result', result);
+
+                res.json(returnData);
+            })
+            .catch(err => {
+                logger.error(err);
+                next(err);
+            });
+    });
+
+    router.post('/updateProject', function (req, res, next) {
+        const userId = getUserId(req);
+        let webgmeToken = null,
+            latestVersion = 0,
+            baseHash,
+            returnData;
+
+        /*
+        * body  {
+        *  projectId: 'guest+MyProject',
+        *  domains: ['Modelica.Electrical.Analog'],
+        *  branchName: 'master'
+        * }
+        */
+        logger.info('updateProject', req.body);
+
+        getNewJWToken(userId)
+            .then(token => {
+                req.body.domains.forEach((domain) => {
+                    if (!SEED_INFO.domains.includes(domain)) {
+                        throw new Error('Selected domain [' + domain + '] not available in seed!');
+                    }
+                });
+
+                webgmeToken = token;
+
+                return safeStorage.getTags({
+                    projectId: req.body.projectId,
+                    username: userId
+                });
+            })
+            .then(tags => {
+                for (let tag in tags) {
+                    // tag = "Domain_1_2"
+                    if (tag.startsWith('Domain_') === false) {
+                        continue;
+                    }
+
+                    let version = parseInt(tag.split('_')[2], 10);
+
+                    if (version > latestVersion) {
+                        latestVersion = version;
+                        // TODO: With multiple branches the baseHash should be a tag in its history.
+                        baseHash = tags[tag];
+                    }
+                }
+
+                if (latestVersion === 0) {
+                    throw new Error('No Domain tags existed! Cannot update domains for this project.');
+                }
+
+                let updateProjectParameters = {
+                    command: CONSTANTS.SERVER_WORKER_REQUESTS.UPDATE_PROJECT_FROM_FILE,
+                    webgmeToken: webgmeToken,
+                    seedName: 'Modelica',
+                    projectId: req.body.projectId,
+                    commitHash: baseHash
+                };
+
+                return Q.ninvoke(swm, 'request', updateProjectParameters);
+            })
+            .then(result => {
+                let pluginParameters = {
+                    command: CONSTANTS.SERVER_WORKER_REQUESTS.EXECUTE_PLUGIN,
+                    webgmeToken: webgmeToken,
+                    name: 'DomainSelector',
+                    context: {
+                        managerConfig: {
+                            project:  req.body.projectId,
+                            activeNode: '',
+                            commitHash: result.hash,
+                            branchName: 'master'
+                        },
+                        pluginConfig: {
+                            domains: req.body.domains.join(':'),
+                            tagName: getDomainTagName(latestVersion),
+                            baseHash: baseHash
+                        }
+                    }
+                };
+
+                returnData = result;
+                logger.info('update result', result);
                 return Q.ninvoke(swm, 'request', pluginParameters);
             })
             .then(result => {

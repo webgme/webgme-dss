@@ -19,6 +19,7 @@ import PartBrowser from './PartBrowser';
 import PluginConfigDialog from '../PluginConfigDialog';
 
 import ConsoleDialog from '../ConsoleDialog';
+import OTConsoleTest from '../OTConsoleTest';
 
 const SIDE_PANEL_WIDTH = 240;
 const SIDE_PANEL_WIDTH_MINIMIZED = 50;
@@ -64,7 +65,8 @@ class LeftDrawer extends Component {
 
     state = {
         simulateDialog: false,
-        simluateConsole: false
+        simluateConsole: false,
+        simulateOT: false
     };
 
     render() {
@@ -90,7 +92,7 @@ class LeftDrawer extends Component {
                     <PlayCircleOutline/>
                 </IconButton>
                 <IconButton onClick={() => {
-                    this.setState({simulateDialog: true});
+                    this.setState({simulateOT: true});
                 }}>
                     <AddCircle/>
                 </IconButton>
@@ -110,6 +112,13 @@ class LeftDrawer extends Component {
                 {this.state.simulateConsole ? (<ConsoleDialog onReady={(config) => {
                     this.setState({simulateConsole: false});
                 }}/>) : null}
+                {this.state.simulateOT ? (<OTConsoleTest
+                    onReady={(config) => {
+                        this.setState({simulateOT: false});
+                    }}
+                    gmeClient={gmeClient}
+                    nodeId={'/Z/Z'}
+                    attributeName={'name'}/>) : null}
             </div>
         );
     }

@@ -334,7 +334,10 @@ class CanvasItem extends Component {
         if (endPoints.src.position && endPoints.dst.position) {
             return (<BasicConnection
                 key={activeNode}
-                path={[endPoints.src.position, endPoints.dst.position]}/>);
+                path={[endPoints.src.position, {
+                    x: endPoints.src.position.x,
+                    y: endPoints.dst.position.y
+                }, endPoints.dst.position]}/>);
         }
 
         return null;

@@ -10,19 +10,22 @@ export default class OTConsole extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
         nodeId: PropTypes.string.isRequired,
-        attributeName: PropTypes.string.isRequired
+        attributeName: PropTypes.string.isRequired,
+        onTest: PropTypes.func
     };
 
     state = {
         project: this.props.gmeClient.getProjectObject(),
         delta: new Delta(),
+        document: null,
         attributeValue: null,
         docId: null
     };
 
     onTerritoryUpdate = (hash, loads, updates, unloads) => {
-        const {nodeId, gmeClient, attributeName} = this.props,
-            {delta, attributeValue} = this.state;
+        const {nodeId, gmeClient, attributeName, onTest} = this.props,
+            {delta, attributeValue, document, project} = this.state,
+            self = this;
         let nodeObj, newState = {}, haveUpdated = false;
 
         if (loads.indexOf(nodeId) !== -1) {
@@ -30,12 +33,28 @@ export default class OTConsole extends Component {
             nodeObj = gmeClient.getNode(nodeId);
             newState.attributeValue = nodeObj.getAttribute(attributeName);
             newState.delta = delta.insert(newState.attributeValue);
+            if (document === null) {
+                project.watchDocument({
+                    branchName: 'master',
+                    nodeId: nodeId,
+                    attrName: attributeName,
+                    attrValue: newState.attributeValue
+                }, this.atOperation, this.atSelection)
+                    .then(function (initData) {
+                        if (onTest)
+                            onTest(initData);
+                        self.setState({docId: initData.docId, document: initData.document});
+                    });
+
+                newState.document = newState.attributeValue;
+            }
             haveUpdated = true;
         } else if (updates.indexOf(nodeId) !== -1) {
             nodeObj = gmeClient.getNode(nodeId);
             newState.attributeValue = nodeObj.getAttribute(attributeName);
             if (newState.attributeValue !== attributeValue) {
                 newState.delta = delta.delete(delta.length()).insert(newState.attributeValue);
+                newState.document = newState.attributeValue;
                 haveUpdated = true;
             }
         }
@@ -45,43 +64,29 @@ export default class OTConsole extends Component {
         }
     };
 
+    //TODO we should be able to have different color for the latest change
     atOperation = (operation) => {
-        console.log(operation);
+        this.setState({document: operation.apply(this.state.document)});
     };
 
     //TODO we need to transform this into operations if we want to support
     atSelection = (selection) => {
-        console.log(selection);
     };
-
-    componentWillMount() {
-        const {nodeId, attributeName} = this.props,
-            {project} = this.state,
-            self = this;
-
-        project.watchDocument({
-            branchName: 'master',
-            nodeId: nodeId,
-            attrName: attributeName,
-            attrValue: ''
-        }, this.atOperation, this.atSelection)
-            .then(function (initData) {
-                self.setState({docId: initData.docId});
-            });
-
-    }
 
     componentWillUnmount() {
         const {project, docId} = this.state;
-        project.unwatchDocument(docId);
+        project.unwatchDocument({docId: docId});
     }
 
     render() {
-        const {gmeClient} = this.props,
-            {delta} = this.state;
+        const {gmeClient, nodeId} = this.props,
+            {document} = this.state;
+        let territory = {};
+        territory[nodeId] = {children: 0};
 
-        return (<div>
-            <Territory gmeClient={gmeClient} onlyActualEvents={true} onUpdate={this.onTerritoryUpdate}/>
+        return (<div style={{backgroundColor: '#002b36', height: '100%', width: '100%'}}>
+            <Territory gmeClient={gmeClient} onlyActualEvents={true} onUpdate={this.onTerritoryUpdate}
+                       territory={territory}/>
             <ReactQuill
                 style={{
                     backgroundColor: '#002b36',
@@ -90,7 +95,7 @@ export default class OTConsole extends Component {
                     fontFamily: 'monospace'
                 }}
                 theme={null}
-                value={delta}
+                value={document}
                 readOnly={true}/>
         </div>);
     }

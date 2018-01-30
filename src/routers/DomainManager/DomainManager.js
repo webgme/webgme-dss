@@ -2,7 +2,8 @@
 /*jshint node:true*/
 
 /**
- * This router handles creation of new projects and additions/removals of domains in existing ones.
+ * This router handles creation of new projects and additions/removals of domains in
+ * existing ones.
  */
 
 'use strict';

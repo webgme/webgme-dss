@@ -11,6 +11,8 @@ import Typography from 'material-ui/Typography';
 import {CircularProgress} from 'material-ui/Progress';
 import Grid from 'material-ui/Grid';
 
+import DomainSelector from './Dialogs/DomainSelector';
+
 //http://www.publicdomainpictures.net
 //TODO: This should be defined elsewhere
 const SEEDS = [
@@ -86,17 +88,35 @@ class CreateProject extends Component {
         classes: PropTypes.object.isRequired
     };
 
-    createNew(createData) {
+    state = {
+        showDialog: false,
+        createData: null
+    };
+
+    onCreateNewClick = (createData) => {
+        this.setState({
+            createData: createData,
+            showDialog: true
+        });
+    };
+
+    onCreateNewProject = (data) => {
+        this.setState({showDialog: false});
+        if (!data) {
+            // Cancelled
+            return;
+        }
 
         let path = [
             this.props.gmeClient.gmeConfig.rest.components.DomainManager.mount,
             'createProject'
         ].join('/');
 
-        createData.projectName = createData.defaultName;
-
         superagent.post(path)
-            .send(createData)
+            .send({
+                projectName: data.name,
+                domains: data.domains
+            })
             .end((err, result) => {
                 if (err) {
                     // TODO: we need to show these errors
@@ -107,7 +127,7 @@ class CreateProject extends Component {
                     this.props.history.push(`/p/${owner}/${name}`);
                 }
             });
-    }
+    };
 
     render() {
         const {projects, classes} = this.props;
@@ -116,7 +136,7 @@ class CreateProject extends Component {
             let buttons = [];
             if (projects) {
                 buttons.push(<Button key="createBtn" dense color="primary" onClick={() => {
-                    this.createNew(seedInfo.createData)
+                    this.onCreateNewClick(seedInfo.createData)
                 }}>
                     Create
                 </Button>);
@@ -155,11 +175,20 @@ class CreateProject extends Component {
             );
         });
 
+        let {showDialog, createData} = this.state;
         return (
             <div>
                 <Grid container spacing={24}>
                     {cards}
                 </Grid>
+
+                {showDialog ?
+                    <DomainSelector onOK={this.onCreateNewProject}
+                                    onCancel={this.onCreateNewProject}
+                                    defaultName={createData.defaultName}
+                                    domains={createData.domains}
+                                    showDomainSelection={createData.domains.length === 0}
+                    /> : null}
             </div>
         );
     }

@@ -5,6 +5,11 @@
         "src": "src/routers/AppRouter",
         "test": "test/routers/AppRouter",
         "mount": "p"
+      },
+      "DomainManager": {
+        "src": "src/routers/DomainManager",
+        "test": "test/routers/DomainManager",
+        "mount": "DomainManager"
       }
     },
     "seeds": {

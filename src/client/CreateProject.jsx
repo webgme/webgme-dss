@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
+
+import superagent from 'superagent';
 
 import {withStyles} from 'material-ui/styles';
 import Card, {CardActions, CardContent, CardMedia} from 'material-ui/Card';
@@ -33,8 +35,8 @@ const SEEDS = [
         infoUrl: 'http://doc.modelica.org/om/Modelica.Mechanics.Rotational.html',
         createData: {
             seed: 'Modelica',
-            defaultName: 'ElectricalAnalog',
-            domains: ['Modelica.Electrical.Analog']
+            defaultName: 'RotationalMechanics',
+            domains: ['Modelica.Mechanics.Rotational']
         }
     },
     {
@@ -47,8 +49,8 @@ const SEEDS = [
         infoUrl: 'http://doc.modelica.org/om/Modelica.Mechanics.Translational.html',
         createData: {
             seed: 'Modelica',
-            defaultName: 'ElectricalAnalog',
-            domains: ['Modelica.Electrical.Analog']
+            defaultName: 'TranslationalMechanics',
+            domains: ['Modelica.Mechanics.Translational']
         }
     },
     {
@@ -85,7 +87,25 @@ class CreateProject extends Component {
     };
 
     createNew(createData) {
-        console.log('createNewProject', createData);
+
+        let path = [
+            this.props.gmeClient.gmeConfig.rest.components.DomainManager.mount,
+            'createProject',
+            createData.defaultName  // TODO: we should prompt for a name
+        ].join('/');
+
+        superagent.post(path)
+            .send(createData)
+            .end((err, result) => {
+                if (err) {
+                    // TODO: we need to show these errors
+                    console.error(err);
+                } else {
+                    console.log(result);
+                    const [owner, name] = result.body.projectId.split('+');
+                    this.props.history.push(`/p/${owner}/${name}`);
+                }
+            });
     }
 
     render() {
@@ -145,4 +165,4 @@ class CreateProject extends Component {
 }
 
 
-export default withStyles(styles)(CreateProject);
+export default withRouter(withStyles(styles)(CreateProject));

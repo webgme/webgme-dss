@@ -19,6 +19,7 @@
     "react-scripts": "1.0.17",
     "react-svg": "^2.2.10",
     "react-treebeard": "^2.1.0",
+    "superagent": "^3.8.2",
     "webgme-engine": "^2.19.3"
   },
   "scripts": {

@@ -10,9 +10,16 @@ config.seedProjects.basePaths.push(__dirname + '/../src/seeds/Modelica');
 
 
 
+
+
 config.rest.components['AppRouter'] = {
   src: __dirname + '/../src/routers/AppRouter/AppRouter.js',
   mount: 'p',
+  options: {}
+};
+config.rest.components['DomainManager'] = {
+  src: __dirname + '/../src/routers/DomainManager/DomainManager.js',
+  mount: 'DomainManager',
   options: {}
 };
 

@@ -1,0 +1,9 @@
+{
+  "version": "0.1.0",
+  "domains": [
+    "Modelica.Electrical.Analog",
+    "Modelica.Mechanics.Translational",
+    "Modelica.Mechanics.Rotational"
+  ],
+  "canvasId": "/Z"
+}

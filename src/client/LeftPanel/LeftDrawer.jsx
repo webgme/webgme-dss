@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import classNames from 'classnames';
 import Drawer from 'material-ui/Drawer';
@@ -17,6 +17,8 @@ import {toggleLeftDrawer} from '../actions';
 
 import PartBrowser from './PartBrowser';
 import PluginConfigDialog from '../PluginConfigDialog';
+
+import ConsoleDialog from '../ConsoleDialog';
 
 const SIDE_PANEL_WIDTH = 240;
 const SIDE_PANEL_WIDTH_MINIMIZED = 50;
@@ -61,43 +63,53 @@ class LeftDrawer extends Component {
     };
 
     state = {
-        simulateDialog: false
+        simulateDialog: false,
+        simluateConsole: false
     };
 
     render() {
         const {classes, gmeClient, open} = this.props;
         return (
             <div>
-            <Drawer type="permanent"
-                    anchor="left"
-                    open={open}
-                    classes={{paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose)}}>
+                <Drawer type="permanent"
+                        anchor="left"
+                        open={open}
+                        classes={{paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose)}}>
                 <span>
                 <IconButton onClick={open ? this.props.hide : this.props.show}>
                     {open ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                 </IconButton>
-                <IconButton onClick={() => { this.setState({simulateDialog: true}); }}>
+                <IconButton onClick={() => {
+                    this.setState({simulateDialog: true});
+                }}>
                     <CheckCircle/>
                 </IconButton>
-                <IconButton onClick={() => { this.setState({simulateDialog: true}); }}>
+                <IconButton onClick={() => {
+                    this.setState({simulateConsole: true});
+                }}>
                     <PlayCircleOutline/>
                 </IconButton>
-                <IconButton onClick={() => { this.setState({simulateDialog: true}); }}>
+                <IconButton onClick={() => {
+                    this.setState({simulateDialog: true});
+                }}>
                     <AddCircle/>
                 </IconButton>
                 </span>
-                <Divider/>
-                <PartBrowser gmeClient={gmeClient} minimized={!open}/>
+                    <Divider/>
+                    <PartBrowser gmeClient={gmeClient} minimized={!open}/>
 
-            </Drawer>
+                </Drawer>
                 {this.state.simulateDialog ? (<PluginConfigDialog onReady={(config) => {
-                                                                    console.log('config set:', config);
-                                                                    this.setState({simulateDialog: false});
-                                                                }}
-                                                                onCancel={() => {
-                                                                    console.log('canceled');
-                                                                    this.setState({simulateDialog: false});
-                                                                }}/>) : null}
+                    console.log('config set:', config);
+                    this.setState({simulateDialog: false});
+                }}
+                                                                  onCancel={() => {
+                                                                      console.log('canceled');
+                                                                      this.setState({simulateDialog: false});
+                                                                  }}/>) : null}
+                {this.state.simulateConsole ? (<ConsoleDialog onReady={(config) => {
+                    this.setState({simulateConsole: false});
+                }}/>) : null}
             </div>
         );
     }

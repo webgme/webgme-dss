@@ -16,10 +16,17 @@
       "Modelica": {
         "src": "src/seeds/Modelica"
       }
+    },
+    "plugins": {
+      "DomainSelector": {
+        "src": "src/plugins/DomainSelector",
+        "test": "test/plugins/DomainSelector"
+      }
     }
   },
   "dependencies": {
     "routers": {},
-    "seeds": {}
+    "seeds": {},
+    "plugins": {}
   }
 }

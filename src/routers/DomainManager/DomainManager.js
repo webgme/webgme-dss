@@ -12,7 +12,11 @@ const express = require('express'),
     Q = require('q'),
     router = express.Router(),
     CONSTANTS = requireJS('common/Constants'),
-    DOMAIN_INFO = require('../../seeds/Modelica/metadata.json');
+    SEED_INFO = require('../../seeds/Modelica/metadata.json');
+
+function getDomainTagName(previousVersion) {
+    return 'Domain_' + SEED_INFO.version + '_' + previousVersion + 1;
+}
 
 /**
  * Called when the server is created but before it starts to listening to incoming requests.
@@ -34,18 +38,12 @@ function initialize(middlewareOpts) {
         swm = middlewareOpts.workerManager,
         getUserId = middlewareOpts.getUserId;
 
-    function getNewJWToken(userId, callback) {
-        let deferred = Q.defer();
-
+    function getNewJWToken(userId) {
         if (middlewareOpts.gmeConfig.authentication.enable === true) {
-            middlewareOpts.gmeAuth.generateJWTokenForAuthenticatedUser(userId)
-                .then(deferred.resolve)
-                .catch(deferred.reject);
+            return middlewareOpts.gmeAuth.generateJWTokenForAuthenticatedUser(userId);
         } else {
-            deferred.resolve();
+            return Q();
         }
-
-        return deferred.promise.nodeify(callback);
     }
 
     logger.debug('initializing ...');
@@ -63,23 +61,31 @@ function initialize(middlewareOpts) {
     router.use('*', ensureAuthenticated);
 
     router.get('/seedInfo', function (req, res/*, next*/) {
-        res.json(DOMAIN_INFO);
+        res.json(SEED_INFO);
     });
 
     router.post('/createProject/:name', function (req, res, next) {
         const userId = getUserId(req);
-        let webgmeToken = null;
+        let webgmeToken = null,
+            returnData;
 
         logger.info('createProject', req.params.name, req.body);
 
         getNewJWToken(userId)
             .then(token => {
+                req.body.domains.forEach((domain)=> {
+                    if (!SEED_INFO.domains.includes(domain)) {
+                        throw new Error('Selected domain [' + domain + '] not available in seed!');
+                    }
+                });
+
                 let seedProjectParameters = {
                     command: CONSTANTS.SERVER_WORKER_REQUESTS.SEED_PROJECT,
                     webgmeToken: token,
                     type: 'file',
                     seedName: req.body.seed,
                     projectName: req.params.name,
+                    branchName: 'master',
                     kind: 'DSS:' + req.body.domains.join(':')
                 };
 
@@ -88,9 +94,33 @@ function initialize(middlewareOpts) {
                 return Q.ninvoke(swm, 'request', seedProjectParameters);
             })
             .then(result => {
-                logger.info(result);
-                // TODO: Invoke plugin that filters out domains..
-                res.json(result);
+                let pluginParameters = {
+                    command: CONSTANTS.SERVER_WORKER_REQUESTS.EXECUTE_PLUGIN,
+                    webgmeToken: webgmeToken,
+                    name: 'DomainSelector',
+                    context: {
+                        managerConfig: {
+                            project: result.projectId,
+                            activeNode: '',
+                            commitHash: result.commitHash,
+                            branchName: 'master'
+                        },
+                        pluginConfig: {
+                            domains: req.body.domains.join(':'),
+                            tagName: getDomainTagName(0),
+                            baseHash: result.commitHash
+                        }
+                    }
+                };
+
+                returnData = result;
+                logger.info('seed result', result);
+                return Q.ninvoke(swm, 'request', pluginParameters);
+            })
+            .then(result => {
+                logger.info('plugin result', result);
+
+                res.json(returnData);
             })
             .catch(err => {
                 logger.error(err);

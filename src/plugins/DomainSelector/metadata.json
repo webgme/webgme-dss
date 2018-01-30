@@ -1,0 +1,39 @@
+{
+  "id": "DomainSelector",
+  "name": "Domain Selector",
+  "version": "0.1.0",
+  "description": "",
+  "icon": {
+    "class": "glyphicon glyphicon-cog",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "writeAccessRequired": false,
+  "configStructure": [
+    {
+      "name": "domains",
+      "displayName": "Modelica Domains",
+      "description": "Colon, ':', separated list of modelica domains.",
+      "value": "",
+      "valueType": "string",
+      "readOnly": false
+    },
+    {
+      "name": "tagName",
+      "displayName": "Tag name",
+      "description": "Name of the tag to add after language update",
+      "value": "",
+      "valueType": "string",
+      "readOnly": false
+    },
+    {
+      "name": "baseHash",
+      "displayName": "Base hash",
+      "description": "Commit-hash to compute language diff from",
+      "value": false,
+      "valueType": "boolean",
+      "readOnly": false
+    }
+  ]
+}

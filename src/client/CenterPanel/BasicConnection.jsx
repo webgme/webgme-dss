@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 export default class BasicConnection extends Component {
     static propTypes = {
         path: PropTypes.array.isRequired,
-        onClick: PropTypes.func
+        onClick: PropTypes.func,
+        hasWrapper: PropTypes.bool.isRequired,
+        dashed: PropTypes.bool.isRequired
     };
 
     onClick = (event) => {
@@ -52,9 +54,10 @@ export default class BasicConnection extends Component {
     };
 
     render() {
-        const {path} = this.props;
+        const {path, hasWrapper, dashed} = this.props;
         let box = this.getBoundingBox(),
-            sections = [], i;
+            sections = [], i,
+            style = hasWrapper ? {} : {position: 'absolute', top: box.y, left: box.x, zIndex: 9};
 
         if (box === null) {
             return null;
@@ -69,13 +72,14 @@ export default class BasicConnection extends Component {
                 (path[i + 1].x) + ' ' +
                 (path[i + 1].y)}
                 strokeWidth={1}
+                strokeDasharray={dashed ? 5 : 0}
                 stroke={'black'}/>)
         }
 
         return (<svg
             width={box.width}
             height={box.height}
-            style={{position: 'absolute', top: box.y, left: box.x}}
+            style={style}
             viewBox={box.x + ' ' + box.y + ' ' + box.width + ' ' + box.height}>
             {sections}
         </svg>);

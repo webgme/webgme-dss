@@ -10,7 +10,8 @@ export default class CanvasItemPort extends Component {
         position: PropTypes.object,
         dimensions: PropTypes.object,
         hidden: PropTypes.bool.isRequired,
-        absolutePosition: PropTypes.object.isRequired
+        absolutePosition: PropTypes.object.isRequired,
+        validTypes: PropTypes.object.isRequired
     };
 
     state = {
@@ -18,8 +19,8 @@ export default class CanvasItemPort extends Component {
         mouseOver: false
     };
 
-    constructor(props) {
-        super(props);
+    constructor(/*props*/) {
+        super();
         console.count('CanvasItemPort:ctor');
     }
 
@@ -28,7 +29,7 @@ export default class CanvasItemPort extends Component {
             connectionId;
 
         gmeClient.startTransaction('creating a connection');
-        connectionId = gmeClient.createNode({base: type, parent: contextNode});
+        connectionId = gmeClient.createNode({baseId: type, parentId: contextNode});
         gmeClient.setPointer(connectionId, 'src', source);
         gmeClient.setPointer(connectionId, 'dst', activeNode);
         gmeClient.completeTransaction('connection created');
@@ -36,7 +37,7 @@ export default class CanvasItemPort extends Component {
 
     onClick = (/*event*/) => {
         let self = this,
-            {connectionManager, activeNode, absolutePosition, dimensions} = this.props;
+            {connectionManager, activeNode, absolutePosition, dimensions, validTypes} = this.props;
 
         if (connectionManager.isConnecting) {
             let connectionParams = connectionManager.endConnection();
@@ -46,7 +47,7 @@ export default class CanvasItemPort extends Component {
             this.setState({freeze: false});
         } else {
 
-            connectionManager.startConnection(activeNode, 'someConnectionType', {
+            connectionManager.startConnection(activeNode, validTypes.src, {
                 x: absolutePosition.x + (dimensions.x / 2),
                 y: absolutePosition.y + (dimensions.y / 2)
             }, () => {
@@ -65,13 +66,16 @@ export default class CanvasItemPort extends Component {
     };
 
     render() {
-        let {hidden, position, dimensions} = this.props,
+        let {hidden, position, dimensions, validTypes, connectionManager} = this.props,
             {freeze, mouseOver} = this.state,
             left, top, width, height, border;
 
-        if (hidden && !freeze) {
+        if (!freeze && (hidden ||
+                validTypes.src === undefined ||
+                (connectionManager.isConnecting && validTypes.dst !== connectionManager.type))) {
             return null;
         }
+
         left = mouseOver ? (position ? position.x - 5 : 0) + 'px' : (position ? position.x : 0) + 'px';
         top = mouseOver ? (position ? position.y - 5 : 0) + 'px' : (position ? position.y : 0) + 'px';
         width = mouseOver ? (dimensions ? dimensions.x + 8 : 13) + 'px' : (dimensions ? dimensions.x : 5) + 'px';

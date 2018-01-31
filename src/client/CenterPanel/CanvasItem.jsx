@@ -72,6 +72,7 @@ class CanvasItem extends Component {
         modelicaUri: 'Default',
         svgReady: false,
         childrenName2Id: {},
+        childInfo: {},
         isConnection: null,
         currentRootHash: null,
         endPoints: {src: {id: null}, dst: {id: null}},
@@ -79,8 +80,8 @@ class CanvasItem extends Component {
         justRemovedIds: []
     };
 
-    constructor(props) {
-        super(props);
+    constructor(/*props*/) {
+        super();
         console.count('CanvasItem:ctor');
     }
 
@@ -127,6 +128,20 @@ class CanvasItem extends Component {
         }
     };
 
+    getChildInfo = (childNode) => {
+        const {gmeClient} = this.props,
+            metaNodes = gmeClient.getAllMetaNodes(true);
+        let info = {name: childNode.getAttribute('name'), validConnection: {}};
+        for (let path in metaNodes) {
+            if (childNode.isValidTargetOf(path, 'src'))
+                info.validConnection.src = path;
+            if (childNode.isValidTargetOf(path, 'dst'))
+                info.validConnection.dst = path;
+        }
+
+        return info;
+    };
+
     territoryUpdates = (hash, loads, updates, unloads) => {
         const {activeNode, gmeClient, eventManager} = this.props,
             {endPoints} = this.state;
@@ -150,6 +165,7 @@ class CanvasItem extends Component {
                 modelicaUri: 'Default',
                 svgReady: false,
                 childrenName2Id: {},
+                childInfo: {},
                 isConnection: null,
                 currentRootHash: null,
                 endPoints: {src: {id: null}, dst: {id: null}},
@@ -167,7 +183,8 @@ class CanvasItem extends Component {
             modelicaUri = 'Default',
             territory = {},
             childrenPaths = nodeObj.getChildrenIds(),
-            childrenName2Id = {};
+            childrenName2Id = {},
+            childInfo = {};
 
         if (isConnection) {
             newEndpoints = {
@@ -195,16 +212,19 @@ class CanvasItem extends Component {
         } else {
             newEndpoints = endPoints;
             childrenName2Id = this.state.childrenName2Id;
+            childInfo = this.state.childInfo;
             modelicaUri = metaNode.getAttribute('ModelicaURI') || 'Default';
             childrenPaths.forEach((childPath) => {
                 if (loads.indexOf(childPath) !== -1 || updates.indexOf(childPath) !== -1) {
                     let childNode = gmeClient.getNode(childPath);
                     childrenName2Id[childNode.getAttribute('name')] = childPath;
+                    childInfo[childPath] = this.getChildInfo(childNode);
                 } else if (unloads.indexOf(childPath) !== -1) {
                     let name;
                     for (name in childrenName2Id) {
                         if (childrenName2Id[name] === childPath) {
                             delete childrenName2Id[name];
+                            delete childInfo[childPath];
                         }
                     }
                 }
@@ -220,6 +240,7 @@ class CanvasItem extends Component {
             isConnection: isConnection,
             endPoints: newEndpoints,
             childrenName2Id: childrenName2Id,
+            childInfo: childInfo,
             territory: territory,
             justRemovedIds: unloads
         });
@@ -246,19 +267,18 @@ class CanvasItem extends Component {
                 style={{
                     position: 'absolute',
                     top: /*position.y + */attributes[key].bbox.y * scale,
-                    left: /*position.x + */attributes[key].bbox.x * scale,
-                    zIndex: 10
+                    left: /*position.x + */attributes[key].bbox.x * scale
                 }}
                 viewBox={'' + (attributes[key].bbox.x * scale) + ' ' + (attributes[key].bbox.y * scale) +
                 ' ' + ((attributes[key].bbox.x + attributes[key].bbox.width) * scale) +
                 ' ' + ((attributes[key].bbox.y + attributes[key].bbox.height) * scale)}>
                 <text
-                    x={(attributes[key].parameters.x || 0)*scale}
-                    y={(attributes[key].parameters.y || 0)*scale}
+                    x={(attributes[key].parameters.x || 0) * scale}
+                    y={(attributes[key].parameters.y || 0) * scale}
                     alignmentBaseline={attributes[key].parameters['alignment-baseline'] || 'middle'}
                     fill={attributes[key].parameters.fill || 'rgb(0,0,255)'}
                     fontFamily={attributes[key].parameters['font-family'] || 'Veranda'}
-                    fontSize={Number(attributes[key].parameters['font-size'] || '18')*scale}
+                    fontSize={Number(attributes[key].parameters['font-size'] || '18') * scale}
                     textAnchor={attributes[key].parameters['text-anchor'] || 'middle'}
                 >{attributes[key].text.substring(0, attributes[key].position) +
                 node.getAttribute(key) +
@@ -267,6 +287,40 @@ class CanvasItem extends Component {
         }
 
         return attributeItems;
+    };
+
+    getActionItems = (force, onlyDelete) => {
+        const {activateAttributeDrawer, activeNode} = this.props,
+            {showActions} = this.state;
+        let items;
+
+        if (!showActions && !force)
+            return null;
+
+        items = [
+            (<IconButton style={{height: '20px', width: '20px', position: 'absolute', top: '0px', right: '0px'}}
+                         onClick={this.deleteNode}>
+                <DeleteIcon style={{height: '20px', width: '20px'}}/>
+            </IconButton>),
+            (<IconButton style={{
+                height: '20px',
+                width: '20px',
+                position: 'absolute',
+                top: '0px',
+                right: '20px',
+                zIndex: 11
+            }}
+                         onClick={() => {
+                             activateAttributeDrawer(activeNode);
+                         }}>
+                <ModeEdit style={{height: '20px', width: '20px', zIndex: 11}}/>
+            </IconButton>)
+        ];
+
+        if (onlyDelete)
+            items.splice(1, 1);
+
+        return items;
     };
 
     boxRender = () => {
@@ -286,9 +340,10 @@ class CanvasItem extends Component {
                 modelicaUri,
                 position,
                 childrenName2Id,
+                childInfo,
                 justRemovedIds
             } = this.state,
-            {ports, attributes, bbox, base} = SVGCACHE[modelicaUri];
+            {ports, bbox, base} = SVGCACHE[modelicaUri];
         let portComponents = [],
             i, keys,
             events = [];
@@ -304,11 +359,12 @@ class CanvasItem extends Component {
                     key={keys[i]}
                     gmeClient={gmeClient}
                     connectionManager={connectionManager}
-                    activeNode={activeNode}
+                    activeNode={childrenName2Id[keys[i]]}
                     contextNode={contextNode}
                     position={{x: scale * ports[keys[i]].x, y: scale * ports[keys[i]].y}}
                     dimensions={{x: scale * ports[keys[i]].width - 1, y: scale * ports[keys[i]].height - 1}}
-                    hidden={/*!showActions*/false}
+                    hidden={!showActions}
+                    validTypes={childInfo[childrenName2Id[keys[i]]].validConnection}
                     absolutePosition={{
                         x: position.x + (scale * ports[keys[i]].x),
                         y: position.y + (scale * ports[keys[i]].y)
@@ -347,34 +403,36 @@ class CanvasItem extends Component {
                           width: bbox.width * scale
                       }}/>
                 {this.getAttributeItems()}
-                {showActions ?
-                    <IconButton style={{height: '20px', width: '20px', position: 'absolute', top: '0px', right: '0px'}}
-                                onClick={this.deleteNode}>
-                        <DeleteIcon style={{height: '20px', width: '20px'}}/>
-                    </IconButton> :
-                    null}
-                {showActions ?
-                    <IconButton style={{height: '20px', width: '20px', position: 'absolute', top: '0px', right: '20px'}}
-                                onClick={() => {
-                                    activateAttributeDrawer(activeNode);
-                                }}>
-                        <ModeEdit style={{height: '20px', width: '20px'}}/>
-                    </IconButton> :
-                    null}
+                {this.getActionItems()}
             </div>);
     };
 
     connectionRender = () => {
-        const {endPoints} = this.state,
+        const {endPoints, showActions} = this.state,
             {activeNode} = this.props;
+        let points, bbox;
 
         if (endPoints.src.position && endPoints.dst.position) {
-            return (<BasicConnection
-                key={activeNode}
-                path={[endPoints.src.position, {
-                    x: endPoints.src.position.x,
-                    y: endPoints.dst.position.y
-                }, endPoints.dst.position]}/>);
+            points = [endPoints.src.position, {
+                x: endPoints.src.position.x,
+                y: endPoints.dst.position.y
+            }, endPoints.dst.position];
+
+            return [(<div style={{
+                position: 'absolute',
+                top: endPoints.dst.position.y - 20,
+                left: endPoints.src.position.x - 20,
+                height: 40,
+                width: 40,
+                zIndex: 11
+            }}
+                          onMouseEnter={this.onMouseEnter}
+                          onMouseLeave={this.onMouseLeave}>{this.getActionItems(false, true)}</div>),
+                (<BasicConnection
+                    key={activeNode}
+                    path={points}
+                    dashed={showActions}
+                    hasWrapper={false}/>)];
         }
 
         return null;

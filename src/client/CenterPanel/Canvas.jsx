@@ -146,13 +146,14 @@ class Canvas extends SingleConnectedNode {
     };
 
     render() {
-        const {connectDropTarget, isOver, activeNode} = this.props,
+        const {connectDropTarget, isOver, activeNode, gmeClient} = this.props,
+            {children, nodeInfo} = this.state,
             self = this;
 
-        let children = this.state.children.map((child) => {
+        let childrenItems = children.map((child) => {
             return (<CanvasItem
                 key={child.id}
-                gmeClient={this.props.gmeClient}
+                gmeClient={gmeClient}
                 activeNode={child.id}
                 contextNode={activeNode}
                 connectionManager={self.cm}
@@ -180,8 +181,8 @@ class Canvas extends SingleConnectedNode {
                     position: 'sticky',
                     top: '10px',
                     left: '10px'
-                }}>{`Node ${this.state.nodeInfo.name} open`}</div>
-                {children}
+                }}>{`Node ${nodeInfo.name} open`}</div>
+                {childrenItems}
             </div>);
     }
 }

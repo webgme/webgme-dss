@@ -74,8 +74,8 @@ export default class CanvasItemPort extends Component {
         }
         left = mouseOver ? (position ? position.x - 5 : 0) + 'px' : (position ? position.x : 0) + 'px';
         top = mouseOver ? (position ? position.y - 5 : 0) + 'px' : (position ? position.y : 0) + 'px';
-        width = mouseOver ? (dimensions ? dimensions.x + 10 : 15) + 'px' : (dimensions ? dimensions.x : 5) + 'px';
-        height = mouseOver ? (dimensions ? dimensions.y + 10 : 15) + 'px' : (dimensions ? dimensions.y : 5) + 'px';
+        width = mouseOver ? (dimensions ? dimensions.x + 8 : 13) + 'px' : (dimensions ? dimensions.x : 5) + 'px';
+        height = mouseOver ? (dimensions ? dimensions.y + 8 : 13) + 'px' : (dimensions ? dimensions.y : 5) + 'px';
         border = mouseOver ? '2px solid #000000' : '1px solid #000000';
 
         return (<div style={{

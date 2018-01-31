@@ -7,6 +7,7 @@ import {Samy, SvgProxy} from 'react-samy-svg';
 import Typography from 'material-ui/Typography';
 
 import {DRAG_TYPES} from '../CONSTANTS';
+import SVGCACHE from './../../svgcache';
 
 /// End of DragLayer..
 const partBrowserItemSource = {
@@ -37,6 +38,7 @@ class PartBrowserItem extends Component {
         nodeData: PropTypes.shape({
             id: PropTypes.string.isRequired,
             name: PropTypes.string,
+            modelicaUri: PropTypes.string,
             iconUrl: PropTypes.string
         }),
         scale: PropTypes.number.isRequired,
@@ -56,17 +58,12 @@ class PartBrowserItem extends Component {
         });
     }
 
-    onSVGReady = (svgEl) => {
-        //TODO: Handle non-existing svg!
-    };
-
     render() {
         const {nodeData, connectDragSource, listView} = this.props;
 
         return connectDragSource(
             <div style={{opacity: 0.99, paddingTop: listView ? 10 : 0, cursor: 'pointer'}}>
-                <span><Samy path={nodeData.iconUrl}
-                            onSVGReady={this.onSVGReady}
+                <span><Samy svgXML={SVGCACHE[nodeData.modelicaUri].base}
                             style={{
                                 height: '100%',
                                 width: 40,

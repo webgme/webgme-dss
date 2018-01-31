@@ -5,6 +5,7 @@ import {DragLayer} from 'react-dnd';
 import {Samy} from 'react-samy-svg';
 
 import {DRAG_TYPES} from '../CONSTANTS';
+import SVGCACHE from '../../svgcache';
 
 // DragLayer
 function collect(monitor) {
@@ -19,16 +20,16 @@ function collect(monitor) {
 
 class PartBrowserDragPreview extends Component {
     render() {
-        const { item, itemType, isDragging, currentOffset, initialOffset, scale } = this.props;
+        const {item, itemType, isDragging, currentOffset, initialOffset, scale} = this.props;
         if (!isDragging || !item || itemType !== DRAG_TYPES.GME_NODE ||
             !item.nodeData || !currentOffset || !initialOffset) {
             return null;
         }
 
-        const { x, y } = { x: currentOffset.x - initialOffset.x, y: currentOffset.y - initialOffset.y};
+        const {x, y} = {x: currentOffset.x - initialOffset.x, y: currentOffset.y - initialOffset.y};
         const transform = `translate(${x}px, ${y}px)`;
         return (
-            <Samy path={item.nodeData.iconUrl}
+            <Samy svgXML={SVGCACHE[item.nodeData.modelicaUri].base}
                   style={{
                       position: 'absolute',
                       top: initialOffset.y - item.offset.y,

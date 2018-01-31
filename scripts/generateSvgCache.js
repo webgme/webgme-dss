@@ -86,9 +86,51 @@ function getTemplate(jsonTextItem) {
     return template;
 }
 
+function stringToBBox(string) {
+    let bbox = string.split(' ');
+    return {
+        x: Number(bbox[0]),
+        y: Number(bbox[1]),
+        height: Number(bbox[3]) - Number(bbox[1]),
+        width: Number(bbox[2]) - Number(bbox[0])
+    };
+}
+
+function getAttributeItem(textFieldJson) {
+    const matchPattern = /\%\w+/g;
+    let template, bbox, attributeItem = {},
+        match;
+    (textFieldJson.tspan || []).forEach((tspan) => {
+        if (tspan.$.class === 'data-bind') {
+            template = tspan._;
+        }
+        if (tspan.$.class === 'bbox')
+            bbox = stringToBBox(tspan._);
+    });
+
+    if (bbox !== undefined && template !== undefined) {
+        attributeItem.bbox = bbox;
+        match = matchPattern.exec(template);
+        if (match)
+            match = match[0];
+
+        if (match) {
+            attributeItem.name = match.substr(1);
+            attributeItem.position = template.indexOf(match[0]);
+            attributeItem.text = template.replace(match, '');
+
+            attributeItem.parameters = textFieldJson.$;
+
+            return attributeItem;
+        }
+    }
+
+    return null;
+}
+
 function getParsedSvg(rawJsonSvg) {
-    let svg = {ports: {}, template: ''},
-        gItems,
+    let svg = {bbox: stringToBBox(rawJsonSvg.$.viewBox), ports: {}, base: '', attributes: {}},
+        attributeItem, gItems, textIndexesToRemove = [], newTexts = [],
         builder = new xml2js.Builder();
     if (rawJsonSvg.g === undefined) {
         gItems = [];
@@ -105,13 +147,29 @@ function getParsedSvg(rawJsonSvg) {
     if (rawJsonSvg.text !== undefined)
         if (rawJsonSvg.text.length) {
             rawJsonSvg.text.forEach((textItem, index) => {
-                rawJsonSvg.text[index]._ = ' ' + getTemplate(textItem);
+                attributeItem = getAttributeItem(textItem);
+                if (attributeItem) {
+                    textIndexesToRemove.push(index);
+                    svg.attributes[attributeItem.name] = attributeItem;
+                }
             });
         } else {
-            rawJsonSvg.text._ = getTemplate(rawJsonSvg.text);
+            attributeItem = getAttributeItem(rawJsonSvg.text);
+            if (attributeItem) {
+                delete rawJsonSvg.text;
+                svg.attributes[attributeItem.name] = attributeItem;
+            }
         }
+    if (textIndexesToRemove.length > 0) {
+        rawJsonSvg.text.forEach((item, index) => {
+            if (textIndexesToRemove.indexOf(index) === -1) {
+                newTexts.push(item);
+            }
+        });
+        rawJsonSvg.text = newTexts;
+    }
     try {
-        svg.template = builder.buildObject(rawJsonSvg).replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+        svg.base = builder.buildObject(rawJsonSvg).replace(/&lt;/g, '<').replace(/&gt;/g, '>');
     } catch (e) {
         console.log(e);
         svg = null;

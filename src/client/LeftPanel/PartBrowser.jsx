@@ -143,6 +143,7 @@ class PartBrowser extends SingleConnectedNode {
                 id: metaNode.getId(),
                 name: metaNode.getAttribute('ShortName') || metaNode.getAttribute('name'),
                 treePath: modelicaUri ? modelicaUri.split('.').slice(1).join('$') : null,
+                modelicaUri: modelicaUri ? modelicaUri : 'Default',
                 iconUrl: modelicaUri ? `/assets/DecoratorSVG/${modelicaUri}.svg` : '/assets/DecoratorSVG/Default.svg'
             };
         });

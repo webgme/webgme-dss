@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 
 import {DragSource} from 'react-dnd';
 import {Samy} from 'react-samy-svg';
-import ejs from 'ejs';
 
 import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui-icons/Delete';
@@ -77,8 +76,7 @@ class CanvasItem extends Component {
         currentRootHash: null,
         endPoints: {src: {id: null}, dst: {id: null}},
         territory: null,
-        justRemovedIds: [],
-        svgXml: ''
+        justRemovedIds: []
     };
 
     constructor(props) {
@@ -156,8 +154,7 @@ class CanvasItem extends Component {
                 currentRootHash: null,
                 endPoints: {src: {id: null}, dst: {id: null}},
                 territory: null,
-                justRemovedIds: [],
-                svgXml: ''
+                justRemovedIds: []
             });
             return;
         }
@@ -170,8 +167,7 @@ class CanvasItem extends Component {
             modelicaUri = 'Default',
             territory = {},
             childrenPaths = nodeObj.getChildrenIds(),
-            childrenName2Id = {},
-            svgXml = '';
+            childrenName2Id = {};
 
         if (isConnection) {
             newEndpoints = {
@@ -214,7 +210,6 @@ class CanvasItem extends Component {
                 }
             });
             territory[activeNode] = {children: 1};
-            svgXml = ejs.render(SVGCACHE[modelicaUri].template, nodeObj);
         }
 
         // console.log(activeNode, ':', this.state.position, '->', nodeObj.getRegistry('position'));
@@ -226,9 +221,52 @@ class CanvasItem extends Component {
             endPoints: newEndpoints,
             childrenName2Id: childrenName2Id,
             territory: territory,
-            justRemovedIds: unloads,
-            svgXml: svgXml
+            justRemovedIds: unloads
         });
+    };
+
+    getAttributeItems = () => {
+        const {gmeClient, activeNode, scale} = this.props,
+            {modelicaUri, position} = this.state,
+            {attributes} = SVGCACHE[modelicaUri];
+        let node = gmeClient.getNode(activeNode),
+            attributeItems = [];
+
+        if (node === null)
+            return null;
+        for (let key in attributes) {
+            // "alignment-baseline": "middle",
+            //     "fill": "rgb(0,0,255)",
+            //     "font-family": "Verdana",
+            //     "font-size": "18",
+            //     "text-anchor": "middle",
+            //     "x": "155.0",
+            //     "y": "40.0"
+            attributeItems.push(<svg
+                style={{
+                    position: 'absolute',
+                    top: /*position.y + */attributes[key].bbox.y * scale,
+                    left: /*position.x + */attributes[key].bbox.x * scale,
+                    zIndex: 10
+                }}
+                viewBox={'' + (attributes[key].bbox.x * scale) + ' ' + (attributes[key].bbox.y * scale) +
+                ' ' + ((attributes[key].bbox.x + attributes[key].bbox.width) * scale) +
+                ' ' + ((attributes[key].bbox.y + attributes[key].bbox.height) * scale)}>
+                <text
+                    x={(attributes[key].parameters.x || 0)*scale}
+                    y={(attributes[key].parameters.y || 0)*scale}
+                    alignmentBaseline={attributes[key].parameters['alignment-baseline'] || 'middle'}
+                    fill={attributes[key].parameters.fill || 'rgb(0,0,255)'}
+                    fontFamily={attributes[key].parameters['font-family'] || 'Veranda'}
+                    fontSize={Number(attributes[key].parameters['font-size'] || '18')*scale}
+                    textAnchor={attributes[key].parameters['text-anchor'] || 'middle'}
+                >{attributes[key].text.substring(0, attributes[key].position) +
+                node.getAttribute(key) +
+                attributes[key].text.substring(attributes[key].position)}</text>
+            </svg>)
+        }
+
+        return attributeItems;
     };
 
     boxRender = () => {
@@ -248,11 +286,9 @@ class CanvasItem extends Component {
                 modelicaUri,
                 position,
                 childrenName2Id,
-                justRemovedIds,
-                svgXml
+                justRemovedIds
             } = this.state,
-            ports = SVGCACHE[modelicaUri].ports,
-            baseDimensions = {x: 320, y: 210};
+            {ports, attributes, bbox, base} = SVGCACHE[modelicaUri];
         let portComponents = [],
             i, keys,
             events = [];
@@ -271,8 +307,8 @@ class CanvasItem extends Component {
                     activeNode={activeNode}
                     contextNode={contextNode}
                     position={{x: scale * ports[keys[i]].x, y: scale * ports[keys[i]].y}}
-                    dimensions={{x: scale * ports[keys[i]].width, y: scale * ports[keys[i]].height}}
-                    hidden={!showActions}
+                    dimensions={{x: scale * ports[keys[i]].width - 1, y: scale * ports[keys[i]].height - 1}}
+                    hidden={/*!showActions*/false}
                     absolutePosition={{
                         x: position.x + (scale * ports[keys[i]].x),
                         y: position.y + (scale * ports[keys[i]].y)
@@ -297,19 +333,20 @@ class CanvasItem extends Component {
                 position: 'absolute',
                 top: position.y,
                 left: position.x,
-                height: baseDimensions.y * scale,
-                width: baseDimensions.x * scale,
+                height: bbox.height * scale,
+                width: bbox.width * scale,
                 border: showActions ? "1px dashed #000000" : "1px solid transparent",
                 zIndex: 10
             }}
                  onMouseEnter={this.onMouseEnter}
                  onMouseLeave={this.onMouseLeave}>
                 {portComponents}
-                <Samy svgXML={svgXml}
+                <Samy svgXML={base}
                       style={{
-                          height: baseDimensions.y * scale,
-                          width: baseDimensions.x * scale
+                          height: bbox.height * scale,
+                          width: bbox.width * scale
                       }}/>
+                {this.getAttributeItems()}
                 {showActions ?
                     <IconButton style={{height: '20px', width: '20px', position: 'absolute', top: '0px', right: '0px'}}
                                 onClick={this.deleteNode}>

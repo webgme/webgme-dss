@@ -1,9 +1,22 @@
 {
   "Default": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 210,
+      "width": 210
+    },
     "ports": {},
-    "template": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"210.0\" version=\"1.1\" viewBox=\"0 0 210.0 210.0\" width=\"210.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs>\n    <linearGradient id=\"926845b4-f7c1-4e3c-a437-8265e5af9bdb\" x1=\"0%\" x2=\"0%\" y1=\"0%\" y2=\"100%\">\n      <stop offset=\"0\" stop-color=\"rgb(200, 200, 200)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.3\" stop-color=\"rgb(248, 248, 248)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.7\" stop-color=\"rgb(248, 248, 248)\" stop-opacity=\"1\"/>\n      <stop offset=\"1\" stop-color=\"rgb(200, 200, 200)\" stop-opacity=\"1\"/>\n    </linearGradient>\n  </defs>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Fluid.Icons.VariantLibrary</desc>\n  <rect fill=\"url(#926845b4-f7c1-4e3c-a437-8265e5af9bdb)\" height=\"200.0\" rx=\"25.0\" ry=\"25.0\" stroke=\"rgb(200,200,200)\" stroke-width=\"0.25mm\" width=\"200.0\" x=\"5.0\" y=\"5.0\"/>\n  <rect fill=\"none\" fill-opacity=\"0\" height=\"200.0\" rx=\"25.0\" ry=\"25.0\" stroke=\"rgb(128,128,128)\" stroke-width=\"0.25mm\" width=\"200.0\" x=\"5.0\" y=\"5.0\"/>\n  <ellipse cx=\"65.0\" cy=\"145.0\" fill=\"rgb(76,76,76)\" rx=\"30.0\" ry=\"30.0\"/>\n  <ellipse cx=\"145.0\" cy=\"145.0\" fill=\"rgb(0,0,0)\" rx=\"30.0\" ry=\"30.0\"/>\n  <ellipse cx=\"145.0\" cy=\"65.0\" fill=\"rgb(128,128,128)\" rx=\"30.0\" ry=\"30.0\"/>\n  <ellipse cx=\"65.0\" cy=\"65.0\" fill=\"rgb(255,255,255)\" rx=\"30.0\" ry=\"30.0\" stroke=\"rgb(128,128,128)\" stroke-width=\"0.25mm\"/>\n</root>"
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"210.0\" version=\"1.1\" viewBox=\"0 0 210.0 210.0\" width=\"210.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs>\n    <linearGradient id=\"926845b4-f7c1-4e3c-a437-8265e5af9bdb\" x1=\"0%\" x2=\"0%\" y1=\"0%\" y2=\"100%\">\n      <stop offset=\"0\" stop-color=\"rgb(200, 200, 200)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.3\" stop-color=\"rgb(248, 248, 248)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.7\" stop-color=\"rgb(248, 248, 248)\" stop-opacity=\"1\"/>\n      <stop offset=\"1\" stop-color=\"rgb(200, 200, 200)\" stop-opacity=\"1\"/>\n    </linearGradient>\n  </defs>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Fluid.Icons.VariantLibrary</desc>\n  <rect fill=\"url(#926845b4-f7c1-4e3c-a437-8265e5af9bdb)\" height=\"200.0\" rx=\"25.0\" ry=\"25.0\" stroke=\"rgb(200,200,200)\" stroke-width=\"0.25mm\" width=\"200.0\" x=\"5.0\" y=\"5.0\"/>\n  <rect fill=\"none\" fill-opacity=\"0\" height=\"200.0\" rx=\"25.0\" ry=\"25.0\" stroke=\"rgb(128,128,128)\" stroke-width=\"0.25mm\" width=\"200.0\" x=\"5.0\" y=\"5.0\"/>\n  <ellipse cx=\"65.0\" cy=\"145.0\" fill=\"rgb(76,76,76)\" rx=\"30.0\" ry=\"30.0\"/>\n  <ellipse cx=\"145.0\" cy=\"145.0\" fill=\"rgb(0,0,0)\" rx=\"30.0\" ry=\"30.0\"/>\n  <ellipse cx=\"145.0\" cy=\"65.0\" fill=\"rgb(128,128,128)\" rx=\"30.0\" ry=\"30.0\"/>\n  <ellipse cx=\"65.0\" cy=\"65.0\" fill=\"rgb(255,255,255)\" rx=\"30.0\" ry=\"30.0\" stroke=\"rgb(128,128,128)\" stroke-width=\"0.25mm\"/>\n</root>",
+    "attributes": {}
   },
   "Modelica.Electrical.Analog.Basic.Ground": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 220,
+      "width": 310
+    },
     "ports": {
       "p": {
         "id": "p",
@@ -13,9 +26,37 @@
         "width": 19.9972201992
       }
     },
-    "template": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"220.0\" version=\"1.1\" viewBox=\"0 0 310.0 220.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Electrical.Analog.Basic.Ground</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"89.0,65.0 209.0,65.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"109.0,85.0 189.0,85.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"129.0,105.0 169.0,105.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"149.0,25.0 149.0,65.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"154.0\">\n     <%=getAttribute(\"name\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 134.0 305.0 174.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">%name</tspan>\n  </text>\n  <g id=\"p\">\n    <rect fill=\"rgb(0,0,255)\" height=\"20.0027794145\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"19.9972201992\" x=\"139.0013899\" y=\"4.99861029274\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">p</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.Pin</text>\n      <text id=\"classDesc\">Pin of an electrical component</text>\n      <text id=\"desc\"/>\n    </g>\n  </g>\n</root>"
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"220.0\" version=\"1.1\" viewBox=\"0 0 310.0 220.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Electrical.Analog.Basic.Ground</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"89.0,65.0 209.0,65.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"109.0,85.0 189.0,85.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"129.0,105.0 169.0,105.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"149.0,25.0 149.0,65.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <g id=\"p\">\n    <rect fill=\"rgb(0,0,255)\" height=\"20.0027794145\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"19.9972201992\" x=\"139.0013899\" y=\"4.99861029274\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">p</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.Pin</text>\n      <text id=\"classDesc\">Pin of an electrical component</text>\n      <text id=\"desc\"/>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 134,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "154.0"
+        }
+      }
+    }
   },
   "Modelica.Electrical.Analog.Basic.Inductor": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 210,
+      "width": 310
+    },
     "ports": {
       "p": {
         "id": "p",
@@ -32,9 +73,57 @@
         "width": 20
       }
     },
-    "template": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"210\" version=\"1.1\" viewBox=\"0 0 310.0 210\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Electrical.Analog.Basic.Inductor</desc>\n  <path d=\"M 97.0 105.0 C 97.0 102.0 97.0 99.0 101.5 94.5 101.5 94.5 106.0 90.0 109.0 90.0 109.0 90.0 112.0 90.0 115.0 90.0 115.0 90.0 118.0 90.0 122.5 94.5 122.5 94.5 127.0 99.0 127.0 102.0 127.0 102.0 127.0 105.0 127.0 105.0\" fill=\"none\" fill-opacity=\"0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <path d=\"M 127.0 105.0 C 127.0 102.0 127.0 99.0 131.5 94.5 131.5 94.5 136.0 90.0 139.0 90.0 139.0 90.0 142.0 90.0 145.0 90.0 145.0 90.0 148.0 90.0 152.5 94.5 152.5 94.5 157.0 99.0 157.0 102.0 157.0 102.0 157.0 105.0 157.0 105.0\" fill=\"none\" fill-opacity=\"0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <path d=\"M 157.0 105.0 C 157.0 102.0 157.0 99.0 161.5 94.5 161.5 94.5 166.0 90.0 169.0 90.0 169.0 90.0 172.0 90.0 175.0 90.0 175.0 90.0 178.0 90.0 182.5 94.5 182.5 94.5 187.0 99.0 187.0 102.0 187.0 102.0 187.0 105.0 187.0 105.0\" fill=\"none\" fill-opacity=\"0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <path d=\"M 187.0 105.0 C 187.0 102.0 187.0 99.0 191.5 94.5 191.5 94.5 196.0 90.0 199.0 90.0 199.0 90.0 202.0 90.0 205.0 90.0 205.0 90.0 208.0 90.0 212.5 94.5 212.5 94.5 217.0 99.0 217.0 102.0 217.0 102.0 217.0 105.0 217.0 105.0\" fill=\"none\" fill-opacity=\"0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"217.0,105.0 247.0,105.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"67.0,105.0 97.0,105.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,0)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"160.0\" y=\"182.0\">\n     L=<%=getAttribute(\"L\")%>\n    <tspan class=\"bbox\" display=\"none\">19.0 165.0 301.0 199.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">L=%L</tspan>\n  </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"46.0\">\n     <%=getAttribute(\"name\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 26.0 305.0 66.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">%name</tspan>\n  </text>\n  <g id=\"p\">\n    <rect fill=\"rgb(0,0,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"47.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">p</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.PositivePin</text>\n      <text id=\"classDesc\">Positive pin of an electric component</text>\n      <text id=\"desc\">Positive pin (potential p.v > n.v for positive voltage drop v)</text>\n    </g>\n  </g>\n  <g id=\"n\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"247.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">n</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.NegativePin</text>\n      <text id=\"classDesc\">Negative pin of an electric component</text>\n      <text id=\"desc\">Negative pin</text>\n    </g>\n  </g>\n</root>"
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"210\" version=\"1.1\" viewBox=\"0 0 310.0 210\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Electrical.Analog.Basic.Inductor</desc>\n  <path d=\"M 97.0 105.0 C 97.0 102.0 97.0 99.0 101.5 94.5 101.5 94.5 106.0 90.0 109.0 90.0 109.0 90.0 112.0 90.0 115.0 90.0 115.0 90.0 118.0 90.0 122.5 94.5 122.5 94.5 127.0 99.0 127.0 102.0 127.0 102.0 127.0 105.0 127.0 105.0\" fill=\"none\" fill-opacity=\"0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <path d=\"M 127.0 105.0 C 127.0 102.0 127.0 99.0 131.5 94.5 131.5 94.5 136.0 90.0 139.0 90.0 139.0 90.0 142.0 90.0 145.0 90.0 145.0 90.0 148.0 90.0 152.5 94.5 152.5 94.5 157.0 99.0 157.0 102.0 157.0 102.0 157.0 105.0 157.0 105.0\" fill=\"none\" fill-opacity=\"0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <path d=\"M 157.0 105.0 C 157.0 102.0 157.0 99.0 161.5 94.5 161.5 94.5 166.0 90.0 169.0 90.0 169.0 90.0 172.0 90.0 175.0 90.0 175.0 90.0 178.0 90.0 182.5 94.5 182.5 94.5 187.0 99.0 187.0 102.0 187.0 102.0 187.0 105.0 187.0 105.0\" fill=\"none\" fill-opacity=\"0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <path d=\"M 187.0 105.0 C 187.0 102.0 187.0 99.0 191.5 94.5 191.5 94.5 196.0 90.0 199.0 90.0 199.0 90.0 202.0 90.0 205.0 90.0 205.0 90.0 208.0 90.0 212.5 94.5 212.5 94.5 217.0 99.0 217.0 102.0 217.0 102.0 217.0 105.0 217.0 105.0\" fill=\"none\" fill-opacity=\"0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"217.0,105.0 247.0,105.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"67.0,105.0 97.0,105.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <g id=\"p\">\n    <rect fill=\"rgb(0,0,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"47.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">p</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.PositivePin</text>\n      <text id=\"classDesc\">Positive pin of an electric component</text>\n      <text id=\"desc\">Positive pin (potential p.v > n.v for positive voltage drop v)</text>\n    </g>\n  </g>\n  <g id=\"n\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"247.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">n</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.NegativePin</text>\n      <text id=\"classDesc\">Negative pin of an electric component</text>\n      <text id=\"desc\">Negative pin</text>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "L": {
+        "bbox": {
+          "x": 19,
+          "y": 165,
+          "height": 34,
+          "width": 282
+        },
+        "name": "L",
+        "position": 2,
+        "text": "L=",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,0)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "160.0",
+          "y": "182.0"
+        }
+      },
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 26,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "46.0"
+        }
+      }
+    }
   },
   "Modelica.Electrical.Analog.Basic.Resistor": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 220,
+      "width": 310
+    },
     "ports": {
       "p": {
         "id": "p",
@@ -58,9 +147,57 @@
         "width": 20
       }
     },
-    "template": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"220.0\" version=\"1.1\" viewBox=\"0 0 310.0 220.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Electrical.Analog.Basic.Resistor</desc>\n  <rect fill=\"rgb(255,255,255)\" height=\"60.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"140.0\" x=\"87.0\" y=\"75.0\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"67.0,105.0 87.0,105.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"227.0,105.0 247.0,105.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"157.0,205.0 157.0,135.0\" stroke=\"rgb(127,0,0)\" stroke-dasharray=\"1.0 2.0\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,0)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"156.0\" y=\"161.0\">\n     R=<%=getAttribute(\"R\")%>\n    <tspan class=\"bbox\" display=\"none\">13.0 145.0 299.0 177.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">R=%R</tspan>\n  </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"38.0\">\n     <%=getAttribute(\"name\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 18.0 305.0 58.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">%name</tspan>\n  </text>\n  <g id=\"p\">\n    <rect fill=\"rgb(0,0,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"47.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">p</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.PositivePin</text>\n      <text id=\"classDesc\">Positive pin of an electric component</text>\n      <text id=\"desc\">Positive pin (potential p.v > n.v for positive voltage drop v)</text>\n    </g>\n  </g>\n  <g id=\"n\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"247.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">n</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.NegativePin</text>\n      <text id=\"classDesc\">Negative pin of an electric component</text>\n      <text id=\"desc\">Negative pin</text>\n    </g>\n  </g>\n  <g id=\"heatPort\">\n    <rect fill=\"rgb(191,0,0)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(191,0,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"147.0\" y=\"195.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">heatPort</text>\n      <text id=\"type\">Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</text>\n      <text id=\"classDesc\">Thermal port for 1-dim. heat transfer (filled rectangular icon)</text>\n      <text id=\"desc\">Conditional heat port</text>\n    </g>\n  </g>\n</root>"
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"220.0\" version=\"1.1\" viewBox=\"0 0 310.0 220.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Electrical.Analog.Basic.Resistor</desc>\n  <rect fill=\"rgb(255,255,255)\" height=\"60.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"140.0\" x=\"87.0\" y=\"75.0\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"67.0,105.0 87.0,105.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"227.0,105.0 247.0,105.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"157.0,205.0 157.0,135.0\" stroke=\"rgb(127,0,0)\" stroke-dasharray=\"1.0 2.0\" stroke-width=\"0.25mm\"/>\n  <g id=\"p\">\n    <rect fill=\"rgb(0,0,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"47.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">p</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.PositivePin</text>\n      <text id=\"classDesc\">Positive pin of an electric component</text>\n      <text id=\"desc\">Positive pin (potential p.v > n.v for positive voltage drop v)</text>\n    </g>\n  </g>\n  <g id=\"n\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"247.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">n</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.NegativePin</text>\n      <text id=\"classDesc\">Negative pin of an electric component</text>\n      <text id=\"desc\">Negative pin</text>\n    </g>\n  </g>\n  <g id=\"heatPort\">\n    <rect fill=\"rgb(191,0,0)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(191,0,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"147.0\" y=\"195.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">heatPort</text>\n      <text id=\"type\">Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</text>\n      <text id=\"classDesc\">Thermal port for 1-dim. heat transfer (filled rectangular icon)</text>\n      <text id=\"desc\">Conditional heat port</text>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "R": {
+        "bbox": {
+          "x": 13,
+          "y": 145,
+          "height": 32,
+          "width": 286
+        },
+        "name": "R",
+        "position": 2,
+        "text": "R=",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,0)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "156.0",
+          "y": "161.0"
+        }
+      },
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 18,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "38.0"
+        }
+      }
+    }
   },
   "Modelica.Electrical.Analog.Sensors.VoltageSensor": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 240,
+      "width": 310
+    },
     "ports": {
       "p": {
         "id": "p",
@@ -84,9 +221,37 @@
         "width": 19.999999978000005
       }
     },
-    "template": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"240.0\" version=\"1.1\" viewBox=\"0 0 310.0 240.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Electrical.Analog.Sensors.VoltageSensor</desc>\n  <ellipse cx=\"155.0\" cy=\"125.0\" fill=\"rgb(245,245,245)\" rx=\"70.0\" ry=\"70.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <ellipse cx=\"155.0\" cy=\"125.0\" fill=\"none\" fill-opacity=\"0\" rx=\"12.0\" ry=\"12.0\" stroke=\"rgb(64,64,64)\" stroke-width=\"0.25mm\"/>\n  <ellipse cx=\"155.0\" cy=\"125.0\" fill=\"rgb(64,64,64)\" rx=\"7.0\" ry=\"7.0\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"155.0,55.0 155.0,85.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"177.9,92.2 195.2,67.7\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"132.1,92.2 114.8,67.7\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"192.6,111.3 220.8,101.1\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"117.4,111.3 89.2,101.1\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"85.0,125.0 65.0,125.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"225.0,125.0 245.0,125.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"155.0,215.0 155.0,195.0\" stroke=\"rgb(0,0,127)\" stroke-width=\"0.25mm\"/>\n  <polygon fill=\"rgb(64,64,64)\" fill-opacity=\"1\" points=\"150.231401703,123.496513958 171.134393186,67.1754260153 174.545318547,63.0082221349 174.949271824,68.378214849 159.768598297,126.503486042\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,0)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.5\" y=\"165.5\"> V\n    </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"25.0\">\n     <%=getAttribute(\"name\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 5.0 305.0 45.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">%name</tspan>\n  </text>\n  <g id=\"p\">\n    <rect fill=\"rgb(0,0,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"115.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">p</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.PositivePin</text>\n      <text id=\"classDesc\">Positive pin of an electric component</text>\n      <text id=\"desc\">positive pin</text>\n    </g>\n  </g>\n  <g id=\"n\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"115.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">n</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.NegativePin</text>\n      <text id=\"classDesc\">Negative pin of an electric component</text>\n      <text id=\"desc\">negative pin</text>\n    </g>\n  </g>\n  <g id=\"v\">\n    <polygon fill=\"rgb(255,255,255)\" fill-opacity=\"1\" points=\"145.000463279,214.999536743 154.999536732,234.999999989 165.000463257,215.000463279\" stroke=\"rgb(0,0,127)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">v</text>\n      <text id=\"type\">Modelica.Blocks.Interfaces.RealOutput</text>\n      <text id=\"classDesc\">'output Real' as connector</text>\n      <text id=\"desc\">Voltage between pin p and n (= p.v - n.v) as output signal</text>\n    </g>\n  </g>\n</root>"
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"240.0\" version=\"1.1\" viewBox=\"0 0 310.0 240.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Electrical.Analog.Sensors.VoltageSensor</desc>\n  <ellipse cx=\"155.0\" cy=\"125.0\" fill=\"rgb(245,245,245)\" rx=\"70.0\" ry=\"70.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <ellipse cx=\"155.0\" cy=\"125.0\" fill=\"none\" fill-opacity=\"0\" rx=\"12.0\" ry=\"12.0\" stroke=\"rgb(64,64,64)\" stroke-width=\"0.25mm\"/>\n  <ellipse cx=\"155.0\" cy=\"125.0\" fill=\"rgb(64,64,64)\" rx=\"7.0\" ry=\"7.0\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"155.0,55.0 155.0,85.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"177.9,92.2 195.2,67.7\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"132.1,92.2 114.8,67.7\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"192.6,111.3 220.8,101.1\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"117.4,111.3 89.2,101.1\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"85.0,125.0 65.0,125.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"225.0,125.0 245.0,125.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"155.0,215.0 155.0,195.0\" stroke=\"rgb(0,0,127)\" stroke-width=\"0.25mm\"/>\n  <polygon fill=\"rgb(64,64,64)\" fill-opacity=\"1\" points=\"150.231401703,123.496513958 171.134393186,67.1754260153 174.545318547,63.0082221349 174.949271824,68.378214849 159.768598297,126.503486042\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,0)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.5\" y=\"165.5\">V\n    </text>\n  <g id=\"p\">\n    <rect fill=\"rgb(0,0,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"115.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">p</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.PositivePin</text>\n      <text id=\"classDesc\">Positive pin of an electric component</text>\n      <text id=\"desc\">positive pin</text>\n    </g>\n  </g>\n  <g id=\"n\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"115.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">n</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.NegativePin</text>\n      <text id=\"classDesc\">Negative pin of an electric component</text>\n      <text id=\"desc\">negative pin</text>\n    </g>\n  </g>\n  <g id=\"v\">\n    <polygon fill=\"rgb(255,255,255)\" fill-opacity=\"1\" points=\"145.000463279,214.999536743 154.999536732,234.999999989 165.000463257,215.000463279\" stroke=\"rgb(0,0,127)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">v</text>\n      <text id=\"type\">Modelica.Blocks.Interfaces.RealOutput</text>\n      <text id=\"classDesc\">'output Real' as connector</text>\n      <text id=\"desc\">Voltage between pin p and n (= p.v - n.v) as output signal</text>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 5,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "25.0"
+        }
+      }
+    }
   },
   "Modelica.Electrical.Analog.Sources.SineVoltage": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 230,
+      "width": 310
+    },
     "ports": {
       "p": {
         "id": "p",
@@ -103,9 +268,37 @@
         "width": 20
       }
     },
-    "template": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"230.0\" version=\"1.1\" viewBox=\"0 0 310.0 230.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Electrical.Analog.Sources.SineVoltage</desc>\n  <ellipse cx=\"155.0\" cy=\"125.0\" fill=\"rgb(255,255,255)\" rx=\"50.0\" ry=\"50.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"25.0\">\n     <%=getAttribute(\"name\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 5.0 305.0 45.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">%name</tspan>\n  </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"85.0\" y=\"100.0\"> +\n    </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"225.0\" y=\"100.0\"> -\n    </text>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"65.0,125.0 245.0,125.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"89.0,125.0 98.8,95.1 105.2,78.5 110.8,66.9 115.7,59.8 120.7,55.8 125.6,55.2 130.5,58.0 135.4,64.0 140.4,73.0 146.0,86.4 153.02,106.4 167.79,151.9 174.1,169.0 179.8,181.2 184.7,189.0 189.6,193.6 194.5,195.0 199.5,192.9 204.4,187.5 209.3,179.1 214.9,166.3 222.0,146.7 229.0,125.0\" stroke=\"rgb(192,192,192)\" stroke-width=\"0.25mm\"/>\n  <g id=\"p\">\n    <rect fill=\"rgb(0,0,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"115.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">p</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.PositivePin</text>\n      <text id=\"classDesc\">Positive pin of an electric component</text>\n      <text id=\"desc\">Positive pin (potential p.v > n.v for positive voltage drop v)</text>\n    </g>\n  </g>\n  <g id=\"n\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"115.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">n</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.NegativePin</text>\n      <text id=\"classDesc\">Negative pin of an electric component</text>\n      <text id=\"desc\">Negative pin</text>\n    </g>\n  </g>\n</root>"
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"230.0\" version=\"1.1\" viewBox=\"0 0 310.0 230.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Electrical.Analog.Sources.SineVoltage</desc>\n  <ellipse cx=\"155.0\" cy=\"125.0\" fill=\"rgb(255,255,255)\" rx=\"50.0\" ry=\"50.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"85.0\" y=\"100.0\">+\n    </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"225.0\" y=\"100.0\">-\n    </text>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"65.0,125.0 245.0,125.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"89.0,125.0 98.8,95.1 105.2,78.5 110.8,66.9 115.7,59.8 120.7,55.8 125.6,55.2 130.5,58.0 135.4,64.0 140.4,73.0 146.0,86.4 153.02,106.4 167.79,151.9 174.1,169.0 179.8,181.2 184.7,189.0 189.6,193.6 194.5,195.0 199.5,192.9 204.4,187.5 209.3,179.1 214.9,166.3 222.0,146.7 229.0,125.0\" stroke=\"rgb(192,192,192)\" stroke-width=\"0.25mm\"/>\n  <g id=\"p\">\n    <rect fill=\"rgb(0,0,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"115.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">p</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.PositivePin</text>\n      <text id=\"classDesc\">Positive pin of an electric component</text>\n      <text id=\"desc\">Positive pin (potential p.v > n.v for positive voltage drop v)</text>\n    </g>\n  </g>\n  <g id=\"n\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"115.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">n</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.NegativePin</text>\n      <text id=\"classDesc\">Negative pin of an electric component</text>\n      <text id=\"desc\">Negative pin</text>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 5,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "25.0"
+        }
+      }
+    }
   },
   "Modelica.Mechanics.Rotational.Components.Damper": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 220,
+      "width": 310
+    },
     "ports": {
       "flange_a": {
         "id": "flange_a",
@@ -129,9 +322,57 @@
         "width": 20
       }
     },
-    "template": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"220.0\" version=\"1.1\" viewBox=\"0 0 310.0 220.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Rotational.Components.Damper</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"65.0,105.0 95.0,105.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,135.0 95.0,75.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,135.0 215.0,135.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,75.0 215.0,75.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"185.0,105.0 245.0,105.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"55.0,205.0 55.0,145.0 135.0,145.0 135.0,105.0\" stroke=\"rgb(191,0,0)\" stroke-dasharray=\"1.0 2.0\" stroke-width=\"0.25mm\"/>\n  <rect fill=\"rgb(192,192,192)\" height=\"60.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\" width=\"90.0\" x=\"95.0\" y=\"75.0\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"45.0\">\n     <%=getAttribute(\"name\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 25.0 305.0 65.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">%name</tspan>\n  </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,0)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"175.0\">\n     d=<%=getAttribute(\"d\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 155.0 305.0 195.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">d=%d</tspan>\n  </text>\n  <g id=\"flange_a\">\n    <ellipse cx=\"55.0\" cy=\"105.0\" fill=\"rgb(95,95,95)\" rx=\"10.0\" ry=\"10.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_a</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Flange_a</text>\n      <text id=\"classDesc\">1-dim. rotational flange of a shaft (filled square icon)</text>\n      <text id=\"desc\">Left flange of compliant 1-dim. rotational component</text>\n    </g>\n  </g>\n  <g id=\"flange_b\">\n    <ellipse cx=\"255.198019802\" cy=\"105.0\" fill=\"rgb(255,255,255)\" rx=\"9.90099009901\" ry=\"10.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_b</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">1-dim. rotational flange of a shaft (non-filled square icon)</text>\n      <text id=\"desc\">Right flange of compliant 1-dim. rotational component</text>\n    </g>\n  </g>\n  <g id=\"heatPort\">\n    <rect fill=\"rgb(191,0,0)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(191,0,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"195.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">heatPort</text>\n      <text id=\"type\">Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</text>\n      <text id=\"classDesc\">Thermal port for 1-dim. heat transfer (filled rectangular icon)</text>\n      <text id=\"desc\">Optional port to which dissipated losses are transported in form of heat</text>\n    </g>\n  </g>\n</root>"
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"220.0\" version=\"1.1\" viewBox=\"0 0 310.0 220.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Rotational.Components.Damper</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"65.0,105.0 95.0,105.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,135.0 95.0,75.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,135.0 215.0,135.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,75.0 215.0,75.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"185.0,105.0 245.0,105.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"55.0,205.0 55.0,145.0 135.0,145.0 135.0,105.0\" stroke=\"rgb(191,0,0)\" stroke-dasharray=\"1.0 2.0\" stroke-width=\"0.25mm\"/>\n  <rect fill=\"rgb(192,192,192)\" height=\"60.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\" width=\"90.0\" x=\"95.0\" y=\"75.0\"/>\n  <g id=\"flange_a\">\n    <ellipse cx=\"55.0\" cy=\"105.0\" fill=\"rgb(95,95,95)\" rx=\"10.0\" ry=\"10.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_a</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Flange_a</text>\n      <text id=\"classDesc\">1-dim. rotational flange of a shaft (filled square icon)</text>\n      <text id=\"desc\">Left flange of compliant 1-dim. rotational component</text>\n    </g>\n  </g>\n  <g id=\"flange_b\">\n    <ellipse cx=\"255.198019802\" cy=\"105.0\" fill=\"rgb(255,255,255)\" rx=\"9.90099009901\" ry=\"10.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_b</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">1-dim. rotational flange of a shaft (non-filled square icon)</text>\n      <text id=\"desc\">Right flange of compliant 1-dim. rotational component</text>\n    </g>\n  </g>\n  <g id=\"heatPort\">\n    <rect fill=\"rgb(191,0,0)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(191,0,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"195.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">heatPort</text>\n      <text id=\"type\">Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</text>\n      <text id=\"classDesc\">Thermal port for 1-dim. heat transfer (filled rectangular icon)</text>\n      <text id=\"desc\">Optional port to which dissipated losses are transported in form of heat</text>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 25,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "45.0"
+        }
+      },
+      "d": {
+        "bbox": {
+          "x": 5,
+          "y": 155,
+          "height": 40,
+          "width": 300
+        },
+        "name": "d",
+        "position": 2,
+        "text": "d=",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,0)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "175.0"
+        }
+      }
+    }
   },
   "Modelica.Mechanics.Rotational.Components.Inertia": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 230,
+      "width": 310
+    },
     "ports": {
       "flange_a": {
         "id": "flange_a",
@@ -148,9 +389,57 @@
         "width": 19.80198019802
       }
     },
-    "template": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"230.0\" version=\"1.1\" viewBox=\"0 0 310.0 230.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs>\n    <linearGradient id=\"a3c055a7-131b-485e-af84-c562f7af3094\" x1=\"0%\" x2=\"0%\" y1=\"0%\" y2=\"100%\">\n      <stop offset=\"0\" stop-color=\"rgb(64, 64, 64)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.3\" stop-color=\"rgb(192, 192, 192)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.7\" stop-color=\"rgb(192, 192, 192)\" stop-opacity=\"1\"/>\n      <stop offset=\"1\" stop-color=\"rgb(64, 64, 64)\" stop-opacity=\"1\"/>\n    </linearGradient>\n  </defs>\n  <defs>\n    <linearGradient id=\"ab2fbdf3-57ca-4fee-aac5-e69e8b60a2eb\" x1=\"0%\" x2=\"0%\" y1=\"0%\" y2=\"100%\">\n      <stop offset=\"0\" stop-color=\"rgb(64, 64, 64)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.3\" stop-color=\"rgb(192, 192, 192)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.7\" stop-color=\"rgb(192, 192, 192)\" stop-opacity=\"1\"/>\n      <stop offset=\"1\" stop-color=\"rgb(64, 64, 64)\" stop-opacity=\"1\"/>\n    </linearGradient>\n  </defs>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs>\n    <linearGradient id=\"778c2bd6-e0f4-42e1-af4a-263596187c2d\" x1=\"0%\" x2=\"0%\" y1=\"0%\" y2=\"100%\">\n      <stop offset=\"0\" stop-color=\"rgb(64, 64, 64)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.3\" stop-color=\"rgb(255, 255, 255)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.7\" stop-color=\"rgb(255, 255, 255)\" stop-opacity=\"1\"/>\n      <stop offset=\"1\" stop-color=\"rgb(64, 64, 64)\" stop-opacity=\"1\"/>\n    </linearGradient>\n  </defs>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Rotational.Components.Inertia</desc>\n  <rect fill=\"url(#a3c055a7-131b-485e-af84-c562f7af3094)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(64,64,64)\" stroke-width=\"0.25mm\" width=\"50.0\" x=\"55.0\" y=\"95.0\"/>\n  <rect fill=\"url(#ab2fbdf3-57ca-4fee-aac5-e69e8b60a2eb)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(64,64,64)\" stroke-width=\"0.25mm\" width=\"50.0\" x=\"205.0\" y=\"95.0\"/>\n  <rect fill=\"url(#778c2bd6-e0f4-42e1-af4a-263596187c2d)\" height=\"100.0\" rx=\"10.0\" ry=\"10.0\" stroke=\"rgb(64,64,64)\" stroke-width=\"0.25mm\" width=\"100.0\" x=\"105.0\" y=\"55.0\"/>\n  <rect fill=\"none\" fill-opacity=\"0\" height=\"100.0\" rx=\"10.0\" ry=\"10.0\" stroke=\"rgb(64,64,64)\" stroke-width=\"0.25mm\" width=\"100.0\" x=\"105.0\" y=\"55.0\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"75.0,130.0 95.0,130.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"215.0,130.0 235.0,130.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"85.0,130.0 85.0,175.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"225.0,130.0 225.0,175.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"75.0,80.0 95.0,80.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"215.0,80.0 235.0,80.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"85.0,60.0 85.0,80.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"225.0,60.0 225.0,80.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"85.0,175.0 225.0,175.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"25.0\">\n     <%=getAttribute(\"name\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 5.0 305.0 45.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">%name</tspan>\n  </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,0)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"205.0\">\n     J=<%=getAttribute(\"J\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 185.0 305.0 225.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">J=%J</tspan>\n  </text>\n  <g id=\"flange_a\">\n    <ellipse cx=\"55.0\" cy=\"105.0\" fill=\"rgb(95,95,95)\" rx=\"10.0\" ry=\"10.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_a</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Flange_a</text>\n      <text id=\"classDesc\">1-dim. rotational flange of a shaft (filled square icon)</text>\n      <text id=\"desc\">Left flange of shaft</text>\n    </g>\n  </g>\n  <g id=\"flange_b\">\n    <ellipse cx=\"255.198019802\" cy=\"105.0\" fill=\"rgb(255,255,255)\" rx=\"9.90099009901\" ry=\"10.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_b</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">1-dim. rotational flange of a shaft (non-filled square icon)</text>\n      <text id=\"desc\">Right flange of shaft</text>\n    </g>\n  </g>\n</root>"
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"230.0\" version=\"1.1\" viewBox=\"0 0 310.0 230.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs>\n    <linearGradient id=\"a3c055a7-131b-485e-af84-c562f7af3094\" x1=\"0%\" x2=\"0%\" y1=\"0%\" y2=\"100%\">\n      <stop offset=\"0\" stop-color=\"rgb(64, 64, 64)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.3\" stop-color=\"rgb(192, 192, 192)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.7\" stop-color=\"rgb(192, 192, 192)\" stop-opacity=\"1\"/>\n      <stop offset=\"1\" stop-color=\"rgb(64, 64, 64)\" stop-opacity=\"1\"/>\n    </linearGradient>\n  </defs>\n  <defs>\n    <linearGradient id=\"ab2fbdf3-57ca-4fee-aac5-e69e8b60a2eb\" x1=\"0%\" x2=\"0%\" y1=\"0%\" y2=\"100%\">\n      <stop offset=\"0\" stop-color=\"rgb(64, 64, 64)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.3\" stop-color=\"rgb(192, 192, 192)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.7\" stop-color=\"rgb(192, 192, 192)\" stop-opacity=\"1\"/>\n      <stop offset=\"1\" stop-color=\"rgb(64, 64, 64)\" stop-opacity=\"1\"/>\n    </linearGradient>\n  </defs>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs>\n    <linearGradient id=\"778c2bd6-e0f4-42e1-af4a-263596187c2d\" x1=\"0%\" x2=\"0%\" y1=\"0%\" y2=\"100%\">\n      <stop offset=\"0\" stop-color=\"rgb(64, 64, 64)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.3\" stop-color=\"rgb(255, 255, 255)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.7\" stop-color=\"rgb(255, 255, 255)\" stop-opacity=\"1\"/>\n      <stop offset=\"1\" stop-color=\"rgb(64, 64, 64)\" stop-opacity=\"1\"/>\n    </linearGradient>\n  </defs>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Rotational.Components.Inertia</desc>\n  <rect fill=\"url(#a3c055a7-131b-485e-af84-c562f7af3094)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(64,64,64)\" stroke-width=\"0.25mm\" width=\"50.0\" x=\"55.0\" y=\"95.0\"/>\n  <rect fill=\"url(#ab2fbdf3-57ca-4fee-aac5-e69e8b60a2eb)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(64,64,64)\" stroke-width=\"0.25mm\" width=\"50.0\" x=\"205.0\" y=\"95.0\"/>\n  <rect fill=\"url(#778c2bd6-e0f4-42e1-af4a-263596187c2d)\" height=\"100.0\" rx=\"10.0\" ry=\"10.0\" stroke=\"rgb(64,64,64)\" stroke-width=\"0.25mm\" width=\"100.0\" x=\"105.0\" y=\"55.0\"/>\n  <rect fill=\"none\" fill-opacity=\"0\" height=\"100.0\" rx=\"10.0\" ry=\"10.0\" stroke=\"rgb(64,64,64)\" stroke-width=\"0.25mm\" width=\"100.0\" x=\"105.0\" y=\"55.0\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"75.0,130.0 95.0,130.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"215.0,130.0 235.0,130.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"85.0,130.0 85.0,175.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"225.0,130.0 225.0,175.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"75.0,80.0 95.0,80.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"215.0,80.0 235.0,80.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"85.0,60.0 85.0,80.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"225.0,60.0 225.0,80.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"85.0,175.0 225.0,175.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <g id=\"flange_a\">\n    <ellipse cx=\"55.0\" cy=\"105.0\" fill=\"rgb(95,95,95)\" rx=\"10.0\" ry=\"10.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_a</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Flange_a</text>\n      <text id=\"classDesc\">1-dim. rotational flange of a shaft (filled square icon)</text>\n      <text id=\"desc\">Left flange of shaft</text>\n    </g>\n  </g>\n  <g id=\"flange_b\">\n    <ellipse cx=\"255.198019802\" cy=\"105.0\" fill=\"rgb(255,255,255)\" rx=\"9.90099009901\" ry=\"10.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_b</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">1-dim. rotational flange of a shaft (non-filled square icon)</text>\n      <text id=\"desc\">Right flange of shaft</text>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 5,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "25.0"
+        }
+      },
+      "J": {
+        "bbox": {
+          "x": 5,
+          "y": 185,
+          "height": 40,
+          "width": 300
+        },
+        "name": "J",
+        "position": 2,
+        "text": "J=",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,0)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "205.0"
+        }
+      }
+    }
   },
   "Modelica.Mechanics.Rotational.Components.Spring": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 210,
+      "width": 310
+    },
     "ports": {
       "flange_a": {
         "id": "flange_a",
@@ -167,9 +456,57 @@
         "width": 19.80198019802
       }
     },
-    "template": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"210\" version=\"1.1\" viewBox=\"0 0 310.0 210\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Rotational.Components.Spring</desc>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"45.0\">\n     <%=getAttribute(\"name\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 25.0 305.0 65.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">%name</tspan>\n  </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,0)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"165.0\">\n     c=<%=getAttribute(\"c\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 145.0 305.0 185.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">c=%c</tspan>\n  </text>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"55.0,105.0 97.0,105.0 112.0,135.0 142.0,75.0 172.0,135.0 202.0,75.0 217.0,105.0 255.0,105.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <g id=\"flange_a\">\n    <ellipse cx=\"55.0\" cy=\"105.0\" fill=\"rgb(95,95,95)\" rx=\"10.0\" ry=\"10.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_a</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Flange_a</text>\n      <text id=\"classDesc\">1-dim. rotational flange of a shaft (filled square icon)</text>\n      <text id=\"desc\">Left flange of compliant 1-dim. rotational component</text>\n    </g>\n  </g>\n  <g id=\"flange_b\">\n    <ellipse cx=\"255.198019802\" cy=\"105.0\" fill=\"rgb(255,255,255)\" rx=\"9.90099009901\" ry=\"10.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_b</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">1-dim. rotational flange of a shaft (non-filled square icon)</text>\n      <text id=\"desc\">Right flange of compliant 1-dim. rotational component</text>\n    </g>\n  </g>\n</root>"
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"210\" version=\"1.1\" viewBox=\"0 0 310.0 210\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Rotational.Components.Spring</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"55.0,105.0 97.0,105.0 112.0,135.0 142.0,75.0 172.0,135.0 202.0,75.0 217.0,105.0 255.0,105.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <g id=\"flange_a\">\n    <ellipse cx=\"55.0\" cy=\"105.0\" fill=\"rgb(95,95,95)\" rx=\"10.0\" ry=\"10.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_a</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Flange_a</text>\n      <text id=\"classDesc\">1-dim. rotational flange of a shaft (filled square icon)</text>\n      <text id=\"desc\">Left flange of compliant 1-dim. rotational component</text>\n    </g>\n  </g>\n  <g id=\"flange_b\">\n    <ellipse cx=\"255.198019802\" cy=\"105.0\" fill=\"rgb(255,255,255)\" rx=\"9.90099009901\" ry=\"10.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_b</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">1-dim. rotational flange of a shaft (non-filled square icon)</text>\n      <text id=\"desc\">Right flange of compliant 1-dim. rotational component</text>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 25,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "45.0"
+        }
+      },
+      "c": {
+        "bbox": {
+          "x": 5,
+          "y": 145,
+          "height": 40,
+          "width": 300
+        },
+        "name": "c",
+        "position": 2,
+        "text": "c=",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,0)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "165.0"
+        }
+      }
+    }
   },
   "Modelica.Mechanics.Rotational.Sources.Torque": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 240,
+      "width": 310
+    },
     "ports": {
       "flange": {
         "id": "flange",
@@ -193,9 +530,37 @@
         "width": 40
       }
     },
-    "template": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"240.0\" version=\"1.1\" viewBox=\"0 0 310.0 240.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Rotational.Sources.Torque</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"105.0,235.0 125.0,215.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,235.0 145.0,215.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"145.0,235.0 165.0,215.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"165.0,235.0 185.0,215.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,215.0 185.0,215.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,145.0 185.0,145.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"155.0,145.0 155.0,216.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,165.0 145.0,145.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"145.0,165.0 165.0,145.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"165.0,165.0 185.0,145.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"25.0\">\n     <%=getAttribute(\"name\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 5.0 305.0 45.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">%name</tspan>\n  </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,0)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"53.5\" y=\"164.5\"> tau\n    </text>\n  <path d=\"M 67.0 115.0 C 79.0 100.0 91.0 85.0 105.0 74.0 105.0 74.0 119.0 63.0 136.0 58.0 136.0 58.0 153.0 53.0 168.0 56.0 168.0 56.0 183.0 59.0 193.0 65.0 193.0 65.0 203.0 71.0 211.0 79.0 211.0 79.0 219.0 87.0 225.0 94.0 225.0 94.0 231.0 101.0 236.0 108.0 236.0 108.0 241.0 115.0 241.0 115.0\" fill=\"none\" fill-opacity=\"0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.5mm\"/>\n  <path d=\"M 101.0 157.0 C 109.0 150.0 117.0 143.0 128.0 137.0 128.0 137.0 139.0 131.0 149.0 130.0 149.0 130.0 159.0 129.0 168.0 131.0 168.0 131.0 177.0 133.0 184.0 137.0 184.0 137.0 191.0 141.0 197.0 146.0 197.0 146.0 203.0 151.0 207.0 156.0 207.0 156.0 211.0 161.0 215.0 167.0 215.0 167.0 219.0 173.0 219.0 173.0\" fill=\"none\" fill-opacity=\"0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polygon fill=\"rgb(0,0,0)\" fill-opacity=\"1\" points=\"241.0,115.0 221.0,57.0 192.0,88.0 241.0,115.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polygon fill=\"rgb(0,0,0)\" fill-opacity=\"1\" points=\"94.0,181.0 111.0,157.0 97.0,151.0 94.0,181.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <g id=\"flange\">\n    <ellipse cx=\"255.198019802\" cy=\"115.0\" fill=\"rgb(255,255,255)\" rx=\"9.90099009901\" ry=\"10.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">1-dim. rotational flange of a shaft (non-filled square icon)</text>\n      <text id=\"desc\">Flange of shaft</text>\n    </g>\n  </g>\n  <g id=\"support\">\n    <ellipse cx=\"155.0\" cy=\"215.0\" fill=\"rgb(95,95,95)\" rx=\"6.66666666667\" ry=\"6.66666666667\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <ellipse cx=\"155.0\" cy=\"215.0\" fill=\"rgb(95,95,95)\" rx=\"6.66666666667\" ry=\"6.66666666667\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <defs/>\n    <defs/>\n    <rect fill=\"rgb(192,192,192)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(192,192,192)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"145.0\" y=\"205.0\"/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">support</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Support</text>\n      <text id=\"classDesc\">Support/housing of a 1-dim. rotational shaft</text>\n      <text id=\"desc\">Support/housing of component</text>\n    </g>\n  </g>\n  <g id=\"tau\">\n    <polygon fill=\"rgb(0,0,127)\" fill-opacity=\"1\" points=\"15.0,95.0 55.0,115.0 15.0,135.0\" stroke=\"rgb(0,0,127)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">tau</text>\n      <text id=\"type\">Modelica.Blocks.Interfaces.RealInput</text>\n      <text id=\"classDesc\">'input Real' as connector</text>\n      <text id=\"desc\">Accelerating torque acting at flange (= -flange.tau)</text>\n    </g>\n  </g>\n</root>"
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"240.0\" version=\"1.1\" viewBox=\"0 0 310.0 240.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Rotational.Sources.Torque</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"105.0,235.0 125.0,215.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,235.0 145.0,215.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"145.0,235.0 165.0,215.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"165.0,235.0 185.0,215.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,215.0 185.0,215.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,145.0 185.0,145.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"155.0,145.0 155.0,216.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,165.0 145.0,145.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"145.0,165.0 165.0,145.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"165.0,165.0 185.0,145.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,0)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"53.5\" y=\"164.5\">tau\n    </text>\n  <path d=\"M 67.0 115.0 C 79.0 100.0 91.0 85.0 105.0 74.0 105.0 74.0 119.0 63.0 136.0 58.0 136.0 58.0 153.0 53.0 168.0 56.0 168.0 56.0 183.0 59.0 193.0 65.0 193.0 65.0 203.0 71.0 211.0 79.0 211.0 79.0 219.0 87.0 225.0 94.0 225.0 94.0 231.0 101.0 236.0 108.0 236.0 108.0 241.0 115.0 241.0 115.0\" fill=\"none\" fill-opacity=\"0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.5mm\"/>\n  <path d=\"M 101.0 157.0 C 109.0 150.0 117.0 143.0 128.0 137.0 128.0 137.0 139.0 131.0 149.0 130.0 149.0 130.0 159.0 129.0 168.0 131.0 168.0 131.0 177.0 133.0 184.0 137.0 184.0 137.0 191.0 141.0 197.0 146.0 197.0 146.0 203.0 151.0 207.0 156.0 207.0 156.0 211.0 161.0 215.0 167.0 215.0 167.0 219.0 173.0 219.0 173.0\" fill=\"none\" fill-opacity=\"0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polygon fill=\"rgb(0,0,0)\" fill-opacity=\"1\" points=\"241.0,115.0 221.0,57.0 192.0,88.0 241.0,115.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polygon fill=\"rgb(0,0,0)\" fill-opacity=\"1\" points=\"94.0,181.0 111.0,157.0 97.0,151.0 94.0,181.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <g id=\"flange\">\n    <ellipse cx=\"255.198019802\" cy=\"115.0\" fill=\"rgb(255,255,255)\" rx=\"9.90099009901\" ry=\"10.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">1-dim. rotational flange of a shaft (non-filled square icon)</text>\n      <text id=\"desc\">Flange of shaft</text>\n    </g>\n  </g>\n  <g id=\"support\">\n    <ellipse cx=\"155.0\" cy=\"215.0\" fill=\"rgb(95,95,95)\" rx=\"6.66666666667\" ry=\"6.66666666667\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <ellipse cx=\"155.0\" cy=\"215.0\" fill=\"rgb(95,95,95)\" rx=\"6.66666666667\" ry=\"6.66666666667\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <defs/>\n    <defs/>\n    <rect fill=\"rgb(192,192,192)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(192,192,192)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"145.0\" y=\"205.0\"/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">support</text>\n      <text id=\"type\">Modelica.Mechanics.Rotational.Interfaces.Support</text>\n      <text id=\"classDesc\">Support/housing of a 1-dim. rotational shaft</text>\n      <text id=\"desc\">Support/housing of component</text>\n    </g>\n  </g>\n  <g id=\"tau\">\n    <polygon fill=\"rgb(0,0,127)\" fill-opacity=\"1\" points=\"15.0,95.0 55.0,115.0 15.0,135.0\" stroke=\"rgb(0,0,127)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">tau</text>\n      <text id=\"type\">Modelica.Blocks.Interfaces.RealInput</text>\n      <text id=\"classDesc\">'input Real' as connector</text>\n      <text id=\"desc\">Accelerating torque acting at flange (= -flange.tau)</text>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 5,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "25.0"
+        }
+      }
+    }
   },
   "Modelica.Mechanics.Translational.Components.Damper": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 220,
+      "width": 310
+    },
     "ports": {
       "flange_a": {
         "id": "flange_a",
@@ -219,9 +584,57 @@
         "width": 20
       }
     },
-    "template": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"220.0\" version=\"1.1\" viewBox=\"0 0 310.0 220.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Translational.Components.Damper</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"65.0,105.0 95.0,105.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,135.0 95.0,75.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,135.0 215.0,135.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,75.0 215.0,75.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"185.0,105.0 245.0,105.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,195.0 175.0,195.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"55.0,205.0 55.0,125.0 141.0,125.0\" stroke=\"rgb(191,0,0)\" stroke-dasharray=\"1.0 2.0\" stroke-width=\"0.25mm\"/>\n  <rect fill=\"rgb(192,192,192)\" height=\"60.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\" width=\"90.0\" x=\"95.0\" y=\"75.0\"/>\n  <polygon fill=\"rgb(128,128,128)\" fill-opacity=\"1\" points=\"205.0,195.0 175.0,185.0 175.0,205.0 205.0,195.0\" stroke=\"rgb(128,128,128)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"35.0\">\n     <%=getAttribute(\"name\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 15.0 305.0 55.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">%name</tspan>\n  </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,0)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"165.0\">\n     d=<%=getAttribute(\"d\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 150.0 305.0 180.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">d=%d</tspan>\n  </text>\n  <g id=\"flange_a\">\n    <rect fill=\"rgb(0,127,0)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_a</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Flange_a</text>\n      <text id=\"classDesc\">(left) 1D translational flange (flange axis directed INTO cut plane, e. g. from left to\n                right)\n            </text>\n      <text id=\"desc\">Left flange of compliant 1-dim. translational component</text>\n    </g>\n  </g>\n  <g id=\"flange_b\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_b</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">(right) 1D translational flange (flange axis directed OUT OF cut plane)</text>\n      <text id=\"desc\">Right flange of compliant 1-dim. translational component</text>\n    </g>\n  </g>\n  <g id=\"heatPort\">\n    <rect fill=\"rgb(191,0,0)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(191,0,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"195.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">heatPort</text>\n      <text id=\"type\">Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</text>\n      <text id=\"classDesc\">Thermal port for 1-dim. heat transfer (filled rectangular icon)</text>\n      <text id=\"desc\">Optional port to which dissipated losses are transported in form of heat</text>\n    </g>\n  </g>\n</root>"
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"220.0\" version=\"1.1\" viewBox=\"0 0 310.0 220.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Translational.Components.Damper</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"65.0,105.0 95.0,105.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,135.0 95.0,75.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,135.0 215.0,135.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,75.0 215.0,75.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"185.0,105.0 245.0,105.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,195.0 175.0,195.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"55.0,205.0 55.0,125.0 141.0,125.0\" stroke=\"rgb(191,0,0)\" stroke-dasharray=\"1.0 2.0\" stroke-width=\"0.25mm\"/>\n  <rect fill=\"rgb(192,192,192)\" height=\"60.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\" width=\"90.0\" x=\"95.0\" y=\"75.0\"/>\n  <polygon fill=\"rgb(128,128,128)\" fill-opacity=\"1\" points=\"205.0,195.0 175.0,185.0 175.0,205.0 205.0,195.0\" stroke=\"rgb(128,128,128)\" stroke-width=\"0.25mm\"/>\n  <g id=\"flange_a\">\n    <rect fill=\"rgb(0,127,0)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_a</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Flange_a</text>\n      <text id=\"classDesc\">(left) 1D translational flange (flange axis directed INTO cut plane, e. g. from left to\n                right)\n            </text>\n      <text id=\"desc\">Left flange of compliant 1-dim. translational component</text>\n    </g>\n  </g>\n  <g id=\"flange_b\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_b</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">(right) 1D translational flange (flange axis directed OUT OF cut plane)</text>\n      <text id=\"desc\">Right flange of compliant 1-dim. translational component</text>\n    </g>\n  </g>\n  <g id=\"heatPort\">\n    <rect fill=\"rgb(191,0,0)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(191,0,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"195.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">heatPort</text>\n      <text id=\"type\">Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</text>\n      <text id=\"classDesc\">Thermal port for 1-dim. heat transfer (filled rectangular icon)</text>\n      <text id=\"desc\">Optional port to which dissipated losses are transported in form of heat</text>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 15,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "35.0"
+        }
+      },
+      "d": {
+        "bbox": {
+          "x": 5,
+          "y": 150,
+          "height": 30,
+          "width": 300
+        },
+        "name": "d",
+        "position": 2,
+        "text": "d=",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,0)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "165.0"
+        }
+      }
+    }
   },
   "Modelica.Mechanics.Translational.Components.Mass": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 210,
+      "width": 310
+    },
     "ports": {
       "flange_a": {
         "id": "flange_a",
@@ -238,9 +651,57 @@
         "width": 20
       }
     },
-    "template": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"210\" version=\"1.1\" viewBox=\"0 0 310.0 210\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs>\n    <radialGradient cx=\"50%\" cy=\"50%\" fx=\"50%\" fy=\"50%\" id=\"5a75de0d-297e-4aec-8e39-9c88f7b1cbe1\" r=\"0.9\">\n      <stop offset=\"0\" stop-color=\"rgb(255, 255, 255)\" stop-opacity=\"1\"/>\n      <stop offset=\"1\" stop-color=\"rgb(0, 0, 0)\" stop-opacity=\"1\"/>\n    </radialGradient>\n  </defs>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Translational.Components.Mass</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"55.0,105.0 100.0,105.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"210.0,105.0 255.0,105.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,195.0 175.0,195.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <rect fill=\"url(#5a75de0d-297e-4aec-8e39-9c88f7b1cbe1)\" height=\"60.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\" width=\"111.0\" x=\"100.0\" y=\"75.0\"/>\n  <polygon fill=\"rgb(128,128,128)\" fill-opacity=\"1\" points=\"205.0,195.0 175.0,185.0 175.0,205.0 205.0,195.0\" stroke=\"rgb(128,128,128)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"40.0\">\n     <%=getAttribute(\"name\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 20.0 305.0 60.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">%name</tspan>\n  </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,0)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"165.0\">\n     m=<%=getAttribute(\"m\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 150.0 305.0 180.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">m=%m</tspan>\n  </text>\n  <g id=\"flange_a\">\n    <rect fill=\"rgb(0,127,0)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_a</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Flange_a</text>\n      <text id=\"classDesc\">(left) 1D translational flange (flange axis directed INTO cut plane, e. g. from left to\n                right)\n            </text>\n      <text id=\"desc\">Left flange of translational component</text>\n    </g>\n  </g>\n  <g id=\"flange_b\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_b</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">(right) 1D translational flange (flange axis directed OUT OF cut plane)</text>\n      <text id=\"desc\">Right flange of translational component</text>\n    </g>\n  </g>\n</root>"
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"210\" version=\"1.1\" viewBox=\"0 0 310.0 210\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs>\n    <radialGradient cx=\"50%\" cy=\"50%\" fx=\"50%\" fy=\"50%\" id=\"5a75de0d-297e-4aec-8e39-9c88f7b1cbe1\" r=\"0.9\">\n      <stop offset=\"0\" stop-color=\"rgb(255, 255, 255)\" stop-opacity=\"1\"/>\n      <stop offset=\"1\" stop-color=\"rgb(0, 0, 0)\" stop-opacity=\"1\"/>\n    </radialGradient>\n  </defs>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Translational.Components.Mass</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"55.0,105.0 100.0,105.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"210.0,105.0 255.0,105.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,195.0 175.0,195.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <rect fill=\"url(#5a75de0d-297e-4aec-8e39-9c88f7b1cbe1)\" height=\"60.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\" width=\"111.0\" x=\"100.0\" y=\"75.0\"/>\n  <polygon fill=\"rgb(128,128,128)\" fill-opacity=\"1\" points=\"205.0,195.0 175.0,185.0 175.0,205.0 205.0,195.0\" stroke=\"rgb(128,128,128)\" stroke-width=\"0.25mm\"/>\n  <g id=\"flange_a\">\n    <rect fill=\"rgb(0,127,0)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_a</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Flange_a</text>\n      <text id=\"classDesc\">(left) 1D translational flange (flange axis directed INTO cut plane, e. g. from left to\n                right)\n            </text>\n      <text id=\"desc\">Left flange of translational component</text>\n    </g>\n  </g>\n  <g id=\"flange_b\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_b</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">(right) 1D translational flange (flange axis directed OUT OF cut plane)</text>\n      <text id=\"desc\">Right flange of translational component</text>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 20,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "40.0"
+        }
+      },
+      "m": {
+        "bbox": {
+          "x": 5,
+          "y": 150,
+          "height": 30,
+          "width": 300
+        },
+        "name": "m",
+        "position": 2,
+        "text": "m=",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,0)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "165.0"
+        }
+      }
+    }
   },
   "Modelica.Mechanics.Translational.Components.Spring": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 210,
+      "width": 310
+    },
     "ports": {
       "flange_a": {
         "id": "flange_a",
@@ -257,9 +718,57 @@
         "width": 20
       }
     },
-    "template": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"210\" version=\"1.1\" viewBox=\"0 0 310.0 210\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Translational.Components.Spring</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,195.0 175.0,195.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"57.0,105.0 95.0,105.0 111.0,135.0 139.0,75.0 169.0,135.0 199.0,75.0 215.0,105.0 255.0,105.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polygon fill=\"rgb(128,128,128)\" fill-opacity=\"1\" points=\"205.0,195.0 175.0,185.0 175.0,205.0 205.0,195.0\" stroke=\"rgb(128,128,128)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"35.0\">\n     <%=getAttribute(\"name\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 15.0 305.0 55.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">%name</tspan>\n  </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,0)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"165.0\">\n     c=<%=getAttribute(\"c\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 150.0 305.0 180.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">c=%c</tspan>\n  </text>\n  <g id=\"flange_a\">\n    <rect fill=\"rgb(0,127,0)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_a</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Flange_a</text>\n      <text id=\"classDesc\">(left) 1D translational flange (flange axis directed INTO cut plane, e. g. from left to\n                right)\n            </text>\n      <text id=\"desc\">Left flange of compliant 1-dim. translational component</text>\n    </g>\n  </g>\n  <g id=\"flange_b\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_b</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">(right) 1D translational flange (flange axis directed OUT OF cut plane)</text>\n      <text id=\"desc\">Right flange of compliant 1-dim. translational component</text>\n    </g>\n  </g>\n</root>"
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"210\" version=\"1.1\" viewBox=\"0 0 310.0 210\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Translational.Components.Spring</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"95.0,195.0 175.0,195.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"57.0,105.0 95.0,105.0 111.0,135.0 139.0,75.0 169.0,135.0 199.0,75.0 215.0,105.0 255.0,105.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polygon fill=\"rgb(128,128,128)\" fill-opacity=\"1\" points=\"205.0,195.0 175.0,185.0 175.0,205.0 205.0,195.0\" stroke=\"rgb(128,128,128)\" stroke-width=\"0.25mm\"/>\n  <g id=\"flange_a\">\n    <rect fill=\"rgb(0,127,0)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_a</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Flange_a</text>\n      <text id=\"classDesc\">(left) 1D translational flange (flange axis directed INTO cut plane, e. g. from left to\n                right)\n            </text>\n      <text id=\"desc\">Left flange of compliant 1-dim. translational component</text>\n    </g>\n  </g>\n  <g id=\"flange_b\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange_b</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">(right) 1D translational flange (flange axis directed OUT OF cut plane)</text>\n      <text id=\"desc\">Right flange of compliant 1-dim. translational component</text>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 15,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "35.0"
+        }
+      },
+      "c": {
+        "bbox": {
+          "x": 5,
+          "y": 150,
+          "height": 30,
+          "width": 300
+        },
+        "name": "c",
+        "position": 2,
+        "text": "c=",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,0)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "165.0"
+        }
+      }
+    }
   },
   "Modelica.Mechanics.Translational.Sources.Force": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 230,
+      "width": 310
+    },
     "ports": {
       "flange": {
         "id": "flange",
@@ -283,6 +792,28 @@
         "width": 40
       }
     },
-    "template": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"230.0\" version=\"1.1\" viewBox=\"0 0 310.0 230.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Translational.Sources.Force</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"105.0,225.0 125.0,205.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,225.0 145.0,205.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"145.0,225.0 165.0,205.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"165.0,225.0 185.0,205.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,205.0 185.0,205.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,165.0 185.0,165.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"155.0,165.0 155.0,206.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,185.0 145.0,165.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"145.0,185.0 165.0,165.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"165.0,185.0 185.0,165.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"124.0,155.0 205.0,155.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"105.0,185.0 125.0,165.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polygon fill=\"rgb(215,215,215)\" fill-opacity=\"1\" points=\"55.0,95.0 175.0,95.0 175.0,64.0 245.0,105.0 175.0,146.0 175.0,115.0 55.0,115.0 55.0,95.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\"/>\n  <polygon fill=\"rgb(128,128,128)\" fill-opacity=\"1\" points=\"94.0,155.0 125.0,145.0 125.0,165.0 94.0,155.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,0)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"40.0\" y=\"152.0\"> f\n    </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"155.0\" y=\"35.0\">\n     <%=getAttribute(\"name\")%>\n    <tspan class=\"bbox\" display=\"none\">5.0 15.0 305.0 55.0</tspan>\n    <tspan class=\"data-bind\" display=\"none\">%name</tspan>\n  </text>\n  <g id=\"flange\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">(right) 1D translational flange (flange axis directed OUT OF cut plane)</text>\n      <text id=\"desc\">Flange of component</text>\n    </g>\n  </g>\n  <g id=\"support\">\n    <rect fill=\"rgb(175,175,175)\" height=\"12.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"12.0\" x=\"149.0\" y=\"199.0\"/>\n    <rect fill=\"rgb(175,175,175)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" width=\"20.0\" x=\"145.0\" y=\"195.0\"/>\n    <rect fill=\"rgb(0,127,0)\" height=\"12.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"12.0\" x=\"149.0\" y=\"199.0\"/>\n    <defs/>\n    <defs/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">support</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Support</text>\n      <text id=\"classDesc\">Support/housing 1D translational flange</text>\n      <text id=\"desc\">Support/housing of component</text>\n    </g>\n  </g>\n  <g id=\"f\">\n    <polygon fill=\"rgb(0,0,127)\" fill-opacity=\"1\" points=\"15.0,85.0 55.0,105.0 15.0,125.0\" stroke=\"rgb(0,0,127)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">f</text>\n      <text id=\"type\">Modelica.Blocks.Interfaces.RealInput</text>\n      <text id=\"classDesc\">'input Real' as connector</text>\n      <text id=\"desc\">Driving force as input signal</text>\n    </g>\n  </g>\n</root>"
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"230.0\" version=\"1.1\" viewBox=\"0 0 310.0 230.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Mechanics.Translational.Sources.Force</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"105.0,225.0 125.0,205.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,225.0 145.0,205.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"145.0,225.0 165.0,205.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"165.0,225.0 185.0,205.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,205.0 185.0,205.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,165.0 185.0,165.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"155.0,165.0 155.0,206.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"125.0,185.0 145.0,165.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"145.0,185.0 165.0,165.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"165.0,185.0 185.0,165.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"124.0,155.0 205.0,155.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"105.0,185.0 125.0,165.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <polygon fill=\"rgb(215,215,215)\" fill-opacity=\"1\" points=\"55.0,95.0 175.0,95.0 175.0,64.0 245.0,105.0 175.0,146.0 175.0,115.0 55.0,115.0 55.0,95.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\"/>\n  <polygon fill=\"rgb(128,128,128)\" fill-opacity=\"1\" points=\"94.0,155.0 125.0,145.0 125.0,165.0 94.0,155.0\" stroke=\"rgb(0,0,0)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,0)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"40.0\" y=\"152.0\">f\n    </text>\n  <g id=\"flange\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">flange</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Flange_b</text>\n      <text id=\"classDesc\">(right) 1D translational flange (flange axis directed OUT OF cut plane)</text>\n      <text id=\"desc\">Flange of component</text>\n    </g>\n  </g>\n  <g id=\"support\">\n    <rect fill=\"rgb(175,175,175)\" height=\"12.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"12.0\" x=\"149.0\" y=\"199.0\"/>\n    <rect fill=\"rgb(175,175,175)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" width=\"20.0\" x=\"145.0\" y=\"195.0\"/>\n    <rect fill=\"rgb(0,127,0)\" height=\"12.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,127,0)\" stroke-width=\"0.25mm\" width=\"12.0\" x=\"149.0\" y=\"199.0\"/>\n    <defs/>\n    <defs/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">support</text>\n      <text id=\"type\">Modelica.Mechanics.Translational.Interfaces.Support</text>\n      <text id=\"classDesc\">Support/housing 1D translational flange</text>\n      <text id=\"desc\">Support/housing of component</text>\n    </g>\n  </g>\n  <g id=\"f\">\n    <polygon fill=\"rgb(0,0,127)\" fill-opacity=\"1\" points=\"15.0,85.0 55.0,105.0 15.0,125.0\" stroke=\"rgb(0,0,127)\" stroke-width=\"0.25mm\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">f</text>\n      <text id=\"type\">Modelica.Blocks.Interfaces.RealInput</text>\n      <text id=\"classDesc\">'input Real' as connector</text>\n      <text id=\"desc\">Driving force as input signal</text>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 15,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "35.0"
+        }
+      }
+    }
   }
 }

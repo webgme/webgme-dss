@@ -19,16 +19,24 @@ export default class SingleConnectedNode extends Component {
         const client = this.props.gmeClient;
 
         this.uiId = client.addUI(null, (events) => {
+            let didChange = false;
             for (let i = 0; i < events.length; i += 1) {
                 if (events[i].etype === 'load') {
                     this.onNodeLoad(client.getNode(events[i].eid));
+                    didChange = true;
                 } else if (events[i].etype === 'update') {
                     this.onNodeUpdate(client.getNode(events[i].eid));
+                    didChange = true;
                 } else if (events[i].etype === 'unload') {
                     this.onNodeUnload(events[i].eid);
+                    didChange = true;
                 } else {
                     // "Technical events" not used.
                 }
+            }
+
+            if (!didChange) {
+                this.onStateChanged();
             }
         });
 
@@ -57,6 +65,13 @@ export default class SingleConnectedNode extends Component {
      */
     onNodeUnload(nodeId) {
         console.warn('onNodeUnload is not overwritten', nodeId);
+    }
+
+    /**
+     * Called whenever the client switches state and does not load, update or unload the node.
+     */
+    onStateChanged() {
+
     }
 
     componentWillUnmount() {

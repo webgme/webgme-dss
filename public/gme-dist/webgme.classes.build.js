@@ -192,8 +192,9 @@
             selectProject: (projectId, branchName, callback) => {
                 setTimeout(callback, 100);
             },
-            getActiveProjectId: () => 'guest+ElectricalCircuit',
+            getActiveProjectId: () => `${projects[0].owner}+${projects[0].name}`,
             getActiveBranchName: () => 'master',
+            getProjectInfo: () => genProject(projects[0]),
             addUI: (uiId, eventHandler) => {
                 cnt += 1;
                 uiId = uiId ? uiId : 'user_' + cnt;

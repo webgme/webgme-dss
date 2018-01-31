@@ -25,16 +25,15 @@ import {AttributeItem} from "../RightPanel/AttributeEditor";
 export default class DomainSelector extends Component {
     static propTypes = {
         domains: PropTypes.array.isRequired,
-        showDomainSelection: PropTypes.bool,
+        showDomainSelection: PropTypes.bool.isRequired,
         defaultName: PropTypes.string,
         takenNames: PropTypes.array,
-        title: PropTypes.string,
+        title: PropTypes.string.isRequired,
         onOK: PropTypes.func.isRequired,
         onCancel: PropTypes.func.isRequired
     };
 
     state = {
-        name: null,
         selected: {}
     };
 
@@ -44,7 +43,7 @@ export default class DomainSelector extends Component {
         let {domains, defaultName, takenNames} = props;
 
         if (defaultName) {
-            this.state.name = getIndexedName(defaultName, takenNames);
+            this.name = getIndexedName(defaultName, takenNames);
         }
 
         if (domains) {
@@ -57,8 +56,11 @@ export default class DomainSelector extends Component {
     onOKClick = () => {
         // TODO: Populate these correctly
         this.props.onOK({
-            name: this.props.defaultName,
-            domains: []
+            name: this.name,
+            domains: Object.keys(this.state.selected)
+                .filter(domain => {
+                    return this.state.selected[domain];
+                })
         });
     };
 
@@ -78,7 +80,11 @@ export default class DomainSelector extends Component {
         let nameInput = null;
 
         if (typeof this.props.defaultName === 'string') {
-            nameInput = <AttributeItem value={this.state.name}
+            nameInput = <AttributeItem value={this.name}
+                                       onChange={newValue => {
+                                           // FIXME: Should name really be a field of the instance?
+                                           this.name = newValue.trim();
+                                       }}
                                        name={'Name'}
                                        type={'string'}/>
         }

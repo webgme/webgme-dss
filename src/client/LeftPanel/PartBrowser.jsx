@@ -15,7 +15,7 @@ import {nameSort} from '../gme/utils/getObjectSorter';
 import PartBrowserItem from './PartBrowserItem';
 
 const TREE_PATH_SEP = '$';
-const EXPAND_ALL = true;
+const EXPAND_ALL = false;
 
 //theme.tree.base.backgroundColor = props.theme.palette.background.paper;
 theme.tree.base.backgroundColor = 'white';
@@ -130,13 +130,10 @@ class PartBrowser extends SingleConnectedNode {
         }
     }
 
-    onNodeLoad(nodeObj) {
-        const client = this.props.gmeClient,
-            childrenDesc = nodeObj.getValidChildrenTypesDetailed();
-
-        // All children are meta-nodes -> thus available right away
-        const validChildren = Object.keys(childrenDesc).map((id) => {
-            const metaNode = client.getNode(id),
+    updateValidChildren(validChildrenMap) {
+        const {gmeClient} = this.props;
+        const validChildren = Object.keys(validChildrenMap).map((id) => {
+            const metaNode = gmeClient.getNode(id),
                 modelicaUri = metaNode.getAttribute('ModelicaURI');
 
             return {
@@ -148,19 +145,44 @@ class PartBrowser extends SingleConnectedNode {
             };
         });
 
-        // TODO: This is probably not the most efficient way of updating the state.
         this.setState({
             loaded: true,
-            validChildren: validChildren
+            validChildren: validChildren,
+            validChildrenMap: validChildrenMap
         });
     }
 
-    onNodeUpdate(nodeObj) {
+    onNodeLoad(nodeObj) {
+        this.updateValidChildren(nodeObj.getValidChildrenTypesDetailed());
+    }
 
+    onNodeUpdate(nodeObj) {
+        const newValidChildrenMap = nodeObj.getValidChildrenTypesDetailed();
+        const currentValidChildrenMap = this.state.validChildren;
+        const [newIds, prevIds] = [newValidChildrenMap, currentValidChildrenMap].map(Object.keys);
+
+        if (newIds.length !== prevIds.length) {
+            this.updateValidChildren(newValidChildrenMap);
+        } else {
+            for (let i = 0; i < newValidChildrenMap.length; i += 1) {
+                if (currentValidChildrenMap.hasOwnProperty(newValidChildrenMap[i]) === false) {
+                    this.updateValidChildren(newValidChildrenMap);
+                    break;
+                }
+            }
+        }
+    }
+
+    onStateChanged() {
+        const {gmeClient, activeNode} = this.props;
+
+        if (this.state.loaded) {
+            this.onNodeUpdate(gmeClient.getNode(activeNode));
+        }
     }
 
     onNodeUnload(nodeId) {
-
+        this.setState({validChildren: []});
     }
 
     onTreeNodeToggle = (node, toggled) => {

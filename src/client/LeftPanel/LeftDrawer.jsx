@@ -17,9 +17,11 @@ import {toggleLeftDrawer} from '../actions';
 
 import PartBrowser from './PartBrowser';
 import PluginConfigDialog from '../Dialogs/PluginConfigDialog';
+import DomainSelector from '../Dialogs/DomainSelector';
 
 import ConsoleDialog from '../ConsoleDialog';
 import OTConsoleTest from '../OTConsoleTest';
+import superagent from "superagent";
 
 const SIDE_PANEL_WIDTH = 240;
 const SIDE_PANEL_WIDTH_MINIMIZED = 50;
@@ -66,7 +68,41 @@ class LeftDrawer extends Component {
     state = {
         simulateDialog: false,
         simluateConsole: false,
-        simulateOT: false
+        showDomainSelector: false
+    };
+
+    onUpdateDomains = (data) => {
+        this.setState({showDomainSelector: false});
+        if (!data) {
+            // Cancelled
+            return;
+        }
+
+        console.log('update data:', data);
+
+        let path = [
+            window.location.origin,
+            this.props.gmeClient.gmeConfig.rest.components.DomainManager.mount,
+            'updateProject'
+        ].join('/');
+
+        const {gmeClient} = this.props;
+
+        superagent.post(path)
+            .send({
+                projectId: gmeClient.getActiveProjectId(),
+                domains: data.domains
+            })
+            .end((err, result) => {
+                if (err) {
+                    // TODO: we need to show these errors
+                    console.error(err);
+                } else {
+                    console.log(result.body);
+                    // const [owner, name] = result.body.projectId.split('+');
+                    // this.props.history.push(`/p/${owner}/${name}`);
+                }
+            });
     };
 
     render() {
@@ -92,7 +128,7 @@ class LeftDrawer extends Component {
                     <PlayCircleOutline/>
                 </IconButton>
                 <IconButton onClick={() => {
-                    this.setState({simulateOT: true});
+                    this.setState({showDomainSelector: true});
                 }}>
                     <AddCircle/>
                 </IconButton>
@@ -119,6 +155,12 @@ class LeftDrawer extends Component {
                     gmeClient={gmeClient}
                     nodeId={'/Z/Z'}
                     attributeName={'name'}/>) : null}
+                {this.state.showDomainSelector ?
+                    <DomainSelector domains={(gmeClient.getProjectInfo().info.kind || '').split(':').slice(1)}
+                                    showDomainSelection={true}
+                                    title={'Update Domains'}
+                                    onOK={this.onUpdateDomains}
+                                    onCancel={this.onUpdateDomains}/>: null}
             </div>
         );
     }

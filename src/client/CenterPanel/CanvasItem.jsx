@@ -18,6 +18,8 @@ import {toggleRightDrawer, setActiveSelection} from '../actions';
 
 const canvasItemSource = {
     beginDrag(props) {
+        props.connectionManager.endConnection();
+
         return {
             gmeId: props.activeNode,
             move: true,
@@ -96,6 +98,7 @@ class CanvasItem extends Component {
     componentDidMount() {
         let territory = {};
         territory[this.props.activeNode] = {children: 0};
+
         this.setState({territory: territory});
     }
 

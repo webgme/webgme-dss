@@ -174,7 +174,10 @@
                 }
                 return childrenIds;
             },
-            getMetaTypeId: () => validChildrenIds[cnt % validChildrenIds.length]
+            getMetaTypeId: () => validChildrenIds[cnt % validChildrenIds.length],
+            isValidTargetOf: (/*source, name*/) => {
+                return cnt % 2 === 0
+            }
         }
     }
 
@@ -193,9 +196,9 @@
                 setTimeout(callback, 100);
             },
             getAllMetaNodes: () => [{
-                    getId: () => '/8',
-                    getAttribute: () => 'SimulationResults'
-                }]
+                getId: () => '/8',
+                getAttribute: () => 'SimulationResults'
+            }]
             ,
             getActiveProjectId: () => `${projects[0].owner}+${projects[0].name}`,
             getActiveBranchName: () => 'master',

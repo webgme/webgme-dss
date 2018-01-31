@@ -33,7 +33,8 @@ export default class ConnectionManager {
         let connection = {source: this.source, type: this.type};
         this.source = null;
         this.type = null;
-        this.notifyMe();
+        if (typeof this.notifyMe === 'function')
+            this.notifyMe();
         this.notifyMe = null;
         this.fireChange();
         return connection;

@@ -13,7 +13,7 @@ import reducers from "./reducers";
 
 import logo from './logo.svg';
 import './App.css';
-import Projects from './Projects';
+import Projects from './StartPage/Projects';
 import Project from './Project';
 
 const theme = createMuiTheme({

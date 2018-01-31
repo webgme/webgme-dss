@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import {nameSort} from './gme/utils/getObjectSorter';
+import {nameSort} from '../gme/utils/getObjectSorter';
 import ProjectList from './ProjectList';
 import CreateProject from './CreateProject';
 

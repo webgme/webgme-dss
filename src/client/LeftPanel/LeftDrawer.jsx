@@ -16,7 +16,7 @@ import {withStyles} from 'material-ui/styles';
 import {toggleLeftDrawer} from '../actions';
 
 import PartBrowser from './PartBrowser';
-import PluginConfigDialog from '../PluginConfigDialog';
+import PluginConfigDialog from '../Dialogs/PluginConfigDialog';
 
 import ConsoleDialog from '../ConsoleDialog';
 import OTConsoleTest from '../OTConsoleTest';

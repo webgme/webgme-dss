@@ -8,7 +8,7 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
 
-import {AttributeItem, AttributeTypes} from './RightPanel/AttributeEditor';
+import {AttributeItem, AttributeTypes} from '../RightPanel/AttributeEditor';
 
 const testConfig = [
     {

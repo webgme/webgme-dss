@@ -11,63 +11,10 @@ import Typography from 'material-ui/Typography';
 import {CircularProgress} from 'material-ui/Progress';
 import Grid from 'material-ui/Grid';
 
-import DomainSelector from './Dialogs/DomainSelector';
+import DomainSelector from '../Dialogs/DomainSelector';
+import TEMPLATE_PROJECTS from './templateProjects';
 
 //http://www.publicdomainpictures.net
-//TODO: This should be fetched from the server
-const SEEDS = [
-    {
-        title: 'Electrical Analog',
-        imageUrl: 'assets/DecoratorSVG/Modelica.Electrical.Analog.jpg',
-        description: 'This package contains packages for analog electrical components. Including basic components ' +
-        'such as resistor, capacitor, conductor, inductor, transformer, gyrator etc. ' +
-        'It also includes sources and sensors.',
-        infoUrl: 'http://doc.modelica.org/om/Modelica.Electrical.Analog.html',
-        createData: {
-            seed: 'Modelica',
-            defaultName: 'ElectricalAnalog',
-            domains: ['Modelica.Electrical.Analog']
-        }
-    },
-    {
-        title: 'Rotational Mechanics',
-        imageUrl: 'assets/DecoratorSVG/Modelica.Mechanics.Rotational.jpg',
-        description: 'Library Rotational is a free Modelica package providing 1-dimensional, rotational mechanical ' +
-        'components to model in a convenient way drive trains with frictional losses.',
-        infoUrl: 'http://doc.modelica.org/om/Modelica.Mechanics.Rotational.html',
-        createData: {
-            seed: 'Modelica',
-            defaultName: 'RotationalMechanics',
-            domains: ['Modelica.Mechanics.Rotational']
-        }
-    },
-    {
-        title: 'Translational Mechanics',
-        imageUrl: 'assets/DecoratorSVG/Modelica.Mechanics.Translational.jpg',
-        description: 'This package contains components to model 1-dimensional translational mechanical systems. ' +
-        'The filled and non-filled green squares at the left and right side of a component represent mechanical ' +
-        'flanges. Drawing a line between such squares means that the corresponding flanges are rigidly attached ' +
-        'to each other.',
-        infoUrl: 'http://doc.modelica.org/om/Modelica.Mechanics.Translational.html',
-        createData: {
-            seed: 'Modelica',
-            defaultName: 'TranslationalMechanics',
-            domains: ['Modelica.Mechanics.Translational']
-        }
-    },
-    {
-        title: 'Hybrid Domain',
-        imageUrl: 'assets/DecoratorSVG/HybridDomain.jpg',
-        description: 'Select a range of different domains and build your own hybrid systems. Later on you can always ' +
-        'import more domains in case you can\'t decide right now.',
-        infoUrl: 'http://doc.modelica.org/om/Modelica.html',
-        createData: {
-            seed: 'Modelica',
-            defaultName: 'ModelicaHybrid',
-            domains: []
-        }
-    }
-];
 
 const styles = theme => ({
     cardContent: {
@@ -132,7 +79,7 @@ class CreateProject extends Component {
     render() {
         const {projects, classes} = this.props;
 
-        let cards = SEEDS.map(seedInfo => {
+        let cards = TEMPLATE_PROJECTS.map(seedInfo => {
             let buttons = [];
             if (projects) {
                 buttons.push(<Button key="createBtn" dense color="primary" onClick={() => {

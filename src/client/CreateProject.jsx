@@ -14,7 +14,7 @@ import Grid from 'material-ui/Grid';
 import DomainSelector from './Dialogs/DomainSelector';
 
 //http://www.publicdomainpictures.net
-//TODO: This should be defined elsewhere
+//TODO: This should be fetched from the server
 const SEEDS = [
     {
         title: 'Electrical Analog',
@@ -183,9 +183,18 @@ class CreateProject extends Component {
                 </Grid>
 
                 {showDialog ?
-                    <DomainSelector onOK={this.onCreateNewProject}
+                    <DomainSelector title={'Create New Project'}
+                                    onOK={this.onCreateNewProject}
                                     onCancel={this.onCreateNewProject}
                                     defaultName={createData.defaultName}
+                                    takenNames={projects
+                                        .filter(pInfo => {
+                                            return pInfo.owner === 'guest'; //FIXME: We need to get user info
+                                        })
+                                        .map(pInfo => {
+                                            return pInfo.name;
+                                        })
+                                    }
                                     domains={createData.domains}
                                     showDomainSelection={createData.domains.length === 0}
                     /> : null}

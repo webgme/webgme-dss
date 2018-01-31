@@ -192,6 +192,11 @@
             selectProject: (projectId, branchName, callback) => {
                 setTimeout(callback, 100);
             },
+            getAllMetaNodes: () => [{
+                    getId: () => '/8',
+                    getAttribute: () => 'SimulationResults'
+                }]
+            ,
             getActiveProjectId: () => `${projects[0].owner}+${projects[0].name}`,
             getActiveBranchName: () => 'master',
             getProjectInfo: () => genProject(projects[0]),

@@ -1,14 +1,8 @@
 import {Component} from 'react';
 import PropTypes from 'prop-types';
 
-/**
- * Base class that defines a territory for a single node.
- * Use this as base if your component is only interested in the node itself
- * (not any children or other custom territories).
- */
 export default class Territory extends Component {
     static propTypes = {
-        activeNode: PropTypes.string,
         gmeClient: PropTypes.object.isRequired,
         territory: PropTypes.object,
         onUpdate: PropTypes.func,
@@ -44,13 +38,15 @@ export default class Territory extends Component {
             }
         });
 
-        if (territory)
+        if (territory) {
             gmeClient.updateTerritory(this.uiId, territory);
+        }
     }
 
     componentWillReceiveProps(newProps) {
         const {gmeClient} = newProps,
             {territory} = this.props;
+
         if (JSON.stringify(territory) !== JSON.stringify(newProps.territory)) {
             gmeClient.updateTerritory(this.uiId, newProps.territory || {});
         }

@@ -65,8 +65,6 @@ export default class DomainSelector extends Component {
     };
 
     handleCheckChange = domainName => (event, checked) => {
-
-        this.forceUpdate();
         this.setState({
             selected: update(this.state.selected, {
                 [domainName]: {$set: checked}

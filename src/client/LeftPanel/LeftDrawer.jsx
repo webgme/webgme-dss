@@ -16,6 +16,7 @@ import {withStyles} from 'material-ui/styles';
 import {toggleLeftDrawer} from '../actions';
 
 import PartBrowser from './PartBrowser';
+import ResultList from './ResultList';
 import PluginConfigDialog from '../Dialogs/PluginConfigDialog';
 import DomainSelector from '../Dialogs/DomainSelector';
 
@@ -68,7 +69,7 @@ class LeftDrawer extends Component {
 
     state = {
         simulateDialog: false,
-        simluateConsole: false,
+        simulateConsole: false,
         showDomainSelector: false
     };
 
@@ -108,6 +109,26 @@ class LeftDrawer extends Component {
 
     render() {
         const {classes, gmeClient, open, modelingView} = this.props;
+        let actionButtons;
+
+        if (modelingView) {
+            actionButtons = [
+                {
+                    id: 'simulateDialog',
+                    iconClass: <CheckCircle/>
+                },
+                {
+                    id: 'simulateConsole',
+                    iconClass: <PlayCircleOutline/>
+                },
+                {
+                    id: 'showDomainSelector',
+                    iconClass: <AddCircle/>
+                }];
+        } else {
+            actionButtons = []; // TODO: Fill up the actions for simulation.
+        }
+
         return (
             <div>
                 <Drawer type="permanent"
@@ -118,24 +139,17 @@ class LeftDrawer extends Component {
                 <IconButton onClick={open ? this.props.hide : this.props.show}>
                     {open ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                 </IconButton>
-                <IconButton onClick={() => {
-                    this.setState({simulateDialog: true});
-                }}>
-                    <CheckCircle/>
-                </IconButton>
-                <IconButton onClick={() => {
-                    this.setState({simulateConsole: true});
-                }}>
-                    <PlayCircleOutline/>
-                </IconButton>
-                <IconButton onClick={() => {
-                    this.setState({showDomainSelector: true});
-                }}>
-                    <AddCircle/>
-                </IconButton>
+                    {actionButtons.map(desc => (
+                        <IconButton key={desc.id} onClick={() => {
+                            this.setState({[desc.id]: true});
+                        }}>
+                            {desc.iconClass}
+                        </IconButton>
+                    ))}
                 </span>
                     <Divider/>
-                    {modelingView ? <PartBrowser gmeClient={gmeClient} minimized={!open}/> : <span>Simulation Results</span>}
+                    {modelingView ? <PartBrowser gmeClient={gmeClient} minimized={!open}/> :
+                        <ResultList gmeClient={gmeClient} minimized={!open}/>}
 
 
                 </Drawer>
@@ -162,7 +176,7 @@ class LeftDrawer extends Component {
                                     showDomainSelection={true}
                                     title={'Update Domains'}
                                     onOK={this.onUpdateDomains}
-                                    onCancel={this.onUpdateDomains}/>: null}
+                                    onCancel={this.onUpdateDomains}/> : null}
             </div>
         );
     }

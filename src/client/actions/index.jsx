@@ -42,3 +42,15 @@ export const setScale = scale => {
         scale
     };
 };
+
+export const toggleModelingView = show => {
+    if (show) {
+        return {
+            type: 'MODELING_VIEW'
+        };
+    } else {
+        return {
+            type: 'SIMULATION_VIEW'
+        };
+    }
+};

@@ -41,7 +41,8 @@ const styles = theme => ({
 
 const mapStateToProps = state => {
     return {
-        open: state.leftDrawer
+        open: state.leftDrawer,
+        modelingView: state.modelingView
     }
 };
 
@@ -106,7 +107,7 @@ class LeftDrawer extends Component {
     };
 
     render() {
-        const {classes, gmeClient, open} = this.props;
+        const {classes, gmeClient, open, modelingView} = this.props;
         return (
             <div>
                 <Drawer type="permanent"
@@ -134,7 +135,8 @@ class LeftDrawer extends Component {
                 </IconButton>
                 </span>
                     <Divider/>
-                    <PartBrowser gmeClient={gmeClient} minimized={!open}/>
+                    {modelingView ? <PartBrowser gmeClient={gmeClient} minimized={!open}/> : <span>Simulation Results</span>}
+
 
                 </Drawer>
                 {this.state.simulateDialog ? (<PluginConfigDialog onReady={(config) => {

@@ -44,10 +44,21 @@ const scale = (state = 0.6, action) => {
     return state;
 };
 
+const modelingView = (state = true, action) => {
+    if (action.type === 'MODELING_VIEW') {
+        return true;
+    } else if (action.type === 'SIMULATION_VIEW') {
+        return false;
+    }
+
+    return state;
+};
+
 export default combineReducers({
     activeNode,
     activeSelection,
     leftDrawer,
     rightDrawer,
-    scale
+    scale,
+    modelingView
 })

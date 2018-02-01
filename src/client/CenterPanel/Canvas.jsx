@@ -10,6 +10,23 @@ import ConnectionManager from '../gme/BaseComponents/ConnectionManager';
 import BasicConnectingComponent from '../gme/BaseComponents/BasicConnectingComponent';
 import BasicEventManager from '../gme/BaseComponents/BasicEventManager';
 import {toggleRightDrawer} from '../actions';
+import getIndexedName from "../gme/utils/getIndexedName";
+
+//TODO we anly take loaded children into account
+function getChildrenNames(gmeClient, nodeId) {
+    const container = gmeClient.getNode(nodeId),
+        childrenIds = container.getChildrenIds();
+    let names = [];
+
+    childrenIds.forEach((childId) => {
+        let node = gmeClient.getNode(childId);
+        if (node) {
+            names.push(node.getAttribute('name'));
+        }
+    });
+
+    return names;
+}
 
 const canvasTarget = {
     drop(props, monitor, canvas) {
@@ -23,11 +40,16 @@ const canvasTarget = {
             position.y = position.y + Math.trunc(offset.y);
             props.gmeClient.setRegistry(dragItem.gmeId, 'position', position);
         } else if (dragItem.create) {
-            const dragOffset = monitor.getClientOffset();
+            const dragOffset = monitor.getClientOffset(),
+                metaNode = props.gmeClient.getNode(dragItem.gmeId);
+
             let position = {
-                x: dragOffset.x - canvas.offset.x + canvas.props.scrollPos.x,
-                y: dragOffset.y - canvas.offset.y + canvas.props.scrollPos.y
-            };
+                    x: dragOffset.x - canvas.offset.x + canvas.props.scrollPos.x,
+                    y: dragOffset.y - canvas.offset.y + canvas.props.scrollPos.y
+                },
+                name = metaNode.getAttribute('ShortName') || metaNode.getAttribute('name');
+
+            name = getIndexedName(name, getChildrenNames(props.gmeClient, props.activeNode));
 
             if (dragItem.offset) {
                 position.x -= dragItem.offset.x;
@@ -42,6 +64,9 @@ const canvasTarget = {
                 parentId: props.activeNode,
                 baseId: dragItem.gmeId
             }, {
+                attributes: {
+                    name: name
+                },
                 registry: {
                     position
                 }
@@ -179,8 +204,13 @@ class Canvas extends SingleConnectedNode {
                 <BasicConnectingComponent connectionManager={this.cm}/>
                 <div style={{
                     position: 'sticky',
-                    top: '10px',
-                    left: '10px'
+                    top: '5%',
+                    left: '5%',
+                    right: '95%',
+                    bottom: '95%',
+                    fontSize: '24px',
+                    opacity: 0.3,
+                    zIndex: 2
                 }}>{`Node ${nodeInfo.name} open`}</div>
                 {childrenItems}
             </div>);

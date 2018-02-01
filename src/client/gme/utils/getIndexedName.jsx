@@ -10,7 +10,7 @@ function getIndexedName(name, currentNames) {
             return n.startsWith(name);
         })
         .map(n => {
-            let indexStr = n.substring(name);
+            let indexStr = n.substring(name.length);
             if (indexStr === '') {
                 return 0;
             } else {
@@ -35,7 +35,7 @@ function getIndexedName(name, currentNames) {
         }
     }
 
-    return name + 1;
+    return name + indices.length;
 }
 
 export default getIndexedName;

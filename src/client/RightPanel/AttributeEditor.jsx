@@ -9,8 +9,10 @@ import IconButton from 'material-ui/IconButton';
 import Select from 'material-ui/Select';
 import Switch from 'material-ui/Switch';
 import {GithubPicker} from 'react-color';
+import {Samy} from 'react-samy-svg';
 
 import Territory from '../gme/BaseComponents/Territory';
+import SVGCACHE from '../../svgcache';
 
 export const AttributeTypes = {
     'string': 'string',
@@ -197,30 +199,6 @@ export class AttributeItem extends Component {
             <FormHelperText>{this.props.description}</FormHelperText>
         </FormControl>);
     }
-
-    // render() {
-    //     this.processProps();
-    //     let content = this.getContent();
-    //     return (
-    //         <Grid container={true} spacing={0}>
-    //             <Grid item={true} xs={2} style={{height: '35px'}}><Paper
-    //                 style={{height: '100%', textAlign: 'bottom'}}>{this.props.name}</Paper></Grid>
-    //             <Grid item={true} xs={4} style={{height: '35px'}}>
-    //                 <Paper style={{height: '100%'}}>{content}</Paper>
-    //             </Grid>
-    //             <Grid item={true} xs={6} style={{height: '35px'}}>
-    //                 <Paper style={{
-    //                     fontSize: '20px',
-    //                     height: '100%',
-    //                     textAlign: 'bottom',
-    //                     overflow: 'scroll'
-    //                 }}>
-    //                     {this.props.description || ''}
-    //                 </Paper>
-    //             </Grid>
-    //         </Grid>
-    //     )
-    // }
 }
 
 export default class AttributeEditor extends Component {
@@ -232,7 +210,45 @@ export default class AttributeEditor extends Component {
     state = {
         loadedNodes: [],
         territory: {},
-        attributes: []
+        attributes: [],
+        modelicaUri: 'Default',
+        scale: 0.4
+    };
+
+    getSvgAttributeParts = () => {
+        const {gmeClient, selection} = this.props,
+            {modelicaUri, scale} = this.state,
+            {attributes} = SVGCACHE[modelicaUri];
+        let node = gmeClient.getNode(selection[0]),
+            attributeItems = [];
+
+        if (node === null)
+            return null;
+        for (let key in attributes) {
+            attributeItems.push(<svg
+                style={{
+                    position: 'absolute',
+                    top: attributes[key].bbox.y * scale,
+                    left: attributes[key].bbox.x * scale
+                }}
+                viewBox={'' + (attributes[key].bbox.x * scale) + ' ' + (attributes[key].bbox.y * scale) +
+                ' ' + ((attributes[key].bbox.x + attributes[key].bbox.width) * scale) +
+                ' ' + ((attributes[key].bbox.y + attributes[key].bbox.height) * scale)}>
+                <text
+                    x={(attributes[key].parameters.x || 0) * scale}
+                    y={(attributes[key].parameters.y || 0) * scale}
+                    alignmentBaseline={attributes[key].parameters['alignment-baseline'] || 'middle'}
+                    fill={attributes[key].parameters.fill || 'rgb(0,0,255)'}
+                    fontFamily={attributes[key].parameters['font-family'] || 'Veranda'}
+                    fontSize={Number(attributes[key].parameters['font-size'] || '18') * scale}
+                    textAnchor={attributes[key].parameters['text-anchor'] || 'middle'}
+                >{attributes[key].text.substring(0, attributes[key].position) +
+                node.getAttribute(key) +
+                attributes[key].text.substring(attributes[key].position)}</text>
+            </svg>)
+        }
+
+        return attributeItems;
     };
 
     onComponentDidMount() {
@@ -249,7 +265,7 @@ export default class AttributeEditor extends Component {
     handleEvents = (hash, loads, updates, unloads) => {
         //TODO update to handle multiple objects as well
         const {selection, gmeClient} = this.props;
-        let {loadedNodes, attributes} = this.state;
+        let {loadedNodes, attributes, modelicaUri} = this.state;
 
         selection.forEach((nodeId) => {
             if (loads.indexOf(nodeId) !== -1 || updates.indexOf(nodeId) !== -1)
@@ -261,8 +277,10 @@ export default class AttributeEditor extends Component {
 
         if (loadedNodes.length > 0) {
             let nodeObj = gmeClient.getNode(loadedNodes[0]),
-                attributeNames = nodeObj.getValidAttributeNames();
+                attributeNames = nodeObj.getValidAttributeNames(),
+                metaNode = gmeClient.getNode(nodeObj.getMetaTypeId());
 
+            modelicaUri = metaNode.getAttribute('ModelicaURI') || 'Default';
             attributes = attributeNames.map((id) => {
                 return {
                     name: id,
@@ -274,9 +292,10 @@ export default class AttributeEditor extends Component {
 
         } else {
             attributes = [];
+            modelicaUri = 'Default';
         }
 
-        this.setState({loadedNodes: loadedNodes, attributes: attributes});
+        this.setState({loadedNodes: loadedNodes, attributes: attributes, modelicaUri: modelicaUri});
     };
 
     somethingChanges = (what, how) => {
@@ -301,16 +320,17 @@ export default class AttributeEditor extends Component {
         selection.forEach((item) => {
             territory[item] = {children: 0};
         });
+
         //TODO clearing the loadedNodes should not be necessary, where are the unload events???
-        this.setState({loadedNodes: [], territory: territory});
+        this.setState({loadedNodes: [], territory: territory, modelicaUri: 'Default'});
     }
 
     render() {
         const {selection, gmeClient} = this.props,
-            {territory, attributes} = this.state;
+            {territory, attributes, modelicaUri, scale} = this.state,
+            {bbox, base} = SVGCACHE[modelicaUri];
         let attributeItems,
-            self = this,
-            node = gmeClient.getNode(selection[0]);
+            self = this;
 
         attributeItems = attributes.map((attribute) => {
             let onChangeFn = (newValue) => {
@@ -346,8 +366,20 @@ export default class AttributeEditor extends Component {
             <Card>
                 <Territory activeNode={selection[0]} gmeClient={gmeClient} territory={territory}
                            onUpdate={this.handleEvents} onlyActualEvents={true}/>
-                <CardHeader title={'Attribute editor'}
-                            subheader={node === null ? 'loading node content...' : 'GUID: ' + node.getGuid()}/>
+                <CardHeader title={'Node attributes'}/>
+                <div style={{
+                    height: bbox.height * scale,
+                    width: bbox.width * scale,
+                    position: 'relative',
+                    left: '30%'
+                }}>
+                    {modelicaUri !== 'Default' ? (<Samy svgXML={base}
+                                                        style={{
+                                                            height: bbox.height * scale,
+                                                            width: bbox.width * scale
+                                                        }}/>) : null}
+                    {modelicaUri !== 'Default' ? this.getSvgAttributeParts() : null}
+                </div>
                 <CardContent>
                     {attributeItems}
                 </CardContent>

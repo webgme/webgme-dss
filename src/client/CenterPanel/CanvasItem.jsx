@@ -235,7 +235,6 @@ class CanvasItem extends Component {
             territory[activeNode] = {children: 1};
         }
 
-        // console.log(activeNode, ':', this.state.position, '->', nodeObj.getRegistry('position'));
         this.setState({
             position: nodeObj.getRegistry('position'),
             name: nodeObj.getAttribute('name'),
@@ -251,7 +250,7 @@ class CanvasItem extends Component {
 
     getAttributeItems = () => {
         const {gmeClient, activeNode, scale} = this.props,
-            {modelicaUri, position} = this.state,
+            {modelicaUri} = this.state,
             {attributes} = SVGCACHE[modelicaUri];
         let node = gmeClient.getNode(activeNode),
             attributeItems = [];
@@ -334,9 +333,7 @@ class CanvasItem extends Component {
                 contextNode,
                 connectionManager,
                 scale,
-                activeNode,
-                eventManager,
-                activateAttributeDrawer
+                eventManager
             } = this.props,
             {
                 showActions,
@@ -413,7 +410,7 @@ class CanvasItem extends Component {
     connectionRender = () => {
         const {endPoints, showActions} = this.state,
             {activeNode} = this.props;
-        let points, bbox;
+        let points;
 
         if (endPoints.src.position && endPoints.dst.position) {
             points = [endPoints.src.position, {

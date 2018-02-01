@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import MenuIcon from 'material-ui-icons/Menu';
+import EditMode from 'material-ui-icons/Edit';
+import MultilineChart from 'material-ui-icons/MultilineChart';
 import IconButton from 'material-ui/IconButton';
 import {withStyles} from 'material-ui/styles';
 import {toggleModelingView} from "./actions";
 
-const styles = {
-
-};
+const styles = {};
 
 const mapStateToProps = state => {
     return {
@@ -42,21 +42,21 @@ class Header extends Component {
         const {projectName, projectOwner, branchName} = this.props;
 
         return (
-            <AppBar color={this.props.modelingView ? 'primary': 'secondary'}>
+            <AppBar color={this.props.modelingView ? 'primary' : 'secondary'}>
                 <Toolbar>
                     <IconButton aria-label="open side menu" onClick={() => {
                         this.props.toggleModelingView(!this.props.modelingView)
                     }}>
-                        <MenuIcon/>
+                        {this.props.modelingView ? <EditMode/> : <MultilineChart/>}
                     </IconButton>
                     <Typography type="title" color="inherit" noWrap>
-                        {`Branch ${branchName} open for ${projectOwner} / ${projectName}`}
+                        {this.props.modelingView ? `Edit ${branchName} branch of ${projectOwner} / ${projectName}` :
+                            `Simulations of ${branchName} branch of ${projectOwner} / ${projectName}`}
                     </Typography>
                 </Toolbar>
             </AppBar>
         );
     }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header));

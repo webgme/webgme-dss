@@ -37,10 +37,10 @@ class CenterPanel extends Component {
             <div onScroll={this.onScroll}
                  style={{
                      top: 64,
-                     left: 64,
+                     left: 50,
                      width: '100%',
                      height: '100vh',
-                     position: 'absolute',
+                     position: 'fixed',
                      overflow: 'auto'
                  }}>
                 {modelingView ?

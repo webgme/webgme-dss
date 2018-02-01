@@ -202,16 +202,16 @@ class Canvas extends SingleConnectedNode {
                  onMouseLeave={this.onMouseLeave}
                  onMouseMove={this.onMouseMove}>
                 <BasicConnectingComponent connectionManager={this.cm}/>
-                <div style={{
-                    position: 'sticky',
-                    top: '5%',
-                    left: '5%',
-                    right: '95%',
-                    bottom: '95%',
-                    fontSize: '24px',
-                    opacity: 0.3,
-                    zIndex: 2
-                }}>{`Node ${nodeInfo.name} open`}</div>
+                {/*<div style={{*/}
+                    {/*position: 'sticky',*/}
+                    {/*top: '5%',*/}
+                    {/*left: '5%',*/}
+                    {/*right: '95%',*/}
+                    {/*bottom: '95%',*/}
+                    {/*fontSize: '24px',*/}
+                    {/*opacity: 0.3,*/}
+                    {/*zIndex: 2*/}
+                {/*}}>{`Node ${nodeInfo.name} open`}</div>*/}
                 {childrenItems}
             </div>);
     }

@@ -9,17 +9,7 @@ import {withStyles} from 'material-ui/styles';
 
 import AttributeEditor from './AttributeEditor';
 import {toggleRightDrawer} from '../actions';
-
-const SIDE_PANEL_WIDTH = 300;
-const HEADER_HEIGHT = 64;
-
-const styles = {
-    drawerPaper: {
-        width: SIDE_PANEL_WIDTH,
-        overflow: 'auto',
-        top: HEADER_HEIGHT
-    }
-};
+import {sideDrawer as styles} from '../classes';
 
 const mapStateToProps = state => {
     return {
@@ -60,7 +50,7 @@ class RightDrawer extends Component {
                     <IconButton onClick={this.props.hide}>
                         <ChevronLeftIcon/>
                     </IconButton>
-                    <AttributeEditor selection={selection} gmeClient={gmeClient}/>
+                    <AttributeEditor selection={selection} gmeClient={gmeClient} fullWidthWidgets={true}/>
                 </Drawer>
             </div>
         );

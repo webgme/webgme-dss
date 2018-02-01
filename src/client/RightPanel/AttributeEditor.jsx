@@ -29,6 +29,7 @@ export class AttributeItem extends Component {
         value: PropTypes.any.isRequired,
         values: PropTypes.array,
         options: PropTypes.object,
+        fullWidth: PropTypes.bool,
         name: PropTypes.string.isRequired,
         description: PropTypes.string,
         type: PropTypes.string.isRequired
@@ -193,7 +194,7 @@ export class AttributeItem extends Component {
         this.processProps();
         let content = this.getContent();
 
-        return (<FormControl fullWidth={false} onBlur={this.onBlur} onFocus={this.onFocus}>
+        return (<FormControl fullWidth={this.props.fullWidth} onBlur={this.onBlur} onFocus={this.onFocus}>
             <FormLabel>{this.props.name}</FormLabel>
             {content}
             <FormHelperText>{this.props.description}</FormHelperText>
@@ -204,7 +205,8 @@ export class AttributeItem extends Component {
 export default class AttributeEditor extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
-        selection: PropTypes.array.isRequired
+        selection: PropTypes.array.isRequired,
+        fullWidthWidgets: PropTypes.bool
     };
 
     state = {
@@ -355,6 +357,7 @@ export default class AttributeEditor extends Component {
                 key={attribute.name}
                 value={attribute.value}
                 name={attribute.name}
+                fullWidth={this.props.fullWidthWidgets}
                 type={type}
                 values={attribute.enum}
                 description={attribute.description}

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
+import superagent from 'superagent';
 import classNames from 'classnames';
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
@@ -12,6 +13,7 @@ import PlayCircleOutline from 'material-ui-icons/PlayCircleOutline';
 import CheckCircle from 'material-ui-icons/CheckCircle';
 import AddCircle from 'material-ui-icons/AddCircle';
 import {withStyles} from 'material-ui/styles';
+import green from 'material-ui/colors/green';
 
 import {toggleLeftDrawer} from '../actions';
 
@@ -22,23 +24,7 @@ import DomainSelector from '../Dialogs/DomainSelector';
 
 import ConsoleDialog from '../ConsoleDialog';
 import OTConsoleTest from '../OTConsoleTest';
-import superagent from "superagent";
-
-const SIDE_PANEL_WIDTH = 240;
-const SIDE_PANEL_WIDTH_MINIMIZED = 50;
-const HEADER_HEIGHT = 64;
-
-const styles = theme => ({
-    drawerPaper: {
-        width: SIDE_PANEL_WIDTH,
-        overflow: 'auto',
-        top: HEADER_HEIGHT
-    },
-    drawerPaperClose: {
-        width: SIDE_PANEL_WIDTH_MINIMIZED,
-        overflowX: 'hidden'
-    }
-});
+import {sideDrawer as styles} from '../classes';
 
 const mapStateToProps = state => {
     return {
@@ -68,7 +54,7 @@ class LeftDrawer extends Component {
     };
 
     state = {
-        simulateDialog: false,
+        showCheckDialog: false,
         simulateConsole: false,
         showDomainSelector: false
     };
@@ -114,16 +100,16 @@ class LeftDrawer extends Component {
         if (modelingView) {
             actionButtons = [
                 {
-                    id: 'simulateDialog',
-                    iconClass: <CheckCircle/>
+                    id: 'showCheckDialog',
+                    iconClass: <CheckCircle style={{color: green[500]}} />
                 },
                 {
                     id: 'simulateConsole',
-                    iconClass: <PlayCircleOutline/>
+                    iconClass: <PlayCircleOutline color='primary'/>
                 },
                 {
                     id: 'showDomainSelector',
-                    iconClass: <AddCircle/>
+                    iconClass: <AddCircle color='secondary'/>
                 }];
         } else {
             actionButtons = []; // TODO: Fill up the actions for simulation.
@@ -153,13 +139,13 @@ class LeftDrawer extends Component {
 
 
                 </Drawer>
-                {this.state.simulateDialog ? (<PluginConfigDialog onReady={(config) => {
+                {this.state.showCheckDialog ? (<PluginConfigDialog onReady={(config) => {
                     console.log('config set:', config);
-                    this.setState({simulateDialog: false});
+                    this.setState({showCheckDialog: false});
                 }}
                                                                   onCancel={() => {
                                                                       console.log('canceled');
-                                                                      this.setState({simulateDialog: false});
+                                                                      this.setState({showCheckDialog: false});
                                                                   }}/>) : null}
                 {this.state.simulateConsole ? (<ConsoleDialog onReady={(config) => {
                     this.setState({simulateConsole: false});

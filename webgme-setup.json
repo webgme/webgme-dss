@@ -21,6 +21,10 @@
       "DomainSelector": {
         "src": "src/plugins/DomainSelector",
         "test": "test/plugins/DomainSelector"
+      },
+      "ModelicaCodeGenerator": {
+        "src": "src/plugins/ModelicaCodeGenerator",
+        "test": "test/plugins/ModelicaCodeGenerator"
       }
     }
   },

@@ -15,6 +15,8 @@ import AddCircle from 'material-ui-icons/AddCircle';
 import {withStyles} from 'material-ui/styles';
 import green from 'material-ui/colors/green';
 
+import CodeGeneratorMetaData from '../../plugins/ModelicaCodeGenerator/metadata.json';
+
 import {toggleLeftDrawer} from '../actions';
 
 import PartBrowser from './PartBrowser';
@@ -22,13 +24,12 @@ import ResultList from './ResultList';
 import PluginConfigDialog from '../Dialogs/PluginConfigDialog';
 import DomainSelector from '../Dialogs/DomainSelector';
 
-import ConsoleDialog from '../ConsoleDialog';
-import OTConsoleTest from '../OTConsoleTest';
 import {sideDrawer as styles} from '../classes';
 
 const mapStateToProps = state => {
     return {
         open: state.leftDrawer,
+        activeNode: state.activeNode,
         modelingView: state.modelingView
     }
 };
@@ -54,8 +55,8 @@ class LeftDrawer extends Component {
     };
 
     state = {
-        showCheckDialog: false,
-        simulateConsole: false,
+        showCodeGenerator: false,
+        showChecker: false,
         showDomainSelector: false
     };
 
@@ -93,6 +94,27 @@ class LeftDrawer extends Component {
             });
     };
 
+    runCodeGenerator = (config) => {
+        const {gmeClient, activeNode} = this.props;
+
+        this.setState({showCodeGenerator: false});
+        if (!config) {
+            // Cancelled
+            return;
+        }
+
+        const pluginId = CodeGeneratorMetaData.id;
+        let context = gmeClient.getCurrentPluginContext(pluginId, activeNode);
+
+        gmeClient.runBrowserPlugin(pluginId, context, function (err, result) {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log(result);
+            }
+        });
+    };
+
     render() {
         const {classes, gmeClient, open, modelingView} = this.props;
         let actionButtons;
@@ -100,11 +122,11 @@ class LeftDrawer extends Component {
         if (modelingView) {
             actionButtons = [
                 {
-                    id: 'showCheckDialog',
+                    id: 'showChecker',
                     iconClass: <CheckCircle style={{color: green[500]}} />
                 },
                 {
-                    id: 'simulateConsole',
+                    id: 'showCodeGenerator',
                     iconClass: <PlayCircleOutline color='primary'/>
                 },
                 {
@@ -136,27 +158,12 @@ class LeftDrawer extends Component {
                     <Divider/>
                     {modelingView ? <PartBrowser gmeClient={gmeClient} minimized={!open}/> :
                         <ResultList gmeClient={gmeClient} minimized={!open}/>}
-
-
                 </Drawer>
-                {this.state.showCheckDialog ? (<PluginConfigDialog onReady={(config) => {
-                    console.log('config set:', config);
-                    this.setState({showCheckDialog: false});
-                }}
-                                                                  onCancel={() => {
-                                                                      console.log('canceled');
-                                                                      this.setState({showCheckDialog: false});
-                                                                  }}/>) : null}
-                {this.state.simulateConsole ? (<ConsoleDialog onReady={(config) => {
-                    this.setState({simulateConsole: false});
-                }}/>) : null}
-                {this.state.simulateOT ? (<OTConsoleTest
-                    onReady={(config) => {
-                        this.setState({simulateOT: false});
-                    }}
-                    gmeClient={gmeClient}
-                    nodeId={'/Z/Z'}
-                    attributeName={'name'}/>) : null}
+
+                {this.state.showCodeGenerator ?
+                    <PluginConfigDialog metadata={CodeGeneratorMetaData}
+                        onOK={this.runCodeGenerator}/>: null}
+
                 {this.state.showDomainSelector ?
                     <DomainSelector domains={(gmeClient.getProjectInfo().info.kind || '').split(':').slice(1)}
                                     showDomainSelection={true}

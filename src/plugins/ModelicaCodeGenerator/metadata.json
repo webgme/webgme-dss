@@ -1,0 +1,14 @@
+{
+  "id": "ModelicaCodeGenerator",
+  "name": "Simulate Current Model",
+  "version": "0.1.0",
+  "description": "Currently only code generation is supported. In order to simulate the model you'd need download and install a Modelica environment such as OpenModelica.org and open the model.\n Would you like to run the code generator?",
+  "icon": {
+    "class": "glyphicon glyphicon-cog",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "writeAccessRequired": false,
+  "configStructure": []
+}

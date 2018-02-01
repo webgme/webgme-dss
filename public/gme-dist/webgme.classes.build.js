@@ -85,6 +85,14 @@
                 name: 'SignalFlow'
             }
         ],
+        pluginResults = {
+            ModelicaCodeGenerator: {
+
+            },
+            ConformityChecker: {
+
+            }
+        },
         inTransaction = false;
 
     function genProject(d) {
@@ -198,10 +206,28 @@
             getAllMetaNodes: () => [{
                 getId: () => '/8',
                 getAttribute: () => 'SimulationResults'
-            }]
-            ,
+            }],
             getActiveProjectId: () => `${projects[0].owner}+${projects[0].name}`,
             getActiveBranchName: () => 'master',
+            getActiveCommitHash: () => '#d0c1f2de661b3b8c16a1b693ec9e39af847d267d',
+            getCurrentPluginContext: (pluginId, activeNodeId, activeSelectionIds) => {
+                return {
+                    managerConfig: {
+                        project: null,
+                        branchName: 'master',
+                        commitHash: '#d0c1f2de661b3b8c16a1b693ec9e39af847d267d',
+                        activeNode: '/z',
+                        activeSelection: [],
+                        namespace: ''
+                    },
+                    pluginConfig: null
+                };
+            },
+            runBrowserPlugin: (pluginId, context, callback) => {
+                setTimeout(() => {
+                    callback(null, pluginResults[pluginId]);
+                }, 200);
+            },
             getProjectInfo: () => genProject(projects[0]),
             addUI: (uiId, eventHandler) => {
                 cnt += 1;

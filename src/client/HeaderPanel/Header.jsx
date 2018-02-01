@@ -9,8 +9,8 @@ import MenuIcon from 'material-ui-icons/Menu';
 import EditMode from 'material-ui-icons/Edit';
 import MultilineChart from 'material-ui-icons/MultilineChart';
 import IconButton from 'material-ui/IconButton';
-import {toggleModelingView} from "./actions";
-import {appHeader as style} from "./styles";
+import {toggleModelingView} from '../actions';
+import {appHeader as style} from '../styles';
 
 
 const mapStateToProps = state => {

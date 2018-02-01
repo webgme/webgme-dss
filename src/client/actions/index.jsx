@@ -43,10 +43,29 @@ export const setScale = scale => {
     };
 };
 
-export const setPlotData = data => {
+export const addPlotVariable = variable => {
     return {
-        type: 'SET_PLOT_DATA',
-        data
+        type: 'ADD_PLOT_VARIABLE',
+        variable
+    };
+};
+
+export const removePlotVariable = variable => {
+    return {
+        type: 'REMOVE_PLOT_VARIABLE',
+        variable
+    };
+};
+
+export const clearPlotVariables = () => {
+    return {
+        type: 'CLEAR_PLOT_VARIABLES'
+    };
+};
+
+export const setPlotNode = () => {
+    return {
+        type: 'CLEAR_PLOT_VARIABLES'
     };
 };
 

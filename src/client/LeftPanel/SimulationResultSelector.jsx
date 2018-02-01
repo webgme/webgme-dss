@@ -4,7 +4,7 @@ import update from 'immutability-helper';
 import {connect} from 'react-redux';
 
 import SIM_RES from './SIM_RES.json';
-import {setPlotData} from '../actions';
+import {addPlotVariable, removePlotVariable} from '../actions';
 
 const mapStateToProps = state => {
     return {}
@@ -12,8 +12,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setPlotData: (data) => {
-            dispatch(setPlotData(data));
+        addPlotVariable: varName => {
+            dispatch(addPlotVariable(varName));
+        },
+        removePlotVariable: varName => {
+            dispatch(removePlotVariable(varName));
         }
     }
 };
@@ -29,22 +32,11 @@ class SimulationResultSelector extends Component {
     // };
 
     onSelectVariable = (varName) => (event) => {
-        let plotData = [];
-
-        // this.setState({
-        //     selectedVariables: update(this.state.selectedVariables, {
-        //         [varName]: {$set: true}
-        //     })
-        // });
-
-        SIM_RES.timeSeries.time.map((time, idx) => {
-            plotData.push({
-                time: time,
-                [varName]: SIM_RES.timeSeries[varName][idx]
-            });
-        });
-
-        this.props.setPlotData(plotData);
+        if (true) {
+            this.props.addPlotVariable(varName);
+        } else {
+            this.props.removePlotVariable(varName);
+        }
     };
 
     render() {

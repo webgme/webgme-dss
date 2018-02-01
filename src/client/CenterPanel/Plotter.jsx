@@ -1,23 +1,29 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import SIM_RES from '../LeftPanel/SIM_RES.json';
 
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
 
 const mapStateToProps = state => {
     return {
-        data: state.plotData
+        variables: state.plotData.variables
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {}
 };
-
+// SIM_RES.timeSeries.time.map((time, idx) => {
+//     plotData.push({
+//         time: time,
+//         [varName]: SIM_RES.timeSeries[varName][idx]
+//     });
+// });
 class Plotter extends Component {
-
     render() {
-        const {data} = this.props;
+        const data = [];
+        console.log('Plotter got variables', this.props.variables);
         return (
             <div>
                 <LineChart width={900} height={600} data={data}

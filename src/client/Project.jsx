@@ -12,7 +12,7 @@ import {LinearProgress} from 'material-ui/Progress';
 import {setActiveNode} from "./actions";
 
 import PartBrowserDragPreview from './LeftPanel/PartBrowserDragPreview';
-import Header from './Header';
+import Header from './HeaderPanel/Header';
 import CenterPanel from './CenterPanel/CenterPanel';
 import LeftDrawer from './LeftPanel/LeftDrawer';
 import RightDrawer from './RightPanel/RightDrawer';

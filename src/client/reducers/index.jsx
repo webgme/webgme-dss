@@ -1,4 +1,5 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
+import update from 'immutability-helper';
 
 const activeNode = (state = null, action) => {
     if (action.type === 'SET_ACTIVE_NODE') {
@@ -54,12 +55,45 @@ const modelingView = (state = true, action) => {
     return state;
 };
 
-const plotData = (state = [], action) => {
-    if (action.type === 'SET_PLOT_DATA') {
-        return action.data;
-    }
+// const initialUserState = {hasFetched: false, isFetching: false, user: {}};
+// const currentUser = (state = initialUserState, action) => {
+//     switch (action.type) {
+//         case 'USER_RECEIVED':
+//             return update(state, {
+//                 hasFetched: {$set: true},
+//                 isFetching: {$set: false},
+//                 user: {$set: action.user}
+//             });
+//         case 'USER_REQUESTED':
+//             return update(state, {
+//                 isFetching: {$set: true}
+//             });
+//         default:
+//             return state;
+//     }
+// };
 
-    return state;
+const plotData = (state = {nodeId: null, variables: []}, action) => {
+    switch (action.type) {
+        case 'ADD_PLOT_VARIABLE':
+            return update(state, {
+                variables: {$push: [action.variable]}
+            });
+        case 'REMOVE_PLOT_VARIABLE':
+            return update(state, {
+                variables: {$unshift: [action.variable]}
+            });
+        case 'CLEAR_PLOT_VARIABLES':
+            return update(state, {
+                variables: {$set: []}
+            });
+        case 'SET_PLOT_NODE':
+            return update(state, {
+                nodeId: {$set: action.nodeId}
+            });
+        default:
+            return state;
+    }
 };
 
 export default combineReducers({

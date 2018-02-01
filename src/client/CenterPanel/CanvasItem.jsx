@@ -38,7 +38,8 @@ function collect(connect, monitor) {
 
 const mapStateToProps = state => {
     return {
-        scale: state.scale
+        scale: state.scale,
+        selection: state.activeSelection
     }
 };
 
@@ -46,6 +47,9 @@ const mapDispatchToProps = dispatch => {
     return {
         activateAttributeDrawer: id => {
             dispatch(toggleRightDrawer(true));
+            dispatch(setActiveSelection([id]));
+        },
+        selectNode: id => {
             dispatch(setActiveSelection([id]));
         }
     }
@@ -62,7 +66,7 @@ class CanvasItem extends Component {
         contextNode: PropTypes.string.isRequired,
         connectionManager: PropTypes.object.isRequired,
         eventManager: PropTypes.object.isRequired,
-
+        selectNode: PropTypes.func.isRequired,
         activateAttributeDrawer: PropTypes.func.isRequired
     };
 
@@ -82,8 +86,8 @@ class CanvasItem extends Component {
         justRemovedIds: []
     };
 
-    constructor(/*props*/) {
-        super();
+    constructor(props) {
+        super(props);
         console.count('CanvasItem:ctor');
     }
 
@@ -93,6 +97,10 @@ class CanvasItem extends Component {
 
     onMouseLeave = () => {
         this.setState({showActions: false});
+    };
+
+    isSelected = () => {
+        return this.props.selection.includes(this.props.activeNode);
     };
 
     componentDidMount() {
@@ -333,7 +341,10 @@ class CanvasItem extends Component {
                 contextNode,
                 connectionManager,
                 scale,
-                eventManager
+                eventManager,
+                activeNode,
+                selectNode,
+                activateAttributeDrawer
             } = this.props,
             {
                 showActions,
@@ -391,11 +402,21 @@ class CanvasItem extends Component {
                 left: position.x,
                 height: bbox.height * scale,
                 width: bbox.width * scale,
-                border: showActions ? "1px dashed #000000" : "1px solid transparent",
+                border: showActions || this.isSelected() ? "1px dashed #000000" : "1px solid transparent",
                 zIndex: 10
             }}
                  onMouseEnter={this.onMouseEnter}
-                 onMouseLeave={this.onMouseLeave}>
+                 onMouseLeave={this.onMouseLeave}
+                 onClick={(event) => {
+                     event.stopPropagation();
+                     event.preventDefault();
+                     selectNode(activeNode);
+                 }}
+                 onDoubleClick={(event) => {
+                     event.stopPropagation();
+                     event.preventDefault();
+                     activateAttributeDrawer(activeNode);
+                 }}>
                 {portComponents}
                 <Samy svgXML={base}
                       style={{

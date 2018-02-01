@@ -35,9 +35,12 @@ export default class CanvasItemPort extends Component {
         gmeClient.completeTransaction('connection created');
     };
 
-    onClick = (/*event*/) => {
+    onClick = (event) => {
         let self = this,
             {connectionManager, activeNode, absolutePosition, dimensions, validTypes} = this.props;
+
+        event.stopPropagation();
+        event.preventDefault();
 
         if (connectionManager.isConnecting) {
             let connectionParams = connectionManager.endConnection();

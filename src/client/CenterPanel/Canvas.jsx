@@ -9,7 +9,7 @@ import CanvasItem from "./CanvasItem";
 import ConnectionManager from '../gme/BaseComponents/ConnectionManager';
 import BasicConnectingComponent from '../gme/BaseComponents/BasicConnectingComponent';
 import BasicEventManager from '../gme/BaseComponents/BasicEventManager';
-import {toggleRightDrawer} from '../actions';
+import {toggleRightDrawer, setActiveSelection} from '../actions';
 import getIndexedName from "../gme/utils/getIndexedName";
 
 //TODO we anly take loaded children into account
@@ -85,6 +85,7 @@ function collect(connect, monitor) {
 const mapStateToProps = state => {
     return {
         activeNode: state.activeNode,
+        selection: state.activeSelection,
         scale: state.scale
     }
 };
@@ -92,6 +93,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         hide: () => {
+            dispatch(toggleRightDrawer(false));
+        },
+        clearSelection: () => {
+            dispatch(setActiveSelection([]));
             dispatch(toggleRightDrawer(false));
         }
     }
@@ -154,6 +159,7 @@ class Canvas extends SingleConnectedNode {
         if (this.cm.isConnecting) {
             this.cm.endConnection();
         }
+        this.props.clearSelection();
     };
 
     onMouseLeave = (event) => {
@@ -172,7 +178,7 @@ class Canvas extends SingleConnectedNode {
 
     render() {
         const {connectDropTarget, isOver, activeNode, gmeClient} = this.props,
-            {children, nodeInfo} = this.state,
+            {children} = this.state,
             self = this;
 
         let childrenItems = children.map((child) => {
@@ -197,20 +203,20 @@ class Canvas extends SingleConnectedNode {
                      zIndex: 1,
                      position: 'absolute'
                  }}
-                /*onClick={this.onMouseClick}*/
+                 onClick={this.onMouseClick}
                  onContextMenu={this.onMouseClick}
                  onMouseLeave={this.onMouseLeave}
                  onMouseMove={this.onMouseMove}>
                 <BasicConnectingComponent connectionManager={this.cm}/>
                 {/*<div style={{*/}
-                    {/*position: 'sticky',*/}
-                    {/*top: '5%',*/}
-                    {/*left: '5%',*/}
-                    {/*right: '95%',*/}
-                    {/*bottom: '95%',*/}
-                    {/*fontSize: '24px',*/}
-                    {/*opacity: 0.3,*/}
-                    {/*zIndex: 2*/}
+                {/*position: 'sticky',*/}
+                {/*top: '5%',*/}
+                {/*left: '5%',*/}
+                {/*right: '95%',*/}
+                {/*bottom: '95%',*/}
+                {/*fontSize: '24px',*/}
+                {/*opacity: 0.3,*/}
+                {/*zIndex: 2*/}
                 {/*}}>{`Node ${nodeInfo.name} open`}</div>*/}
                 {childrenItems}
             </div>);

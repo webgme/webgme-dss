@@ -7,38 +7,16 @@ import ExpansionPanel, {ExpansionPanelDetails, ExpansionPanelSummary} from 'mate
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import { withTheme } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
-import {Treebeard, decorators, theme} from 'react-treebeard';
+import {Treebeard} from 'react-treebeard';
 
 import SingleConnectedNode from '../gme/BaseComponents/SingleConnectedNode';
 import {nameSort} from '../gme/utils/getObjectSorter';
 
 import PartBrowserItem from './PartBrowserItem';
+import {treeBeardTheme, getTreeDecorators} from "../treeOverrides";
 
 const TREE_PATH_SEP = '$';
 const EXPAND_ALL = false;
-
-//theme.tree.base.backgroundColor = props.theme.palette.background.paper;
-theme.tree.base.backgroundColor = 'white';
-theme.tree.base.color = 'black';
-theme.tree.node.activeLink.background = 'lightgrey';
-theme.tree.node.toggle.arrow.fill = 'grey';
-theme.tree.node.toggle.width = 10;
-theme.tree.node.toggle.height = 10;
-theme.tree.node.header.base.color = 'black';
-theme.tree.node.loading.color = 'orange';
-
-class TreeContainer extends decorators.Container {
-    renderToggleDecorator() {
-        const {style, node} = this.props;
-
-        if (node.isRoot) {
-            return <div/>;
-        }
-        else {
-            return <decorators.Toggle style={style.toggle}/>;
-        }
-    }
-}
 
 const mapStateToProps = state => {
     return {
@@ -69,23 +47,7 @@ class PartBrowser extends SingleConnectedNode {
 
         this.tree = {};
         this.items = [];
-        this.theme = theme;
-
-        // TODO: Match these with the theme from material-ui
-
-
-        const defaultHeader = decorators.Header;
-        decorators.Container = TreeContainer;
-
-        decorators.Header = (props) => {
-            if (props.node.isRoot) {
-                return <div/>;
-            } else if (props.node.isFolder) {
-                return defaultHeader(props);
-            }
-
-            return <PartBrowserItem nodeData={props.node} scale={this.props.scale}/>
-        };
+        this.decorators = getTreeDecorators(PartBrowserItem, {scale: this.props.scale})
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -193,6 +155,9 @@ class PartBrowser extends SingleConnectedNode {
         node.active = true;
         if (node.children) {
             node.toggled = toggled;
+            if (node.children.length === 1 && node.children[0].isFolder) {
+                node.children[0].toggled = true;
+            }
         }
 
         this.setState({cursor: node});
@@ -209,8 +174,8 @@ class PartBrowser extends SingleConnectedNode {
                         <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>
                             <Treebeard data={treeNode}
                                        onToggle={this.onTreeNodeToggle}
-                                       decorators={decorators}
-                                       style={this.theme}/>
+                                       decorators={this.decorators}
+                                       style={treeBeardTheme}/>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>);
             } else {

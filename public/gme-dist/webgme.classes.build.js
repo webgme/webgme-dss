@@ -15,14 +15,14 @@
 
     let cnt = 0,
         names = [
-            'Inertia',
-            'Damper',
-            'Spring',
-            'Mass',
-            'Resistor',
+            'inductor1',
+            'ground1',
+            'resistor2',
+            'sinceCurrent1',
+            'resistor1',
             'Inductor',
-            'Capacitor',
-            'SinusSource'
+            'p',
+            'v'
         ],
         attrNames = [
             'name',

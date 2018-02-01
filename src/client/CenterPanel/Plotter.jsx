@@ -15,12 +15,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {}
 };
-// SIM_RES.timeSeries.time.map((time, idx) => {
-//     plotData.push({
-//         time: time,
-//         [varName]: SIM_RES.timeSeries[varName][idx]
-//     });
-// });
+
 class Plotter extends Component {
     render() {
         const data = [];
@@ -40,8 +35,7 @@ class Plotter extends Component {
 
         return (
             <div>
-                <LineChart width={450} height={600} data={data}
-                margin={{top: 64, right: 30, left: 50, bottom: 5}}>
+                <LineChart width={300} height={200} data={data}>
                 <XAxis dataKey="time"/>
                 <YAxis/>
                 <CartesianGrid strokeDasharray="3 3"/>

@@ -12,3 +12,12 @@ export const centerPanel = {
     position: 'fixed',
     overflow: 'auto'
 };
+
+export const splitPanel = {
+    top: LAYOUT_SIZES.HEADER_HEIGHT,
+    left: LAYOUT_SIZES.SIDE_PANEL_WIDTH_MINIMIZED,
+    width: '100%',
+    height: '100vh',
+    position: 'fixed',
+    overflow: 'auto'
+};

@@ -40,11 +40,7 @@ class CenterPanel extends Component {
                  style={style}>
                 {modelingView ?
                     <Canvas gmeClient={gmeClient} scrollPos={scrollPos}/> :
-                    <div style={{
-                        postion: 'fixed',
-                        top: 65,
-                        left: 50
-                    }}>
+                    <div style={{marginLeft: 200, marginTop: 50}}>
                         <Plotter/>
                         <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>
                     </div>

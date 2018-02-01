@@ -81,7 +81,7 @@ const plotData = (state = {nodeId: null, variables: []}, action) => {
             });
         case 'REMOVE_PLOT_VARIABLE':
             return update(state, {
-                variables: {$unshift: [action.variable]}
+                variables: {$splice: [[state.variables.indexOf(action.variable), 1]]}
             });
         case 'CLEAR_PLOT_VARIABLES':
             return update(state, {

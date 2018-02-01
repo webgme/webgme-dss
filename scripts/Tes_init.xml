@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- description of the model interface using an extention of the FMI standard -->
+<fmiModelDescription numberOfFunctions="0" cmt_numberOfStringAliasVariables="NASTR:    number of alias string variables,                   OMC" guid="{d8beeddf-0304-46a8-9c52-d78cdf22729b}" cmt_numberOfIntegerAliasVariables="NAINT:    number of alias int variables,                      OMC" numberOfIntegerAlgebraicVariables="0" cmt_numberOfTimeEvents="NG_SAM:   number of zero crossings that are samples,          OMC" numberOfBooleanAliasVariables="0" numberOfBooleanAlgebraicVariables="0" cmt_numberOfContinuousStates="NX:       number of states,                                   FMI" numberOfStringAliasVariables="0" cmt_numberOfBooleanParameters="NPBOOL:   number of bool parameters,                          OMC" fmiVersion="1.0" numberOfInputVariables="0" cmt_numberOfRealAlgebraicVariables="NY:       number of real variables,                           OMC" numberOfStringAlgebraicVariables="0" OPENMODELICAHOME="E:/OpenModelica1.11.0/" generationDateAndTime="2018-01-31T17:22:48Z" numberOfStringParameters="0" cmt_numberOfIntegerParameters="NPINT:    number of int parameters,                           OMC" variableNamingConvention="structured" cmt_numberOfBooleanAlgebraicVariables="NYBOOL:   number of alg. bool variables,                      OMC" numberOfRealAlgebraicAliasVariables="21" numberOfTimeEvents="0" cmt_numberOfRealParameters="NP:       number of parameters,                               OMC" cmt_numberOfExternalObjects="NEXT:     number of external objects,                         OMC" numberOfIntegerAliasVariables="0" cmt_numberOfEventIndicators="NG:       number of zero crossings,                           FMI" numberOfRealAlgebraicVariables="13" numberOfExternalObjects="0" numberOfIntegerParameters="0" numberOfContinuousStates="0" cmt_numberOfStringAlgebraicVariables="NYSTR:    number of alg. string variables,                    OMC" generationTool="OpenModelica Compiler OpenModelica v1.11.0 (64-bit)" numberOfEventIndicators="1" modelName="Tes" numberOfRealParameters="19" cmt_numberOfInputVariables="NI:       number of inputvar on topmodel,                     OMC" modelIdentifier="Tes" description="" cmt_numberOfFunctions="NFUNC:    number of functions used by the simulation,         OMC" cmt_numberOfStringParameters="NPSTR:    number of string parameters,                        OMC" cmt_numberOfRealAlgebraicAliasVariables="NA:       number of alias variables,                          OMC" cmt_numberOfOutputVariables="NO:       number of outputvar on topmodel,                    OMC" cmt_numberOfIntegerAlgebraicVariables="NYINT:    number of alg. int variables,                       OMC" numberOfBooleanParameters="2" cmt_numberOfBooleanAliasVariables="NABOOL:   number of alias bool variables,                     OMC" numberOfOutputVariables="0">
+ <!-- startTime, stopTime, tolerance are FMI specific, all others are OMC specific -->
+ <DefaultExperiment tolerance="1e-006" solver="dassl" stopTime="1" variableFilter=".*" startTime="0" stepSize="0.01" outputFormat="csv"/>
+ <!-- variables in the model -->
+ <ModelVariables>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="175" classType="rAlg" isProtected="false" startLine="175" alias="noAlias" description="Current flowing from pin p to pin n" isValueChangeable="false" classIndex="0" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1000" variability="continuous" name="der(inductor1.i)" endColumn="55">
+   <Real useNominal="false" fixed="false"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="18" classType="rAlg" isProtected="false" startLine="13" alias="noAlias" description="Current flowing into the pin" isValueChangeable="false" classIndex="1" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1001" variability="continuous" name="ground1.p.i" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="12" classType="rAlg" isProtected="false" startLine="7" alias="noAlias" description="Potential at the pin" isValueChangeable="false" classIndex="2" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1002" variability="continuous" name="ground1.p.v" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="V"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="175" classType="rAlg" isProtected="false" startLine="175" alias="noAlias" description="Current flowing from pin p to pin n" isValueChangeable="false" classIndex="3" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1003" variability="continuous" name="inductor1.i" endColumn="55">
+   <Real start="0.0" useNominal="false" fixed="false" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="52" classType="rAlg" isProtected="false" startLine="47" alias="noAlias" description="Potential at the pin" isValueChangeable="false" classIndex="4" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1004" variability="continuous" name="inductor1.p.v" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="V"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="174" classType="rAlg" isProtected="false" startLine="174" alias="noAlias" description="Voltage drop between the two pins (= p.v - n.v)" isValueChangeable="false" classIndex="5" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1005" variability="continuous" name="inductor1.v" endColumn="67">
+   <Real useNominal="false" fixed="false" unit="V"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="315" classType="rAlg" isProtected="false" startLine="315" alias="noAlias" description="Loss power leaving component via heatPort" isValueChangeable="false" classIndex="6" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1006" variability="continuous" name="resistor1.LossPower" endColumn="67">
+   <Real start="0.0" useNominal="false" fixed="false" unit="W"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Basic.mo" startColumn="5" endLine="63" classType="rAlg" isProtected="false" startLine="62" alias="noAlias" description="Actual resistance = R*(1 + alpha*(T_heatPort - T_ref))" isValueChangeable="false" classIndex="7" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1007" variability="continuous" name="resistor1.R_actual" endColumn="63">
+   <Real useNominal="false" fixed="false" unit="Ohm"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="174" classType="rAlg" isProtected="false" startLine="174" alias="noAlias" description="Voltage drop between the two pins (= p.v - n.v)" isValueChangeable="false" classIndex="8" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1008" variability="continuous" name="resistor1.v" endColumn="67">
+   <Real start="0.0" useNominal="false" fixed="false" unit="V"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="315" classType="rAlg" isProtected="false" startLine="315" alias="noAlias" description="Loss power leaving component via heatPort" isValueChangeable="false" classIndex="9" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1009" variability="continuous" name="resistor2.LossPower" endColumn="67">
+   <Real start="0.0" useNominal="false" fixed="false" unit="W"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Basic.mo" startColumn="5" endLine="63" classType="rAlg" isProtected="false" startLine="62" alias="noAlias" description="Actual resistance = R*(1 + alpha*(T_heatPort - T_ref))" isValueChangeable="false" classIndex="10" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1010" variability="continuous" name="resistor2.R_actual" endColumn="63">
+   <Real useNominal="false" fixed="false" unit="Ohm"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="174" classType="rAlg" isProtected="false" startLine="174" alias="noAlias" description="Voltage drop between the two pins (= p.v - n.v)" isValueChangeable="false" classIndex="11" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1011" variability="continuous" name="resistor2.v" endColumn="67">
+   <Real start="0.0" useNominal="false" fixed="false" unit="V"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="174" classType="rAlg" isProtected="false" startLine="174" alias="noAlias" description="Voltage drop between the two pins (= p.v - n.v)" isValueChangeable="false" classIndex="12" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1012" variability="continuous" name="sineCurrent1.v" endColumn="67">
+   <Real useNominal="false" fixed="false" unit="V"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Basic.mo" startColumn="5" endLine="304" classType="rPar" isProtected="false" startLine="304" alias="noAlias" description="Inductance" isValueChangeable="true" classIndex="0" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1013" variability="parameter" name="inductor1.L" endColumn="52">
+   <Real start="1.0" useNominal="false" fixed="true" unit="H"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Basic.mo" startColumn="5" endLine="55" classType="rPar" isProtected="false" startLine="54" alias="noAlias" description="Resistance at temperature T_ref" isValueChangeable="true" classIndex="1" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1014" variability="parameter" name="resistor1.R" endColumn="40">
+   <Real start="1.0" useNominal="false" fixed="true" unit="Ohm"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="310" classType="rPar" isProtected="false" startLine="309" alias="noAlias" description="Fixed device temperature if useHeatPort = false" isValueChangeable="false" classIndex="2" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1015" variability="parameter" name="resistor1.T" endColumn="99">
+   <Real displayUnit="degC" start="288.15" useNominal="true" fixed="true" min="0.0" unit="K" nominal="300.0"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Basic.mo" startColumn="5" endLine="56" classType="rPar" isProtected="false" startLine="56" alias="noAlias" description="Reference temperature" isValueChangeable="true" classIndex="3" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1016" variability="parameter" name="resistor1.T_ref" endColumn="66">
+   <Real displayUnit="degC" start="300.15" useNominal="true" fixed="true" min="0.0" unit="K" nominal="300.0"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Basic.mo" startColumn="5" endLine="58" classType="rPar" isProtected="false" startLine="57" alias="noAlias" description="Temperature coefficient of resistance (R_actual = R*(1 + alpha*(T_heatPort - T_ref))" isValueChangeable="true" classIndex="4" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1017" variability="parameter" name="resistor1.alpha" endColumn="93">
+   <Real start="0.0" useNominal="false" fixed="true" unit="1/K"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Basic.mo" startColumn="5" endLine="55" classType="rPar" isProtected="false" startLine="54" alias="noAlias" description="Resistance at temperature T_ref" isValueChangeable="true" classIndex="5" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1018" variability="parameter" name="resistor2.R" endColumn="40">
+   <Real start="1.0" useNominal="false" fixed="true" unit="Ohm"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="310" classType="rPar" isProtected="false" startLine="309" alias="noAlias" description="Fixed device temperature if useHeatPort = false" isValueChangeable="false" classIndex="6" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1019" variability="parameter" name="resistor2.T" endColumn="99">
+   <Real displayUnit="degC" start="288.15" useNominal="true" fixed="true" min="0.0" unit="K" nominal="300.0"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Basic.mo" startColumn="5" endLine="56" classType="rPar" isProtected="false" startLine="56" alias="noAlias" description="Reference temperature" isValueChangeable="true" classIndex="7" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1020" variability="parameter" name="resistor2.T_ref" endColumn="66">
+   <Real displayUnit="degC" start="300.15" useNominal="true" fixed="true" min="0.0" unit="K" nominal="300.0"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Basic.mo" startColumn="5" endLine="58" classType="rPar" isProtected="false" startLine="57" alias="noAlias" description="Temperature coefficient of resistance (R_actual = R*(1 + alpha*(T_heatPort - T_ref))" isValueChangeable="true" classIndex="8" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1021" variability="parameter" name="resistor2.alpha" endColumn="93">
+   <Real start="0.0" useNominal="false" fixed="true" unit="1/K"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Sources.mo" startColumn="5" endLine="1384" classType="rPar" isProtected="false" startLine="1384" alias="noAlias" description="Amplitude of sine wave" isValueChangeable="true" classIndex="9" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1022" variability="parameter" name="sineCurrent1.I" endColumn="61">
+   <Real start="1.0" useNominal="false" fixed="true" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Sources.mo" startColumn="5" endLine="1386" classType="rPar" isProtected="false" startLine="1386" alias="noAlias" description="Frequency of sine wave" isValueChangeable="true" classIndex="10" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1023" variability="parameter" name="sineCurrent1.freqHz" endColumn="68">
+   <Real start="1.0" useNominal="false" fixed="true" unit="Hz"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="470" classType="rPar" isProtected="false" startLine="470" alias="noAlias" description="Current offset" isValueChangeable="true" classIndex="11" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1024" variability="parameter" name="sineCurrent1.offset" endColumn="51">
+   <Real start="0.0" useNominal="false" fixed="true" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Sources.mo" startColumn="5" endLine="1385" classType="rPar" isProtected="false" startLine="1385" alias="noAlias" description="Phase of sine wave" isValueChangeable="true" classIndex="12" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1025" variability="parameter" name="sineCurrent1.phase" endColumn="52">
+   <Real displayUnit="deg" start="0.0" useNominal="false" fixed="true" unit="rad"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Blocks/Sources.mo" startColumn="5" endLine="554" classType="rPar" isProtected="false" startLine="554" alias="noAlias" description="Amplitude of sine wave" isValueChangeable="false" classIndex="13" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1026" variability="parameter" name="sineCurrent1.signalSource.amplitude" endColumn="56">
+   <Real useNominal="false" fixed="true"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Blocks/Sources.mo" startColumn="5" endLine="555" classType="rPar" isProtected="false" startLine="555" alias="noAlias" description="Frequency of sine wave" isValueChangeable="false" classIndex="14" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1027" variability="parameter" name="sineCurrent1.signalSource.freqHz" endColumn="73">
+   <Real start="1.0" useNominal="false" fixed="true" unit="Hz"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Blocks/Sources.mo" startColumn="5" endLine="557" classType="rPar" isProtected="false" startLine="557" alias="noAlias" description="Offset of output signal" isValueChangeable="false" classIndex="15" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1028" variability="parameter" name="sineCurrent1.signalSource.offset" endColumn="54">
+   <Real useNominal="false" fixed="true"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Blocks/Sources.mo" startColumn="5" endLine="556" classType="rPar" isProtected="false" startLine="556" alias="noAlias" description="Phase of sine wave" isValueChangeable="false" classIndex="16" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1029" variability="parameter" name="sineCurrent1.signalSource.phase" endColumn="57">
+   <Real displayUnit="deg" useNominal="false" fixed="true" unit="rad"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Blocks/Sources.mo" startColumn="5" endLine="558" classType="rPar" isProtected="false" startLine="558" alias="noAlias" description="Output = offset for time &lt; startTime" isValueChangeable="false" classIndex="17" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1030" variability="parameter" name="sineCurrent1.signalSource.startTime" endColumn="78">
+   <Real useNominal="false" fixed="true" unit="s"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="471" classType="rPar" isProtected="false" startLine="471" alias="noAlias" description="Time offset" isValueChangeable="true" classIndex="18" isDiscrete="true" hideResult="false" causality="internal" fileWritable="true" valueReference="1031" variability="parameter" name="sineCurrent1.startTime" endColumn="48">
+   <Real start="0.0" useNominal="false" fixed="true" unit="s"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="98" classType="rAli" isProtected="false" startLine="93" alias="negatedAlias" description="Current flowing into the pin" isValueChangeable="false" aliasVariable="inductor1.i" classIndex="0" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1032" variability="continuous" name="inductor1.n.i" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="92" classType="rAli" isProtected="false" startLine="87" alias="alias" description="Potential at the pin" isValueChangeable="false" aliasVariable="resistor1.v" classIndex="1" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1033" variability="continuous" name="inductor1.n.v" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="V"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="58" classType="rAli" isProtected="false" startLine="53" alias="alias" description="Current flowing into the pin" isValueChangeable="false" aliasVariable="inductor1.i" classIndex="2" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1034" variability="continuous" name="inductor1.p.i" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="316" classType="rAli" isProtected="false" startLine="316" alias="alias" description="Temperature of heatPort" isValueChangeable="false" aliasVariable="resistor1.T" classIndex="3" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1035" variability="continuous" name="resistor1.T_heatPort" endColumn="56">
+   <Real displayUnit="degC" start="288.15" useNominal="true" fixed="false" min="0.0" unit="K" nominal="300.0"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="175" classType="rAli" isProtected="false" startLine="175" alias="alias" description="Current flowing from pin p to pin n" isValueChangeable="false" aliasVariable="inductor1.i" classIndex="4" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1036" variability="continuous" name="resistor1.i" endColumn="55">
+   <Real useNominal="false" fixed="false" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="98" classType="rAli" isProtected="false" startLine="93" alias="negatedAlias" description="Current flowing into the pin" isValueChangeable="false" aliasVariable="inductor1.i" classIndex="5" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1037" variability="continuous" name="resistor1.n.i" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="92" classType="rAli" isProtected="false" startLine="87" alias="alias" description="Potential at the pin" isValueChangeable="false" aliasVariable="ground1.p.v" classIndex="6" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1038" variability="continuous" name="resistor1.n.v" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="V"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="58" classType="rAli" isProtected="false" startLine="53" alias="alias" description="Current flowing into the pin" isValueChangeable="false" aliasVariable="inductor1.i" classIndex="7" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1039" variability="continuous" name="resistor1.p.i" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="52" classType="rAli" isProtected="false" startLine="47" alias="alias" description="Potential at the pin" isValueChangeable="false" aliasVariable="resistor1.v" classIndex="8" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1040" variability="continuous" name="resistor1.p.v" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="V"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="316" classType="rAli" isProtected="false" startLine="316" alias="alias" description="Temperature of heatPort" isValueChangeable="false" aliasVariable="resistor2.T" classIndex="9" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1041" variability="continuous" name="resistor2.T_heatPort" endColumn="56">
+   <Real displayUnit="degC" start="288.15" useNominal="true" fixed="false" min="0.0" unit="K" nominal="300.0"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="175" classType="rAli" isProtected="false" startLine="175" alias="negatedAlias" description="Current flowing from pin p to pin n" isValueChangeable="false" aliasVariable="inductor1.i" classIndex="10" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1042" variability="continuous" name="resistor2.i" endColumn="55">
+   <Real useNominal="false" fixed="false" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="98" classType="rAli" isProtected="false" startLine="93" alias="alias" description="Current flowing into the pin" isValueChangeable="false" aliasVariable="inductor1.i" classIndex="11" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1043" variability="continuous" name="resistor2.n.i" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="92" classType="rAli" isProtected="false" startLine="87" alias="alias" description="Potential at the pin" isValueChangeable="false" aliasVariable="ground1.p.v" classIndex="12" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1044" variability="continuous" name="resistor2.n.v" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="V"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="58" classType="rAli" isProtected="false" startLine="53" alias="negatedAlias" description="Current flowing into the pin" isValueChangeable="false" aliasVariable="inductor1.i" classIndex="13" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1045" variability="continuous" name="resistor2.p.i" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="52" classType="rAli" isProtected="false" startLine="47" alias="alias" description="Potential at the pin" isValueChangeable="false" aliasVariable="resistor2.v" classIndex="14" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1046" variability="continuous" name="resistor2.p.v" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="V"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="175" classType="rAli" isProtected="false" startLine="175" alias="alias" description="Current flowing from pin p to pin n" isValueChangeable="false" aliasVariable="inductor1.i" classIndex="15" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1047" variability="continuous" name="sineCurrent1.i" endColumn="55">
+   <Real useNominal="false" fixed="false" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="98" classType="rAli" isProtected="false" startLine="93" alias="negatedAlias" description="Current flowing into the pin" isValueChangeable="false" aliasVariable="inductor1.i" classIndex="16" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1048" variability="continuous" name="sineCurrent1.n.i" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="92" classType="rAli" isProtected="false" startLine="87" alias="alias" description="Potential at the pin" isValueChangeable="false" aliasVariable="inductor1.p.v" classIndex="17" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1049" variability="continuous" name="sineCurrent1.n.v" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="V"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="58" classType="rAli" isProtected="false" startLine="53" alias="alias" description="Current flowing into the pin" isValueChangeable="false" aliasVariable="inductor1.i" classIndex="18" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1050" variability="continuous" name="sineCurrent1.p.i" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="A"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="52" classType="rAli" isProtected="false" startLine="47" alias="alias" description="Potential at the pin" isValueChangeable="false" aliasVariable="resistor2.v" classIndex="19" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1051" variability="continuous" name="sineCurrent1.p.v" endColumn="61">
+   <Real useNominal="false" fixed="false" unit="V"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Blocks/Interfaces.mo" startColumn="5" endLine="270" classType="rAli" isProtected="false" startLine="269" alias="alias" description="Connector of Real output signal" isValueChangeable="false" aliasVariable="inductor1.i" classIndex="20" isDiscrete="false" hideResult="false" causality="internal" fileWritable="true" valueReference="1052" variability="continuous" name="sineCurrent1.signalSource.y" endColumn="56">
+   <Real useNominal="false" fixed="false"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="308" classType="bPar" isProtected="false" startLine="307" alias="noAlias" description="=true, if heatPort is enabled" isValueChangeable="false" classIndex="0" isDiscrete="true" hideResult="true" causality="internal" fileWritable="true" valueReference="1053" variability="parameter" name="resistor1.useHeatPort" endColumn="71">
+   <Boolean start="false" fixed="true"/>
+  </ScalarVariable>
+  <ScalarVariable fileName="E:/OpenModelica1.11.0/lib/omlibrary/Modelica 3.2.2/Electrical/Analog/Interfaces.mo" startColumn="5" endLine="308" classType="bPar" isProtected="false" startLine="307" alias="noAlias" description="=true, if heatPort is enabled" isValueChangeable="false" classIndex="1" isDiscrete="true" hideResult="true" causality="internal" fileWritable="true" valueReference="1054" variability="parameter" name="resistor2.useHeatPort" endColumn="71">
+   <Boolean start="false" fixed="true"/>
+  </ScalarVariable>
+ </ModelVariables>
+</fmiModelDescription>

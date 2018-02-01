@@ -54,11 +54,20 @@ const modelingView = (state = true, action) => {
     return state;
 };
 
+const plotData = (state = [], action) => {
+    if (action.type === 'SET_PLOT_DATA') {
+        return action.data;
+    }
+
+    return state;
+};
+
 export default combineReducers({
     activeNode,
     activeSelection,
     leftDrawer,
     rightDrawer,
     scale,
-    modelingView
+    modelingView,
+    plotData
 })

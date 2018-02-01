@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
+    "csv-parse": "^2.0.0",
     "ejs": "^2.5.7",
     "immutability-helper": "^2.6.4",
     "material-ui": "^1.0.0-beta.30",
@@ -22,6 +23,7 @@
     "react-scripts": "1.0.17",
     "react-svg": "^2.2.10",
     "react-treebeard": "^2.1.0",
+    "recharts": "^1.0.0-beta.10",
     "superagent": "^3.8.2",
     "webgme-engine": "github:webgme/webgme-engine#various-improvements"
   },

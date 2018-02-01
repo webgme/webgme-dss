@@ -43,6 +43,13 @@ export const setScale = scale => {
     };
 };
 
+export const setPlotData = data => {
+    return {
+        type: 'SET_PLOT_DATA',
+        data
+    };
+};
+
 export const toggleModelingView = show => {
     if (show) {
         return {

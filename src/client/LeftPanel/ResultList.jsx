@@ -6,6 +6,7 @@ import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import ExpansionPanel, {ExpansionPanelDetails, ExpansionPanelSummary} from 'material-ui/ExpansionPanel';
 import Typography from 'material-ui/Typography';
 
+import SimulationResultSelector from './SimulationResultSelector';
 import Territory from '../gme/BaseComponents/Territory';
 
 export default class ResultList extends Component {
@@ -75,7 +76,7 @@ export default class ResultList extends Component {
     };
 
     render() {
-        const {minimized} = this.props;
+        const {minimized, gmeClient} = this.props;
         const {territory, results, expandedResult} = this.state;
         return (
             <div style={{display: minimized ? 'none': undefined}}>
@@ -94,7 +95,7 @@ export default class ResultList extends Component {
                                     <Typography type='subheading'>{resInfo.name}</Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>
-                                    {isExpanded ? 'Here the tree view with results will be constructed': null}
+                                    {isExpanded ? <SimulationResultSelector gmeClient={gmeClient} nodeId={resId}/>: <div/>}
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>);
                     }

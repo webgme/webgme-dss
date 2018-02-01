@@ -63,9 +63,10 @@ export const clearPlotVariables = () => {
     };
 };
 
-export const setPlotNode = () => {
+export const setPlotNode = (nodeId) => {
     return {
-        type: 'CLEAR_PLOT_VARIABLES'
+        type: 'SET_PLOT_NODE',
+        nodeId
     };
 };
 

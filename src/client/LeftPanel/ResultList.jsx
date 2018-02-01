@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import update from 'immutability-helper';
 
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
@@ -8,8 +9,23 @@ import Typography from 'material-ui/Typography';
 
 import SimulationResultSelector from './SimulationResultSelector';
 import Territory from '../gme/BaseComponents/Territory';
+import {setPlotNode} from "../actions";
 
-export default class ResultList extends Component {
+const mapStateToProps = state => {
+    return {
+        plotModel: state.plotData.nodeId
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPlotNode: nodeId => {
+            dispatch(setPlotNode(nodeId));
+        }
+    }
+};
+
+class ResultList extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
         minimized: PropTypes.bool.isRequired,
@@ -18,7 +34,6 @@ export default class ResultList extends Component {
     state = {
         containerId: null,
         territory: null,
-        expandedResult: null,
         results: {}
     };
 
@@ -48,7 +63,8 @@ export default class ResultList extends Component {
                 updateDesc[nodeId] = {
                     $set: {
                         name: nodeObj.getAttribute('name'),
-                        isRunning: !nodeObj.getAttribute('stdout')
+                        isRunning: !nodeObj.getAttribute('stdout'),
+                        modelId: nodeObj.getChildrenIds()[0] // FIXME: This is assuming one and only one model
                     }
                 };
             }
@@ -59,7 +75,8 @@ export default class ResultList extends Component {
                 let nodeObj = gmeClient.getNode(nodeId);
                 updateDesc[nodeId] = {
                     name: {$set: nodeObj.getAttribute('name')},
-                    isRunning: {$set: !nodeObj.getAttribute('stdout')}
+                    isRunning: {$set: !nodeObj.getAttribute('stdout')},
+                    modelId: nodeObj.getChildrenIds()[0]
                 };
             }
         });
@@ -72,12 +89,12 @@ export default class ResultList extends Component {
     };
 
     handleExpand = resId => (event, expanded) => {
-        this.setState({ expandedResult: expanded ? resId : null });
+        this.props.setPlotNode(this.state.results[resId].modelId);
     };
 
     render() {
-        const {minimized, gmeClient} = this.props;
-        const {territory, results, expandedResult} = this.state;
+        const {minimized, gmeClient, plotModel} = this.props;
+        const {territory, results} = this.state;
         return (
             <div style={{display: minimized ? 'none': undefined}}>
                 <Territory gmeClient={this.props.gmeClient} territory={territory}
@@ -85,7 +102,7 @@ export default class ResultList extends Component {
 
                 {Object.keys(results).map(resId => {
                         const resInfo = results[resId];
-                        const isExpanded = resId === expandedResult;
+                        const isExpanded = resInfo.modelId === plotModel;
 
                         return (
                             <ExpansionPanel key={resId}
@@ -103,3 +120,5 @@ export default class ResultList extends Component {
             </div>);
     }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(ResultList);

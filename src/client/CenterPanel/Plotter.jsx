@@ -40,8 +40,8 @@ class Plotter extends Component {
 
         return (
             <div>
-                <LineChart width={900} height={600} data={data}
-                margin={{top: 100, right: 30, left: 150, bottom: 5}}>
+                <LineChart width={450} height={600} data={data}
+                margin={{top: 64, right: 30, left: 50, bottom: 5}}>
                 <XAxis dataKey="time"/>
                 <YAxis/>
                 <CartesianGrid strokeDasharray="3 3"/>

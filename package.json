@@ -4,8 +4,7 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
-    "csv-parse": "^2.0.0",
-    "ejs": "^2.5.7",
+    "csv-parse": "^2.0.0"
     "immutability-helper": "^2.6.4",
     "material-ui": "^1.0.0-beta.30",
     "material-ui-icons": "^1.0.0-beta.17",

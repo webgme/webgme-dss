@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 
 import Canvas from './Canvas';
 import Plotter from './Plotter';
+import SelectorCanvas from './SelectorCanvas';
 import {centerPanel as style} from '../styles';
 
 const mapStateToProps = state => {
@@ -38,7 +39,15 @@ class CenterPanel extends Component {
             <div onScroll={this.onScroll}
                  style={style}>
                 {modelingView ?
-                    <Canvas gmeClient={gmeClient} scrollPos={scrollPos}/> : <Plotter/>
+                    <Canvas gmeClient={gmeClient} scrollPos={scrollPos}/> :
+                    <div style={{
+                        postion: 'fixed',
+                        top: 65,
+                        left: 50
+                    }}>
+                        <Plotter/>
+                        <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>
+                    </div>
                 }
             </div>
         );

@@ -55,6 +55,12 @@ const modelingView = (state = true, action) => {
     return state;
 };
 
+const systemWaiting = (state = false, action) => {
+    if (action.type === 'SET_SYSTEM_WAITING') {
+        return action.systemWaiting;
+    }
+    return state;
+};
 // const initialUserState = {hasFetched: false, isFetching: false, user: {}};
 // const currentUser = (state = initialUserState, action) => {
 //     switch (action.type) {
@@ -107,5 +113,6 @@ export default combineReducers({
     rightDrawer,
     scale,
     modelingView,
-    plotData
+    plotData,
+    systemWaiting
 })

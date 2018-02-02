@@ -1,7 +1,7 @@
 // Libraries
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -9,7 +9,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import {LinearProgress} from 'material-ui/Progress';
 
 // Own modules
-import {setActiveNode} from "./actions";
+import {setActiveNode, setSystemWaiting} from "./actions";
 
 import PartBrowserDragPreview from './LeftPanel/PartBrowserDragPreview';
 import Header from './HeaderPanel/Header';
@@ -31,6 +31,9 @@ const mapDispatchToProps = dispatch => {
     return {
         setActiveNode: id => {
             dispatch(setActiveNode(id))
+        },
+        setSystemWaiting: isWaiting => {
+            dispatch(setSystemWaiting(isWaiting))
         }
     }
 };
@@ -46,13 +49,15 @@ class Project extends Component {
     };
 
     componentDidMount() {
-        const {gmeClient, setActiveNode} = this.props;
+        const {gmeClient, setActiveNode, setSystemWaiting} = this.props;
 
         gmeClient.selectProject(this.props.projectId, 'master', (err) => {
             if (err) {
                 console.error(err);
                 return;
             }
+
+            setSystemWaiting(false);
 
             const tempUI = gmeClient.addUI(null, (events) => {
                 let activeNode = ''; // Fall back on root-node

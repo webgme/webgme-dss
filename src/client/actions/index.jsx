@@ -88,3 +88,10 @@ export const toggleModelingView = show => {
         };
     }
 };
+
+export const setSystemWaiting = systemWaiting => {
+    return {
+        type: 'SET_SYSTEM_WAITING',
+        systemWaiting
+    };
+};

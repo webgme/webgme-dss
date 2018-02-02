@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Link, withRouter} from 'react-router-dom';
 
+import {connect} from 'react-redux';
+import {setActiveNode, setSystemWaiting} from "../actions";
+
 import superagent from 'superagent';
 
 import {withStyles} from 'material-ui/styles';
@@ -28,6 +31,18 @@ const styles = theme => ({
     }
 });
 
+const mapStateToProps = state => {
+    return {}
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setSystemWaiting: isWaiting => {
+            dispatch(setSystemWaiting(isWaiting))
+        }
+    }
+};
+
 class CreateProject extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
@@ -48,6 +63,8 @@ class CreateProject extends Component {
     };
 
     onCreateNewProject = (data) => {
+        const {setSystemWaiting} = this.props;
+
         this.setState({showDialog: false});
         if (!data) {
             // Cancelled
@@ -61,6 +78,8 @@ class CreateProject extends Component {
             this.props.gmeClient.gmeConfig.rest.components.DomainManager.mount,
             'createProject'
         ].join('/');
+
+        setSystemWaiting(true);
 
         superagent.post(path)
             .send({
@@ -153,5 +172,4 @@ class CreateProject extends Component {
     }
 }
 
-
-export default withRouter(withStyles(styles)(CreateProject));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(CreateProject)));

@@ -29,11 +29,16 @@
       "ModelCheck": {
         "src": "src/plugins/ModelCheck",
         "test": "test/plugins/ModelCheck"
+      },
+      "SystemSimulator": {
+        "src": "src/plugins/SystemSimulator",
+        "test": "test/plugins/SystemSimulator"
       }
-    },
-    "dependencies": {
-      "routers": {},
-      "seeds": {},
-      "plugins": {}
     }
+  },
+  "dependencies": {
+    "routers": {},
+    "seeds": {},
+    "plugins": {}
   }
+}

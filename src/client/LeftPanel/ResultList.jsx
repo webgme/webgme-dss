@@ -9,6 +9,7 @@ import Typography from 'material-ui/Typography';
 
 import SimulationResultSelector from './SimulationResultSelector';
 import Territory from '../gme/BaseComponents/Territory';
+import getMetaNodeByName from '../gme/utils/getMetaNodeByName';
 import {setPlotNode, setSimResData} from "../actions";
 
 const mapStateToProps = state => {
@@ -44,15 +45,15 @@ class ResultList extends Component {
     constructor(props) {
         super(props);
         const {gmeClient} = this.props;
-        const metaNodes = gmeClient.getAllMetaNodes();
-        for (let i = 0; i < metaNodes.length; i += 1) {
-            if (metaNodes[i].getAttribute('name') === 'SimulationResults') {
-                this.state.containerId = metaNodes[i].getId();
-                this.state.territory = {
-                    [this.state.containerId]: {children: 1}
-                };
-                break;
-            }
+        const simResNode = getMetaNodeByName(gmeClient, 'SimulationResults');
+
+        if (simResNode) {
+            this.state.containerId = simResNode.getId();
+            this.state.territory = {
+                [this.state.containerId]: {children: 1}
+            };
+        } else {
+            console.error(new Error('Could not find SimulationResults in meta...'));
         }
     }
 

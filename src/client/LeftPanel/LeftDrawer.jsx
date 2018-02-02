@@ -18,6 +18,7 @@ import green from 'material-ui/colors/green';
 
 import CodeGeneratorMetaData from '../../plugins/ModelicaCodeGenerator/metadata';
 import ModelCheckMetaData from '../../plugins/ModelCheck/metadata';
+import getMetaNodeByName from '../gme/utils/getMetaNodeByName';
 
 import {removePlotVariable, toggleLeftDrawer} from '../actions';
 import {downloadBlobArtifact} from '../gme/utils/saveUrlToDisk';
@@ -114,6 +115,30 @@ class LeftDrawer extends Component {
         }
 
         const pluginId = CodeGeneratorMetaData.id;
+        // const simResContainer = getMetaNodeByName(gmeClient, 'SimulationResults');
+        // const simResMeta = getMetaNodeByName(gmeClient, 'SimulationResult');
+        //
+        // if (!simResContainer || !simResMeta) {
+        //     console.error(new Error('Could not find SimulationResults or SimulationResult in meta...'));
+        //     return;
+        // }
+        //
+        // gmeClient.startTransaction();
+        //
+        // // Create a Simulation Result..
+        // const resId = gmeClient.createNode({
+        //     parent: simResContainer.getId(),
+        //     base: simResMeta.getId()
+        // }, {
+        //     attributes: {
+        //         name: 'SimulationResult_' + Date().now() //TODO: This should be a better Name
+        //     }
+        // });
+        //
+        // // .. copy over the canvas model
+        // const modelId = gmeClient.copyNode(activeNode, resId);
+        //
+        // gmeClient.completeTransaction('Created simulation results', function (err) {
         let context = gmeClient.getCurrentPluginContext(pluginId, activeNode);
         // TODO: Remove when engine is bumped
         context.managerConfig.activeNode = activeNode;
@@ -129,6 +154,7 @@ class LeftDrawer extends Component {
                 }
             }
         });
+        // });
     };
 
     runModelCheck = (config) => {
@@ -174,7 +200,7 @@ class LeftDrawer extends Component {
                     this.setState({checkResult: null});
                 }
             } result={checkResult}
-            title={'Model check findings'}/>);
+                                        title={'Model check findings'}/>);
         }
     };
 

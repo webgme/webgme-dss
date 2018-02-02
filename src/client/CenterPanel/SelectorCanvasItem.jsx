@@ -6,6 +6,7 @@ import {Samy} from 'react-samy-svg';
 import Territory from '../gme/BaseComponents/Territory';
 import BasicConnection from './BasicConnection';
 import SVGCACHE from './../../svgcache';
+import colorHash from '../gme/utils/colorHash';
 
 const mapStateToProps = state => {
     return {
@@ -75,6 +76,37 @@ class SelectorCanvasItem extends Component {
         }
 
         return false;
+    };
+
+    getSelectionItems = (nodeId, opacity) => {
+        const {gmeClient, variables, activeNode} = this.props,
+            node = gmeClient.getNode(nodeId),
+            hostNode = gmeClient.getNode(activeNode);
+        let variablePrefix, matches;
+
+        if (nodeId === activeNode) {
+            variablePrefix = hostNode.getAttribute('name');
+        } else {
+            variablePrefix = hostNode.getAttribute('name') + '.' + node.getAttribute('name');
+        }
+
+        matches = variables.filter(variable => variable.substring(
+            Math.max(0, variable.indexOf('(') + 1), variable.lastIndexOf('.')) === variablePrefix);
+
+        return matches.map((variable, index) => {
+            const step = 100 / matches.length;
+
+            return (
+                <div style={{
+                    top: (index * step) + '%',
+                    width: '100%',
+                    height: step + '%',
+                    opacity: opacity || 0.5,
+                    position: 'absolute',
+                    backgroundColor: colorHash(variable).rgb
+                }}/>
+            )
+        })
     };
 
     componentDidMount() {
@@ -296,19 +328,18 @@ class SelectorCanvasItem extends Component {
                     <div key={id}
                          style={{
                              position: 'absolute',
-                             left: scale * port.x - 1,
-                             top: scale * port.y - 1,
-                             width: scale * port.width - 2,
-                             height: scale * port.height - 2,
-                             opacity: 0.75,
-                             backgroundColor: 'rgb(192,192,192)',
-                             border: this.isSelected(id) ? '2px dotted #000000' : '2px solid transparent'
+                             left: scale * port.x,
+                             top: scale * port.y,
+                             width: scale * port.width,
+                             height: scale * port.height,
                          }}
                          onClick={(event) => {
                              event.stopPropagation();
                              event.preventDefault();
                              this.onClick(id);
-                         }}/>
+                         }}>
+                        {this.getSelectionItems(id, 1)}
+                    </div>
                 ));
 
                 events.push({
@@ -331,15 +362,14 @@ class SelectorCanvasItem extends Component {
             left: position.x,
             height: bbox.height * scale,
             width: bbox.width * scale,
-            zIndex: 10,
-            border: this.isSelected(activeNode) ? '2px dotted #000000' : '2px solid transparent',
-            borderRadius: 2
+            zIndex: 10
         }}
                      onClick={(event) => {
                          event.stopPropagation();
                          event.preventDefault();
                          this.onClick(activeNode);
                      }}>
+            {this.getSelectionItems(activeNode)}
             {portComponents}
             <Samy svgXML={base}
                   style={{

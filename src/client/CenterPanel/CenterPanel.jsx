@@ -47,23 +47,23 @@ class CenterPanel extends Component {
                     <Canvas gmeClient={gmeClient} scrollPos={scrollPos}/> :
                     <div style={{
                         position: 'fixed',
-                        left: 60,
-                        top: 60,
+                        left: 50,
+                        top: 50,
                         width: '100%',
                         height: '100%'
                     }}>
 
-                        <Paper elevation={10} style={{
+                        <Paper elevation={0} style={{
                             overflow: 'auto',
-                            width: '95%'
+                            width: '100%'
                         }}>
                             <Plotter/>
                         </Paper>
-                        <Paper elevation={10} style={{
-                            top: 370,
-                            left: 60,
-                            width: '95%',
-                            height: 'calc(100% - 400px)',
+                        <Paper elevation={0} style={{
+                            top: 351,
+                            left: 50,
+                            width: '100%',
+                            height: '100%',
                             overflow: 'auto',
                             position: 'inherit'
                         }}>

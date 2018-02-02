@@ -41,7 +41,7 @@ class Plotter extends Component {
 
         return (
             <div>
-                <LineChart width={600} height={270} data={data} style={{left: '30%', marginTop: 15, marginBottom: 15}}>
+                <LineChart width={600} height={270} data={data} style={{left: '25%', marginTop: 15, marginBottom: 15}}>
                 <XAxis dataKey="time"/>
                 <YAxis/>
                 <CartesianGrid strokeDasharray="3 3"/>
@@ -53,7 +53,7 @@ class Plotter extends Component {
                         .map(varName => {
                             let name = varName;
                             if (varName === 'time') {
-                                name = 'This is simply time...';
+                                name = 'Time is the master...';
                             }
                             return <Line dot={false} name={name} key={varName} type="monotone" dataKey={varName} stroke={colorHash(varName).rgb}/>
                         })

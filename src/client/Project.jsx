@@ -13,7 +13,7 @@ import EditMode from 'material-ui-icons/Edit';
 import MultilineChart from 'material-ui-icons/MultilineChart';
 
 // Own modules
-import {setActiveNode, setSystemWaiting, toggleModelingView} from "./actions";
+import {setActiveNode, setSystemWaiting, toggleModelingView, toggleLeftDrawer} from "./actions";
 
 import PartBrowserDragPreview from './LeftPanel/PartBrowserDragPreview';
 import Header from './HeaderPanel/Header';
@@ -42,6 +42,9 @@ const mapDispatchToProps = dispatch => {
         },
         toggleModelingView: (modeling) => {
             dispatch(toggleModelingView(modeling));
+        },
+        toggleLeftDrawer: (modeling) => {
+            dispatch(toggleLeftDrawer(modeling));
         }
     }
 };
@@ -91,7 +94,11 @@ class Project extends Component {
     }
 
     componentWillUnmount() {
-        this.props.gmeClient.closeProject();
+        this.props.gmeClient.closeProject(err => {
+            if (err) {
+                console.error(err);
+            }
+        });
     }
 
     render() {
@@ -129,6 +136,9 @@ class Project extends Component {
                     <BottomNavigation
                         value={this.props.modelingView ? 0 : 1}
                         onChange={(event, value) => {
+                            if (value === 1) {
+                                this.props.toggleLeftDrawer(true);
+                            }
                             this.props.toggleModelingView(value === 0);
                         }}
                         showLabels

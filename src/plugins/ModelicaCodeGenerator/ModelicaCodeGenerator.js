@@ -72,6 +72,12 @@ define([
             // 5) Extract the data we need from the components.
             componentData.URI = core.getAttribute(node, 'ModelicaURI');
             componentData.name = core.getAttribute(node, 'name');
+
+            core.getAttributeNames(node).forEach(attrName => {
+                if (attrName !== 'name' && !core.getAttributeMeta(node, attrName).readonly) {
+                    componentData.parameters[attrName] = core.getAttribute(node, attrName);
+                }
+            });
             // 6) Push the data to the components array.
             modelJson.components.push(componentData);
         }
@@ -103,12 +109,27 @@ define([
         }
 
         function getMoFileContent() {
+            // TODO: This string concatenation should be changed (it's from the MIC class demo)..
             let moFile = 'model ' + modelJson.name;
             // 11) Using the modelJson data that we built up we extract the data for the modelica
             //     code and build up the code.
 
             modelJson.components.forEach(function (data) {
-                moFile += '\n  ' + data.URI + ' ' + data.name + ';';
+                let params = Object.keys(data.parameters);
+                moFile += '\n  ' + data.URI + ' ' + data.name;
+                if (params.length > 0) {
+                    moFile += '(';
+                    params.map((p, idx) => {
+                        moFile += `${p} = ${data.parameters[p]}, `;
+                        if (idx === params.length -1) {
+                            moFile = moFile.slice(0, -2);
+                        }
+                    });
+
+                    moFile += ')';
+                }
+
+                moFile += ';';
             });
 
             moFile += '\nequation';
@@ -156,8 +177,12 @@ define([
                 // 10) We turn the data-structure into a string (indentation 2) and log it
                 logger.debug('modelJson', JSON.stringify(modelJson, null, 2));
 
+                let moFile = getMoFileContent();
+
+                logger.info('moFile', moFile);
+
                 // 12) Add the modelic file content as a file on the blobstorage.
-                return self.blobClient.putFile(modelJson.name + '.mo', getMoFileContent());
+                return self.blobClient.putFile(modelJson.name + '.mo', moFile);
             })
             .then(function (metadataHash) {
                 logger.info(metadataHash);

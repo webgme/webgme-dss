@@ -64,7 +64,8 @@ class ResultList extends Component {
                     $set: {
                         name: nodeObj.getAttribute('name'),
                         isRunning: !nodeObj.getAttribute('stdout'),
-                        modelId: nodeObj.getChildrenIds()[0] // FIXME: This is assuming one and only one model
+                        modelId: nodeObj.getChildrenIds()[0], // FIXME: This is assuming one and only one model
+                        simRes: nodeObj.getAttribute('simRes')
                     }
                 };
             }
@@ -76,7 +77,8 @@ class ResultList extends Component {
                 updateDesc[nodeId] = {
                     name: {$set: nodeObj.getAttribute('name')},
                     isRunning: {$set: !nodeObj.getAttribute('stdout')},
-                    modelId: nodeObj.getChildrenIds()[0]
+                    modelId: nodeObj.getChildrenIds()[0],
+                    simRes: nodeObj.getAttribute('simRes')
                 };
             }
         });
@@ -89,6 +91,7 @@ class ResultList extends Component {
     };
 
     handleExpand = resId => (event, expanded) => {
+        // extract attribute simRes and add it to the state
         this.props.setPlotNode(this.state.results[resId].modelId);
     };
 

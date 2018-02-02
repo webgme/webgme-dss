@@ -278,19 +278,23 @@ export default class AttributeEditor extends Component {
         });
 
         if (loadedNodes.length > 0) {
-            let nodeObj = gmeClient.getNode(loadedNodes[0]),
+            const nodeObj = gmeClient.getNode(loadedNodes[0]),
                 attributeNames = nodeObj.getValidAttributeNames(),
                 metaNode = gmeClient.getNode(nodeObj.getMetaTypeId());
 
             modelicaUri = metaNode.getAttribute('ModelicaURI') || 'Default';
-            attributes = attributeNames.map((id) => {
-                return {
-                    name: id,
-                    value: nodeObj.getAttribute(id),
-                    type: nodeObj.getAttributeMeta(id).type || 'string',
-                    enum: nodeObj.getAttributeMeta(id).enum || null
-                };
-            });
+
+            attributes = attributeNames
+                .map(id => {
+                    const attrMeta = nodeObj.getAttributeMeta(id);
+                    return {
+                        name: id,
+                        value: nodeObj.getAttribute(id),
+                        type: attrMeta.type || 'string',
+                        enum: attrMeta.enum || null,
+                        readonly: attrMeta.readonly
+                    };
+                });
 
         } else {
             attributes = [];
@@ -334,36 +338,40 @@ export default class AttributeEditor extends Component {
         let attributeItems,
             self = this;
 
-        attributeItems = attributes.map((attribute) => {
-            let onChangeFn = (newValue) => {
-                self.somethingChanges(attribute.name, newValue);
-            }, options, type;
+        attributeItems = attributes
+            .filter(attr => {
+                return !attr.readonly;
+            })
+            .map(attribute => {
+                let onChangeFn = (newValue) => {
+                    self.somethingChanges(attribute.name, newValue);
+                }, options, type;
 
-            switch (attribute.type) {
-                case 'string':
-                case 'boolean':
-                case 'asset':
-                    type = attribute.type;
-                    break;
-                case 'integer':
-                case'float':
-                    type = AttributeTypes.number;
-                    break;
-                default:
-                    type = AttributeTypes.string;
-            }
+                switch (attribute.type) {
+                    case 'string':
+                    case 'boolean':
+                    case 'asset':
+                        type = attribute.type;
+                        break;
+                    case 'integer':
+                    case'float':
+                        type = AttributeTypes.number;
+                        break;
+                    default:
+                        type = AttributeTypes.string;
+                }
 
-            return (<AttributeItem
-                key={attribute.name}
-                value={attribute.value}
-                name={attribute.name}
-                fullWidth={this.props.fullWidthWidgets}
-                type={type}
-                values={attribute.enum}
-                description={attribute.description}
-                options={options}
-                onFullChange={onChangeFn}/>);
-        });
+                return (<AttributeItem
+                    key={attribute.name}
+                    value={attribute.value}
+                    name={attribute.name}
+                    fullWidth={this.props.fullWidthWidgets}
+                    type={type}
+                    values={attribute.enum}
+                    description={attribute.description}
+                    options={options}
+                    onFullChange={onChangeFn}/>);
+            });
 
         return (
             <Card>

@@ -6,7 +6,7 @@
  * We'll probably have to parse the xml as well..
  * @author pmeijer / https://github.com/pmeijer
  */
-let PREFIX = 'Tes_';
+let PREFIX = 'Canvas';
 let data = require(`./${PREFIX}_info.json`);
 let parse = require('csv-parse/lib/sync');
 let fs = require('fs');
@@ -28,7 +28,7 @@ function reduceMetadata(inputData) {
         .sort()
         .forEach(varName => {
             let kind = vars[varName].kind;
-            console.log(varName, kind);
+            //console.log(varName, kind);
             if (kindsToKep[kind]) {
                 delete vars[varName].source;
             } else {
@@ -45,20 +45,27 @@ reduceMetadata(data);
 let csvLines = parse(fs.readFileSync(`./${PREFIX}_res.csv`, 'utf8'), {delimiter:','});
 let timeSeries = {};
 let buckets = [];
-csvLines.shift().forEach(variable => {
-    timeSeries[variable] = [];
-    buckets.push(timeSeries[variable]);
+let idxMap = {};
+
+csvLines.shift().forEach((variable, idx) => {
+    if (variable === 'time' || data.variables[variable]) {
+        idxMap[idx] = buckets.length;
+        timeSeries[variable] = [];
+        buckets.push(timeSeries[variable]);
+    }
 });
 
 csvLines.forEach(timeStamp => {
     timeStamp.forEach((value, idx) => {
-        buckets[idx].push(parseFloat(value));
+        if (typeof idxMap[idx] === 'number') {
+            buckets[idxMap[idx]].push(parseFloat(value));
+        }
     });
 });
 
 data.timeSeries = timeSeries;
 
-fs.writeFileSync(`./${PREFIX}_res.json`, JSON.stringify(data, null, 2));
+fs.writeFileSync(`./${PREFIX}_res.json`, JSON.stringify(data));
 
 
 

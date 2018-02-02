@@ -25,12 +25,15 @@
       "ModelicaCodeGenerator": {
         "src": "src/plugins/ModelicaCodeGenerator",
         "test": "test/plugins/ModelicaCodeGenerator"
+      },
+      "ModelCheck": {
+        "src": "src/plugins/ModelCheck",
+        "test": "test/plugins/ModelCheck"
       }
+    },
+    "dependencies": {
+      "routers": {},
+      "seeds": {},
+      "plugins": {}
     }
-  },
-  "dependencies": {
-    "routers": {},
-    "seeds": {},
-    "plugins": {}
   }
-}

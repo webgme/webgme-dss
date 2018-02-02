@@ -13,7 +13,8 @@ import {AttributeItem, AttributeTypes} from '../RightPanel/AttributeEditor';
 export default class PluginConfigDialog extends Component {
     static propTypes = {
         onOK: PropTypes.func.isRequired,
-        metadata: PropTypes.object.isRequired
+        metadata: PropTypes.object.isRequired,
+        fastForward: PropTypes.bool
     };
 
     state = {
@@ -36,6 +37,13 @@ export default class PluginConfigDialog extends Component {
         update[what] = how;
         this.setState('configItems', update);
     };
+
+    componentWillMount() {
+        const {metadata, fastForward, onOK} = this.props;
+
+        if (fastForward && metadata.configStructure.length === 0)
+            onOK(this.state);
+    }
 
     render() {
         const {metadata} = this.props;
@@ -70,7 +78,9 @@ export default class PluginConfigDialog extends Component {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.onReady} color='primary'>Run</Button>
-                    <Button onClick={() => {this.props.onOK()}} color='secondary'>Cancel</Button>
+                    <Button onClick={() => {
+                        this.props.onOK()
+                    }} color='secondary'>Cancel</Button>
                 </DialogActions>
             </Dialog>
         );

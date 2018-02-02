@@ -16,7 +16,8 @@ import Timeline from 'material-ui-icons/Timeline';
 import {withStyles} from 'material-ui/styles';
 import green from 'material-ui/colors/green';
 
-import CodeGeneratorMetaData from '../../plugins/ModelicaCodeGenerator/metadata.json';
+import CodeGeneratorMetaData from '../../plugins/ModelicaCodeGenerator/metadata';
+import ModelCheckMetaData from '../../plugins/ModelCheck/metadata';
 
 import {removePlotVariable, toggleLeftDrawer} from '../actions';
 import {downloadBlobArtifact} from '../gme/utils/saveUrlToDisk';
@@ -25,6 +26,8 @@ import PartBrowser from './PartBrowser';
 import ResultList from './ResultList';
 import PluginConfigDialog from '../Dialogs/PluginConfigDialog';
 import DomainSelector from '../Dialogs/DomainSelector';
+import NotifyDialog from '../Dialogs/NotifyDialog';
+import PluginResultDialog from '../Dialogs/PluginResultDialog';
 import colorHash from '../gme/utils/colorHash';
 import {sideDrawer as styles} from '../classes';
 
@@ -63,7 +66,8 @@ class LeftDrawer extends Component {
     state = {
         showCodeGenerator: false,
         showChecker: false,
-        showDomainSelector: false
+        showDomainSelector: false,
+        checkResult: null,
     };
 
     onUpdateDomains = (data) => {
@@ -127,10 +131,58 @@ class LeftDrawer extends Component {
         });
     };
 
+    runModelCheck = (config) => {
+        const {gmeClient, activeNode} = this.props,
+            self = this;
+
+        self.setState({showChecker: false});
+
+        if (!config) {
+            // Cancelled
+            return;
+        }
+
+        const pluginId = ModelCheckMetaData.id;
+        let context = gmeClient.getCurrentPluginContext(pluginId, activeNode);
+        // TODO: Remove when engine is bumped
+        context.managerConfig.activeNode = activeNode;
+
+        gmeClient.runServerPlugin(pluginId, context, function (err, result) {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log('model check finished');
+                self.setState({checkResult: result});
+            }
+        });
+    };
+
+    getCheckResultContent = () => {
+        const {checkResult} = this.state;
+
+        if (checkResult.success === true) {
+            return (<NotifyDialog
+                title={'Model check success'}
+                text={'The model has no issues and can be simulated as such.'}
+                onOK={
+                    () => {
+                        this.setState({checkResult: null});
+                    }}/>);
+        } else {
+            return (<PluginResultDialog onOK={
+                () => {
+                    this.setState({checkResult: null});
+                }
+            } result={checkResult}
+            title={'Model check findings'}/>);
+        }
+    };
+
     render() {
         const {classes, gmeClient, open, modelingView, variables} = this.props;
         let actionButtons;
 
+        console.log('LD - render', this.state.checkResult);
         if (modelingView) {
             actionButtons = [
                 {
@@ -191,12 +243,18 @@ class LeftDrawer extends Component {
                     <PluginConfigDialog metadata={CodeGeneratorMetaData}
                                         onOK={this.runCodeGenerator}/> : null}
 
+                {this.state.showChecker ?
+                    <PluginConfigDialog metadata={ModelCheckMetaData}
+                                        onOK={this.runModelCheck}
+                                        fastForward={true}/> : null}
+
                 {this.state.showDomainSelector ?
                     <DomainSelector domains={(gmeClient.getProjectInfo().info.kind || '').split(':').slice(1)}
                                     showDomainSelection={true}
                                     title={'Update Domains'}
                                     onOK={this.onUpdateDomains}
                                     onCancel={this.onUpdateDomains}/> : null}
+                {this.state.checkResult ? this.getCheckResultContent() : null}
             </div>
         );
     }

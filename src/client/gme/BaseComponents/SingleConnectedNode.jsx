@@ -12,7 +12,9 @@ export default class SingleConnectedNode extends Component {
 
         this.uiId = null;
         this.territory = {};
-        this.territory[this.props.activeNode] = {children: 0};
+        if (typeof this.props.activeNode === 'string') {
+            this.territory[this.props.activeNode] = {children: 0};
+        }
     }
 
     componentDidMount() {
@@ -41,6 +43,15 @@ export default class SingleConnectedNode extends Component {
         });
 
         client.updateTerritory(this.uiId, this.territory);
+    }
+
+    componentWillReceiveProps(newProps) {
+        const {gmeClient, activeNode} = this.props;
+
+        if (newProps.activeNode !== activeNode) {
+            this.territory = {[newProps.activeNode]: {children: 0}};
+            gmeClient.updateTerritory(this.uiId, this.territory);
+        }
     }
 
     /**

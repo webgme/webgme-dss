@@ -45,7 +45,7 @@ const scale = (state = 0.6, action) => {
     return state;
 };
 
-const modelingView = (state = true, action) => {
+const modelingView = (state = false, action) => {
     if (action.type === 'MODELING_VIEW') {
         return true;
     } else if (action.type === 'SIMULATION_VIEW') {

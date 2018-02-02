@@ -10,7 +10,7 @@ import colorHash from '../gme/utils/colorHash';
 
 const mapStateToProps = state => {
     return {
-        scale: state.scale * 0.5,
+        scale: state.scale,
         variables: state.plotData.variables
     }
 };

@@ -18,7 +18,7 @@ const mapDispatchToProps = dispatch => {
 
 class Plotter extends Component {
     render() {
-        const data = [];
+        let data = [];
         const {variables, simRes} = this.props;
 
         if (simRes.timeSeries) {
@@ -33,21 +33,29 @@ class Plotter extends Component {
 
                 data.push(plotPoints);
             });
+        } else {
+            data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((t) => {
+                return {time: t}
+            });
         }
 
         return (
             <div>
-                <LineChart width={600} height={600} data={data}>
+                <LineChart width={600} height={270} data={data} style={{left: '30%', marginTop: 15, marginBottom: 15}}>
                 <XAxis dataKey="time"/>
                 <YAxis/>
                 <CartesianGrid strokeDasharray="3 3"/>
                 <Tooltip/>
-                <Legend />
+                <Legend layout={'vertical'} align={'left'} verticalAlign={'middle'}/>
                 {data[0] ?
                     Object.keys(data[0])
-                        .filter(varName => varName !== 'time')
+                        .filter(varName => varName !== 'time' || variables.length === 0)
                         .map(varName => {
-                            return <Line key={varName} type="monotone" dataKey={varName} stroke={colorHash(varName).rgb}/>
+                            let name = varName;
+                            if (varName === 'time') {
+                                name = 'This is simply time...';
+                            }
+                            return <Line dot={false} name={name} key={varName} type="monotone" dataKey={varName} stroke={colorHash(varName).rgb}/>
                         })
                     : null}
                 </LineChart>

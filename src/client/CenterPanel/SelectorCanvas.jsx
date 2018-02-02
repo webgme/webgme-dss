@@ -8,8 +8,8 @@ import BasicEventManager from '../gme/BaseComponents/BasicEventManager';
 
 const mapStateToProps = state => {
     return {
-        activeNode: state.activeNode,
-        scale: state.scale * 0.5
+        activeNode: state.plotData.nodeId,
+        scale: state.scale
     }
 };
 
@@ -67,6 +67,8 @@ class SelectorCanvas extends SingleConnectedNode {
         const {activeNode, gmeClient} = this.props,
             {children} = this.state,
             self = this;
+
+        console.log(activeNode);
 
         let childrenItems = children.map((child) => {
             return (<SelectorCanvasItem

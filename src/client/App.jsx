@@ -69,6 +69,13 @@ export default class App extends Component {
                                 <header className="App-header">
                                     <img src={logo} className={"App-logo"} alt="logo"/>
                                     <h1 className="App-title">{"Welcome to WebGME-DSS"}</h1>
+                                    <p style={{color: 'lightgrey',
+                                        maxWidth: 400,
+                                        textAlign: 'center',
+                                        display: 'inline-block',
+                                        fontSize: 14
+                                    }}>WebGME Dynamic Systems Studio is a front-end modeling app for Modelica<sup>®</sup> with
+                                       planned simulation backed-end support from the OpenModelica compiler...</p>
                                 </header>
                                 <Projects gmeClient={window.gmeClient}/>
                             </div>

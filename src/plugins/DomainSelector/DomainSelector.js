@@ -75,6 +75,10 @@ define([
                     }
                 });
 
+                // FIXME: This is a temporary fix when no changes..
+                let tick = core.getRegistry(this.rootNode, 'tick') || 0;
+                core.setRegistry(this.rootNode, 'tick', tick + 1);
+
                 // Make a head-less commit from the "full domain" with the unused domains filtered out.
                 let persisted = core.persist(this.rootNode);
                 return this.project.makeCommit(null, [this.currentHash], persisted.rootHash, persisted.objects,

@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import MenuIcon from 'material-ui-icons/Menu';
-import EditMode from 'material-ui-icons/Edit';
-import MultilineChart from 'material-ui-icons/MultilineChart';
+
 import IconButton from 'material-ui/IconButton';
 import {toggleModelingView} from '../actions';
 import {appHeader as style} from '../styles';
+
+import logo from '../logo.svg';
 
 
 const mapStateToProps = state => {
@@ -21,9 +23,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        toggleModelingView: (modeling) => {
-            dispatch(toggleModelingView(modeling));
-        }
+
     }
 };
 
@@ -39,13 +39,11 @@ class Header extends Component {
         const {projectName, projectOwner, branchName} = this.props;
 
         return (
-            <AppBar color={this.props.modelingView ? 'primary' : 'secondary'}>
+            <AppBar color={this.props.modelingView ? 'primary' : 'default'}>
                 <Toolbar style={style}>
-                    <IconButton aria-label="open side menu" onClick={() => {
-                        this.props.toggleModelingView(!this.props.modelingView)
-                    }}>
-                        {this.props.modelingView ? <EditMode/> : <MultilineChart/>}
-                    </IconButton>
+                    <Link to={''} style={{ textDecoration: 'none'}}>
+                        <img src={logo} alt="logo" style={{height: 40, marginLeft: -15, marginRight: 30}}/>
+                    </Link>
                     <Typography type="title" color="inherit" noWrap>
                         {/*{this.props.modelingView ? `Edit ${branchName} branch of ${projectOwner} / ${projectName}` :*/}
                          {/*`Simulations of ${branchName} branch of ${projectOwner} / ${projectName}`}*/}

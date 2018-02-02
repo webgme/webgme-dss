@@ -38,6 +38,7 @@ function initialize(middlewareOpts) {
         ensureAuthenticated = middlewareOpts.ensureAuthenticated,
         swm = middlewareOpts.workerManager,
         safeStorage = middlewareOpts.safeStorage,
+        gmeAuth = middlewareOpts.gmeAuth,
         getUserId = middlewareOpts.getUserId;
 
     function getNewJWToken(userId) {
@@ -227,7 +228,11 @@ function initialize(middlewareOpts) {
             })
             .then(result => {
                 logger.info('plugin result', result);
-
+                return gmeAuth.metadataStorage.updateProjectInfo(req.body.projectId, {
+                    kind: 'DSS:' + req.body.domains.join(':')
+                });
+            })
+            .then(() => {
                 res.json(returnData);
             })
             .catch(err => {

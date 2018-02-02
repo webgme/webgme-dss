@@ -3717,6 +3717,9 @@
             selectProject: (projectId, branchName, callback) => {
                 setTimeout(callback, 100);
             },
+            closeProject: (callback) => {
+                setTimeout(callback, 100);
+            },
             getAllMetaNodes: () => [{
                 getId: () => '/8',
                 getAttribute: () => 'SimulationResults'

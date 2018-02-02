@@ -7,9 +7,13 @@ import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 import {LinearProgress} from 'material-ui/Progress';
+import BottomNavigation, { BottomNavigationAction } from 'material-ui/BottomNavigation';
+
+import EditMode from 'material-ui-icons/Edit';
+import MultilineChart from 'material-ui-icons/MultilineChart';
 
 // Own modules
-import {setActiveNode, setSystemWaiting} from "./actions";
+import {setActiveNode, setSystemWaiting, toggleModelingView} from "./actions";
 
 import PartBrowserDragPreview from './LeftPanel/PartBrowserDragPreview';
 import Header from './HeaderPanel/Header';
@@ -23,7 +27,8 @@ const START_NODE_ID = '/Z'; // FIXME: This should come from the project info or 
 
 const mapStateToProps = state => {
     return {
-        activeNode: state.activeNode
+        activeNode: state.activeNode,
+        modelingView: state.modelingView
     }
 };
 
@@ -34,6 +39,9 @@ const mapDispatchToProps = dispatch => {
         },
         setSystemWaiting: isWaiting => {
             dispatch(setSystemWaiting(isWaiting))
+        },
+        toggleModelingView: (modeling) => {
+            dispatch(toggleModelingView(modeling));
         }
     }
 };
@@ -83,7 +91,7 @@ class Project extends Component {
     }
 
     componentWillUnmount() {
-        // FIXME: Client needs a closeProject method!
+        this.props.gmeClient.closeProject();
     }
 
     render() {
@@ -117,6 +125,23 @@ class Project extends Component {
                     <CenterPanel gmeClient={gmeClient}/>
 
                     <RightDrawer gmeClient={gmeClient}/>
+
+                    <BottomNavigation
+                        value={this.props.modelingView ? 0 : 1}
+                        onChange={(event, value) => {
+                            this.props.toggleModelingView(value === 0);
+                        }}
+                        showLabels
+                        style={{
+                            position: 'fixed',
+                            bottom: 0,
+                            left: 'calc(50% - 100px)',
+                            width: 200
+                        }}
+                    >
+                        <BottomNavigationAction label="Modeling" icon={<EditMode />} />
+                        <BottomNavigationAction label="Results" icon={<MultilineChart />} />
+                    </BottomNavigation>
                 </div>
             );
         }

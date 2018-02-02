@@ -12,27 +12,28 @@ import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 import PlayCircleOutline from 'material-ui-icons/PlayCircleOutline';
 import CheckCircle from 'material-ui-icons/CheckCircle';
 import AddCircle from 'material-ui-icons/AddCircle';
+import Timeline from 'material-ui-icons/Timeline';
 import {withStyles} from 'material-ui/styles';
 import green from 'material-ui/colors/green';
 
 import CodeGeneratorMetaData from '../../plugins/ModelicaCodeGenerator/metadata.json';
 
-import {toggleLeftDrawer} from '../actions';
+import {removePlotVariable, toggleLeftDrawer} from '../actions';
 import {downloadBlobArtifact} from '../gme/utils/saveUrlToDisk';
-
 
 import PartBrowser from './PartBrowser';
 import ResultList from './ResultList';
 import PluginConfigDialog from '../Dialogs/PluginConfigDialog';
 import DomainSelector from '../Dialogs/DomainSelector';
-
+import colorHash from '../gme/utils/colorHash';
 import {sideDrawer as styles} from '../classes';
 
 const mapStateToProps = state => {
     return {
         open: state.leftDrawer,
         activeNode: state.activeNode,
-        modelingView: state.modelingView
+        modelingView: state.modelingView,
+        variables: state.plotData.variables
     }
 };
 
@@ -43,6 +44,9 @@ const mapDispatchToProps = dispatch => {
         },
         show: () => {
             dispatch(toggleLeftDrawer(true));
+        },
+        removePlotVariable: varName => {
+            dispatch(removePlotVariable(varName));
         }
     }
 };
@@ -124,14 +128,14 @@ class LeftDrawer extends Component {
     };
 
     render() {
-        const {classes, gmeClient, open, modelingView} = this.props;
+        const {classes, gmeClient, open, modelingView, variables} = this.props;
         let actionButtons;
 
         if (modelingView) {
             actionButtons = [
                 {
                     id: 'showChecker',
-                    iconClass: <CheckCircle style={{color: green[500]}} />
+                    iconClass: <CheckCircle style={{color: green[500]}}/>
                 },
                 {
                     id: 'showCodeGenerator',
@@ -142,7 +146,13 @@ class LeftDrawer extends Component {
                     iconClass: <AddCircle color='secondary'/>
                 }];
         } else {
-            actionButtons = []; // TODO: Fill up the actions for simulation.
+            actionButtons = variables.map((variable) => {
+                return {
+                    id: variable,
+                    iconClass: <Timeline style={{color: colorHash(variable).rgb}}/>,
+                    color: colorHash(variable).rgb
+                }
+            });
         }
 
         return (
@@ -155,13 +165,22 @@ class LeftDrawer extends Component {
                 <IconButton onClick={open ? this.props.hide : this.props.show}>
                     {open ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                 </IconButton>
-                    {actionButtons.map(desc => (
-                        <IconButton key={desc.id} onClick={() => {
-                            this.setState({[desc.id]: true});
-                        }}>
-                            {desc.iconClass}
-                        </IconButton>
-                    ))}
+                    {modelingView ?
+                        actionButtons.map(desc => (
+                            <IconButton key={desc.id} onClick={() => {
+                                this.setState({[desc.id]: true});
+                            }}>
+                                {desc.iconClass}
+                            </IconButton>
+                        )) :
+                        open ? [] : actionButtons.map(desc => (
+                            <IconButton key={desc.id} onClick={() => {
+                                this.props.removePlotVariable(desc.id);
+                            }}>
+                                {desc.iconClass}
+                            </IconButton>
+                        ))
+                    }
                 </span>
                     <Divider/>
                     {modelingView ? <PartBrowser gmeClient={gmeClient} minimized={!open}/> :
@@ -170,7 +189,7 @@ class LeftDrawer extends Component {
 
                 {this.state.showCodeGenerator ?
                     <PluginConfigDialog metadata={CodeGeneratorMetaData}
-                        onOK={this.runCodeGenerator}/>: null}
+                                        onOK={this.runCodeGenerator}/> : null}
 
                 {this.state.showDomainSelector ?
                     <DomainSelector domains={(gmeClient.getProjectInfo().info.kind || '').split(':').slice(1)}

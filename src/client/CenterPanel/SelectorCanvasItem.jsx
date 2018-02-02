@@ -328,10 +328,10 @@ class SelectorCanvasItem extends Component {
                     <div key={id}
                          style={{
                              position: 'absolute',
-                             left: scale * port.x,
-                             top: scale * port.y,
-                             width: scale * port.width,
-                             height: scale * port.height,
+                             left: scale * port.x - 2,
+                             top: scale * port.y - 2,
+                             width: scale * port.width + 4,
+                             height: scale * port.height + 4,
                          }}
                          onClick={(event) => {
                              event.stopPropagation();

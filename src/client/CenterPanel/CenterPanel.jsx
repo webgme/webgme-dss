@@ -47,19 +47,19 @@ class CenterPanel extends Component {
                     <Canvas gmeClient={gmeClient} scrollPos={scrollPos}/> :
                     <div style={{
                         position: 'fixed',
-                        left: 250,
+                        left: 80,
                         top: 50,
                         width: '100%',
                         height: '100%'
                     }}>
                         <Grid container={true} spacing={16} style={{flexGrow: 1, marginTop: 20}}>
-                            <Grid item={true} xs={5} zeroMinWidth={true} style={{height: '100%'}}>
-                                <Paper elevation={2} style={{height: 600, overflow: 'scroll'}}>
+                            <Grid item={true} xs={6} zeroMinWidth={true} style={{height: '100%'}}>
+                                <Paper elevation={10} style={{height: 600, overflow: 'scroll'}}>
                                     <Plotter/>
                                 </Paper>
                             </Grid>
-                            <Grid item={true} xs={4} zeroMinWidth={true} style={{height: '100%', overflow: 'hidden'}}>
-                                <Paper elevation={2} style={{height: 600, overflow: 'scroll', position: 'inherit'}}>
+                            <Grid item={true} xs={5} zeroMinWidth={true} style={{height: '100%', overflow: 'hidden'}}>
+                                <Paper elevation={10} style={{height: 600, overflow: 'scroll', position: 'inherit'}}>
                                     <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>
                                 </Paper>
                             </Grid>

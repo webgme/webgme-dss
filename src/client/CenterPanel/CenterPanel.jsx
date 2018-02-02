@@ -62,8 +62,8 @@ class CenterPanel extends Component {
                         <Paper elevation={0} style={{
                             top: 351,
                             left: 50,
-                            width: '100%',
-                            height: '100%',
+                            bottom: 0,
+                            right: 0,
                             overflow: 'auto',
                             position: 'inherit'
                         }}>

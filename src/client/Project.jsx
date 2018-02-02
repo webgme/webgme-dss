@@ -7,7 +7,7 @@ import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 import {LinearProgress} from 'material-ui/Progress';
-import BottomNavigation, { BottomNavigationAction } from 'material-ui/BottomNavigation';
+import BottomNavigation, {BottomNavigationAction} from 'material-ui/BottomNavigation';
 
 import EditMode from 'material-ui-icons/Edit';
 import MultilineChart from 'material-ui-icons/MultilineChart';
@@ -146,11 +146,12 @@ class Project extends Component {
                             position: 'fixed',
                             bottom: 0,
                             left: 'calc(50% - 100px)',
-                            width: 200
+                            width: 200,
+                            opacity: 0.9
                         }}
                     >
-                        <BottomNavigationAction label="Modeling" icon={<EditMode />} />
-                        <BottomNavigationAction label="Results" icon={<MultilineChart />} />
+                        <BottomNavigationAction label="Modeling" icon={<EditMode/>} style={{opacity: 0.9}}/>
+                        <BottomNavigationAction label="Results" icon={<MultilineChart/>} style={{opacity: 0.9}}/>
                     </BottomNavigation>
                 </div>
             );

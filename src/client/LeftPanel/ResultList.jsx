@@ -9,7 +9,7 @@ import Typography from 'material-ui/Typography';
 
 import SimulationResultSelector from './SimulationResultSelector';
 import Territory from '../gme/BaseComponents/Territory';
-import {setPlotNode} from "../actions";
+import {setPlotNode, setSimResData} from "../actions";
 
 const mapStateToProps = state => {
     return {
@@ -21,6 +21,9 @@ const mapDispatchToProps = dispatch => {
     return {
         setPlotNode: nodeId => {
             dispatch(setPlotNode(nodeId));
+        },
+        setSimResData: simRes => {
+            dispatch(setSimResData(simRes));
         }
     }
 };
@@ -34,6 +37,7 @@ class ResultList extends Component {
     state = {
         containerId: null,
         territory: null,
+        expandedResId: null,
         results: {}
     };
 
@@ -92,20 +96,30 @@ class ResultList extends Component {
 
     handleExpand = resId => (event, expanded) => {
         // extract attribute simRes and add it to the state
-        this.props.setPlotNode(this.state.results[resId].modelId);
+        const {setPlotNode, setSimResData} = this.props;
+        const {results} = this.state;
+
+        if (expanded) {
+            setPlotNode(results[resId].modelId);
+            setSimResData(results[resId].simRes ? JSON.parse(results[resId].simRes) : {});
+            this.setState({expandedResId: resId})
+        } else {
+            this.setState({expandedResId: null});
+        }
     };
 
     render() {
         const {minimized, gmeClient, plotModel} = this.props;
-        const {territory, results} = this.state;
+        const {territory, results, expandedResId} = this.state;
         return (
-            <div style={{display: minimized ? 'none': undefined}}>
+            <div style={{display: minimized ? 'none' : undefined}}>
                 <Territory gmeClient={this.props.gmeClient} territory={territory}
                            onUpdate={this.handleEvents} onlyActualEvents={true}/>
 
                 {Object.keys(results).map(resId => {
                         const resInfo = results[resId];
-                        const isExpanded = resInfo.modelId === plotModel;
+                        const isActive = resInfo.modelId === plotModel;
+                        const isExpanded = resId === expandedResId;
 
                         return (
                             <ExpansionPanel key={resId}
@@ -115,7 +129,7 @@ class ResultList extends Component {
                                     <Typography type='subheading'>{resInfo.name}</Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>
-                                    {isExpanded ? <SimulationResultSelector gmeClient={gmeClient} nodeId={resId}/>: <div/>}
+                                    {isActive ? <SimulationResultSelector gmeClient={gmeClient} nodeId={resId}/> : <div/>}
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>);
                     }

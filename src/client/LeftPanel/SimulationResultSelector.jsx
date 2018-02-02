@@ -11,12 +11,12 @@ import {Treebeard} from 'react-treebeard';
 import {treeBeardTheme, getTreeDecorators} from "../treeOverrides";
 import getObjectSorter from '../gme/utils/getObjectSorter';
 
-import SIM_RES from './SIM_RES.json';
 import {addPlotVariable, removePlotVariable} from '../actions';
 
 const mapStateToProps = state => {
     return {
-        selectedVariables: state.plotData.variables
+        selectedVariables: state.plotData.variables,
+        simRes: state.plotData.simRes
     }
 };
 
@@ -74,7 +74,7 @@ class SimulationResultSelector extends Component {
     constructor(props) {
         super(props);
         this.decorators = getTreeDecorators(connect(mapStateToProps, mapDispatchToProps)(LeafNode), {});
-        this.treeNodes = this.getTreeNodes(SIM_RES.variables);
+        this.treeNodes = this.getTreeNodes(this.props.simRes.variables);
     }
 
     getTreeNodes(variables) {
@@ -152,11 +152,6 @@ class SimulationResultSelector extends Component {
                        decorators={this.decorators}
                        style={treeBeardTheme}
             />
-
-            //     {Object.keys(SIM_RES.variables).map(varName => {
-            //         return <li key={varName} onClick={this.onSelectVariable(varName)}>{varName}</li>;
-            //     })}
-            // </ul>
         );
     }
 }

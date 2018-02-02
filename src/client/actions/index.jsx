@@ -70,6 +70,13 @@ export const setPlotNode = (nodeId) => {
     };
 };
 
+export const setSimResData = (simRes) => {
+    return {
+        type: 'SET_SIM_RES_DATA',
+        simRes
+    };
+};
+
 export const toggleModelingView = show => {
     if (show) {
         return {

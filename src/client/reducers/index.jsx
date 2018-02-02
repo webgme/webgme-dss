@@ -73,7 +73,7 @@ const modelingView = (state = true, action) => {
 //     }
 // };
 
-const plotData = (state = {nodeId: null, variables: []}, action) => {
+const plotData = (state = {nodeId: null, variables: [], simRes: {}}, action) => {
     switch (action.type) {
         case 'ADD_PLOT_VARIABLE':
             return update(state, {
@@ -90,6 +90,10 @@ const plotData = (state = {nodeId: null, variables: []}, action) => {
         case 'SET_PLOT_NODE':
             return update(state, {
                 nodeId: {$set: action.nodeId}
+            });
+        case 'SET_SIM_RES_DATA':
+            return update(state, {
+                simRes: {$set: action.simRes}
             });
         default:
             return state;

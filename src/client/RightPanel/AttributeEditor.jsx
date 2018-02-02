@@ -6,6 +6,7 @@ import {FormControl, FormControlLabel, FormHelperText, FormLabel} from 'material
 import InvertColors from 'material-ui-icons/InvertColors';
 import InvertColorsOff from 'material-ui-icons/InvertColorsOff';
 import IconButton from 'material-ui/IconButton';
+import Typography from 'material-ui/Typography';
 import Select from 'material-ui/Select';
 import Switch from 'material-ui/Switch';
 import {GithubPicker} from 'react-color';
@@ -269,6 +270,8 @@ export default class AttributeEditor extends Component {
         const {selection, gmeClient} = this.props;
         let {loadedNodes, attributes, modelicaUri} = this.state;
 
+        console.log('handleEvents');
+
         selection.forEach((nodeId) => {
             if (loads.indexOf(nodeId) !== -1 || updates.indexOf(nodeId) !== -1)
                 loadedNodes.push(nodeId);
@@ -308,15 +311,17 @@ export default class AttributeEditor extends Component {
         const {selection, gmeClient} = this.props;
         let transaction = selection.length > 1;
 
-        if (transaction)
+        if (transaction) {
             gmeClient.startTransaction('Updating attributes of the selection');
+        }
 
         selection.forEach((nodeId) => {
             gmeClient.setAttribute(nodeId, what, how);
         });
 
-        if (transaction)
+        if (transaction) {
             gmeClient.completeTransaction('Update multiple attributes finished.');
+        }
     };
 
     componentWillReceiveProps(newProps) {
@@ -328,7 +333,9 @@ export default class AttributeEditor extends Component {
         });
 
         //TODO clearing the loadedNodes should not be necessary, where are the unload events???
-        this.setState({loadedNodes: [], territory: territory, modelicaUri: 'Default'});
+        if (selection[0] !== this.props.selection[0]) {
+            this.setState({loadedNodes: [], territory: territory, modelicaUri: 'Default'});
+        }
     }
 
     render() {
@@ -337,6 +344,8 @@ export default class AttributeEditor extends Component {
             {bbox, base} = SVGCACHE[modelicaUri];
         let attributeItems,
             self = this;
+
+        console.log(modelicaUri);
 
         attributeItems = attributes
             .filter(attr => {
@@ -377,19 +386,27 @@ export default class AttributeEditor extends Component {
             <Card>
                 <Territory activeNode={selection[0]} gmeClient={gmeClient} territory={territory}
                            onUpdate={this.handleEvents} onlyActualEvents={true}/>
-                <CardHeader title={'Node attributes'}/>
-                <div style={{
-                    height: bbox.height * scale,
-                    width: bbox.width * scale,
-                    position: 'relative',
-                    left: '30%'
-                }}>
-                    {modelicaUri !== 'Default' ? (<Samy svgXML={base}
-                                                        style={{
-                                                            height: bbox.height * scale,
-                                                            width: bbox.width * scale
-                                                        }}/>) : null}
-                    {modelicaUri !== 'Default' ? this.getSvgAttributeParts() : null}
+                <div style={{textAlign: 'center', width: '100%'}}>
+                    <CardHeader title={'Parameters'}/>
+                    <a href={`http://doc.modelica.org/om/${modelicaUri}.html`} target='_blank' style={{textDecoration: 'none'}}>
+                        <Typography  style={{ fontSize: 10, color: 'rgba(0, 0, 0, 0.54)', /*FIXME: theme.palette.text.secondary*/}}>
+                            {modelicaUri.substr('Modelica.'.length)}
+                        </Typography>
+                        <div style={{
+                            height: bbox.height * scale,
+                            width: bbox.width * scale,
+                            position: 'relative',
+                            display: 'inline-flex'
+                        }}>
+
+                            {modelicaUri !== 'Default' ? (<Samy svgXML={base}
+                                                                style={{
+                                                                    height: bbox.height * scale,
+                                                                    width: bbox.width * scale
+                                                                }}/>) : null}
+                            {modelicaUri !== 'Default' ? this.getSvgAttributeParts() : null}
+                        </div>
+                    </a>
                 </div>
                 <CardContent>
                     {attributeItems}

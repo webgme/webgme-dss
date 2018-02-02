@@ -9,7 +9,7 @@ import BasicEventManager from '../gme/BaseComponents/BasicEventManager';
 const mapStateToProps = state => {
     return {
         activeNode: state.activeNode,
-        scale: state.scale
+        scale: state.scale * 0.5
     }
 };
 
@@ -64,7 +64,7 @@ class SelectorCanvas extends SingleConnectedNode {
     }
 
     render() {
-        const {isOver, activeNode, gmeClient} = this.props,
+        const {activeNode, gmeClient} = this.props,
             {children} = this.state,
             self = this;
 
@@ -81,17 +81,12 @@ class SelectorCanvas extends SingleConnectedNode {
                 self.offset = {x: canvas.offsetParent.offsetLeft, y: canvas.offsetParent.offsetTop};
         }}
                      style={{
-                         backgroundColor: isOver ? 'lightgreen' : undefined,
                          width: '100%',
                          height: '100%',
                          overflow: 'scroll',
                          zIndex: 1,
-                         position: 'absolute'
-                     }}
-            /*onClick={this.onMouseClick}*/
-                     onContextMenu={this.onMouseClick}
-                     onMouseLeave={this.onMouseLeave}
-                     onMouseMove={this.onMouseMove}>
+                         position: 'relative'
+                     }}>
             {childrenItems}
         </div>);
     }

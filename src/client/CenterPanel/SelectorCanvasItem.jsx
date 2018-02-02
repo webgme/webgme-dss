@@ -9,7 +9,7 @@ import SVGCACHE from './../../svgcache';
 
 const mapStateToProps = state => {
     return {
-        scale: state.scale,
+        scale: state.scale * 0.5,
         variables: state.plotData.variables
     }
 };

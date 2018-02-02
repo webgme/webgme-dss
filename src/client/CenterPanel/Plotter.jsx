@@ -35,7 +35,7 @@ class Plotter extends Component {
 
         return (
             <div>
-                <LineChart width={300} height={200} data={data}>
+                <LineChart width={500} height={600} data={data}>
                 <XAxis dataKey="time"/>
                 <YAxis/>
                 <CartesianGrid strokeDasharray="3 3"/>

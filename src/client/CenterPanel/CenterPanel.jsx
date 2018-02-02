@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import Grid from 'material-ui/Grid';
+import Paper from 'material-ui/Paper';
 
 import Canvas from './Canvas';
 import Plotter from './Plotter';
@@ -32,17 +34,36 @@ class CenterPanel extends Component {
     };
 
     render() {
-        const {gmeClient, modelingView} = this.props;
-        const {scrollPos} = this.state;
+        const {gmeClient, modelingView} = this.props,
+            {scrollPos} = this.state;
+        let flexStyle = JSON.parse(JSON.stringify(style));
 
+        if (!modelingView)
+            flexStyle.backgroundColor = 'rgb(192, 192, 192)';
         return (
             <div onScroll={this.onScroll}
-                 style={style}>
+                 style={flexStyle}>
                 {modelingView ?
                     <Canvas gmeClient={gmeClient} scrollPos={scrollPos}/> :
-                    <div style={{marginLeft: 200, marginTop: 50}}>
-                        <Plotter/>
-                        <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>
+                    <div style={{
+                        position: 'fixed',
+                        left: 250,
+                        top: 50,
+                        width: '100%',
+                        height: '100%'
+                    }}>
+                        <Grid container={true} spacing={16} style={{flexGrow: 1, marginTop: 20}}>
+                            <Grid item={true} xs={5} zeroMinWidth={true} style={{height: '100%'}}>
+                                <Paper elevation={2} style={{height: 600, overflow: 'scroll'}}>
+                                    <Plotter/>
+                                </Paper>
+                            </Grid>
+                            <Grid item={true} xs={4} zeroMinWidth={true} style={{height: '100%', overflow: 'hidden'}}>
+                                <Paper elevation={2} style={{height: 600, overflow: 'scroll', position: 'inherit'}}>
+                                    <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>
+                                </Paper>
+                            </Grid>
+                        </Grid>
                     </div>
                 }
             </div>

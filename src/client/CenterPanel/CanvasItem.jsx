@@ -266,34 +266,28 @@ class CanvasItem extends Component {
         if (node === null)
             return null;
         for (let key in attributes) {
-            // "alignment-baseline": "middle",
-            //     "fill": "rgb(0,0,255)",
-            //     "font-family": "Verdana",
-            //     "font-size": "18",
-            //     "text-anchor": "middle",
-            //     "x": "155.0",
-            //     "y": "40.0"
-            attributeItems.push(<svg
-                style={{
-                    position: 'absolute',
-                    top: /*position.y + */attributes[key].bbox.y * scale,
-                    left: /*position.x + */attributes[key].bbox.x * scale
-                }}
-                viewBox={'' + (attributes[key].bbox.x * scale) + ' ' + (attributes[key].bbox.y * scale) +
-                ' ' + ((attributes[key].bbox.x + attributes[key].bbox.width) * scale) +
-                ' ' + ((attributes[key].bbox.y + attributes[key].bbox.height) * scale)}>
-                <text
-                    x={(attributes[key].parameters.x || 0) * scale}
-                    y={(attributes[key].parameters.y || 0) * scale}
-                    alignmentBaseline={attributes[key].parameters['alignment-baseline'] || 'middle'}
-                    fill={attributes[key].parameters.fill || 'rgb(0,0,255)'}
-                    fontFamily={attributes[key].parameters['font-family'] || 'Veranda'}
-                    fontSize={Number(attributes[key].parameters['font-size'] || '18') * scale}
-                    textAnchor={attributes[key].parameters['text-anchor'] || 'middle'}
-                >{attributes[key].text.substring(0, attributes[key].position) +
-                node.getAttribute(key) +
-                attributes[key].text.substring(attributes[key].position)}</text>
-            </svg>)
+            attributeItems.push((
+                <svg key={key}
+                     style={{
+                         position: 'absolute',
+                         top: /*position.y + */attributes[key].bbox.y * scale,
+                         left: /*position.x + */attributes[key].bbox.x * scale
+                     }}
+                     viewBox={'' + (attributes[key].bbox.x * scale) + ' ' + (attributes[key].bbox.y * scale) +
+                     ' ' + ((attributes[key].bbox.x + attributes[key].bbox.width) * scale) +
+                     ' ' + ((attributes[key].bbox.y + attributes[key].bbox.height) * scale)}>
+                    <text
+                        x={(attributes[key].parameters.x || 0) * scale}
+                        y={(attributes[key].parameters.y || 0) * scale}
+                        alignmentBaseline={attributes[key].parameters['alignment-baseline'] || 'middle'}
+                        fill={attributes[key].parameters.fill || 'rgb(0,0,255)'}
+                        fontFamily={attributes[key].parameters['font-family'] || 'Veranda'}
+                        fontSize={Number(attributes[key].parameters['font-size'] || '18') * scale}
+                        textAnchor={attributes[key].parameters['text-anchor'] || 'middle'}>
+                        {attributes[key].text.substring(0, attributes[key].position) +
+                        node.getAttribute(key) +
+                        attributes[key].text.substring(attributes[key].position)}</text>
+                </svg>));
         }
 
         return attributeItems;
@@ -308,18 +302,20 @@ class CanvasItem extends Component {
             return null;
 
         items = [
-            (<IconButton style={{height: '20px', width: '20px', position: 'absolute', top: '0px', right: '0px'}}
+            (<IconButton key={'delete'}
+                         style={{height: '20px', width: '20px', position: 'absolute', top: '0px', right: '0px'}}
                          onClick={this.deleteNode}>
                 <DeleteIcon style={{height: '20px', width: '20px'}}/>
             </IconButton>),
-            (<IconButton style={{
-                height: '20px',
-                width: '20px',
-                position: 'absolute',
-                top: '0px',
-                right: '20px',
-                zIndex: 11
-            }}
+            (<IconButton key={'attribute'}
+                         style={{
+                             height: '20px',
+                             width: '20px',
+                             position: 'absolute',
+                             top: '0px',
+                             right: '20px',
+                             zIndex: 11
+                         }}
                          onClick={() => {
                              activateAttributeDrawer(activeNode);
                          }}>

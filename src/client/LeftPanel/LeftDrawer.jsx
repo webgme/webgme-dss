@@ -18,6 +18,8 @@ import green from 'material-ui/colors/green';
 import CodeGeneratorMetaData from '../../plugins/ModelicaCodeGenerator/metadata.json';
 
 import {toggleLeftDrawer} from '../actions';
+import {downloadBlobArtifact} from '../gme/utils/saveUrlToDisk';
+
 
 import PartBrowser from './PartBrowser';
 import ResultList from './ResultList';
@@ -105,12 +107,18 @@ class LeftDrawer extends Component {
 
         const pluginId = CodeGeneratorMetaData.id;
         let context = gmeClient.getCurrentPluginContext(pluginId, activeNode);
+        // TODO: Remove when engine is bumped
+        context.managerConfig.activeNode = activeNode;
 
-        gmeClient.runBrowserPlugin(pluginId, context, function (err, result) {
+        gmeClient.runServerPlugin(pluginId, context, function (err, result) {
             if (err) {
                 console.error(err);
             } else {
-                console.log(result);
+                if (result.success) {
+                    downloadBlobArtifact(result.artifacts[0]);
+                } else {
+                    console.error(result);
+                }
             }
         });
     };

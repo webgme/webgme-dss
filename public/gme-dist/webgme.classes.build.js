@@ -86,12 +86,29 @@
             }
         ],
         pluginResults = {
-            ModelicaCodeGenerator: {
-
-            },
-            ConformityChecker: {
-
-            }
+            ModelicaCodeGenerator:
+                {
+                    "success": true,
+                    "messages": [],
+                    "artifacts": [
+                        "6126987d57acc82400e0d0d5249d282ac70bfbdf"
+                    ],
+                    "pluginName": "Simulate Current Model",
+                    "startTime": "2018-02-02T00:21:55.956Z",
+                    "finishTime": "2018-02-02T00:21:56.090Z",
+                    "error": null,
+                    "projectId": "guest+ModelicaSeed",
+                    "pluginId": "ModelicaCodeGenerator",
+                    "commits": [
+                        {
+                            "commitHash": "#a277246454f70f2e32f87a89c2c4e9b99e473be4",
+                            "branchName": "master",
+                            "status": "SYNCED"
+                        }
+                    ]
+                }
+            ,
+            ConformityChecker: {}
         },
         inTransaction = false;
 
@@ -224,6 +241,11 @@
                 };
             },
             runBrowserPlugin: (pluginId, context, callback) => {
+                setTimeout(() => {
+                    callback(null, pluginResults[pluginId]);
+                }, 200);
+            },
+            runServerPlugin: (pluginId, context, callback) => {
                 setTimeout(() => {
                     callback(null, pluginResults[pluginId]);
                 }, 200);

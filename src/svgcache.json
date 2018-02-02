@@ -10,6 +10,73 @@
     "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"210.0\" version=\"1.1\" viewBox=\"0 0 210.0 210.0\" width=\"210.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs>\n    <linearGradient id=\"926845b4-f7c1-4e3c-a437-8265e5af9bdb\" x1=\"0%\" x2=\"0%\" y1=\"0%\" y2=\"100%\">\n      <stop offset=\"0\" stop-color=\"rgb(200, 200, 200)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.3\" stop-color=\"rgb(248, 248, 248)\" stop-opacity=\"1\"/>\n      <stop offset=\"0.7\" stop-color=\"rgb(248, 248, 248)\" stop-opacity=\"1\"/>\n      <stop offset=\"1\" stop-color=\"rgb(200, 200, 200)\" stop-opacity=\"1\"/>\n    </linearGradient>\n  </defs>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Fluid.Icons.VariantLibrary</desc>\n  <rect fill=\"url(#926845b4-f7c1-4e3c-a437-8265e5af9bdb)\" height=\"200.0\" rx=\"25.0\" ry=\"25.0\" stroke=\"rgb(200,200,200)\" stroke-width=\"0.25mm\" width=\"200.0\" x=\"5.0\" y=\"5.0\"/>\n  <rect fill=\"none\" fill-opacity=\"0\" height=\"200.0\" rx=\"25.0\" ry=\"25.0\" stroke=\"rgb(128,128,128)\" stroke-width=\"0.25mm\" width=\"200.0\" x=\"5.0\" y=\"5.0\"/>\n  <ellipse cx=\"65.0\" cy=\"145.0\" fill=\"rgb(76,76,76)\" rx=\"30.0\" ry=\"30.0\"/>\n  <ellipse cx=\"145.0\" cy=\"145.0\" fill=\"rgb(0,0,0)\" rx=\"30.0\" ry=\"30.0\"/>\n  <ellipse cx=\"145.0\" cy=\"65.0\" fill=\"rgb(128,128,128)\" rx=\"30.0\" ry=\"30.0\"/>\n  <ellipse cx=\"65.0\" cy=\"65.0\" fill=\"rgb(255,255,255)\" rx=\"30.0\" ry=\"30.0\" stroke=\"rgb(128,128,128)\" stroke-width=\"0.25mm\"/>\n</root>",
     "attributes": {}
   },
+  "Modelica.Electrical.Analog.Basic.Capacitor": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 210,
+      "width": 310
+    },
+    "ports": {
+      "p": {
+        "id": "p",
+        "x": 45,
+        "y": 95,
+        "height": 20,
+        "width": 20
+      },
+      "n": {
+        "id": "n",
+        "x": 245,
+        "y": 95,
+        "height": 20,
+        "width": 20
+      }
+    },
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"210\" version=\"1.1\" viewBox=\"0 0 310.0 210\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Electrical.Analog.Basic.Capacitor</desc>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"149.0,77.0 149.0,133.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"161.0,77.0 161.0,133.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"65.0,105.0 149.0,105.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"161.0,105.0 245.0,105.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <g id=\"p\">\n    <rect fill=\"rgb(0,0,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">p</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.PositivePin</text>\n      <text id=\"classDesc\">Positive pin of an electric component</text>\n      <text id=\"desc\">Positive pin (potential p.v > n.v for positive voltage drop v)</text>\n    </g>\n  </g>\n  <g id=\"n\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"95.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">n</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.NegativePin</text>\n      <text id=\"classDesc\">Negative pin of an electric component</text>\n      <text id=\"desc\">Negative pin</text>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "C": {
+        "bbox": {
+          "x": 19,
+          "y": 165,
+          "height": 32,
+          "width": 272
+        },
+        "name": "C",
+        "position": 2,
+        "text": "C=",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,0)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "181.0"
+        }
+      },
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 20,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "40.0"
+        }
+      }
+    }
+  },
   "Modelica.Electrical.Analog.Basic.Ground": {
     "bbox": {
       "x": 0,
@@ -268,7 +335,54 @@
         "width": 20
       }
     },
-    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"230.0\" version=\"1.1\" viewBox=\"0 0 310.0 230.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Electrical.Analog.Sources.SineVoltage</desc>\n  <ellipse cx=\"155.0\" cy=\"125.0\" fill=\"rgb(255,255,255)\" rx=\"50.0\" ry=\"50.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"85.0\" y=\"100.0\">+\n    </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"225.0\" y=\"100.0\">-\n    </text>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"65.0,125.0 245.0,125.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"89.0,125.0 98.8,95.1 105.2,78.5 110.8,66.9 115.7,59.8 120.7,55.8 125.6,55.2 130.5,58.0 135.4,64.0 140.4,73.0 146.0,86.4 153.02,106.4 167.79,151.9 174.1,169.0 179.8,181.2 184.7,189.0 189.6,193.6 194.5,195.0 199.5,192.9 204.4,187.5 209.3,179.1 214.9,166.3 222.0,146.7 229.0,125.0\" stroke=\"rgb(192,192,192)\" stroke-width=\"0.25mm\"/>\n  <g id=\"p\">\n    <rect fill=\"rgb(0,0,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"115.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">p</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.PositivePin</text>\n      <text id=\"classDesc\">Positive pin of an electric component</text>\n      <text id=\"desc\">Positive pin (potential p.v > n.v for positive voltage drop v)</text>\n    </g>\n  </g>\n  <g id=\"n\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"115.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">n</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.NegativePin</text>\n      <text id=\"classDesc\">Negative pin of an electric component</text>\n      <text id=\"desc\">Negative pin</text>\n    </g>\n  </g>\n</root>",
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"230.0\" version=\"1.1\" viewBox=\"0 0 310.0 230.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Electrical.Analog.Sources.SineVoltage</desc>\n  <ellipse cx=\"155.0\" cy=\"125.0\" fill=\"rgb(255,255,255)\" rx=\"50.0\" ry=\"50.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"85.0\" y=\"100.0\">+&#xD;\n    </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"225.0\" y=\"100.0\">-&#xD;\n    </text>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"65.0,125.0 245.0,125.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"89.0,125.0 98.8,95.1 105.2,78.5 110.8,66.9 115.7,59.8 120.7,55.8 125.6,55.2 130.5,58.0 135.4,64.0 140.4,73.0 146.0,86.4 153.02,106.4 167.79,151.9 174.1,169.0 179.8,181.2 184.7,189.0 189.6,193.6 194.5,195.0 199.5,192.9 204.4,187.5 209.3,179.1 214.9,166.3 222.0,146.7 229.0,125.0\" stroke=\"rgb(192,192,192)\" stroke-width=\"0.25mm\"/>\n  <g id=\"p\">\n    <rect fill=\"rgb(0,0,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"115.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">p</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.PositivePin</text>\n      <text id=\"classDesc\">Positive pin of an electric component</text>\n      <text id=\"desc\">Positive pin (potential p.v > n.v for positive voltage drop v)</text>\n    </g>\n  </g>\n  <g id=\"n\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"115.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">n</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.NegativePin</text>\n      <text id=\"classDesc\">Negative pin of an electric component</text>\n      <text id=\"desc\">Negative pin</text>\n    </g>\n  </g>\n</root>",
+    "attributes": {
+      "name": {
+        "bbox": {
+          "x": 5,
+          "y": 5,
+          "height": 40,
+          "width": 300
+        },
+        "name": "name",
+        "position": 0,
+        "text": "",
+        "parameters": {
+          "alignment-baseline": "middle",
+          "fill": "rgb(0,0,255)",
+          "font-family": "Verdana",
+          "font-size": "18",
+          "text-anchor": "middle",
+          "x": "155.0",
+          "y": "25.0"
+        }
+      }
+    }
+  },
+  "Modelica.Electrical.Analog.Sources.StepVoltage": {
+    "bbox": {
+      "x": 0,
+      "y": 0,
+      "height": 230,
+      "width": 310
+    },
+    "ports": {
+      "p": {
+        "id": "p",
+        "x": 45,
+        "y": 115,
+        "height": 20,
+        "width": 20
+      },
+      "n": {
+        "id": "n",
+        "x": 245,
+        "y": 115,
+        "height": 20,
+        "width": 20
+      }
+    },
+    "base": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root baseProfile=\"full\" height=\"230.0\" version=\"1.1\" viewBox=\"0 0 310.0 230.0\" width=\"310.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:ev=\"http://www.w3.org/2001/xml-events\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <defs/>\n  <desc>Modelica.Electrical.Analog.Sources.StepVoltage</desc>\n  <ellipse cx=\"155.0\" cy=\"125.0\" fill=\"rgb(255,255,255)\" rx=\"50.0\" ry=\"50.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"85.0\" y=\"100.0\">+&#xD;\n    </text>\n  <text alignment-baseline=\"middle\" fill=\"rgb(0,0,255)\" font-family=\"Verdana\" font-size=\"18\" text-anchor=\"middle\" x=\"225.0\" y=\"100.0\">-&#xD;\n    </text>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"65.0,125.0 245.0,125.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\"/>\n  <polyline fill=\"none\" fill-opacity=\"0\" points=\"85.0,195.0 155.0,195.0 155.0,55.0 224.0,55.0\" stroke=\"rgb(192,192,192)\" stroke-width=\"0.25mm\"/>\n  <g id=\"p\">\n    <rect fill=\"rgb(0,0,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"45.0\" y=\"115.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">p</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.PositivePin</text>\n      <text id=\"classDesc\">Positive pin of an electric component</text>\n      <text id=\"desc\">Positive pin (potential p.v > n.v for positive voltage drop v)</text>\n    </g>\n  </g>\n  <g id=\"n\">\n    <rect fill=\"rgb(255,255,255)\" height=\"20.0\" rx=\"0.0\" ry=\"0.0\" stroke=\"rgb(0,0,255)\" stroke-width=\"0.25mm\" width=\"20.0\" x=\"245.0\" y=\"115.0\"/>\n    <defs/>\n    <g display=\"none\" id=\"info\">\n      <text id=\"name\">n</text>\n      <text id=\"type\">Modelica.Electrical.Analog.Interfaces.NegativePin</text>\n      <text id=\"classDesc\">Negative pin of an electric component</text>\n      <text id=\"desc\">Negative pin</text>\n    </g>\n  </g>\n</root>",
     "attributes": {
       "name": {
         "bbox": {

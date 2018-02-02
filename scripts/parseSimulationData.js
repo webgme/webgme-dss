@@ -6,7 +6,8 @@
  * We'll probably have to parse the xml as well..
  * @author pmeijer / https://github.com/pmeijer
  */
-let data = require('./Tes_info.json');
+let PREFIX = 'Tes_';
+let data = require(`./${PREFIX}_info.json`);
 let parse = require('csv-parse/lib/sync');
 let fs = require('fs');
 
@@ -41,7 +42,7 @@ reduceMetadata(data);
 //console.log(data);
 //console.log('Number of variables', Object.keys(data.variables).length);
 
-let csvLines = parse(fs.readFileSync('./Tes_res.csv', 'utf8'), {delimiter:','});
+let csvLines = parse(fs.readFileSync(`./${PREFIX}_res.csv`, 'utf8'), {delimiter:','});
 let timeSeries = {};
 let buckets = [];
 csvLines.shift().forEach(variable => {
@@ -57,7 +58,7 @@ csvLines.forEach(timeStamp => {
 
 data.timeSeries = timeSeries;
 
-fs.writeFileSync('./SIM_RES.json', JSON.stringify(data, null, 2));
+fs.writeFileSync(`./${PREFIX}_res.json`, JSON.stringify(data, null, 2));
 
 
 

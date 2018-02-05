@@ -28,7 +28,8 @@ class Plotter extends Component {
                 };
 
                 variables.forEach(varName => {
-                    plotPoints[varName] = simRes.timeSeries[varName][idx]
+                    // TODO: Consider rounding the data before storing in model..
+                    plotPoints[varName] = parseFloat(simRes.timeSeries[varName][idx].toFixed(9));
                 });
 
                 data.push(plotPoints);

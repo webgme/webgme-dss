@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {ZLEVELS} from '../gme/utils/zLevels';
 
 export default class BasicConnection extends Component {
     static propTypes = {
@@ -57,7 +58,7 @@ export default class BasicConnection extends Component {
         const {path, hasWrapper, dashed} = this.props;
         let box = this.getBoundingBox(),
             sections = [], i,
-            style = hasWrapper ? {} : {position: 'absolute', top: box.y, left: box.x, zIndex: 9};
+            style = hasWrapper ? {} : {position: 'absolute', top: box.y, left: box.x, zIndex: ZLEVELS.connection};
 
         if (box === null) {
             return null;

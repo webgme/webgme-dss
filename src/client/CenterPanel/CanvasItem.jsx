@@ -15,6 +15,7 @@ import Territory from '../gme/BaseComponents/Territory';
 import BasicConnection from './BasicConnection';
 import SVGCACHE from './../../svgcache';
 import {toggleRightDrawer, setActiveSelection} from '../actions';
+import {ZLEVELS} from '../gme/utils/zLevels';
 
 const canvasItemSource = {
     beginDrag(props) {
@@ -274,8 +275,8 @@ class CanvasItem extends Component {
                          left: /*position.x + */attributes[key].bbox.x * scale
                      }}
                      viewBox={'' + (attributes[key].bbox.x * scale) + ' ' + (attributes[key].bbox.y * scale) +
-                     ' ' + ((attributes[key].bbox.x + attributes[key].bbox.width) * scale) +
-                     ' ' + ((attributes[key].bbox.y + attributes[key].bbox.height) * scale)}>
+                     ' ' +  (attributes[key].bbox.width * scale) +
+                     ' ' + (attributes[key].bbox.height * scale)}>
                     <text
                         x={(attributes[key].parameters.x || 0) * scale}
                         y={(attributes[key].parameters.y || 0) * scale}
@@ -303,7 +304,14 @@ class CanvasItem extends Component {
 
         items = [
             (<IconButton key={'delete'}
-                         style={{height: '20px', width: '20px', position: 'absolute', top: '0px', right: '0px'}}
+                         style={{
+                             height: '20px',
+                             width: '20px',
+                             position: 'absolute',
+                             top: '0px',
+                             right: '0px',
+                             zIndex: ZLEVELS.action
+                         }}
                          onClick={this.deleteNode}>
                 <DeleteIcon style={{height: '20px', width: '20px'}}/>
             </IconButton>),
@@ -314,12 +322,12 @@ class CanvasItem extends Component {
                              position: 'absolute',
                              top: '0px',
                              right: '20px',
-                             zIndex: 11
+                             zIndex: ZLEVELS.action
                          }}
                          onClick={() => {
                              activateAttributeDrawer(activeNode);
                          }}>
-                <ModeEdit style={{height: '20px', width: '20px', zIndex: 11}}/>
+                <ModeEdit style={{height: '20px', width: '20px'}}/>
             </IconButton>)
         ];
 
@@ -427,21 +435,35 @@ class CanvasItem extends Component {
     connectionRender = () => {
         const {endPoints, showActions} = this.state,
             {activeNode} = this.props;
-        let points;
+        let points, midpoint;
 
         if (endPoints.src.position && endPoints.dst.position) {
-            points = [endPoints.src.position, {
+            midpoint = {
                 x: endPoints.src.position.x,
                 y: endPoints.dst.position.y
-            }, endPoints.dst.position];
+            };
 
+            points = [endPoints.src.position, JSON.parse(JSON.stringify(midpoint)), endPoints.dst.position];
+
+            // check if one section of the connection is too short
+            if (Math.abs(endPoints.src.position.x - endPoints.dst.position.x) < 40 &&
+                Math.abs(endPoints.src.position.y - endPoints.dst.position.y) > 40) {
+                midpoint.y = (endPoints.src.position.y + endPoints.dst.position.y) * 0.5;
+                midpoint.x = endPoints.dst.position.x;
+            } else if (Math.abs(endPoints.src.position.x - endPoints.dst.position.x) > 40 &&
+                Math.abs(endPoints.src.position.y - endPoints.dst.position.y) < 40) {
+                midpoint.x = (endPoints.src.position.x + endPoints.dst.position.x) * 0.5;
+                midpoint.y = endPoints.src.position.y;
+            }
+
+            console.log(points, ' - ', midpoint);
             return [(<div style={{
                 position: 'absolute',
-                top: endPoints.dst.position.y - 20,
-                left: endPoints.src.position.x - 20,
+                top: midpoint.y - 20,
+                left: midpoint.x - 20,
                 height: 40,
                 width: 40,
-                zIndex: 11
+                zIndex: ZLEVELS.connectionItem
             }}
                           onMouseEnter={this.onMouseEnter}
                           onMouseLeave={this.onMouseLeave}>{this.getActionItems(false, true)}</div>),

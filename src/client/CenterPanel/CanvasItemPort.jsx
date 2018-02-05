@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {ZLEVELS} from '../gme/utils/zLevels';
 
 export default class CanvasItemPort extends Component {
     static propTypes = {
@@ -91,7 +92,8 @@ export default class CanvasItemPort extends Component {
             top: top,
             width: width,
             height: height,
-            border: border
+            border: border,
+            zIndex: ZLEVELS.port
         }}
                      onMouseEnter={this.onMouseEnter}
                      onMouseLeave={this.onMouseLeave}

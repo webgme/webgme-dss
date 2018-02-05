@@ -12,6 +12,8 @@ import BasicEventManager from '../gme/BaseComponents/BasicEventManager';
 import {toggleRightDrawer, setActiveSelection} from '../actions';
 import getIndexedName from "../gme/utils/getIndexedName";
 
+import {ZLEVELS} from '../gme/utils/zLevels';
+
 //TODO we anly take loaded children into account
 function getChildrenNames(gmeClient, nodeId) {
     const container = gmeClient.getNode(nodeId),
@@ -200,7 +202,7 @@ class Canvas extends SingleConnectedNode {
                      width: '100%',
                      height: '100%',
                      overflow: 'scroll',
-                     zIndex: 1,
+                     zIndex: ZLEVELS.canvas,
                      position: 'absolute'
                  }}
                  onClick={this.onMouseClick}

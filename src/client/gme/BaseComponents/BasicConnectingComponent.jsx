@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {ZLEVELS} from '../utils/zLevels';
 
 export default class BasicConnectingComponent extends Component {
     static propTypes = {
@@ -40,7 +41,7 @@ export default class BasicConnectingComponent extends Component {
                             position: 'absolute',
                             top: (top - 5) + 'px',
                             left: (left - 5) + 'px',
-                            zIndex: 9
+                            zIndex: ZLEVELS.connection
                         }}
                     >
                         <line
@@ -54,15 +55,6 @@ export default class BasicConnectingComponent extends Component {
                     </svg>
                 );
             }
-            /*return <div style={{
-                position: 'absolute',
-                top: top + 'px',
-                left: left + 'px',
-                border: '1px solid #000000',
-                width: width,
-                height: height,
-                zIndex: 999999
-            }}/>*/
         }
         return null;
     }

@@ -160,6 +160,10 @@
             },
             getAttribute: (attrName) => {
                 cnt += 1;
+                if (attrName === 'stdout') {
+                    return (cnt % 2) ? 'Generated model ..\nSimulated model!\nFinished' : '';
+                }
+
                 if (attrName === 'simRes') {
                     return JSON.stringify(SIM_RES);
                 }

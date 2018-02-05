@@ -28,6 +28,8 @@ blob-local-storage
 server.log
 server-error.log
 
+# dss specific
+outputs
 
 # Temporary
 package-lock.json

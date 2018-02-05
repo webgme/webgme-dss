@@ -16,11 +16,12 @@ import Timeline from 'material-ui-icons/Timeline';
 import {withStyles} from 'material-ui/styles';
 import green from 'material-ui/colors/green';
 
-import CodeGeneratorMetaData from '../../plugins/ModelicaCodeGenerator/metadata';
-import ModelCheckMetaData from '../../plugins/ModelCheck/metadata';
+import CodeGeneratorMetadata from '../../plugins/ModelicaCodeGenerator/metadata';
+import SystemSimulatorMetadata from '../../plugins/SystemSimulator/metadata';
+import ModelCheckMetadata from '../../plugins/ModelCheck/metadata';
 import getMetaNodeByName from '../gme/utils/getMetaNodeByName';
 
-import {removePlotVariable, toggleLeftDrawer} from '../actions';
+import {removePlotVariable, toggleLeftDrawer, toggleModelingView} from '../actions';
 import {downloadBlobArtifact} from '../gme/utils/saveUrlToDisk';
 
 import PartBrowser from './PartBrowser';
@@ -31,6 +32,8 @@ import NotifyDialog from '../Dialogs/NotifyDialog';
 import PluginResultDialog from '../Dialogs/PluginResultDialog';
 import colorHash from '../gme/utils/colorHash';
 import {sideDrawer as styles} from '../classes';
+
+const RUN_SIM = false; // Set to true in order to run simulation
 
 const mapStateToProps = state => {
     return {
@@ -51,6 +54,9 @@ const mapDispatchToProps = dispatch => {
         },
         removePlotVariable: varName => {
             dispatch(removePlotVariable(varName));
+        },
+        toggleModelingView: modelView => {
+            dispatch(toggleModelingView(modelView));
         }
     }
 };
@@ -114,47 +120,70 @@ class LeftDrawer extends Component {
             return;
         }
 
-        const pluginId = CodeGeneratorMetaData.id;
-        // const simResContainer = getMetaNodeByName(gmeClient, 'SimulationResults');
-        // const simResMeta = getMetaNodeByName(gmeClient, 'SimulationResult');
-        //
-        // if (!simResContainer || !simResMeta) {
-        //     console.error(new Error('Could not find SimulationResults or SimulationResult in meta...'));
-        //     return;
-        // }
-        //
-        // gmeClient.startTransaction();
-        //
-        // // Create a Simulation Result..
-        // const resId = gmeClient.createNode({
-        //     parent: simResContainer.getId(),
-        //     base: simResMeta.getId()
-        // }, {
-        //     attributes: {
-        //         name: 'SimulationResult_' + Date().now() //TODO: This should be a better Name
-        //     }
-        // });
-        //
-        // // .. copy over the canvas model
-        // const modelId = gmeClient.copyNode(activeNode, resId);
-        //
-        // gmeClient.completeTransaction('Created simulation results', function (err) {
-        let context = gmeClient.getCurrentPluginContext(pluginId, activeNode);
-        // TODO: Remove when engine is bumped
-        context.managerConfig.activeNode = activeNode;
+        if (RUN_SIM === false) {
+            const pluginId = CodeGeneratorMetadata.id;
+            let context = gmeClient.getCurrentPluginContext(pluginId, activeNode);
 
-        gmeClient.runServerPlugin(pluginId, context, function (err, result) {
-            if (err) {
-                console.error(err);
-            } else {
-                if (result.success) {
-                    downloadBlobArtifact(result.artifacts[0]);
+            gmeClient.runServerPlugin(pluginId, context, function (err, result) {
+                if (err) {
+                    console.error(err);
                 } else {
-                    console.error(result);
+                    if (result.success) {
+                        downloadBlobArtifact(result.artifacts[0]);
+                    } else {
+                        console.error(result);
+                    }
                 }
+            });
+        } else {
+            const pluginId = SystemSimulatorMetadata.id;
+            const simResContainer = getMetaNodeByName(gmeClient, 'SimulationResults');
+            const simResMeta = getMetaNodeByName(gmeClient, 'SimulationResult');
+
+            if (!simResContainer || !simResMeta) {
+                console.error(new Error('Could not find SimulationResults or SimulationResult in meta...'));
+                return;
             }
-        });
-        // });
+
+            gmeClient.startTransaction();
+
+            // Create a Simulation Result..
+            const resId = gmeClient.createNode({
+                parentId: simResContainer.getId(),
+                baseId: simResMeta.getId()
+            }, {
+                attributes: {
+                    name: 'Result_' + Date.now() //TODO: This should be a better Name
+                }
+            });
+
+            // .. copy over the canvas model
+            const modelId = gmeClient.copyNode(activeNode, resId);
+            const uiId = gmeClient.addUI(null, ()=>{});
+            gmeClient.updateTerritory(uiId, {[modelId]: {children: 0}});
+            gmeClient.completeTransaction('Created simulation results', err => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+
+                let context = gmeClient.getCurrentPluginContext(pluginId, modelId);
+                gmeClient.removeUI(uiId);
+
+                this.props.toggleModelingView(false);
+                gmeClient.runServerPlugin(pluginId, context, (err, result) => {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        if (result.success) {
+                            downloadBlobArtifact(result.artifacts[0]);
+                        } else {
+                            console.error(result);
+                        }
+                    }
+                });
+            });
+        }
     };
 
     runModelCheck = (config) => {
@@ -168,7 +197,7 @@ class LeftDrawer extends Component {
             return;
         }
 
-        const pluginId = ModelCheckMetaData.id;
+        const pluginId = ModelCheckMetadata.id;
         let context = gmeClient.getCurrentPluginContext(pluginId, activeNode);
         // TODO: Remove when engine is bumped
         context.managerConfig.activeNode = activeNode;
@@ -266,11 +295,11 @@ class LeftDrawer extends Component {
                 </Drawer>
 
                 {this.state.showCodeGenerator ?
-                    <PluginConfigDialog metadata={CodeGeneratorMetaData}
+                    <PluginConfigDialog metadata={RUN_SIM ? SystemSimulatorMetadata : CodeGeneratorMetadata}
                                         onOK={this.runCodeGenerator}/> : null}
 
                 {this.state.showChecker ?
-                    <PluginConfigDialog metadata={ModelCheckMetaData}
+                    <PluginConfigDialog metadata={ModelCheckMetadata}
                                         onOK={this.runModelCheck}
                                         fastForward={true}/> : null}
 

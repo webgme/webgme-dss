@@ -10,5 +10,15 @@
   "disableServerSideExecution": false,
   "disableBrowserSideExecution": true,
   "writeAccessRequired": true,
-  "configStructure": []
+  "configStructure": [
+    {
+      "name": "stopTime",
+      "displayName": "Stop Time",
+      "description": "At which time the simulation should stop.",
+      "value": 1,
+      "minValue": 0,
+      "valueType": "number",
+      "readOnly": false
+    }
+  ]
 }

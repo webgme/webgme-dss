@@ -6,6 +6,7 @@ import update from 'immutability-helper';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import ExpansionPanel, {ExpansionPanelDetails, ExpansionPanelSummary} from 'material-ui/ExpansionPanel';
 import Typography from 'material-ui/Typography';
+import { CircularProgress } from 'material-ui/Progress';
 
 import SimulationResultSelector from './SimulationResultSelector';
 import Territory from '../gme/BaseComponents/Territory';
@@ -82,8 +83,8 @@ class ResultList extends Component {
                 updateDesc[nodeId] = {
                     name: {$set: nodeObj.getAttribute('name')},
                     isRunning: {$set: !nodeObj.getAttribute('stdout')},
-                    modelId: nodeObj.getChildrenIds()[0],
-                    simRes: nodeObj.getAttribute('simRes')
+                    modelId: {$set: nodeObj.getChildrenIds()[0]},
+                    simRes: {$set: nodeObj.getAttribute('simRes')}
                 };
             }
         });
@@ -101,8 +102,13 @@ class ResultList extends Component {
         const {results} = this.state;
 
         if (expanded) {
-            setPlotNode(results[resId].modelId);
-            setSimResData(results[resId].simRes ? JSON.parse(results[resId].simRes) : {});
+            if (results[resId].isRunning) {
+                setPlotNode(null);
+                setSimResData({});
+            } else {
+                setPlotNode(results[resId].modelId);
+                setSimResData(results[resId].simRes ? JSON.parse(results[resId].simRes) : {});
+            }
             this.setState({expandedResId: resId})
         } else {
             this.setState({expandedResId: null});
@@ -126,7 +132,8 @@ class ResultList extends Component {
                             <ExpansionPanel key={resId}
                                             expanded={isExpanded}
                                             onChange={this.handleExpand(resId)}>
-                                <ExpansionPanelSummary expandIcon={resInfo.isRunning ? null : <ExpandMoreIcon/>}>
+                                <ExpansionPanelSummary expandIcon={resInfo.isRunning ? <CircularProgress size={30}/>
+                                    : <ExpandMoreIcon/>}>
                                     <Typography type='subheading'>{resInfo.name}</Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>

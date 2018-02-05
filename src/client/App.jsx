@@ -74,7 +74,7 @@ export default class App extends Component {
                                         textAlign: 'center',
                                         display: 'inline-block',
                                         fontSize: 14
-                                    }}>WebGME Dynamic Systems Studio is a front-end modeling app for Modelica<sup>®</sup> with
+                                    }}>WebGME Dynamic Systems Studio is a design studio for Modelica<sup>®</sup> with
                                        planned simulation backed-end support from the OpenModelica compiler...</p>
                                 </header>
                                 <Projects gmeClient={window.gmeClient}/>

@@ -12,21 +12,22 @@ define([
     'text!./metadata.json',
     'plugin/PluginBase',
     'q', // THe promise library..
-    'common/storage/constants' // These will be needed to check that the commit did update the branch..
+    'common/storage/constants', // These will be needed to check that the commit did update the branch..
+    'webgme-dss/parseSimulationData'
 ], function (
     PluginConfig,
     pluginMetadata,
     PluginBase,
     Q,
-    STORAGE_CONSTANTS) {
+    STORAGE_CONSTANTS,
+    simDataHelpers) {
     'use strict';
 
-    // Since it's running in a nodejs process on the server we can use require.
-    // These are all built in nodejs modules
-    var fs = require('fs'),
+    let fs = require('fs'),
         path = require('path'),
         cp = require('child_process'),
-        os = require('os');
+        os = require('os'),
+        generateInfoFile = simDataHelpers.generateInfoFile;
 
     pluginMetadata = JSON.parse(pluginMetadata);
 
@@ -68,7 +69,9 @@ define([
         // These are all instantiated at this point.
         let self = this,
             logger = this.logger,
-            activeNode = self.activeNode;
+            modelNode = self.activeNode;
+
+        let resultNode = self.core.getParent(modelNode);
 
         function generateDirectory(modelName) {
             let MAX_DIR_TRIES = 100,
@@ -127,7 +130,9 @@ define([
 
                     return {
                         dir: dir,
-                        resultFileName: modelName + '_res.csv'
+                        resultFileName: generateInfoFile(path.join(dir, modelName)),
+                        stdout: res[0],
+                        stderr: res[1]
                     };
                 });
         }
@@ -147,7 +152,7 @@ define([
             })
             .then(function (moFileContent) {
                 logger.info('moFileContent', moFileContent);
-                let modelName = self.core.getAttribute(activeNode, 'name');
+                let modelName = self.core.getAttribute(modelNode, 'name');
 
                 let dir = generateDirectory(modelName);
 
@@ -157,20 +162,32 @@ define([
                 return simulateModel(dir, modelName);
             })
             .then(function (res) {
-                return self.blobClient.putFile(res.resultFileName, fs.readFileSync(path.join(res.dir, res.resultFileName)));
+                let resJson = fs.readFileSync(res.resultFileName, 'utf-8');
+                //return self.blobClient.putFile(res.resultFileName, fs.readFileSync(res.resultFileName));
+                return {
+                    resInfo: resJson,
+                    stdout: res.stdout
+                };
             })
-            .then(function (csvFileHash) {
-                self.core.setAttribute(activeNode, 'simResults', csvFileHash); // We need to add an attribute..
-                // We will add an asset attribute which will turn the hash into a download link in the GUI...
+            .then(function (res) {
+                self.core.setAttribute(resultNode, 'simRes', res.resInfo);
+                self.core.setAttribute(resultNode, 'stdout', res.stdout);
 
-                return self.save('Attached simulation results at ' + self.core.getPath(activeNode));
+                logger.info('Will save results to model..');
+
+                return self.save('Attached simulation results at ' + self.core.getPath(resultNode));
             })
+            // .then(function (resInfoHash) {
+            //     self.core.setAttribute(resultNode, 'simRes', resInfoHash);
+            //
+            //     return self.save('Attached simulation results at ' + self.core.getPath(resultNode));
+            // })
             .then(function (commitResult) {
                 if (commitResult.status === STORAGE_CONSTANTS.SYNCED) {
                     self.result.setSuccess(true);
                     callback(null, self.result);
                 } else {
-                    self.createMessage(activeNode, 'Simulation succeeded but commit did not update branch.');
+                    self.createMessage(modelNode, 'Simulation succeeded but commit did not update branch.');
                     callback(new Error('Did not update branch.'), self.result);
                 }
             })

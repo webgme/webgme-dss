@@ -13,6 +13,7 @@ import PlayCircleOutline from 'material-ui-icons/PlayCircleOutline';
 import CheckCircle from 'material-ui-icons/CheckCircle';
 import AddCircle from 'material-ui-icons/AddCircle';
 import Timeline from 'material-ui-icons/Timeline';
+import History from 'material-ui-icons/History';
 import {withStyles} from 'material-ui/styles';
 import green from 'material-ui/colors/green';
 
@@ -30,6 +31,7 @@ import PluginConfigDialog from '../Dialogs/PluginConfigDialog';
 import DomainSelector from '../Dialogs/DomainSelector';
 import NotifyDialog from '../Dialogs/NotifyDialog';
 import PluginResultDialog from '../Dialogs/PluginResultDialog';
+import ProjectHistory from '../Dialogs/ProjectHistory';
 import colorHash from '../gme/utils/colorHash';
 import {sideDrawer as styles} from '../classes';
 
@@ -74,6 +76,7 @@ class LeftDrawer extends Component {
         showCodeGenerator: false,
         showChecker: false,
         showDomainSelector: false,
+        showHistory: false,
         checkResult: null,
     };
 
@@ -159,7 +162,8 @@ class LeftDrawer extends Component {
 
             // .. copy over the canvas model
             const modelId = gmeClient.copyNode(activeNode, resId);
-            const uiId = gmeClient.addUI(null, ()=>{});
+            const uiId = gmeClient.addUI(null, () => {
+            });
             gmeClient.updateTerritory(uiId, {[modelId]: {children: 0}});
             gmeClient.completeTransaction('Created simulation results', err => {
                 if (err) {
@@ -237,7 +241,6 @@ class LeftDrawer extends Component {
         const {classes, gmeClient, open, modelingView, variables} = this.props;
         let actionButtons;
 
-        console.log('LD - render', this.state.checkResult);
         if (modelingView) {
             actionButtons = [
                 {
@@ -251,7 +254,12 @@ class LeftDrawer extends Component {
                 {
                     id: 'showDomainSelector',
                     iconClass: <AddCircle color='secondary'/>
-                }];
+                },
+                {
+                    id: 'showHistory',
+                    iconClass: <History color='primary'/>
+                }
+            ];
         } else {
             actionButtons = variables.map((variable) => {
                 return {
@@ -310,6 +318,9 @@ class LeftDrawer extends Component {
                                     onOK={this.onUpdateDomains}
                                     onCancel={this.onUpdateDomains}/> : null}
                 {this.state.checkResult ? this.getCheckResultContent() : null}
+                {this.state.showHistory ? <ProjectHistory gmeClient={gmeClient} onOK={() => {
+                    this.setState({showHistory: false});
+                }}/> : null}
             </div>
         );
     }

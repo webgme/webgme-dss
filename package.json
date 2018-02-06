@@ -8,6 +8,7 @@
     "immutability-helper": "^2.6.4",
     "material-ui": "1.0.0-beta.30",
     "material-ui-icons": "^1.0.0-beta.17",
+    "moment": "^2.20.1",
     "prop-types": "^15.6.0",
     "quill-delta": "^3.6.2",
     "react": "^16.2.0",

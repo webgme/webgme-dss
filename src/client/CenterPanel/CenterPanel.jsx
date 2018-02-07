@@ -7,12 +7,14 @@ import Paper from 'material-ui/Paper';
 import Canvas from './Canvas';
 import Plotter from './Plotter';
 import SelectorCanvas from './SelectorCanvas';
+import OTConsole from '../OTConsole';
 import {centerPanel as style} from '../styles';
 
 const mapStateToProps = state => {
     return {
         modelingView: state.modelingView,
-        activeNode: state.activeNode
+        activeNode: state.activeNode,
+        plotNode: state.plotData.nodeId
     }
 };
 
@@ -34,17 +36,19 @@ class CenterPanel extends Component {
     };
 
     render() {
-        const {gmeClient, modelingView} = this.props,
-            {scrollPos} = this.state;
+        const {gmeClient, modelingView, plotNode} = this.props;
+        const {scrollPos} = this.state;
+
         let flexStyle = JSON.parse(JSON.stringify(style));
 
-        if (!modelingView)
+        if (!modelingView) {
             flexStyle.backgroundColor = 'rgb(192, 192, 192)';
+        }
+
         return (
             <div onScroll={this.onScroll}
                  style={flexStyle}>
-                {modelingView ?
-                    <Canvas gmeClient={gmeClient} scrollPos={scrollPos}/> :
+                {modelingView ? <Canvas gmeClient={gmeClient} scrollPos={scrollPos}/> :
                     <div style={{
                         position: 'fixed',
                         left: 50,
@@ -52,12 +56,11 @@ class CenterPanel extends Component {
                         width: '100%',
                         height: '100%'
                     }}>
-
                         <Paper elevation={0} style={{
                             overflow: 'auto',
                             width: '100%'
                         }}>
-                            <Plotter/>
+                            {plotNode ? <Plotter/> : <OTConsole gmeClient={gmeClient} attributeName={'stdout'}/>}
                         </Paper>
                         <Paper elevation={0} style={{
                             top: 351,

@@ -9,13 +9,15 @@ import Typography from 'material-ui/Typography';
 import { CircularProgress } from 'material-ui/Progress';
 
 import SimulationResultSelector from './SimulationResultSelector';
+
 import Territory from '../gme/BaseComponents/Territory';
 import getMetaNodeByName from '../gme/utils/getMetaNodeByName';
-import {setPlotNode, setSimResData} from "../actions";
+import {setPlotNode, setSimResData, setResultNode} from '../actions';
 
 const mapStateToProps = state => {
     return {
-        plotModel: state.plotData.nodeId
+        plotModel: state.plotData.nodeId,
+        resultNode: state.resultNode
     }
 };
 
@@ -26,6 +28,9 @@ const mapDispatchToProps = dispatch => {
         },
         setSimResData: simRes => {
             dispatch(setSimResData(simRes));
+        },
+        setResultNode: resultNode => {
+            dispatch(setResultNode(resultNode));
         }
     }
 };
@@ -39,7 +44,6 @@ class ResultList extends Component {
     state = {
         containerId: null,
         territory: null,
-        expandedResId: null,
         results: {}
     };
 
@@ -59,38 +63,50 @@ class ResultList extends Component {
     }
 
     handleEvents = (hash, loads, updates, unloads) => {
-        const {gmeClient} = this.props;
+        const {gmeClient, resultNode, setPlotNode} = this.props;
         const {containerId} = this.state;
         let updateDesc = {};
 
         loads.forEach(nodeId => {
             if (nodeId !== containerId) {
                 let nodeObj = gmeClient.getNode(nodeId);
+                let modelId = nodeObj.getChildrenIds()[0]; // FIXME: This is assuming one and only one model
+                let isRunning = !nodeObj.getAttribute('stdout');
                 updateDesc[nodeId] = {
                     $set: {
                         name: nodeObj.getAttribute('name'),
-                        isRunning: !nodeObj.getAttribute('stdout'),
-                        modelId: nodeObj.getChildrenIds()[0], // FIXME: This is assuming one and only one model
+                        isRunning: isRunning,
+                        modelId: modelId,
                         simRes: nodeObj.getAttribute('simRes')
                     }
                 };
+
+                if (nodeId === resultNode && isRunning === false) {
+                    //setPlotNode(modelId);
+                }
             }
         });
 
         updates.forEach(nodeId => {
             if (nodeId !== containerId) {
                 let nodeObj = gmeClient.getNode(nodeId);
+                let modelId = nodeObj.getChildrenIds()[0]; // FIXME: This is assuming one and only one model
+                let isRunning = !nodeObj.getAttribute('stdout');
+
                 updateDesc[nodeId] = {
                     name: {$set: nodeObj.getAttribute('name')},
-                    isRunning: {$set: !nodeObj.getAttribute('stdout')},
-                    modelId: {$set: nodeObj.getChildrenIds()[0]},
+                    isRunning: {$set: isRunning},
+                    modelId: {$set: modelId},
                     simRes: {$set: nodeObj.getAttribute('simRes')}
                 };
+
+                if (nodeId === resultNode && isRunning === false) {
+                    //setPlotNode(modelId);
+                }
             }
         });
 
         updateDesc.$unset = unloads.filter(nodeId => nodeId !== containerId);
-
         this.setState({
             results: update(this.state.results, updateDesc)
         })
@@ -98,10 +114,11 @@ class ResultList extends Component {
 
     handleExpand = resId => (event, expanded) => {
         // extract attribute simRes and add it to the state
-        const {setPlotNode, setSimResData} = this.props;
+        const {setPlotNode, setSimResData, setResultNode} = this.props;
         const {results} = this.state;
 
         if (expanded) {
+            setResultNode(resId);
             if (results[resId].isRunning) {
                 setPlotNode(null);
                 setSimResData({});
@@ -109,15 +126,12 @@ class ResultList extends Component {
                 setPlotNode(results[resId].modelId);
                 setSimResData(results[resId].simRes ? JSON.parse(results[resId].simRes) : {});
             }
-            this.setState({expandedResId: resId})
-        } else {
-            this.setState({expandedResId: null});
         }
     };
 
     render() {
-        const {minimized, gmeClient, plotModel} = this.props;
-        const {territory, results, expandedResId} = this.state;
+        const {minimized, gmeClient, plotModel, resultNode} = this.props;
+        const {territory, results} = this.state;
         return (
             <div style={{display: minimized ? 'none' : undefined}}>
                 <Territory gmeClient={this.props.gmeClient} territory={territory}
@@ -125,8 +139,8 @@ class ResultList extends Component {
 
                 {Object.keys(results).map(resId => {
                         const resInfo = results[resId];
-                        const isActive = resInfo.modelId === plotModel;
-                        const isExpanded = resId === expandedResId;
+                        const hasResults = resInfo.modelId === plotModel;
+                        const isExpanded = resId === resultNode;
 
                         return (
                             <ExpansionPanel key={resId}
@@ -137,7 +151,8 @@ class ResultList extends Component {
                                     <Typography type='subheading'>{resInfo.name}</Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>
-                                    {isActive ? <SimulationResultSelector gmeClient={gmeClient} nodeId={resId}/> : <div/>}
+                                    {hasResults ? <SimulationResultSelector gmeClient={gmeClient} nodeId={resId}/> :
+                                        <Typography>Running...</Typography>}
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>);
                     }

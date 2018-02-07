@@ -211,21 +211,14 @@ define([
             }, atOperation, () => {})
                 .then(function (docData) {
 
+                    outputDoc = docData.document;
                     logger.info('Watching document', docData);
-
-                    return callSimulationScript(modelName, oInfo => {
-                        if (oInfo.err) {
-                            logger.error(oInfo.output);
-                            oInfo.output = 'ERROR: ' + oInfo.output;
-                        }
-
-                        logger.info('OMC Output', oInfo.output);
-
+                    function appendToDocument(toAddStr) {
                         let newOperation = new ot.TextOperation()
                             .retain(outputDoc.length)
-                            .insert(oInfo.output);
+                            .insert(toAddStr);
 
-                        outputDoc += oInfo.output;
+                        outputDoc += toAddStr;
 
                         self.project.sendDocumentOperation({
                             docId: docData.docId,
@@ -236,6 +229,16 @@ define([
                                 head: outputDoc.length - 1
                             })
                         });
+                    }
+
+                    appendToDocument('Simulation files generated!\nAbout to run simulation...\n');
+                    return callSimulationScript(modelName, oInfo => {
+                        if (oInfo.err) {
+                            logger.error(oInfo.output);
+                            appendToDocument('ERROR: ' + oInfo.output);
+                        } else {
+                            appendToDocument(oInfo.output);
+                        }
                     })
                         .finally(() => {
                             return self.project.unwatchDocument({docId: docData.docId, watcherId: docData.watcherId});

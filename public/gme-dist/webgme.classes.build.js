@@ -3715,7 +3715,24 @@
             },
             getProjectObject: () => {
                 return {
-                    id: projects[cnt % projects.length].owner + '+' + projects[cnt % projects.length].name
+                    id: projects[cnt % projects.length].owner + '+' + projects[cnt % projects.length].name,
+                    unwatchDocument: () => {
+                    },
+                    watchDocument: () => {
+                        return {
+                            then: (callback) => {
+                                setTimeout(() => {
+                                    callback({
+                                        docId: 'someId',
+                                        document: 'Simulation is running..',
+                                        watcherId: 'someId'
+                                    })
+                                }, 50);
+
+                                return {'catch': () => {}};
+                            }
+                        }
+                    }
                 }
             },
             getProjects: (opts, callback) => {

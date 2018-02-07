@@ -77,6 +77,13 @@ export const setSimResData = (simRes) => {
     };
 };
 
+export const setResultNode = resultNode => {
+    return {
+        type: 'SET_RESULT_NODE',
+        resultNode
+    };
+};
+
 export const toggleModelingView = show => {
     if (show) {
         return {

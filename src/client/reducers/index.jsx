@@ -106,6 +106,14 @@ const plotData = (state = {nodeId: null, variables: [], simRes: {}}, action) => 
     }
 };
 
+const resultNode = (state = null, action) => {
+    if (action.type === 'SET_RESULT_NODE') {
+        return action.resultNode;
+    }
+
+    return state;
+};
+
 export default combineReducers({
     activeNode,
     activeSelection,
@@ -114,5 +122,6 @@ export default combineReducers({
     scale,
     modelingView,
     plotData,
+    resultNode,
     systemWaiting
 })

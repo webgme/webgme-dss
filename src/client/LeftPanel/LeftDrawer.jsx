@@ -21,7 +21,7 @@ import SystemSimulatorMetadata from '../../plugins/SystemSimulator/metadata';
 import ModelCheckMetadata from '../../plugins/ModelCheck/metadata';
 import getMetaNodeByName from '../gme/utils/getMetaNodeByName';
 
-import {removePlotVariable, toggleLeftDrawer, toggleModelingView} from '../actions';
+import {removePlotVariable, toggleLeftDrawer, toggleModelingView, setResultNode} from '../actions';
 import {downloadBlobArtifact} from '../gme/utils/saveUrlToDisk';
 
 import PartBrowser from './PartBrowser';
@@ -33,8 +33,6 @@ import PluginResultDialog from '../Dialogs/PluginResultDialog';
 import ProjectHistory from '../Dialogs/ProjectHistory';
 import colorHash from '../gme/utils/colorHash';
 import {sideDrawer as styles} from '../classes';
-
-const RUN_SIM = false; // Set to true in order to run simulation
 
 const mapStateToProps = state => {
     return {
@@ -58,6 +56,9 @@ const mapDispatchToProps = dispatch => {
         },
         toggleModelingView: modelView => {
             dispatch(toggleModelingView(modelView));
+        },
+        setResultNode: resultNode => {
+            dispatch(setResultNode(resultNode));
         }
     }
 };
@@ -176,6 +177,7 @@ class LeftDrawer extends Component {
 
                 this.props.toggleModelingView(false);
                 this.props.show();
+                this.props.setResultNode(resId);
                 gmeClient.runServerPlugin(pluginId, context, (err, result) => {
                     if (err) {
                         console.error(err);

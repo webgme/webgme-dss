@@ -11,16 +11,15 @@ define([
     'plugin/PluginConfig',
     'text!./metadata.json',
     'plugin/PluginBase',
-    'q', // THe promise library..
+    'q',
     'common/storage/constants', // These will be needed to check that the commit did update the branch..
     'webgme-dss/parseSimulationData'
-], function (
-    PluginConfig,
-    pluginMetadata,
-    PluginBase,
-    Q,
-    STORAGE_CONSTANTS,
-    simDataHelpers) {
+], function (PluginConfig,
+             pluginMetadata,
+             PluginBase,
+             Q,
+             STORAGE_CONSTANTS,
+             simDataHelpers) {
     'use strict';
 
     let fs = require('fs'),
@@ -62,16 +61,21 @@ define([
      * - Do NOT put any user interaction logic UI, etc. inside this method.
      * - callback always has to be called even if error happened.
      *
-     * @param {function(string, plugin.PluginResult)} callback - the result callback
+     * @param {function(Error|null, plugin.PluginResult)} callback - the result callback
      */
     SystemSimulator.prototype.main = function (callback) {
         // Use self to access core, project, result, logger etc from PluginBase.
         // These are all instantiated at this point.
         let self = this,
             logger = this.logger,
-            modelNode = self.activeNode;
+            blobClient = this.blobClient,
+            config = this.getCurrentConfig(),
+            modelNode = self.activeNode,
+            simPackageArtie = this.blobClient.createArtifact('SimPackage');
 
+        let modelName = self.core.getAttribute(modelNode, 'name');
         let resultNode = self.core.getParent(modelNode);
+        let dir;
 
         function generateDirectory(modelName) {
             let MAX_DIR_TRIES = 100,
@@ -97,7 +101,7 @@ define([
                 } catch (e) {
                     if (e.code !== 'EEXIST') {
                         throw e;
-                    } else if (i === MAX_DIR_TRIES -1) {
+                    } else if (i === MAX_DIR_TRIES - 1) {
                         throw new Error('Failed to generate unique output directory after ' + MAX_DIR_TRIES + 'attempts!');
                     }
                 }
@@ -106,16 +110,37 @@ define([
             return result;
         }
 
-        function writeFiles(dir, moFileContent, modelName, stopTime) {
-            fs.writeFileSync(path.join(dir, modelName + '.mo'), moFileContent);
-            fs.writeFileSync(path.join(dir, 'simulate.mos'), [
+        function generateFiles(dir, moFileContent) {
+            let mosScript = [
                 'loadModel(Modelica); getErrorString();',
                 'loadFile("' + modelName + '.mo"); getErrorString();',
-                'simulate(' + modelName + ', startTime=0.0, stopTime=' + stopTime + ', outputFormat="csv"); getErrorString();'
-            ].join('\n'));
+                'simulate(' + modelName + ', startTime=0.0, stopTime=' + config.stopTime +
+                ', outputFormat="csv"); getErrorString();'
+            ].join('\n');
+
+            if (config.runSimulation) {
+                dir = generateDirectory(modelName);
+                fs.writeFileSync(path.join(dir, modelName + '.mo'), moFileContent);
+                fs.writeFileSync(path.join(dir, 'simulate.mos'), mosScript);
+            }
+
+            return Q.all([
+                blobClient.putFile('README.text', 'On windows run:\n\r %OPENMODELICAHOME%\\bin\\omc.exe simulate.mos' +
+                    '\n\rOn linux/macOs run:\n\r omc simulate.mos\n\r\n\rIn both cases from the extracted directory.'),
+                blobClient.putFile('simulate.mos', mosScript),
+            ])
+                .then((hashes) => {
+                    return Q.all([
+                        simPackageArtie.addMetadataHash('README.text', hashes[0]),
+                        simPackageArtie.addMetadataHash('simulate.mos', hashes[1])
+                    ]);
+                })
+                .then(() => {
+                    return simPackageArtie.save();
+                })
         }
 
-        function simulateModel(dir, modelName) {
+        function callSimulationScript(dir, modelName) {
             let command;
             if (os.platform().indexOf('win') === 0) {
                 command = '%OPENMODELICAHOME%\\bin\\omc.exe simulate.mos';
@@ -137,6 +162,33 @@ define([
                 });
         }
 
+        function simulateAndSaveResults() {
+            return callSimulationScript(dir, modelName)
+                .then(function (res) {
+                    let resJson = fs.readFileSync(res.resultFileName, 'utf-8');
+                    //return self.blobClient.putFile(res.resultFileName, fs.readFileSync(res.resultFileName));
+                    return {
+                        resInfo: resJson,
+                        stdout: res.stdout
+                    };
+                })
+                .then(function (res) {
+                    self.core.setAttribute(resultNode, 'simRes', res.resInfo);
+                    self.core.setAttribute(resultNode, 'stdout', res.stdout);
+
+                    logger.info('Will save results to model..');
+
+                    return self.save('Attached simulation results at ' + self.core.getPath(resultNode));
+                })
+                .then(function (commitResult) {
+                    if (commitResult.status !== STORAGE_CONSTANTS.SYNCED) {
+                        self.createMessage(modelNode, 'Simulation succeeded but commit did not update branch.' +
+                            'status: ' + commitResult.status);
+                        throw new Error('Did not update branch.');
+                    }
+                });
+        }
+
         // Identified by the plugin id
         self.invokePlugin('ModelicaCodeGenerator')
             .then(function (result) {
@@ -144,55 +196,29 @@ define([
                     throw new Error('ModelicaCodeGenerator did not return with success!');
                 }
 
-                let moFileHash = result.getArtifacts()[0]; // Array of hashes we know only one was added..
-
-                self.result.addArtifact(moFileHash); // Return the mo-file to the user as well..
-
-                return self.blobClient.getObjectAsString(moFileHash);
-            })
-            .then(function (moFileContent) {
-                logger.info('moFileContent', moFileContent);
-                let modelName = self.core.getAttribute(modelNode, 'name');
-
-                let dir = generateDirectory(modelName);
-
-                // Write out the files..
-                writeFiles(dir, moFileContent, modelName, self.getCurrentConfig().stopTime);
-
-                return simulateModel(dir, modelName);
-            })
-            .then(function (res) {
-                let resJson = fs.readFileSync(res.resultFileName, 'utf-8');
-                //return self.blobClient.putFile(res.resultFileName, fs.readFileSync(res.resultFileName));
-                return {
-                    resInfo: resJson,
-                    stdout: res.stdout
-                };
-            })
-            .then(function (res) {
-                self.core.setAttribute(resultNode, 'simRes', res.resInfo);
-                self.core.setAttribute(resultNode, 'stdout', res.stdout);
-
-                logger.info('Will save results to model..');
-
-                return self.save('Attached simulation results at ' + self.core.getPath(resultNode));
-            })
-            // .then(function (resInfoHash) {
-            //     self.core.setAttribute(resultNode, 'simRes', resInfoHash);
-            //
-            //     return self.save('Attached simulation results at ' + self.core.getPath(resultNode));
-            // })
-            .then(function (commitResult) {
-                if (commitResult.status === STORAGE_CONSTANTS.SYNCED) {
-                    self.result.setSuccess(true);
-                    callback(null, self.result);
-                } else {
-                    self.createMessage(modelNode, 'Simulation succeeded but commit did not update branch.');
-                    callback(new Error('Did not update branch.'), self.result);
+                if (typeof result.pluginInstance.moFile !== 'string') {
+                    throw new Error('No string from ModelicaCodeGenerator at result.pluginInstance.moFile!');
                 }
+
+                simPackageArtie.addMetadataHash(modelName + '.mo', result.artifacts[0]);
+
+                let moFile = result.pluginInstance.moFile;
+                // Write out the files..
+                return generateFiles(dir, moFile);
+            })
+            .then(function (artifactHash) {
+                self.result.addArtifact(artifactHash);
+                if (config.runSimulation) {
+                    return simulateAndSaveResults();
+                }
+            })
+            .then(function () {
+                self.result.setSuccess(true);
+                callback(null, self.result);
             })
             .catch(function (err) {
                 // Result success is false at invocation.
+                logger.error(err.stack);
                 callback(err, self.result);
             });
 

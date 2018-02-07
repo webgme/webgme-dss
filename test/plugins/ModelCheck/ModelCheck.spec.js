@@ -6,12 +6,12 @@
 'use strict';
 var testFixture = require('../../globals');
 
-describe('ModelCheck', function () {
+describe.skip('ModelCheck', function () {
     var gmeConfig = testFixture.getGmeConfig(),
         expect = testFixture.expect,
         logger = testFixture.logger.fork('ModelCheck'),
         PluginCliManager = testFixture.WebGME.PluginCliManager,
-        projectName = 'testProject',
+        projectName = 'MC_testProject',
         pluginName = 'ModelCheck',
         project,
         gmeAuth,

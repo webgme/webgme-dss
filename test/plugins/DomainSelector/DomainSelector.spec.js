@@ -10,7 +10,7 @@ describe('DomainSelector', function () {
         expect = testFixture.expect,
         logger = testFixture.logger.fork('DomainSelector'),
         PluginCliManager = testFixture.WebGME.PluginCliManager,
-        projectName = 'testProject',
+        projectName = 'DS_testProject',
         pluginName = 'DomainSelector',
         project,
         gmeAuth,

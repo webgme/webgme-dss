@@ -114,29 +114,57 @@ define([
             // 11) Using the modelJson data that we built up we extract the data for the modelica
             //     code and build up the code.
 
-            modelJson.components.forEach(function (data) {
-                let params = Object.keys(data.parameters);
-                moFile += '\n  ' + data.URI + ' ' + data.name;
-                if (params.length > 0) {
-                    moFile += '(';
-                    params.map((p, idx) => {
-                        moFile += `${p} = ${data.parameters[p]}, `;
-                        if (idx === params.length -1) {
-                            moFile = moFile.slice(0, -2);
-                        }
-                    });
+            modelJson.components
+                .sort((a, b) => {
+                    if (a.URI > b.URI) {
+                        return 1;
+                    } else if (a.URI < b.URI) {
+                        return -1;
+                    } else if (a.name > b.name) {
+                        return 1;
+                    } else if (a.name < b.name) {
+                        return -1;
+                    }
 
-                    moFile += ')';
-                }
+                    return 0;
+                })
+                .forEach((data) => {
+                    let params = Object.keys(data.parameters);
+                    moFile += '\n  ' + data.URI + ' ' + data.name;
+                    if (params.length > 0) {
+                        moFile += '(';
+                        params.map((p, idx) => {
+                            moFile += `${p} = ${data.parameters[p]}, `;
+                            if (idx === params.length -1) {
+                                moFile = moFile.slice(0, -2);
+                            }
+                        });
 
-                moFile += ';';
+                        moFile += ')';
+                    }
+
+                    moFile += ';';
             });
 
             moFile += '\nequation';
 
-            modelJson.connections.forEach(function (data) {
-                moFile += '\n  connect(' + data.src + ', ' + data.dst + ');';
-            });
+            modelJson.connections
+                .sort((a, b) => {
+                    if (a.src > b.src) {
+                        return 1;
+                    } else if (a.src < b.src) {
+                        return -1;
+                    } else if (a.dst > b.dst) {
+                        return 1;
+                    } else if (a.dst < b.dst) {
+                        return -1;
+                    }
+
+                    return 0;
+                })
+                .forEach((data) => {
+                    moFile += '\n  connect(' + data.src + ', ' + data.dst + ');';
+                });
 
             moFile += '\nend ' + modelJson.name + ';';
 
@@ -178,22 +206,23 @@ define([
                 logger.debug('modelJson', JSON.stringify(modelJson, null, 2));
 
                 let moFile = getMoFileContent();
+                self.moFile = moFile;
 
-                logger.info('moFile', moFile);
+                logger.debug('moFile', moFile);
 
                 // 12) Add the modelic file content as a file on the blobstorage.
                 return self.blobClient.putFile(modelJson.name + '.mo', moFile);
             })
             .then(function (metadataHash) {
-                logger.info(metadataHash);
+                logger.debug(metadataHash);
                 // 13) Link the uploaded file (using the hash) from the plugin result.
                 self.result.addArtifact(metadataHash);
                 self.result.setSuccess(true);
                 callback(null, self.result);
             })
             .catch(function (err) {
-                logger.error(err);
-                callback(err);
+                logger.error(err.stack);
+                callback(err, self.result);
             });
     };
 

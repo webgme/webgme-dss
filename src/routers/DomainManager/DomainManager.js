@@ -223,11 +223,11 @@ function initialize(middlewareOpts) {
                 };
 
                 returnData = result;
-                logger.info('update result', result);
+                logger.debug('update result', result);
                 return Q.ninvoke(swm, 'request', pluginParameters);
             })
             .then(result => {
-                logger.info('plugin result', result);
+                logger.debug('plugin result', result);
                 return gmeAuth.metadataStorage.updateProjectInfo(req.body.projectId, {
                     kind: 'DSS:' + req.body.domains.join(':')
                 });

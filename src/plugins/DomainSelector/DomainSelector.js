@@ -67,10 +67,10 @@ define([
                 domainNodes.forEach(domainNode => {
                     let domainName = core.getAttribute(domainNode, 'name');
                     if (domains.includes(domainName)) {
-                        logger.info('Domain will be kept', domainName);
+                        logger.debug('Domain will be kept', domainName);
                         commitMessage += domainName + ' '
                     } else {
-                        logger.info('Domain will be REMOVED', domainName);
+                        logger.debug('Domain will be REMOVED', domainName);
                         core.deleteNode(domainNode);
                     }
                 });
@@ -100,7 +100,7 @@ define([
                 });
             })
             .then((patch) => {
-                logger.info('Created patch object', JSON.stringify(patch, null, 2));
+                logger.debug('Created patch object', JSON.stringify(patch, null, 2));
                 // Apply that patch to master branch
                 return merger.apply({
                     gmeConfig: this.gmeConfig,

@@ -33,6 +33,10 @@
       "SystemSimulator": {
         "src": "src/plugins/SystemSimulator",
         "test": "test/plugins/SystemSimulator"
+      },
+      "ModelicaDiff": {
+        "src": "src/plugins/ModelicaDiff",
+        "test": "test/plugins/ModelicaDiff"
       }
     }
   },

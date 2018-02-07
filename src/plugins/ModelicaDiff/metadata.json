@@ -1,0 +1,23 @@
+{
+  "id": "ModelicaDiff",
+  "name": "ModelicaDiff",
+  "version": "0.1.0",
+  "description": "",
+  "icon": {
+    "class": "glyphicon glyphicon-cog",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "writeAccessRequired": false,
+  "configStructure": [
+    {
+      "name": "oldRootHash",
+      "displayName": "CommitOfTheGivenState",
+      "description": "Colon, ':', separated list of modelica domains.",
+      "value": "",
+      "valueType": "string",
+      "readOnly": false
+    },
+  ]
+}

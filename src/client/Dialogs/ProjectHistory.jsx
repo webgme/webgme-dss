@@ -7,8 +7,8 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import moment from 'moment';
 import Avatar from 'material-ui/Avatar';
-import Card, {CardActions, CardContent} from 'material-ui/Card';
 import Button from 'material-ui/Button';
+import Badge from 'material-ui/Badge';
 import Typography from 'material-ui/Typography';
 import {connect} from 'react-redux';
 import IconButton from 'material-ui/IconButton';
@@ -57,40 +57,47 @@ class ProjectHistory extends Component {
 
     render() {
         const {onOK, gmeClient, batchSize} = this.props,
-            {commits} = this.state;
+            {commits, activeCommit} = this.state,
+            project = gmeClient.getProjectObject(),
+            projectId = project.projectId;
         let items = commits.map(commit => {
             let when = new Date(parseInt(commit.time, 10)),
                 current = commit._id === this.state.activeCommit;
 
-            return (<Grid key={commit._id} container={true} wrap={'wrap'}
-                          style={{
-                              border: '2px solid #000000',
-                              color: current ? 'red' : 'blue',
-                              margin: '2px',
-                              marginLeft: '-6px'
-                          }}
-                          alignItems={'center'}
-                          color={current ? 'primary' : 'secondary'}>
+            return <Grid key={commit._id} container={true} wrap={'wrap'}
+                         style={{
+                             border: '2px solid #000000',
+                             color: current ? 'red' : 'blue',
+                             margin: '2px',
+                             marginLeft: '-6px'
+                         }}
+                         alignItems={'center'}
+                         color={current ? 'primary' : 'secondary'}>
                 <Grid item={true} xs={4} sm={2} style={{cursor: 'help'}}>
                     <Tooltip id={'time-tooltip'} title={moment(when).local().format('dddd, MMMM Do YYYY, h:mm:ss a')}>
-                        <Grid item={true}>{moment(when).fromNow()}</Grid>
+                        <Grid item={true}><Badge content={moment(when).fromNow()}>{commit.updater[0]}</Badge></Grid>
                     </Tooltip>
                 </Grid>
                 {current ? <Avatar>C</Avatar> : <Avatar/>}
                 <Grid item={true} xs={12} sm={6}>{commit.message}</Grid>
                 <Grid item={true} xs={5} sm={3} zeroMinWidth={true}>
-                    <Tooltip id={'read-only-view-tooltip'} title={'Load this state as read-only'}>
+                    <Tooltip id={'read-only-view-tooltip'} title={'Check what is different in this version'}>
                         <IconButton>
                             <Visibility/>
                         </IconButton>
                     </Tooltip>
                     <Tooltip id={'revert-tooltip'} title={'Start editing from this version'}>
-                        <IconButton>
+                        <IconButton onClick={() => {
+                            //FIXE how to handle error... I guess modal popup warning???
+                            project.setBranchHash('master', commit._id, activeCommit, (err) => {
+                                onOK();
+                            });
+                        }}>
                             <PlayArrow/>
                         </IconButton>
                     </Tooltip>
                 </Grid>
-            </Grid>)
+            </Grid>
         });
 
         return (

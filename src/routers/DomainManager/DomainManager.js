@@ -81,7 +81,7 @@ function initialize(middlewareOpts) {
         *  domains: ['Modelica.Electrical.Analog']
         * }
         */
-        logger.info('createProject', req.body);
+        logger.debug('createProject', req.body);
 
         getNewJWToken(userId)
             .then(token => {
@@ -102,7 +102,7 @@ function initialize(middlewareOpts) {
                 };
 
                 webgmeToken = token;
-                logger.info('Seeding', seedProjectParameters);
+                logger.debug('Seeding', seedProjectParameters);
                 return Q.ninvoke(swm, 'request', seedProjectParameters);
             })
             .then(result => {
@@ -126,12 +126,12 @@ function initialize(middlewareOpts) {
                 };
 
                 returnData.projectId = result.projectId;
-                logger.info('seed result', result);
-                logger.info('Selecting domains', pluginParameters);
+                logger.debug('seed result', result);
+                logger.debug('Selecting domains', pluginParameters);
                 return Q.ninvoke(swm, 'request', pluginParameters);
             })
             .then(result => {
-                logger.info('plugin result', result);
+                logger.debug('plugin result', result);
 
                 res.json(returnData);
             })
@@ -155,7 +155,7 @@ function initialize(middlewareOpts) {
         *  branchName: 'master'
         * }
         */
-        logger.info('updateProject', req.body);
+        logger.debug('updateProject', req.body);
 
         getNewJWToken(userId)
             .then(token => {

@@ -17,7 +17,6 @@ import History from 'material-ui-icons/History';
 import {withStyles} from 'material-ui/styles';
 import green from 'material-ui/colors/green';
 
-import CodeGeneratorMetadata from '../../plugins/ModelicaCodeGenerator/metadata';
 import SystemSimulatorMetadata from '../../plugins/SystemSimulator/metadata';
 import ModelCheckMetadata from '../../plugins/ModelCheck/metadata';
 import getMetaNodeByName from '../gme/utils/getMetaNodeByName';
@@ -73,7 +72,7 @@ class LeftDrawer extends Component {
     };
 
     state = {
-        showCodeGenerator: false,
+        showSimulator: false,
         showChecker: false,
         showDomainSelector: false,
         showHistory: false,
@@ -114,32 +113,32 @@ class LeftDrawer extends Component {
             });
     };
 
-    runCodeGenerator = (config) => {
+    runSimulator = config => {
         const {gmeClient, activeNode} = this.props;
-
-        this.setState({showCodeGenerator: false});
+        const pluginId = SystemSimulatorMetadata.id;
+        this.setState({showSimulator: false});
         if (!config) {
             // Cancelled
             return;
         }
 
-        if (RUN_SIM === false) {
-            const pluginId = CodeGeneratorMetadata.id;
+        if (config.runSimulation === false) {
             let context = gmeClient.getCurrentPluginContext(pluginId, activeNode);
+            context.pluginConfig = config;
 
             gmeClient.runServerPlugin(pluginId, context, function (err, result) {
                 if (err) {
                     console.error(err);
                 } else {
                     if (result.success) {
-                        downloadBlobArtifact(result.artifacts[0]);
+                        // FIXME: this download does not work well with zipped file..
+                        //downloadBlobArtifact(result.artifacts[0]);
                     } else {
                         console.error(result);
                     }
                 }
             });
         } else {
-            const pluginId = SystemSimulatorMetadata.id;
             const simResContainer = getMetaNodeByName(gmeClient, 'SimulationResults');
             const simResMeta = getMetaNodeByName(gmeClient, 'SimulationResult');
 
@@ -172,15 +171,17 @@ class LeftDrawer extends Component {
                 }
 
                 let context = gmeClient.getCurrentPluginContext(pluginId, modelId);
+                context.pluginConfig = config;
                 gmeClient.removeUI(uiId);
 
                 this.props.toggleModelingView(false);
+                this.props.show();
                 gmeClient.runServerPlugin(pluginId, context, (err, result) => {
                     if (err) {
                         console.error(err);
                     } else {
                         if (result.success) {
-                            downloadBlobArtifact(result.artifacts[0]);
+                            //downloadBlobArtifact(result.artifacts[0]);
                         } else {
                             console.error(result);
                         }
@@ -248,7 +249,7 @@ class LeftDrawer extends Component {
                     iconClass: <CheckCircle style={{color: green[500]}}/>
                 },
                 {
-                    id: 'showCodeGenerator',
+                    id: 'showSimulator',
                     iconClass: <PlayCircleOutline color='primary'/>
                 },
                 {
@@ -302,9 +303,9 @@ class LeftDrawer extends Component {
                         <ResultList gmeClient={gmeClient} minimized={!open}/>}
                 </Drawer>
 
-                {this.state.showCodeGenerator ?
-                    <PluginConfigDialog metadata={RUN_SIM ? SystemSimulatorMetadata : CodeGeneratorMetadata}
-                                        onOK={this.runCodeGenerator}/> : null}
+                {this.state.showSimulator ?
+                    <PluginConfigDialog metadata={SystemSimulatorMetadata}
+                                        onOK={this.runSimulator}/> : null}
 
                 {this.state.showChecker ?
                     <PluginConfigDialog metadata={ModelCheckMetadata}

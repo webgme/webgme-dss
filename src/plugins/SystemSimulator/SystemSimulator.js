@@ -12,12 +12,14 @@ define([
     'text!./metadata.json',
     'plugin/PluginBase',
     'q',
+    'webgme-ot',
     'common/storage/constants', // These will be needed to check that the commit did update the branch..
     'webgme-dss/parseSimulationData'
 ], function (PluginConfig,
              pluginMetadata,
              PluginBase,
              Q,
+             ot,
              STORAGE_CONSTANTS,
              simDataHelpers) {
     'use strict';
@@ -75,7 +77,7 @@ define([
 
         let modelName = self.core.getAttribute(modelNode, 'name');
         let resultNode = self.core.getParent(modelNode);
-        let dir;
+        let simOutputDir;
 
         function generateDirectory(modelName) {
             let MAX_DIR_TRIES = 100,
@@ -107,10 +109,12 @@ define([
                 }
             }
 
+            logger.info('Generated directory', result);
+
             return result;
         }
 
-        function generateFiles(dir, moFileContent) {
+        function generateFiles(moFileContent) {
             let mosScript = [
                 'loadModel(Modelica); getErrorString();',
                 'loadFile("' + modelName + '.mo"); getErrorString();',
@@ -119,9 +123,9 @@ define([
             ].join('\n');
 
             if (config.runSimulation) {
-                dir = generateDirectory(modelName);
-                fs.writeFileSync(path.join(dir, modelName + '.mo'), moFileContent);
-                fs.writeFileSync(path.join(dir, 'simulate.mos'), mosScript);
+                simOutputDir = generateDirectory(modelName);
+                fs.writeFileSync(path.join(simOutputDir, modelName + '.mo'), moFileContent);
+                fs.writeFileSync(path.join(simOutputDir, 'simulate.mos'), mosScript);
             }
 
             return Q.all([
@@ -140,41 +144,113 @@ define([
                 })
         }
 
-        function callSimulationScript(dir, modelName) {
-            let command;
+        function callSimulationScript(modelName, atOutput) {
+            let deferred = Q.defer(),
+                options = {cwd: simOutputDir, shell: true},
+                command = 'omc',
+                args = [
+                    'simulate.mos'
+                ];
+
+            // file:///E:/OpenModelica1.11.0/share/doc/omc/OpenModelicaUsersGuide/simulationflags.html
+
             if (os.platform().indexOf('win') === 0) {
-                command = '%OPENMODELICAHOME%\\bin\\omc.exe simulate.mos';
-            } else {
-                command = 'omc simulate.mos';
+                command = '%OPENMODELICAHOME%\\bin\\omc.exe';
             }
 
-            // ninvoke turns exec into a promise call...
-            return Q.ninvoke(cp, 'exec', command, {cwd: dir})
-                .then(function (res) {
-                    logger.info(res);
+            logger.info('Calling simulation script', command, args, options);
 
-                    return {
-                        dir: dir,
-                        resultFileName: generateInfoFile(path.join(dir, modelName)),
-                        stdout: res[0],
-                        stderr: res[1]
-                    };
+            let sim = cp.spawn(command, args, options);
+
+            sim.stdout.on('data', data => {
+                atOutput({
+                    err: false,
+                    output: data.toString()
                 });
+            });
+
+            sim.stderr.on('data', data => {
+                atOutput({
+                    err: true,
+                    output: data.toString()
+                });
+            });
+
+            sim.on('close', (code) => {
+                if (code > 0) {
+                    deferred.reject(new Error(`Simulate child process exited with code ${code}`));
+                } else {
+                    deferred.resolve({
+                        resultFileName: generateInfoFile(path.join(simOutputDir, modelName))
+                    });
+                }
+            });
+
+            sim.on('error', (err) => {
+                logger.error('Failed to run simulation');
+                deferred.reject(err);
+            });
+
+            return deferred.promise;
         }
 
         function simulateAndSaveResults() {
-            return callSimulationScript(dir, modelName)
+            let outputDoc = '';
+
+            function atOperation(operation) {
+                // Someone else is sending operations to the document,
+                // these must be applied to our copy.
+                outputDoc = operation.apply(outputDoc);
+            }
+
+            return self.project.watchDocument({
+                branchName: self.branchName,
+                nodeId: self.core.getPath(resultNode),
+                attrName: 'stdout',
+                attrValue: outputDoc
+            }, atOperation, () => {})
+                .then(function (docData) {
+
+                    logger.info('Watching document', docData);
+
+                    return callSimulationScript(modelName, oInfo => {
+                        if (oInfo.err) {
+                            logger.error(oInfo.output);
+                            oInfo.output = 'ERROR: ' + oInfo.output;
+                        }
+
+                        logger.info('OMC Output', oInfo.output);
+
+                        let newOperation = new ot.TextOperation()
+                            .retain(outputDoc.length)
+                            .insert(oInfo.output);
+
+                        outputDoc += oInfo.output;
+
+                        self.project.sendDocumentOperation({
+                            docId: docData.docId,
+                            watcherId: docData.watcherId,
+                            operation: newOperation,
+                            selection: new ot.Selection({
+                                anchor: outputDoc.length - 1,
+                                head: outputDoc.length - 1
+                            })
+                        });
+                    })
+                        .finally(() => {
+                            return self.project.unwatchDocument({docId: docData.docId, watcherId: docData.watcherId});
+                        });
+                })
                 .then(function (res) {
+                    logger.info('simulation res', res);
                     let resJson = fs.readFileSync(res.resultFileName, 'utf-8');
-                    //return self.blobClient.putFile(res.resultFileName, fs.readFileSync(res.resultFileName));
                     return {
-                        resInfo: resJson,
-                        stdout: res.stdout
+                        resInfo: resJson
                     };
                 })
                 .then(function (res) {
                     self.core.setAttribute(resultNode, 'simRes', res.resInfo);
-                    self.core.setAttribute(resultNode, 'stdout', res.stdout);
+                    self.core.setAttribute(resultNode, 'stdout', outputDoc);
 
                     logger.info('Will save results to model..');
 
@@ -204,7 +280,7 @@ define([
 
                 let moFile = result.pluginInstance.moFile;
                 // Write out the files..
-                return generateFiles(dir, moFile);
+                return generateFiles(moFile);
             })
             .then(function (artifactHash) {
                 self.result.addArtifact(artifactHash);

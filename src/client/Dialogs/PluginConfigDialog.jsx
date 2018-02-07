@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import update from 'immutability-helper';
+
 import Dialog, {
     DialogActions,
     DialogContent,
@@ -29,20 +31,23 @@ export default class PluginConfigDialog extends Component {
     }
 
     onReady = () => {
-        this.props.onOK(this.state);
+        this.props.onOK(this.state.configItems);
     };
 
-    onChange = (what, how) => {
-        let update = {};
-        update[what] = how;
-        this.setState('configItems', update);
+    onChange = (name, value) => {
+        this.setState({
+            configItems: update(this.state.configItems, {
+                [name]: {$set: value}
+            })
+        });
     };
 
     componentWillMount() {
-        const {metadata, fastForward, onOK} = this.props;
+        const {metadata, fastForward} = this.props;
 
-        if (fastForward && metadata.configStructure.length === 0)
-            onOK(this.state);
+        if (fastForward && metadata.configStructure.length === 0) {
+            this.onReady();
+        }
     }
 
     render() {

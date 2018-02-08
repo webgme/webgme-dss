@@ -456,7 +456,6 @@ class CanvasItem extends Component {
                 midpoint.y = endPoints.src.position.y;
             }
 
-            console.log(points, ' - ', midpoint);
             return [(<div style={{
                 position: 'absolute',
                 top: midpoint.y - 20,

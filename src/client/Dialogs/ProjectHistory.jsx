@@ -67,7 +67,7 @@ class ProjectHistory extends Component {
                 if (result.success) {
                     self.setState({
                         showDiff: true,
-                        diff: {model: JSON.parse(result.messages[0].message), domain: null, simulation: null}
+                        diff: JSON.parse(result.messages[0].message)
                     });
                 } else {
                     console.error(result);
@@ -105,6 +105,22 @@ class ProjectHistory extends Component {
             domain = (<ListItem button={false}>
                 <ListItemText inset={false} primary={'Domains'} secondary={'no change'}/>
             </ListItem>);
+        } else {
+            domain = [
+                (<ListItem button={true} onClick={() => {
+                    this.setState({diff_domain_open: !this.state.diff_domain_open});
+                }}>
+                    <ListItemText inset={true} primary={'Domain changes'}/>
+                    {this.state.diff_domain_open ? <ExpandLess/> : <ExpandMore/>}
+                </ListItem>),
+                (<Collapse in={this.state.diff_domain_open} timeout="auto">
+                    <List dense={true}>
+                        {diff.domain.map((item) => {
+                            return <ListItem><ListItemText inset={true} primary={item}/></ListItem>;
+                        })}
+                    </List>
+                </Collapse>)
+            ];
         }
 
         // simulation
@@ -112,6 +128,22 @@ class ProjectHistory extends Component {
             simulation = (<ListItem button={false}>
                 <ListItemText inset={false} primary={'Simulations'} secondary={'no change'}/>
             </ListItem>);
+        } else {
+            simulation = [
+                (<ListItem button={true} onClick={() => {
+                    this.setState({diff_simulation_open: !this.state.diff_simulation_open});
+                }}>
+                    <ListItemText inset={true} primary={'Simulation result changes'}/>
+                    {this.state.diff_simulation_open ? <ExpandLess/> : <ExpandMore/>}
+                </ListItem>),
+                (<Collapse in={this.state.diff_simulation_open} timeout="auto">
+                    <List dense={true}>
+                        {diff.simulation.map((item) => {
+                            return <ListItem><ListItemText inset={true} primary={item}/></ListItem>;
+                        })}
+                    </List>
+                </Collapse>)
+            ];
         }
 
         // model

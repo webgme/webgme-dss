@@ -207,6 +207,106 @@ define([
         return deferred.promise;
     };
 
+    ModelicaDiff.prototype.gatherDomainChanges = function (core, oldRoot, newRoot, diff) {
+        let deferred = Q.defer(),
+            oldDomains = {}, newDomains = {}, relids, i, promises = [], oldSize,
+            changes = [];
+
+        relids = core.getChildrenRelids(oldRoot);
+        oldSize = 0;
+        for (i = 0; i < relids.length; i += 1) {
+            if (diff.hasOwnProperty(relids[i])) {
+                oldSize += 1;
+                promises.push(core.loadByPath(oldRoot, '/' + relids[i]));
+            }
+        }
+
+
+        relids = core.getChildrenRelids(newRoot);
+        for (i = 0; i < relids.length; i += 1) {
+            if (diff.hasOwnProperty(relids[i])) {
+                promises.push(core.loadByPath(newRoot, '/' + relids[i]));
+            }
+        }
+
+        Q.all(promises)
+            .then((children) => {
+                for (i = 0; i < oldSize; i += 1) {
+                    oldDomains[core.getAttribute(children[i], 'name')] = true;
+                }
+                for (i; i < children.length; i += 1) {
+                    newDomains[core.getAttribute(children[i], 'name')] = true;
+                }
+
+                // added
+                for (i in newDomains) {
+                    if (!oldDomains.hasOwnProperty(i)) {
+                        changes.push('Domain "' + i + '" have been added to the project.');
+                    }
+                }
+
+                // removed
+                for (i in oldDomains) {
+                    if (!newDomains.hasOwnProperty(i)) {
+                        changes.push('Domain "' + i + '" have been removed from the project.');
+                    }
+                }
+
+                deferred.resolve(changes.length === 0 ? null : changes);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
+    ModelicaDiff.prototype.gatherSimulationChanges = function (core, oldRoot, newRoot, diff) {
+        let deferred = Q.defer(),
+            oldDomains = {}, newDomains = {}, relids, i, promises = [], oldSize,
+            changes = [];
+
+        Q.all([
+            core.loadByPath(oldRoot, '/8'),
+            core.loadByPath(newRoot, '/8')
+        ])
+            .then((simulationFolders) => {
+                let relids, i, promises = [];
+
+                oldSize = 0;
+                relids = core.getChildrenRelids(simulationFolders[0]);
+                for (i = 0; i < relids.length; i += 1) {
+                    if (diff.hasOwnProperty(relids[i]) && diff[relids[i]].removed === true) {
+                        oldSize += 1;
+                        promises.push(core.loadByPath(simulationFolders[0], '/' + relids[i]));
+                    }
+                }
+
+                relids = core.getChildrenRelids(simulationFolders[1]);
+                for (i = 0; i < relids.length; i += 1) {
+                    if (diff.hasOwnProperty(relids[i]) && diff[relids[i]].removed === false) {
+                        promises.push(core.loadByPath(simulationFolders[1], '/' + relids[i]));
+                    }
+                }
+
+                return Q.all(promises);
+            })
+            .then((simulations) => {
+                let i, oldSimulations, newSimulations, changes = [];
+                for (i = 0; i < oldSize; i += 1) {
+                    changes.push('Simulation result "' + core.getAttribute(simulations[i], 'name') +
+                        '" has been dropped.');
+                }
+                for (i; i < simulations.length; i += 1) {
+                    changes.push('Simulation result "' + core.getAttribute(simulations[i], 'name') +
+                        '" has been created.');
+                }
+
+                deferred.resolve(changes.length === 0 ? null : changes);
+            })
+            .catch(deferred.reject);
+
+        return deferred.promise;
+    };
+
     /**
      * Main function for the plugin to execute. This will perform the execution.
      * Notes:
@@ -223,23 +323,33 @@ define([
             config = self.getCurrentConfig(),
             core = self.core,
             currentRoot = self.activeNode,
+            changes = {model: null, domain: null, simulation: null},
             oldRoot,
             diff;
 
         core.loadRoot(config.oldRootHash)
-            .then(function (oldRoot_) {
+            .then((oldRoot_) => {
                 oldRoot = oldRoot_;
                 return core.generateTreeDiff(oldRoot, currentRoot);
             })
-            .then(function (diff_) {
+            .then((diff_) => {
                 diff = diff_;
 
                 return self.gatherModelChanges(core, oldRoot, currentRoot, diff.Z || {});
             })
-            .then(function (modelChanges) {
-                // console.log(modelChanges);
+            .then((modelChanges) => {
+                changes.model = modelChanges;
+                return self.gatherDomainChanges(core, oldRoot, currentRoot, diff || {});
+            })
+            .then((domainChanges) => {
+                changes.domain = domainChanges;
+                return self.gatherSimulationChanges(core, oldRoot, currentRoot, diff['8'] || {});
+            })
+            .then((simulationChanges) => {
+                changes.simulation = simulationChanges;
                 self.result.setSuccess(true);
-                self.createMessage(currentRoot, JSON.stringify(modelChanges), 'info');
+                console.log(changes);
+                self.createMessage(currentRoot, JSON.stringify(changes), 'info');
                 callback(null, self.result);
             })
             .catch(function (err) {

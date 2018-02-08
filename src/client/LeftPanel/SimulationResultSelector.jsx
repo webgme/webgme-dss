@@ -50,8 +50,9 @@ class LeafNode extends Component {
         const isChecked = selectedVariables.includes(nodeData.id);
 
         // TODO: Style me
-        return (<FormControlLabel control={
+        return (<FormControlLabel style={{height: 28}} control={
                                   <Checkbox
+                                      style={{height: 30}}
                                       checked={isChecked}
                                       onChange={this.onSelectVariable}
                                       value={varName}/>
@@ -131,6 +132,8 @@ class SimulationResultSelector extends Component {
 
     onTreeNodeToggle = (node, toggled) => {
         if (this.state.cursor) {
+            // FIXME: This is modifying the state directly - however can we set the previous node
+            // FIXME: to be deactivated with out modifying it?
             this.state.cursor.active = false;
         }
 

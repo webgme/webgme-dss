@@ -178,24 +178,34 @@ define([
 
             sim.on('close', (code) => {
                 if (code > 0) {
-                    deferred.reject(new Error(`Simulate child process exited with code ${code}`));
-                } else {
                     deferred.resolve({
-                        resultFileName: generateInfoFile(path.join(simOutputDir, modelName))
+                        err: new Error(`Simulate child process exited with code ${code}`)
                     });
+                } else {
+                    try {
+                        deferred.resolve({
+                            resultFileName: generateInfoFile(path.join(simOutputDir, modelName))
+                        });
+                    } catch (err) {
+                        if (err.code === 'ENOENT') {
+                            err = new Error('No simulation results were generated');
+                        }
+
+                        deferred.resolve({err: err});
+                    }
                 }
             });
 
             sim.on('error', (err) => {
-                logger.error('Failed to run simulation');
-                deferred.reject(err);
+                deferred.resolve({err: err});
             });
 
             return deferred.promise;
         }
 
         function simulateAndSaveResults() {
-            let outputDoc = '';
+            let outputDoc = '',
+                success = false;
 
             function atOperation(operation) {
                 // Someone else is sending operations to the document,
@@ -241,30 +251,45 @@ define([
                         }
                     })
                         .finally(() => {
+                            logger.info('unwatching document', docData.docId);
                             return self.project.unwatchDocument({docId: docData.docId, watcherId: docData.watcherId});
                         });
                 })
                 .then(function (res) {
                     logger.info('simulation res', res);
-                    let resJson = fs.readFileSync(res.resultFileName, 'utf-8');
+                    let resJson;
+                    if (res.err instanceof Error) {
+                        success = false;
+                        self.result.setError(res.err);
+                    } else {
+                        success = true;
+                        resJson = fs.readFileSync(res.resultFileName, 'utf-8');
+                    }
+
                     return {
                         resInfo: resJson
                     };
                 })
                 .then(function (res) {
-                    self.core.setAttribute(resultNode, 'simRes', res.resInfo);
+                    if (success) {
+                        self.core.setAttribute(resultNode, 'simRes', res.resInfo);
+                    }
+
                     self.core.setAttribute(resultNode, 'stdout', outputDoc);
 
                     logger.info('Will save results to model..');
 
+                    //TODO: Fast-forward
                     return self.save('Attached simulation results at ' + self.core.getPath(resultNode));
                 })
                 .then(function (commitResult) {
                     if (commitResult.status !== STORAGE_CONSTANTS.SYNCED) {
-                        self.createMessage(modelNode, 'Simulation succeeded but commit did not update branch.' +
+                        self.createMessage(modelNode, 'Commit did not update branch.' +
                             'status: ' + commitResult.status);
                         throw new Error('Did not update branch.');
                     }
+
+                    return success;
                 });
         }
 
@@ -291,8 +316,11 @@ define([
                     return simulateAndSaveResults();
                 }
             })
-            .then(function () {
-                self.result.setSuccess(true);
+            .then(function (success) {
+                if (success) {
+                    self.result.setSuccess(true);
+                }
+
                 callback(null, self.result);
             })
             .catch(function (err) {

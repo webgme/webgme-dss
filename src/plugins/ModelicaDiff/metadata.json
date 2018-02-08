@@ -13,11 +13,11 @@
   "configStructure": [
     {
       "name": "oldRootHash",
-      "displayName": "CommitOfTheGivenState",
-      "description": "Colon, ':', separated list of modelica domains.",
+      "displayName": "Root Hash of the older state",
+      "description": "The hash that represents the given state of the model",
       "value": "",
       "valueType": "string",
       "readOnly": false
-    },
+    }
   ]
 }

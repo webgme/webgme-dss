@@ -16,6 +16,14 @@ import Visibility from 'material-ui-icons/Visibility';
 import PlayArrow from 'material-ui-icons/PlayArrow';
 import Grid from 'material-ui/Grid';
 import Tooltip from 'material-ui/Tooltip';
+import NotifyDialog from './NotifyDialog';
+import ListSubheader from 'material-ui/List/ListSubheader';
+import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
+import Collapse from 'material-ui/transitions/Collapse';
+import ExpandLess from 'material-ui-icons/ExpandLess';
+import ExpandMore from 'material-ui-icons/ExpandMore';
+
+import ModelicaDiffMetadata from '../../plugins/ModelicaDiff/metadata';
 
 const mapStateToProps = state => {
     return {}
@@ -38,7 +46,34 @@ class ProjectHistory extends Component {
 
     state = {
         commits: [],
-        activeCommit: null
+        activeCommit: null,
+        showDiff: false,
+        diff: null
+    };
+
+    showDiff = (oldRootHash) => {
+        const self = this,
+            pluginId = ModelicaDiffMetadata.id,
+            {gmeClient} = this.props;
+        let context = gmeClient.getCurrentPluginContext(pluginId, '');
+
+        context.pluginConfig = {oldRootHash: oldRootHash};
+        console.log(context);
+
+        gmeClient.runServerPlugin(pluginId, context, function (err, result) {
+            if (err) {
+                console.error(err);
+            } else {
+                if (result.success) {
+                    self.setState({
+                        showDiff: true,
+                        diff: {model: JSON.parse(result.messages[0].message), domain: null, simulation: null}
+                    });
+                } else {
+                    console.error(result);
+                }
+            }
+        });
     };
 
     newHistoryItems = (err, items) => {
@@ -55,11 +90,94 @@ class ProjectHistory extends Component {
         this.setState({activeCommit: activeCommit});
     }
 
+    getDiffDialog = () => {
+        const {diff} = this.state;
+        let domain, simulation, model;
+
+        if (diff === null || (diff.model === null && diff.domain === null && diff.simulation === null)) {
+            return (<NotifyDialog text={'No difference with the current state.'} title={' '} onOK={() => {
+                this.setState({showDiff: false});
+            }}/>);
+        }
+
+        // domain
+        if (diff.domain === null) {
+            domain = (<ListItem button={false}>
+                <ListItemText inset={false} primary={'Domains'} secondary={'no change'}/>
+            </ListItem>);
+        }
+
+        // simulation
+        if (diff.simulation === null) {
+            simulation = (<ListItem button={false}>
+                <ListItemText inset={false} primary={'Simulations'} secondary={'no change'}/>
+            </ListItem>);
+        }
+
+        // model
+        if (diff.model === null) {
+            model = (<ListItem button={false}>
+                <ListItemText inset={false} primary={'Model'} secondary={'no change'}/>
+            </ListItem>);
+        } else {
+            let nodeElements = [],
+                nodes = Object.keys(diff.model);
+            nodes.forEach((node) => {
+                let stateName = 'diff_model_open_' + node;
+                nodeElements.push((<ListItem button={true} onClick={() => {
+                    let newState = {};
+                    newState[stateName] = !this.state[stateName];
+                    this.setState(newState);
+                }}>
+                    <ListItemText inset={true} primary={node}/>
+                    {this.state[stateName] ? <ExpandLess/> : <ExpandMore/>}
+                </ListItem>));
+                nodeElements.push(
+                    <Collapse in={this.state[stateName]} timeout="auto">
+                        <List dense={true}>
+                            {diff.model[node].map((item) => {
+                                return <ListItem><ListItemText inset={true} primary={item}/></ListItem>;
+                            })}
+                        </List>
+                    </Collapse>
+                );
+            });
+
+            model = [(<ListItem button={true} onClick={() => {
+                this.setState({diff_model_open: !this.state.diff_model_open});
+            }}>
+                <ListItemText inset={true} primary={'Model'}/>
+                {this.state.diff_model_open ? <ExpandLess/> : <ExpandMore/>}
+            </ListItem>),
+                (<Collapse in={this.state.diff_model_open} timeout="auto">
+                    <List dense={true}>
+                        {nodeElements}
+                    </List>
+                </Collapse>)];
+        }
+        return (<Dialog open={true}>
+            <DialogTitle>Differences</DialogTitle>
+            <DialogContent>
+                <List dense={true}>
+                    {domain}
+                    {model}
+                    {simulation}
+                </List>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => {
+                    this.setState({showDiff: false, diff: null});
+                }} color='primary'>OK</Button>
+            </DialogActions>
+        </Dialog>);
+    };
+
     render() {
         const {onOK, gmeClient, batchSize} = this.props,
-            {commits, activeCommit} = this.state,
+            {commits, activeCommit, showDiff, diff} = this.state,
             project = gmeClient.getProjectObject(),
-            projectId = project.projectId;
+            projectId = project.projectId,
+            showDiffFn = this.showDiff;
         let items = commits.map(commit => {
             let when = new Date(parseInt(commit.time, 10)),
                 current = commit._id === this.state.activeCommit;
@@ -78,11 +196,12 @@ class ProjectHistory extends Component {
                         <Grid item={true}><Badge content={moment(when).fromNow()}>{commit.updater[0]}</Badge></Grid>
                     </Tooltip>
                 </Grid>
-                {current ? <Avatar>C</Avatar> : <Avatar/>}
                 <Grid item={true} xs={12} sm={6}>{commit.message}</Grid>
                 <Grid item={true} xs={5} sm={3} zeroMinWidth={true}>
                     <Tooltip id={'read-only-view-tooltip'} title={'Check what is different in this version'}>
-                        <IconButton>
+                        <IconButton onClick={() => {
+                            showDiffFn(commit.root);
+                        }}>
                             <Visibility/>
                         </IconButton>
                     </Tooltip>
@@ -117,6 +236,7 @@ class ProjectHistory extends Component {
                     }} color='secondary'>getMore</Button>
                     <Button onClick={onOK} color='primary'>OK</Button>
                 </DialogActions>
+                {showDiff ? this.getDiffDialog() : null}
             </Dialog>
         );
     }

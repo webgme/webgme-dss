@@ -37,6 +37,10 @@
       "ModelicaDiff": {
         "src": "src/plugins/ModelicaDiff",
         "test": "test/plugins/ModelicaDiff"
+      },
+      "SeedCreator": {
+        "src": "src/plugins/SeedCreator",
+        "test": "test/plugins/SeedCreator"
       }
     }
   },

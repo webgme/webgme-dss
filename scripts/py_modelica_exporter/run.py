@@ -3,13 +3,19 @@ import json
 from exporters import ComponentExporter
 
 logger = logging.getLogger('py_modelica_exporter')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.ERROR)
 
 # create console handler with a higher log level
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.ERROR)
 logger.addHandler(ch)
 
+# # create formatter and add it to the handlers
+# formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# fh.setFormatter(formatter)
+# ch.setFormatter(formatter)
+
+# add the handlers to the logger
 ELECTRICAL_ANALOG = [
     # Basic
     'Modelica.Electrical.Analog.Basic.Ground',
@@ -81,17 +87,93 @@ ELECTRICAL_DIGITAL = [
 ]
 
 TRANSLATIONAL_MECHANICS = [
+    'Modelica.Mechanics.Translational.Components.Fixed',
     'Modelica.Mechanics.Translational.Components.Mass',
-    'Modelica.Mechanics.Translational.Components.Damper',
+    'Modelica.Mechanics.Translational.Components.Rod',
     'Modelica.Mechanics.Translational.Components.Spring',
-    'Modelica.Mechanics.Translational.Sources.Force'
+    'Modelica.Mechanics.Translational.Components.Damper',
+    'Modelica.Mechanics.Translational.Components.SpringDamper',
+    'Modelica.Mechanics.Translational.Components.ElastoGap',
+    'Modelica.Mechanics.Translational.Components.SupportFriction',
+    'Modelica.Mechanics.Translational.Components.Brake',
+    'Modelica.Mechanics.Translational.Components.IdealGearR2T',
+    'Modelica.Mechanics.Translational.Components.IdealRollingWheel',
+    'Modelica.Mechanics.Translational.Components.InitializeFlange',
+    'Modelica.Mechanics.Translational.Components.MassWithStopAndFriction',
+    'Modelica.Mechanics.Translational.Components.RelativeStates',
+
+
+    'Modelica.Mechanics.Translational.Sensors.PositionSensor',
+    'Modelica.Mechanics.Translational.Sensors.SpeedSensor',
+    'Modelica.Mechanics.Translational.Sensors.AccSensor',
+    'Modelica.Mechanics.Translational.Sensors.RelPositionSensor',
+    'Modelica.Mechanics.Translational.Sensors.RelSpeedSensor',
+    'Modelica.Mechanics.Translational.Sensors.RelAccSensor',
+    'Modelica.Mechanics.Translational.Sensors.ForceSensor',
+    'Modelica.Mechanics.Translational.Sensors.PowerSensor',
+    'Modelica.Mechanics.Translational.Sensors.MultiSensor',
+
+    'Modelica.Mechanics.Translational.Sources.Position',
+    'Modelica.Mechanics.Translational.Sources.Speed',
+    'Modelica.Mechanics.Translational.Sources.Accelerate',
+    'Modelica.Mechanics.Translational.Sources.Move',
+    'Modelica.Mechanics.Translational.Sources.Force',
+    'Modelica.Mechanics.Translational.Sources.Force2',
+    'Modelica.Mechanics.Translational.Sources.LinearSpeedDependentForce',
+    'Modelica.Mechanics.Translational.Sources.QuadraticSpeedDependentForce',
+    'Modelica.Mechanics.Translational.Sources.ConstantForce',
+    'Modelica.Mechanics.Translational.Sources.SignForce',
+    'Modelica.Mechanics.Translational.Sources.ConstantSpeed',
+    'Modelica.Mechanics.Translational.Sources.ForceStep'
 ]
 
 ROTATIONAL_MECHANICS = [
-    'Modelica.Mechanics.Rotational.Components.Damper',
-    'Modelica.Mechanics.Rotational.Sources.Torque',
+    'Modelica.Mechanics.Rotational.Components.Fixed',
     'Modelica.Mechanics.Rotational.Components.Inertia',
-    'Modelica.Mechanics.Rotational.Components.Spring'
+    'Modelica.Mechanics.Rotational.Components.Disc',
+    'Modelica.Mechanics.Rotational.Components.Spring',
+    'Modelica.Mechanics.Rotational.Components.Damper',
+    'Modelica.Mechanics.Rotational.Components.SpringDamper',
+    'Modelica.Mechanics.Rotational.Components.SpringDamper',
+    'Modelica.Mechanics.Rotational.Components.ElastoBacklash2',
+    'Modelica.Mechanics.Rotational.Components.ElastoBacklash2',
+    'Modelica.Mechanics.Rotational.Components.Brake',
+    'Modelica.Mechanics.Rotational.Components.Clutch',
+    'Modelica.Mechanics.Rotational.Components.OneWayClutch',
+    'Modelica.Mechanics.Rotational.Components.IdealGear',
+    'Modelica.Mechanics.Rotational.Components.LossyGear',
+    'Modelica.Mechanics.Rotational.Components.IdealPlanetary',
+    'Modelica.Mechanics.Rotational.Components.Gearbox',
+    'Modelica.Mechanics.Rotational.Components.IdealGearR2T',
+    'Modelica.Mechanics.Rotational.Components.IdealRollingWheel',
+    'Modelica.Mechanics.Rotational.Components.InitializeFlange',
+    'Modelica.Mechanics.Rotational.Components.RelativeStates',
+    'Modelica.Mechanics.Rotational.Components.TorqueToAngleAdaptor',
+    'Modelica.Mechanics.Rotational.Components.AngleToTorqueAdaptor',
+
+    'Modelica.Mechanics.Rotational.Sensors.AngleSensor',
+    'Modelica.Mechanics.Rotational.Sensors.SpeedSensor',
+    'Modelica.Mechanics.Rotational.Sensors.AccSensor',
+    'Modelica.Mechanics.Rotational.Sensors.RelAngleSensor',
+    'Modelica.Mechanics.Rotational.Sensors.RelSpeedSensor',
+    'Modelica.Mechanics.Rotational.Sensors.RelAccSensor',
+    'Modelica.Mechanics.Rotational.Sensors.TorqueSensor',
+    'Modelica.Mechanics.Rotational.Sensors.PowerSensor',
+    'Modelica.Mechanics.Rotational.Sensors.MultiSensor',
+
+
+    'Modelica.Mechanics.Rotational.Sources.Position',
+    'Modelica.Mechanics.Rotational.Sources.Speed',
+    'Modelica.Mechanics.Rotational.Sources.Accelerate',
+    'Modelica.Mechanics.Rotational.Sources.Move',
+    'Modelica.Mechanics.Rotational.Sources.Torque',
+    'Modelica.Mechanics.Rotational.Sources.Torque2',
+    'Modelica.Mechanics.Rotational.Sources.LinearSpeedDependentTorque',
+    'Modelica.Mechanics.Rotational.Sources.QuadraticSpeedDependentTorque',
+    'Modelica.Mechanics.Rotational.Sources.ConstantTorque',
+    'Modelica.Mechanics.Rotational.Sources.SignTorque',
+    'Modelica.Mechanics.Rotational.Sources.ConstantSpeed',
+    'Modelica.Mechanics.Rotational.Sources.TorqueStep'
 ]
 
 DOMAINS = [
@@ -102,17 +184,20 @@ DOMAINS = [
 ]
 
 COMPONENTS = ELECTRICAL_ANALOG + ELECTRICAL_DIGITAL + TRANSLATIONAL_MECHANICS + ROTATIONAL_MECHANICS
-#COMPONENTS = ['Modelica.Electrical.Analog.Basic.Ground']
 result = []
 component_exporter = ComponentExporter([], export_icons=True)
 
 for modelica_uri in COMPONENTS:
-    component = component_exporter.get_component_json(modelica_uri)
-    if len(component['components']) == 1 and component['components'][0]['fullName'] == 'Exception':
-        #TODO: log something here
-        continue
-    else:
-        result.append(component)
+    try:
+        component = component_exporter.get_component_json(modelica_uri)
+
+        if len(component['components']) == 1 and component['components'][0]['fullName'] == 'Exception':
+            logger.error('Component failed {0}'.format(component['exportedComponentClass']))
+        else:
+            result.append(component)
+    except Exception as err:
+        logger.error('Exception at {0}'.format(modelica_uri))
+        logger.exception(err)
 
 with open('components.json', 'w') as outfile:
     json.dump(result, outfile)

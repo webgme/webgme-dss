@@ -1,0 +1,23 @@
+{
+  "id": "SeedCreator",
+  "name": "SeedCreator",
+  "version": "0.1.0",
+  "description": "This plugin is for internal developer use only.",
+  "icon": {
+    "class": "glyphicon glyphicon-cog",
+    "src": ""
+  },
+  "disableServerSideExecution": true,
+  "disableBrowserSideExecution": true,
+  "writeAccessRequired": true,
+  "configStructure": [
+    {
+      "name": "update",
+      "displayName": "Run simulation",
+      "description": "If true will update (add to) the existing components, otherwise skip them.",
+      "value": false,
+      "valueType": "boolean",
+      "readOnly": false
+    }
+  ]
+}

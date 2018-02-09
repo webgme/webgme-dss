@@ -30,6 +30,10 @@ server-error.log
 
 # dss specific
 outputs
+scripts/py_modelica_exporter/Icons
+scripts/py_modelica_exporter/components.json
+
+**/*.pyc
 
 # Temporary
 package-lock.json

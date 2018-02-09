@@ -21,7 +21,7 @@ fh.setLevel(logging.DEBUG)
 
 # create console handler with a higher log level
 ch = logging.StreamHandler()
-ch.setLevel(logging.WARNING)
+ch.setLevel(logging.DEBUG)
 
 # create formatter and add it to the handlers
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -75,7 +75,7 @@ def main():
             component_exporter = ComponentExporter(external_packages, export_icons=False)
 
         components_to_export = [c for c in opts.components.split(';') if c]
-
+        logger.info('Exporting components {0}'.format(components_to_export))
         extracted_components = []
         for modelica_uri in components_to_export:
             if opts.json:

@@ -386,12 +386,21 @@ class IconExporter(object):
 
                 origin_x = comp_annotation[1 + index_delta]
                 origin_y = comp_annotation[2 + index_delta]
+                if origin_x == "-":
+                    origin_x = 0
+
+                if origin_y == "-":
+                    origin_y = 0
+
                 x0 = comp_annotation[3 + index_delta]
                 y0 = comp_annotation[4 + index_delta]
                 x1 = comp_annotation[5 + index_delta]
                 y1 = comp_annotation[6 + index_delta]
 
                 rotation = comp_annotation[7 + index_delta]
+
+                if rotation == "-" or rotation == "":
+                    rotation = 0
 
                 g['transformation'] = {}
                 g['transformation']['origin'] = [origin_x, origin_y]
@@ -445,39 +454,39 @@ class IconExporter(object):
         y = ynew + graphics['origin'][1]
 
         if transformation and coordinate_system:
-            try:
-                t_width = abs(max(transformation['extent'][1][0], transformation['extent'][0][0]) - min(transformation['extent'][1][0], transformation['extent'][0][0]))
-                t_height = abs(max(transformation['extent'][1][1], transformation['extent'][0][1]) - min(transformation['extent'][1][1], transformation['extent'][0][1]))
-                o_width = abs(max(coordinate_system['extent'][1][0], coordinate_system['extent'][0][0]) - min(coordinate_system['extent'][1][1], coordinate_system['extent'][0][1]))
-                o_height = abs(max(coordinate_system['extent'][1][1], coordinate_system['extent'][0][1]) - min(coordinate_system['extent'][1][1], coordinate_system['extent'][0][1]))
+            # try:
+            t_width = abs(max(transformation['extent'][1][0], transformation['extent'][0][0]) - min(transformation['extent'][1][0], transformation['extent'][0][0]))
+            t_height = abs(max(transformation['extent'][1][1], transformation['extent'][0][1]) - min(transformation['extent'][1][1], transformation['extent'][0][1]))
+            o_width = abs(max(coordinate_system['extent'][1][0], coordinate_system['extent'][0][0]) - min(coordinate_system['extent'][1][1], coordinate_system['extent'][0][1]))
+            o_height = abs(max(coordinate_system['extent'][1][1], coordinate_system['extent'][0][1]) - min(coordinate_system['extent'][1][1], coordinate_system['extent'][0][1]))
 
-                if 'extent' in transformation and transformation['extent'][1][0] < transformation['extent'][0][0]:
-                    # horizontal flip
-                    x = (-xy[0] + graphics['origin'][0]) / o_width * t_width + transformation['origin'][0] + transformation['extent'][1][0] + t_width / 2
-                else:
-                    x = (xy[0] + graphics['origin'][0]) / o_width * t_width + transformation['origin'][0] + transformation['extent'][0][0] + t_width / 2
+            if 'extent' in transformation and transformation['extent'][1][0] < transformation['extent'][0][0]:
+                # horizontal flip
+                x = (-xy[0] + graphics['origin'][0]) / o_width * t_width + transformation['origin'][0] + transformation['extent'][1][0] + t_width / 2
+            else:
+                x = (xy[0] + graphics['origin'][0]) / o_width * t_width + transformation['origin'][0] + transformation['extent'][0][0] + t_width / 2
 
-                if 'extent' in transformation and transformation['extent'][1][1] < transformation['extent'][0][1]:
-                    # vertical flip
-                    y = (-xy[1] + graphics['origin'][1]) / o_height * t_height + transformation['origin'][1] + min(transformation['extent'][1][1], transformation['extent'][0][1]) + t_height / 2
-                else:
-                    y = (xy[1] + graphics['origin'][1]) / o_height * t_height + transformation['origin'][1] + min(transformation['extent'][0][1], transformation['extent'][0][1]) + t_height / 2
+            if 'extent' in transformation and transformation['extent'][1][1] < transformation['extent'][0][1]:
+                # vertical flip
+                y = (-xy[1] + graphics['origin'][1]) / o_height * t_height + transformation['origin'][1] + min(transformation['extent'][1][1], transformation['extent'][0][1]) + t_height / 2
+            else:
+                y = (xy[1] + graphics['origin'][1]) / o_height * t_height + transformation['origin'][1] + min(transformation['extent'][0][1], transformation['extent'][0][1]) + t_height / 2
 
-                s = math.sin(transformation['rotation'] / 180 * 3.1415)
-                c = math.cos(transformation['rotation'] / 180 * 3.1415)
+            s = math.sin(transformation['rotation'] / 180 * 3.1415)
+            c = math.cos(transformation['rotation'] / 180 * 3.1415)
 
-                x -= transformation['origin'][0]
-                y -= transformation['origin'][1]
+            x -= transformation['origin'][0]
+            y -= transformation['origin'][1]
 
-                xnew = x * c - y * s
-                ynew = x * s + y * c
+            xnew = x * c - y * s
+            ynew = x * s + y * c
 
-                x = xnew + transformation['origin'][0]
-                y = ynew + transformation['origin'][1]
+            x = xnew + transformation['origin'][0]
+            y = ynew + transformation['origin'][1]
 
-            except KeyError as ex:
-                self.logger.error('Component position transformation failed: {0}', ex.message)
-                self.logger.error(graphics)
+            # except KeyError as ex:
+            # self.logger.error('Component position transformation failed: {0}', ex.message)
+            # self.logger.error(graphics)
 
         x -= min_x
         y = max_y - y
@@ -982,10 +991,14 @@ class IconExporter(object):
 
         for iconGraphic in icon_graphics:
             for graphics in iconGraphic['graphics']:
-                if not 'origin' in graphics:
+                # if 'type' in graphics and graphics['type'] == 'Text':
+                #     print 'text'
+                #     continue
+
+                if 'origin' not in graphics:
                     graphics['origin'] = (0, 0)
 
-                if not 'extent' in graphics:
+                if 'extent' not in graphics:
                     graphics['extent'] = [[-100, -100], [100, 100]]
 
                 if 'extent' in graphics:
@@ -1085,28 +1098,26 @@ class IconExporter(object):
         if dir_name == None:
             dir_name = self.icon_dir_name
 
-        try:
-            # get all icons
-            iconGraphics = []
-            base_classes = []
-            self.get_base_classes(modelica_class, base_classes)
 
-            for base_class in base_classes:
-                graphics = self.get_graphics_with_ports_for_class(base_class)
-                iconGraphics.append(graphics)
-            graphics = self.get_graphics_with_ports_for_class(modelica_class)
+        # get all icons
+        iconGraphics = []
+        base_classes = []
+        self.get_base_classes(modelica_class, base_classes)
+
+        for base_class in base_classes:
+            graphics = self.get_graphics_with_ports_for_class(base_class)
             iconGraphics.append(graphics)
+        graphics = self.get_graphics_with_ports_for_class(modelica_class)
+        iconGraphics.append(graphics)
 
-            # with open(os.path.join(output_dir, self.class_to_filename(modelica_class) + '.json'), 'w') as f_p:
-            #     json.dump(iconGraphics, f_p)
+        # with open(os.path.join(output_dir, self.class_to_filename(modelica_class) + '.json'), 'w') as f_p:
+        #     json.dump(iconGraphics, f_p)
 
-            # export svgs
-            svg_file_path = os.path.join(dir_name, self.class_to_filename(modelica_class) + ".svg")
-            dwg = self.generate_svg(svg_file_path, iconGraphics)
+        # export svgs
+        svg_file_path = os.path.join(dir_name, self.class_to_filename(modelica_class) + ".svg")
+        dwg = self.generate_svg(svg_file_path, iconGraphics)
 
-            return svg_file_path
-        except:
-            return None
+        return svg_file_path
 
     def get_base_classes(self, modelica_class, base_classes):
 

@@ -100,6 +100,7 @@ class ComponentExporter(object):
             [json_result['components'].append(component.json()) for component in components]
 
         except Exception as exception:
+            self.logger.exception(exception)
             component = Component()
             component.full_name = 'Exception'
             component.comment = exception.message

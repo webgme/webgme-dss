@@ -177,7 +177,13 @@ class OMCSession(object):
     # TODO: this method will be replaced by the new parser
     def execute(self, command):
         result = self._omc.sendExpression(command)
-        return OMTypedParser.parseString(result)
+        #print result
+        try:
+            return OMTypedParser.parseString(result)
+        except Exception as e:
+            e.raw_result = result
+            raise e
+
 
         # try:
         #     answer = OMTypedParser.parseString(result)
@@ -207,14 +213,12 @@ class OMCSession(object):
         else:
             expression = question
 
-        try:
-            if parsed:
-                res = self.execute(expression)
-            else:
-                res = self._omc.sendExpression(expression)
-        except Exception as e:
-            # self.logger.debug("Failed: {0}({1}, parsed={2})".format(question, opt, parsed))
-            raise e
+
+        if parsed:
+            res = self.execute(expression)
+        else:
+            res = self._omc.sendExpression(expression)
+
 
         # save response
         self.omc_cache[p] = res
@@ -486,7 +490,13 @@ class OMCSession(object):
                 return ""
 
     def getComponentModifierNames(self, className, componentName):
-        return self.ask('getComponentModifierNames', '{0}, {1}'.format(className, componentName))
+        #print 'getComponentModifierNames' + className + componentName
+        try:
+            return self.ask('getComponentModifierNames', '{0}, {1}'.format(className, componentName))
+        except Exception as e:
+            #print '#####' + str(e.raw_result)
+			#TODO: This is a little hacky
+            return OMParser.check_for_values(e.raw_result)
 
     def getComponentModifierValue(self, className, componentName):
         try:

@@ -558,7 +558,7 @@ class IconExporter(object):
                     shape['marker-end'] = marker.get_funciri()
 
             else:
-                self.logger.error('Not handled: {0}'.format(graphics))
+                self.logger.debug('Not handled: {0}'.format(graphics))
                 return None
 
         elif graphics['type'] == 'Polygon':

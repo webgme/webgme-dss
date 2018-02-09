@@ -477,10 +477,10 @@ class OMCSession(object):
 
     def getParameterValue(self, className, parameterName):
         try:
-            return self.ask('getParameterValue', '{0}, {1}'.format(className, parameterName))
+            return self.ask('getParameterValue', '{0}, "{1}"'.format(className, parameterName))
         except pyparsing.ParseException as ex:
 
-            raw_text = self.ask('getParameterValue', '{0}, {1}'.format(className, parameterName), parsed=False)
+            raw_text = self.ask('getParameterValue', '{0}, "{1}"'.format(className, parameterName), parsed=False)
 
             regex_findall = self._REGEX_checkParameterArrayValue.findall(raw_text)
 
@@ -492,7 +492,7 @@ class OMCSession(object):
     def getComponentModifierNames(self, className, componentName):
         #print 'getComponentModifierNames' + className + componentName
         try:
-            return self.ask('getComponentModifierNames', '{0}, {1}'.format(className, componentName))
+            return self.ask('getComponentModifierNames', '{0}, "{1}"'.format(className, componentName))
         except Exception as e:
             #print '#####' + str(e.raw_result)
 			#TODO: This is a little hacky

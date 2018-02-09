@@ -184,6 +184,8 @@ DOMAINS = [
 ]
 
 COMPONENTS = ELECTRICAL_ANALOG + ELECTRICAL_DIGITAL + TRANSLATIONAL_MECHANICS + ROTATIONAL_MECHANICS
+
+#COMPONENTS = ['Modelica.Mechanics.Rotational.Components.Gearbox']
 result = []
 component_exporter = ComponentExporter([], export_icons=True)
 

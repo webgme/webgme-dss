@@ -7,16 +7,24 @@
     "class": "glyphicon glyphicon-cog",
     "src": ""
   },
-  "disableServerSideExecution": true,
-  "disableBrowserSideExecution": true,
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
   "writeAccessRequired": true,
   "configStructure": [
     {
       "name": "update",
       "displayName": "Run simulation",
-      "description": "If true will update (add to) the existing components, otherwise skip them.",
+      "description": "If true will update (add to) the existing components, otherwise recreate.",
       "value": false,
       "valueType": "boolean",
+      "readOnly": false
+    },
+    {
+      "name": "file",
+      "displayName": "Component file",
+      "description": "Path to file with component info or blob hash",
+      "value": "./src/common/comp_flat.json",
+      "valueType": "string",
       "readOnly": false
     }
   ]

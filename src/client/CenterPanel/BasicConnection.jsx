@@ -49,8 +49,8 @@ export default class BasicConnection extends Component {
         return {
             x: minX,
             y: minY,
-            width: maxX - minX,
-            height: maxY - minY
+            width: Math.max(maxX - minX, 2),
+            height: Math.max(maxY - minY, 2)
         };
     };
 

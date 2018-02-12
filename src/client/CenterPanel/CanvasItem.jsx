@@ -275,7 +275,7 @@ class CanvasItem extends Component {
                          left: /*position.x + */attributes[key].bbox.x * scale
                      }}
                      viewBox={'' + (attributes[key].bbox.x * scale) + ' ' + (attributes[key].bbox.y * scale) +
-                     ' ' +  (attributes[key].bbox.width * scale) +
+                     ' ' + (attributes[key].bbox.width * scale) +
                      ' ' + (attributes[key].bbox.height * scale)}>
                     <text
                         x={(attributes[key].parameters.x || 0) * scale}
@@ -381,14 +381,14 @@ class CanvasItem extends Component {
                     hidden={!showActions}
                     validTypes={childInfo[childrenName2Id[keys[i]]].validConnection}
                     absolutePosition={{
-                        x: position.x + (scale * ports[keys[i]].x),
-                        y: position.y + (scale * ports[keys[i]].y)
+                        x: position.x * scale + (scale * ports[keys[i]].x),
+                        y: position.y * scale + (scale * ports[keys[i]].y)
                     }}/>));
                 events.push({
                     id: childrenName2Id[keys[i]],
                     position: {
-                        x: position.x + (scale * (ports[keys[i]].x + (ports[keys[i]].width / 2))),
-                        y: position.y + (scale * (ports[keys[i]].y + (ports[keys[i]].height / 2)))
+                        x: position.x * scale + (scale * (ports[keys[i]].x + (ports[keys[i]].width / 2))),
+                        y: position.y * scale + (scale * (ports[keys[i]].y + (ports[keys[i]].height / 2)))
                     }
                 });
             }
@@ -402,8 +402,8 @@ class CanvasItem extends Component {
             <div style={{
                 opacity: isDragging ? 0.3 : 0.99,
                 position: 'absolute',
-                top: position.y,
-                left: position.x,
+                top: position.y * scale,
+                left: position.x * scale,
                 height: bbox.height * scale,
                 width: bbox.width * scale,
                 border: showActions || this.isSelected() ? "1px dashed #000000" : "1px solid transparent",

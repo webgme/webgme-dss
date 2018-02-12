@@ -12,8 +12,9 @@ import IconButton from 'material-ui/IconButton';
 import {toggleModelingView} from '../actions';
 import {appHeader as style} from '../styles';
 
-import logo from '../logo.svg';
+import Zoom from './Zoom';
 
+import logo from '../logo.svg';
 
 const mapStateToProps = state => {
     return {
@@ -22,9 +23,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-    return {
-
-    }
+    return {}
 };
 
 class Header extends Component {
@@ -41,14 +40,15 @@ class Header extends Component {
         return (
             <AppBar color={this.props.modelingView ? 'primary' : 'default'}>
                 <Toolbar style={style}>
-                    <Link to={''} style={{ textDecoration: 'none'}}>
+                    <Link to={''} style={{textDecoration: 'none'}}>
                         <img src={logo} alt="logo" style={{height: 40, marginLeft: -15, marginRight: 30}}/>
                     </Link>
                     <Typography type="title" color="inherit" noWrap>
                         {/*{this.props.modelingView ? `Edit ${branchName} branch of ${projectOwner} / ${projectName}` :*/}
-                         {/*`Simulations of ${branchName} branch of ${projectOwner} / ${projectName}`}*/}
+                        {/*`Simulations of ${branchName} branch of ${projectOwner} / ${projectName}`}*/}
                         {projectName}
                     </Typography>
+                    <Zoom/>
                 </Toolbar>
             </AppBar>
         );

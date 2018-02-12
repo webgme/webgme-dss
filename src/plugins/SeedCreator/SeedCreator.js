@@ -10,11 +10,13 @@ define([
     'plugin/PluginConfig',
     'text!./metadata.json',
     'plugin/PluginBase',
-    'q'
+    'q',
+    'common/util/guid'
 ], function (PluginConfig,
              pluginMetadata,
              PluginBase,
-             Q) {
+             Q,
+             GUID) {
     'use strict';
 
     let path = require('path'),
@@ -59,29 +61,72 @@ define([
         let config = this.getCurrentConfig(),
             logger = this.logger,
             core = this.core,
-            domainSheetMap = {},
+            domainSheetIds = {},
             domainNodes = {};
+
+        let getChildPos = elemCount => {
+            return {
+                x: 100 + (elemCount % 2 === 0 ? 500 : 0),
+                y: 100 * elemCount
+            };
+        };
 
         let createComponentNode = cData => {
             let domain = cData.Domain;
-            if (!domainSheetMap[domain]) {
-                logger.info('TODO: Domain sheet did not exist - adding it', domain);
+
+            let sheetId = domainSheetIds[domain];
+            let domainNode = domainNodes[domain];
+
+            if (!sheetId) {
+                logger.info('Domain sheet did not exist - adding it', domain);
+                sheetId = 'MetaAspectSet_' + GUID();
+                let sheetsRegistry = core.getRegistry(this.rootNode, 'MetaSheets');
+
+                sheetsRegistry.push({
+                    SetID: sheetId,
+                    order: sheetsRegistry.length,
+                    title: domain
+                });
+
+                core.setRegistry(this.rootNode, 'MetaSheets', sheetsRegistry);
+                core.createSet(this.rootNode, sheetId);
+
+                domainSheetIds[domain] = sheetId;
             }
 
-            if (!domainNodes[domain]) {
-                logger.info('TODO: Domain node did not exist - adding it', domain);
+            if (!domainNode) {
+                logger.info('Domain node did not exist - adding it', domain);
+                domainNode = core.createNode({
+                    parent: this.rootNode,
+                    base: this.META.Domain
+                });
+
+                core.setAttribute(domainNode, 'name', domain);
+                core.setRegistry(domainNode, 'position', {
+                    x: 600,
+                    y: 100 + (Object.keys(domainNodes).length * 60)
+                });
+
+                domainNodes[domain] = domainNode;
             }
 
             let cNode = core.createNode({
-                parent: domainNodes[domain],
+                parent: domainNode,
                 base: this.META.ComponentBase
             });
-            // Set a good position in domain node.
+
+            core.setRegistry(cNode, 'isAbstract', false);
+
+            // Set a good position inside the domain node.
+            core.setRegistry(cNode, 'position', getChildPos(core.getChildrenRelids(domainNode).length));
 
             // Add it to the META nodes.
+            core.addMember(this.rootNode, 'MetaAspectSet', cNode);
 
-            // Add it to the META sheet (with a good position).
-
+            // Add it to the META sheet (with a good position)
+            core.addMember(this.rootNode, sheetId, cNode);
+            core.setMemberRegistry(this.rootNode, sheetId, core.getPath(cNode),
+                'position', getChildPos(core.getMemberPaths(this.rootNode, sheetId).length));
 
             return cNode;
         };
@@ -89,6 +134,9 @@ define([
         let addComponent = cData => {
             let uri = cData.ModelicaURI;
             let cNode;
+
+            logger.debug(JSON.stringify(cData, null, 2));
+            logger.info('### Adding', uri, '###');
 
             if (this.META.hasOwnProperty(uri)) {
                 logger.info('Component existed', uri);
@@ -127,24 +175,17 @@ define([
                     parent: cNode
                 });
 
-                let pos = {
-                    x: 100 + (idx % 2 === 1 ? 500 : 0),
-                    y: 100 + (idx * 100)
-                };
-
-                logger.info('Generated position port in ', uri, JSON.stringify(pos));
-                core.setRegistry(pNode, 'position', pos);
+                core.setRegistry(pNode, 'isAbstract', false);
+                core.setRegistry(pNode, 'position', getChildPos(core.getChildrenRelids(cNode).length));
 
                 core.setAttribute(pNode, 'name', portInfo.name);
             });
-
-            logger.info(JSON.stringify(cData, null, 2));
 
         };
 
         core.getRegistry(this.rootNode, 'MetaSheets')
             .forEach(sheet => {
-                domainSheetMap[sheet.title] = sheet.SetID;
+                domainSheetIds[sheet.title] = sheet.SetID;
             });
 
         Q.all([
@@ -161,6 +202,9 @@ define([
             .then(() => {
                 this.branchName = null;
                 return this.save('Updating model');
+            })
+            .then((res) => {
+                return this.project.createBranch('meta_' + Date.now(), res.hash);
             })
             .then(() => {
                 logger.info('Done!');

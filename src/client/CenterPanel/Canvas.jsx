@@ -80,6 +80,19 @@ const canvasTarget = {
                 }
             });
         }
+
+        canvas.setState({dragMode: 'none'});
+    },
+    hover(props, monitor, component) {
+        const item = monitor.getItem();
+        console.log(Object.keys(monitor));
+        let dragState;
+        if (item.create)
+            dragState = 'create';
+        if (item.move)
+            dragState = 'move';
+
+        component.setState({dragMode: dragState});
     }
 };
 
@@ -187,7 +200,7 @@ class Canvas extends SingleConnectedNode {
 
     render() {
         const {connectDropTarget, isOver, activeNode, gmeClient} = this.props,
-            {children} = this.state,
+            {children, dragMode} = this.state,
             self = this;
 
         let childrenItems = children.map((child) => {
@@ -205,7 +218,7 @@ class Canvas extends SingleConnectedNode {
                     self.offset = {x: canvas.offsetParent.offsetLeft, y: canvas.offsetParent.offsetTop};
             }}
                  style={{
-                     backgroundColor: isOver ? 'lightgreen' : undefined,
+                     backgroundColor: dragMode === 'create' ? 'lightgreen' : undefined,
                      width: '100%',
                      height: '100%',
                      overflow: 'scroll',

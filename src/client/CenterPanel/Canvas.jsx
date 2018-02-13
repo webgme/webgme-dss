@@ -85,7 +85,6 @@ const canvasTarget = {
     },
     hover(props, monitor, component) {
         const item = monitor.getItem();
-        console.log(Object.keys(monitor));
         let dragState;
         if (item.create)
             dragState = 'create';

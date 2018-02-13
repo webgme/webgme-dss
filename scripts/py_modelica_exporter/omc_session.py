@@ -115,7 +115,7 @@ class OMCSession(object):
             self.logger.error("Object reference is not valid")
             raise Exception
 
-    def __init__(self, readonly=False):
+    def __init__(self, readonly=True):
         self.readonly = readonly
         self.omc_cache = {}
 

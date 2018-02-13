@@ -741,7 +741,7 @@ class IconExporter(object):
                 else:
                     shape.fill('none', opacity=0)
             elif graphics['fillPattern'] == 'FillPattern.Solid':
-                shape.fill("rgb(" + ','.join([str(v) for v in graphics['fillColor']]) + ")")
+                shape.fill("rgb(" + ','.join([str(v) for v in graphics['fillColor']]) + ")", opacity=1)
             elif graphics['fillPattern'] == 'FillPattern.Horizontal':
                 url_id = str(uuid.uuid4())
                 shape.fill('url(#' + url_id + ')')

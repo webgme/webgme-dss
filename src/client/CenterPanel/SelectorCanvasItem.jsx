@@ -345,8 +345,8 @@ class SelectorCanvasItem extends Component {
                 events.push({
                     id: id,
                     position: {
-                        x: position.x + (scale * (port.x + (port.width / 2))),
-                        y: position.y + (scale * (port.y + (port.height / 2)))
+                        x: position.x * scale + (scale * (port.x + (port.width / 2))),
+                        y: position.y * scale + (scale * (port.y + (port.height / 2)))
                     }
                 });
             }
@@ -358,8 +358,8 @@ class SelectorCanvasItem extends Component {
 
         return (<div style={{
             position: 'absolute',
-            top: position.y,
-            left: position.x,
+            top: position.y * scale,
+            left: position.x * scale,
             height: bbox.height * scale,
             width: bbox.width * scale,
             zIndex: 10

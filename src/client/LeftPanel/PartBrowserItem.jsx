@@ -18,8 +18,8 @@ const partBrowserItemSource = {
             // Specifics
             nodeData: props.nodeData,
             offset: {
-                y: 210 * props.scale / 2,
-                x: 320 * props.scale / 2
+                y: SVGCACHE[props.nodeData.modelicaUri].bbox.height * props.scale / 2,
+                x: SVGCACHE[props.nodeData.modelicaUri].bbox.width * props.scale / 2
             }
         };
     }

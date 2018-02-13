@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {DropTarget} from 'react-dnd';
+import SVGCACHE from './../../svgcache';
 
 import SingleConnectedNode from '../gme/BaseComponents/SingleConnectedNode';
 import {DRAG_TYPES} from '../CONSTANTS';
@@ -38,25 +39,30 @@ const canvasTarget = {
                 node = props.gmeClient.getNode(dragItem.gmeId),
                 position = node.getRegistry('position');
 
-            position.x = position.x + Math.trunc(offset.x);
-            position.y = position.y + Math.trunc(offset.y);
+            position.x += offset.x / props.scale;
+            position.y += offset.y / props.scale;
+
+            position.x = Math.trunc(position.x);
+            position.y = Math.trunc(position.y);
+
             props.gmeClient.setRegistry(dragItem.gmeId, 'position', position);
         } else if (dragItem.create) {
             const dragOffset = monitor.getClientOffset(),
                 metaNode = props.gmeClient.getNode(dragItem.gmeId);
 
             let position = {
-                    x: dragOffset.x - canvas.offset.x + canvas.props.scrollPos.x,
-                    y: dragOffset.y - canvas.offset.y + canvas.props.scrollPos.y
+                    x: (dragOffset.x - canvas.offset.x + canvas.props.scrollPos.x) / props.scale,
+                    y: (dragOffset.y - canvas.offset.y + canvas.props.scrollPos.y) / props.scale
                 },
                 name = metaNode.getAttribute('ShortName') || metaNode.getAttribute('name');
 
             name = getIndexedName(name, getChildrenNames(props.gmeClient, props.activeNode));
 
-            if (dragItem.offset) {
-                position.x -= dragItem.offset.x;
-                position.y -= dragItem.offset.y;
-            }
+            position.x -= SVGCACHE[dragItem.nodeData.modelicaUri].bbox.width / 2;
+            position.y -= SVGCACHE[dragItem.nodeData.modelicaUri].bbox.height / 2;
+
+            position.x = Math.trunc(position.x);
+            position.y = Math.trunc(position.y);
 
             // TODO: Fix when client accepts 0
             position.x = position.x > 0 ? position.x : 1;
@@ -118,7 +124,8 @@ class Canvas extends SingleConnectedNode {
 
     state = {
         children: [],
-        nodeInfo: {}
+        nodeInfo: {},
+        dragMode: 'none'
     };
 
     cm = null;

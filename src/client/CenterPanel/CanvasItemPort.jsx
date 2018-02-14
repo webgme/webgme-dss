@@ -74,7 +74,10 @@ export default class CanvasItemPort extends Component {
             {freeze, mouseOver} = this.state,
             left, top, width, height, border;
 
-        if (!freeze) {
+        let background;
+        if (freeze) {
+            background = 'lightblue';
+        } else {
             if (hidden) {
                 return null;
             }
@@ -84,10 +87,14 @@ export default class CanvasItemPort extends Component {
                 if (validTypes.dst !== connectionManager.type) {
                     return null;
                 }
+
+                background = 'lightgreen';
             } else {
                 // It's NOT connecting - is it a valid source?
                 if (validTypes.src === undefined) {
                     return null;
+                } else if (mouseOver) {
+                    background = 'lightgreen';
                 }
             }
         }
@@ -100,13 +107,13 @@ export default class CanvasItemPort extends Component {
 
         return (<div style={{
             position: 'absolute',
-            backgroundColor: mouseOver ? 'lightgreen' : undefined,
+            backgroundColor: background,
             opacity: 0.5,
             left: left,
             top: top,
             width: width,
             height: height,
-            border: border,
+            border: background ? border : null,
             zIndex: ZLEVELS.port
         }}
                      onMouseEnter={this.onMouseEnter}

@@ -31,6 +31,10 @@ export default class Projects extends Component {
                 return;
             }
 
+            projects = projects.filter((pInfo) => {
+                return pInfo.info.kind && pInfo.info.kind.startsWith('DSS:');
+            });
+
             projects.sort(nameSort);
 
             this.setState({projects: projects});

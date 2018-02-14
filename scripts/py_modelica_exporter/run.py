@@ -349,16 +349,19 @@ BLOCKS_CONTINUOUS = [
 ]
 
 DOMAINS = [
-    'Modelica.Electrical.Analog',
-    'Modelica.Mechanics.Rotational',
-    'Modelica.Mechanics.Translational',
-    'Modelica.Thermal.HeatTransfer'
+    "Modelica.Electrical.Analog",
+    "Modelica.Mechanics.Translational",
+    "Modelica.Mechanics.Rotational",
+    "Modelica.Thermal.FluidHeatFlow",
+    "Modelica.Thermal.HeatTransfer",
+    "Modelica.Blocks"
 ]
 
 COMPONENTS = ELECTRICAL_ANALOG + TRANSLATIONAL_MECHANICS + ROTATIONAL_MECHANICS + FLUID_HEAT_FLOW + HEAT_TRANSFER + BLOCKS_CONTINUOUS
 
 #COMPONENTS = ['Modelica.Mechanics.Rotational.Components.Gearbox']
 result = []
+COMPONENTS = DOMAINS
 component_exporter = ComponentExporter([], export_icons=True)
 
 for modelica_uri in COMPONENTS:

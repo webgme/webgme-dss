@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
-import { withStyles } from 'material-ui/styles';
+import {withStyles} from 'material-ui/styles';
 import {LinearProgress} from 'material-ui/Progress';
+import Tooltip from 'material-ui/Tooltip';
 import List, {ListItem, ListItemText, ListItemSecondaryAction} from 'material-ui/List';
 
 const styles = {
@@ -51,16 +52,19 @@ class ProjectList extends Component {
                                 .sort()
                                 .reverse()
                                 .map(function (domainUri) {
-                                    return (<img key={domainUri}
-                                                 alt={domainUri}
-                                                    src={`/assets/DecoratorSVG/${domainUri}.mini.png`}
-                                                    className={classes.domainBadge}/>)
+                                    return (
+                                        <Tooltip key={domainUri} id={domainUri} placement='top-start'
+                                                 title={domainUri.substring('Modelica.'.length)}>
+                                            <img alt={domainUri}
+                                                 src={`/assets/DecoratorSVG/${domainUri}.mini.png`}
+                                                 className={classes.domainBadge}/>
+                                        </Tooltip>);
                                 });
                         }
 
                         return (
                             <Link key={project._id} to={`/p/${project.owner}/${project.name}`}
-                                  style={{ textDecoration: 'none'}}>
+                                  style={{textDecoration: 'none'}}>
                                 <ListItem button>
                                     <ListItemText primary={project.name}/>
                                     <ListItemSecondaryAction className={classes.domainBadgeContainer}>

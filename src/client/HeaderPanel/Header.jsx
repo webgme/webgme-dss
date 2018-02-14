@@ -50,6 +50,7 @@ class Header extends Component {
                         {projectName}
                     </Typography>
                     <Zoom/>
+                    <Typography style={{flex: 1}}/>
                     <User/>
                 </Toolbar>
             </AppBar>

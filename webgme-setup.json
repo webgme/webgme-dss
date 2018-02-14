@@ -10,6 +10,11 @@
         "src": "src/routers/DomainManager",
         "test": "test/routers/DomainManager",
         "mount": "DomainManager"
+      },
+      "ProjectRouter": {
+        "src": "src/routers/ProjectRouter",
+        "test": "test/routers/ProjectRouter",
+        "mount": "routers/ProjectRouter"
       }
     },
     "seeds": {

@@ -23,6 +23,11 @@ config.rest.components['DomainManager'] = {
   mount: 'DomainManager',
   options: {}
 };
+config.rest.components['ProjectRouter'] = {
+  src: __dirname + '/../src/routers/ProjectRouter/ProjectRouter.js',
+  mount: '',
+  options: {}
+};
 
 // Visualizer descriptors
 

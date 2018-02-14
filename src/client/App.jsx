@@ -8,6 +8,9 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+import User from './HeaderPanel/User';
 // Own modules
 import reducers from "./reducers";
 
@@ -55,10 +58,10 @@ export default class App extends Component {
     render() {
         const {initialConnect, waiting} = this.state;
         let content = (
-                <header className="App-header">
-                    <img src={logo} className={"App-logo-loading"} alt="logo"/>
-                    <h1 className="App-title">{"Connecting to WebGME"}</h1>
-                </header>);
+            <header className="App-header">
+                <img src={logo} className={"App-logo-loading"} alt="logo"/>
+                <h1 className="App-title">{"Connecting to WebGME"}</h1>
+            </header>);
 
         if (initialConnect) {
             content = (
@@ -69,14 +72,19 @@ export default class App extends Component {
                                 <header className="App-header">
                                     <img src={logo} className={"App-logo"} alt="logo"/>
                                     <h1 className="App-title">{"Welcome to WebGME-DSS"}</h1>
-                                    <p style={{color: 'lightgrey',
+                                    <p style={{
+                                        color: 'lightgrey',
                                         maxWidth: 400,
                                         textAlign: 'center',
                                         display: 'inline-block',
                                         fontSize: 14
                                     }}>WebGME Dynamic Systems Studio is a design studio for Modelica<sup>®</sup> with
-                                       planned simulation backed-end support from the OpenModelica compiler...</p>
+                                        planned simulation backed-end support from the OpenModelica compiler...</p>
                                 </header>
+                                <Toolbar disableGutters={true}>
+                                    <Typography style={{flex: 1}}/>
+                                    <User/>
+                                </Toolbar>
                                 <Projects gmeClient={window.gmeClient}/>
                             </div>
                         );

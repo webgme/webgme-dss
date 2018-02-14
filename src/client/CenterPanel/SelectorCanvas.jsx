@@ -85,7 +85,7 @@ class SelectorCanvas extends SingleConnectedNode {
                      style={{
                          width: '100%',
                          height: '100%',
-                         overflow: 'scroll',
+                         overflow: 'auto',
                          zIndex: 1,
                          position: 'relative'
                      }}>

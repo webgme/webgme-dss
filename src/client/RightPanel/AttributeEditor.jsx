@@ -33,6 +33,7 @@ export class AttributeItem extends Component {
         fullWidth: PropTypes.bool,
         name: PropTypes.string.isRequired,
         description: PropTypes.string,
+        unit: PropTypes.string,
         type: PropTypes.string.isRequired
     };
 
@@ -230,8 +231,8 @@ export class AttributeItem extends Component {
         this.processProps();
         let content = this.getContent();
 
-        return (<FormControl fullWidth={this.props.fullWidth} onBlur={this.onBlur} onFocus={this.onFocus}>
-            <FormLabel>{this.props.name}</FormLabel>
+        return (<FormControl style={this.props.style || {}} fullWidth={this.props.fullWidth} onBlur={this.onBlur} onFocus={this.onFocus}>
+            <FormLabel>{this.props.unit ? `${this.props.name} [${this.props.unit}]` : this.props.name}</FormLabel>
             {content}
             <FormHelperText>{this.props.description}</FormHelperText>
         </FormControl>);
@@ -330,7 +331,9 @@ export default class AttributeEditor extends Component {
                         value: nodeObj.getAttribute(id),
                         type: attrMeta.type || 'string',
                         enum: attrMeta.enum || null,
-                        readonly: attrMeta.readonly
+                        readonly: attrMeta.readonly,
+                        description: attrMeta.description,
+                        unit: attrMeta.unit,
                     };
                 });
 
@@ -406,6 +409,7 @@ export default class AttributeEditor extends Component {
                 }
 
                 return (<AttributeItem
+                    style={{marginBottom: attribute.description ? 30 : 0}}
                     key={attribute.name}
                     value={attribute.value}
                     name={attribute.name}
@@ -413,6 +417,7 @@ export default class AttributeEditor extends Component {
                     type={type}
                     values={attribute.enum}
                     description={attribute.description}
+                    unit={attribute.unit}
                     options={options}
                     onFullChange={onChangeFn}/>);
             });

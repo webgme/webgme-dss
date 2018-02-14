@@ -21,7 +21,7 @@ import SystemSimulatorMetadata from '../../plugins/SystemSimulator/metadata';
 import ModelCheckMetadata from '../../plugins/ModelCheck/metadata';
 import getMetaNodeByName from '../gme/utils/getMetaNodeByName';
 
-import {removePlotVariable, toggleLeftDrawer, toggleModelingView, setResultNode} from '../actions';
+import {removePlotVariable, toggleLeftDrawer, toggleModelingView, setResultNode, toggleRightDrawer} from '../actions';
 import {downloadBlobArtifact} from '../gme/utils/saveUrlToDisk';
 
 import PartBrowser from './PartBrowser';
@@ -59,6 +59,9 @@ const mapDispatchToProps = dispatch => {
         },
         setResultNode: resultNode => {
             dispatch(setResultNode(resultNode));
+        },
+        toggleRightDrawer: show => {
+            dispatch(toggleRightDrawer(show));
         }
     }
 };
@@ -178,6 +181,7 @@ class LeftDrawer extends Component {
                 this.props.toggleModelingView(false);
                 this.props.show();
                 this.props.setResultNode(resId);
+                this.props.toggleRightDrawer(false);
                 gmeClient.runServerPlugin(pluginId, context, (err, result) => {
                     if (err) {
                         console.error(err);

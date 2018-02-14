@@ -13,7 +13,7 @@ import EditMode from 'material-ui-icons/Edit';
 import MultilineChart from 'material-ui-icons/MultilineChart';
 
 // Own modules
-import {setActiveNode, setSystemWaiting, toggleModelingView, toggleLeftDrawer} from "./actions";
+import {setActiveNode, setSystemWaiting, toggleModelingView, toggleLeftDrawer, toggleRightDrawer} from "./actions";
 
 import PartBrowserDragPreview from './LeftPanel/PartBrowserDragPreview';
 import Header from './HeaderPanel/Header';
@@ -43,8 +43,11 @@ const mapDispatchToProps = dispatch => {
         toggleModelingView: (modeling) => {
             dispatch(toggleModelingView(modeling));
         },
-        toggleLeftDrawer: (modeling) => {
-            dispatch(toggleLeftDrawer(modeling));
+        toggleLeftDrawer: (show) => {
+            dispatch(toggleLeftDrawer(show));
+        },
+        toggleRightDrawer: (show) => {
+            dispatch(toggleRightDrawer(show));
         }
     }
 };
@@ -138,6 +141,7 @@ class Project extends Component {
                         onChange={(event, value) => {
                             if (value === 1) {
                                 this.props.toggleLeftDrawer(true);
+                                this.props.toggleRightDrawer(false);
                             }
                             this.props.toggleModelingView(value === 0);
                         }}

@@ -191,11 +191,11 @@
             },
             getAttributeMeta: (attrName) => {
                 if (attrName.indexOf('int') !== -1) {
-                    return {type: 'integer'};
+                    return {type: 'integer', unit: 'Ohm', description: 'Resistance of resistor'};
                 } else if (attrName.indexOf('bool') !== -1) {
                     return {type: 'boolean'};
                 } else if (attrName.indexOf('enum') !== -1) {
-                    return {type: 'string', enum: names};
+                    return {type: 'string', enum: names, unit: 'Meatballs'};
                 } else {
                     return {type: 'string'};
                 }

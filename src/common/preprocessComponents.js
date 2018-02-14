@@ -5,42 +5,14 @@
  * @author pmeijer / https://github.com/pmeijer
  */
 let fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    SEED_INFO = require('../seeds/Modelica/metadata.json');
 
 
-CONSTANTS = {
-    DOMAINS: [
-        'Modelica.Electrical.Analog',
-        'Modelica.Mechanics.Rotational',
-        'Modelica.Mechanics.Translational',
-        'Modelica.Thermal.HeatTransfer',
-    ],
-    PORT_MAP: {
-        'Modelica.Electrical.Analog.Interfaces.Pin': 'Pin',
-        'Modelica.Electrical.Analog.Interfaces.PositivePin': 'Pin',
-        'Modelica.Electrical.Analog.Interfaces.NegativePin': 'Pin',
-
-        'Modelica.Mechanics.Rotational.Interfaces.Flange_a': 'Rotational_Flange',
-        'Modelica.Mechanics.Rotational.Interfaces.Flange_b': 'Rotational_Flange',
-        'Modelica.Mechanics.Rotational.Interfaces.Support': 'Rotational_Flange',
-
-        'Modelica.Mechanics.Translational.Interfaces.Flange_a': 'Translational_Flange',
-        'Modelica.Mechanics.Translational.Interfaces.Flange_b': 'Translational_Flange',
-        'Modelica.Mechanics.Translational.Interfaces.Support': 'Translational_Flange',
-
-        'Modelica.Thermal.HeatTransfer.Interfaces.HeatPort': 'HeatPort',
-        'Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a': 'HeatPort',
-        'Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b': 'HeatPort',
-
-
-        'Modelica.Blocks.Interfaces.RealInput': 'RealInput',
-        'Modelica.Blocks.Interfaces.RealOutput': 'RealOutput'
-    },
-    PARAM_TYPES: {
-        Real: 'float',
-        Boolean: 'boolean',
-        Integer: 'integer'
-    }
+let PARAM_TYPES = {
+    Real: 'float',
+    Boolean: 'boolean',
+    Integer: 'integer'
 };
 
 function parseReal(val) {
@@ -62,7 +34,12 @@ function parseInteger(val) {
         value: parseInt(val, 10)
     };
 
-    if (isNaN(res.value) === false && val.indexOf(' ') === -1) {
+    if (isNaN(res.value) === false &&
+        val.indexOf(' ') === -1 &&
+        val.indexOf('abs') === -1 &&
+        val.indexOf('Modelica') === -1 &&
+        val.indexOf('{') === -1 &&
+        val.indexOf('(') === -1) {
         res.isValid = true;
     }
 
@@ -84,23 +61,34 @@ function prepComponents(filePath) {
         let res = {
             ModelicaURI: ModelicaURI,
             ShortName: ModelicaURI.split('.').pop(),
-            Domain: CONSTANTS.DOMAINS.filter(domain => {return ModelicaURI.indexOf(domain) === 0;})[0],
+            Domain: SEED_INFO.domains.filter(domain => {
+                return ModelicaURI.indexOf(domain) === 0;
+            })[0],
             ports: [],
             parameters: []
         };
+
+        if (!res.Domain) {
+            throw new Error('Domain does not exist for ' + ModelicaURI);
+        }
 
         compInfo.components.forEach(partCompInfo => {
             // Connectors/Interfaces
             partCompInfo.connectors.forEach(connInfo => {
                 let uri = connInfo.fullName;
+                let resolvedPort = SEED_INFO.portMap[uri];
                 if (!stats.interfaces[uri]) {
                     stats.interfaces[uri] = [];
+                }
+
+                if (!resolvedPort) {
+                    throw new Error('Port type not in map ' + JSON.stringify(connInfo));
                 }
 
                 stats.interfaces[uri].push(ModelicaURI);
 
                 res.ports.push({
-                    type: CONSTANTS.PORT_MAP[uri],
+                    type: SEED_INFO.portMap[uri],
                     name: connInfo.name
                 });
             });

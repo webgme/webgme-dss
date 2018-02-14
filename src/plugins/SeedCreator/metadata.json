@@ -14,10 +14,10 @@
     {
       "name": "update",
       "displayName": "Run simulation",
-      "description": "If true will update (add to) the existing components, otherwise recreate.",
+      "description": "If true will update (add to) the existing components, otherwise recreate. TODO: this is not implemented",
       "value": false,
       "valueType": "boolean",
-      "readOnly": false
+      "readOnly": true
     },
     {
       "name": "file",

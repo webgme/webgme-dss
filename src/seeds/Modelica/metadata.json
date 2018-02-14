@@ -3,7 +3,37 @@
   "domains": [
     "Modelica.Electrical.Analog",
     "Modelica.Mechanics.Translational",
-    "Modelica.Mechanics.Rotational"
+    "Modelica.Mechanics.Rotational",
+    "Modelica.Thermal.FluidHeatFlow",
+    "Modelica.Thermal.HeatTransfer",
+    "Modelica.Blocks"
   ],
+  "portMap": {
+    "Modelica.Electrical.Analog.Interfaces.Pin": "Pin",
+    "Modelica.Electrical.Analog.Interfaces.PositivePin": "Pin",
+    "Modelica.Electrical.Analog.Interfaces.NegativePin": "Pin",
+    "Modelica.Mechanics.Rotational.Interfaces.Flange_a": "Rotational_Flange",
+    "Modelica.Mechanics.Rotational.Interfaces.Flange_b": "Rotational_Flange",
+    "Modelica.Mechanics.Rotational.Interfaces.Support": "Rotational_Flange",
+    "Modelica.Mechanics.Translational.Interfaces.Flange_a": "Translational_Flange",
+    "Modelica.Mechanics.Translational.Interfaces.Flange_b": "Translational_Flange",
+    "Modelica.Mechanics.Translational.Interfaces.Support": "Translational_Flange",
+    "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort": "HeatPort",
+    "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a": "HeatPort",
+    "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b": "HeatPort",
+    "Modelica.Thermal.FluidHeatFlow.Interfaces.FlowPort_a": "FlowPort",
+    "Modelica.Thermal.FluidHeatFlow.Interfaces.FlowPort_b": "FlowPort",
+    "Modelica.Blocks.Interfaces.RealInput": "RealInput",
+    "Modelica.Blocks.Interfaces.RealVectorInput": "RealVectorInput",
+    "Modelica.Blocks.Interfaces.RealOutput": "RealOutput",
+    "Modelica.Blocks.Interfaces.BooleanInput": "BooleanInput",
+    "Modelica.Blocks.Interfaces.BooleanVectorInput": "BooleanVectorInput",
+    "Modelica.Blocks.Interfaces.BooleanOutput": "BooleanOutput",
+    "Modelica.Blocks.Interfaces.IntegerInput": "IntegerInput",
+    "Modelica.Blocks.Interfaces.IntegerVectorInput": "IntegerVectorInput",
+    "Modelica.Blocks.Interfaces.IntegerOutput": "IntegerOutput",
+    "Modelica.Blocks.Interfaces.ComplexInput": "ComplexInput",
+    "Modelica.Blocks.Interfaces.ComplexOutput": "ComplexOutput"
+  },
   "canvasId": "/Z"
 }

@@ -4,6 +4,8 @@
 /**
  * This plugin reads the output from py_modelica exporter and imports the
  * components and adds them to the meta-model.
+ *
+ * TODO: Currently this plugin should be ran the base-seed and does not support update.
  */
 
 define([

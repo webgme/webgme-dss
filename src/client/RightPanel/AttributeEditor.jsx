@@ -54,44 +54,73 @@ export class AttributeItem extends Component {
             if (typeof onChange === 'function') {
                 onChange(color.hex);
             }
+
             if (typeof onFullChange === 'function') {
                 onFullChange(color.hex);
             }
+
             this.setState({value: color.hex, picking: false});
         }
         this.setState({picking: false});
     };
 
-    onChange = (event) => {
-        let {type, onChange, onFullChange, value, values} = this.props;
+    eventToAttrValue = (event) => {
+        const {type} = this.props;
 
         switch (type) {
             case AttributeTypes.boolean:
-                if (typeof onChange === 'function')
-                    onChange(!value);
-                if (typeof onFullChange === 'function')
-                    onFullChange(!value);
+                return event.target.checked;
+            case AttributeTypes.string:
+            case AttributeTypes.asset:
+                return event.target.value;
+            case AttributeTypes.number:
+                return Number(event.target.value);
+            default:
+                return null;
+        }
+    };
+
+    onChange = (event) => {
+        let {type, onChange, onFullChange, value, values} = this.props;
+
+        let newValue = this.eventToAttrValue(event);
+
+        switch (type) {
+            case AttributeTypes.boolean:
+                if (typeof onChange === 'function') {
+                    onChange(newValue);
+                }
+
+                if (typeof onFullChange === 'function') {
+                    onFullChange(newValue);
+                }
+
+                this.setState({value: newValue});
                 break;
             case AttributeTypes.string:
             case AttributeTypes.asset:
-                if (event.target.value !== value) {
-                    if (typeof onChange === 'function')
-                        onChange(event.target.value);
+                if (newValue !== value) {
+                    if (typeof onChange === 'function') {
+                        onChange(newValue);
+                    }
 
-                    if (values && values.length > 0 && typeof onFullChange === 'function')
-                        onFullChange(event.target.value);
+                    if (values && values.length > 0 && typeof onFullChange === 'function') {
+                        onFullChange(newValue);
+                    }
                 }
-                this.setState({value: event.target.value});
+                this.setState({value: newValue});
                 break;
             case AttributeTypes.number:
-                if (Number(event.target.value) !== value) {
-                    if (typeof onChange === 'function')
-                        onChange(Number(event.target.value));
+                if (newValue !== value) {
+                    if (typeof onChange === 'function') {
+                        onChange(newValue);
+                    }
 
-                    if (values && values.length > 0 && typeof onFullChange === 'function')
-                        onFullChange(Number(event.target.value));
+                    if (values && values.length > 0 && typeof onFullChange === 'function') {
+                        onFullChange(newValue);
+                    }
                 }
-                this.setState({value: event.target.value});
+                this.setState({value: newValue});
                 break;
             default:
                 return null;
@@ -99,12 +128,15 @@ export class AttributeItem extends Component {
     };
 
     onKeyPress = (event) => {
+        let newValue = this.eventToAttrValue(event);
+
         if (this.props.type !== AttributeTypes.color) {
             if (event.charCode === 13 && typeof this.props.onFullChange === 'function' &&
-                event.target.value !== this.props.value) {
-                this.props.onFullChange(event.target.value);
+                newValue !== this.props.value) {
+                this.props.onFullChange(newValue);
             }
-            this.setState({value: event.target.value});
+
+            this.setState({value: newValue});
         }
     };
 
@@ -114,12 +146,15 @@ export class AttributeItem extends Component {
     };
 
     onBlur = (event) => {
+        let newValue = this.eventToAttrValue(event);
+
         if (this.props.type !== AttributeTypes.color) {
             if (typeof this.props.onFullChange === 'function' && !this.options.onlyEnter &&
-                event.target.value !== this.props.value) {
-                this.props.onFullChange(event.target.value);
+                newValue !== this.props.value) {
+                this.props.onFullChange(newValue);
             }
-            this.setState({value: event.target.value});
+
+            this.setState({value: newValue});
         }
     };
 

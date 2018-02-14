@@ -68,6 +68,7 @@ describe('DomainManager', function () {
 
     it('should create project with one domain and set the kind accordingly', function (done) {
         let deferred = Q.defer();
+        this.timeout(10000);
 
         superagent.post(urlFor('createProject'))
             .send({
@@ -103,6 +104,7 @@ describe('DomainManager', function () {
 
     it('should update project with new domain and set the kind accordingly', function (done) {
         let deferred = Q.defer();
+        this.timeout(10000);
 
         superagent.post(urlFor('updateProject'))
             .send({

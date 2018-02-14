@@ -73,7 +73,7 @@ describe('ModelicaCodeGenerator', function () {
                 expect(res.success).to.equal(true);
                 expect(typeof plugin.moFile).to.equal('string');
                 // This hash check might not work cross platform..
-                expect(res.artifacts[0]).to.equal('aa3ea944bccafda3d1515271077086e9251c9c0d');
+                expect(res.artifacts[0]).to.equal('c108dd0944a912174aeae080e5f73c6275724af8');
             })
             .nodeify(done);
     });

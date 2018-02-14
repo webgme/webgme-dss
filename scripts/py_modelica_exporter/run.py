@@ -82,10 +82,6 @@ ELECTRICAL_ANALOG = [
     'Modelica.Electrical.Analog.Sources.SupplyVoltage'
 ]
 
-ELECTRICAL_DIGITAL = [
-    #TODO
-]
-
 TRANSLATIONAL_MECHANICS = [
     'Modelica.Mechanics.Translational.Components.Fixed',
     'Modelica.Mechanics.Translational.Components.Mass',
@@ -176,6 +172,182 @@ ROTATIONAL_MECHANICS = [
     'Modelica.Mechanics.Rotational.Sources.TorqueStep'
 ]
 
+
+FLUID_HEAT_FLOW = [
+    'Modelica.Thermal.FluidHeatFlow.Components.IsolatedPipe',
+    'Modelica.Thermal.FluidHeatFlow.Components.HeatedPipe',
+    'Modelica.Thermal.FluidHeatFlow.Components.Valve',
+
+    'Modelica.Thermal.FluidHeatFlow.Sensors.PressureSensor',
+    'Modelica.Thermal.FluidHeatFlow.Sensors.TemperatureSensor',
+    'Modelica.Thermal.FluidHeatFlow.Sensors.RelPressureSensor',
+    'Modelica.Thermal.FluidHeatFlow.Sensors.RelTemperatureSensor',
+    'Modelica.Thermal.FluidHeatFlow.Sensors.MassFlowSensor',
+    'Modelica.Thermal.FluidHeatFlow.Sensors.VolumeFlowSensor',
+    'Modelica.Thermal.FluidHeatFlow.Sensors.EnthalpyFlowSensor',
+
+    'Modelica.Thermal.FluidHeatFlow.Sources.Ambient',
+    'Modelica.Thermal.FluidHeatFlow.Sources.AbsolutePressure',
+    'Modelica.Thermal.FluidHeatFlow.Sources.VolumeFlow',
+    'Modelica.Thermal.FluidHeatFlow.Sources.PressureIncrease',
+    'Modelica.Thermal.FluidHeatFlow.Sources.IdealPump'
+]
+
+HEAT_TRANSFER = [
+    'Modelica.Thermal.HeatTransfer.Components.HeatCapacitor',
+    'Modelica.Thermal.HeatTransfer.Components.ThermalConductor',
+    'Modelica.Thermal.HeatTransfer.Components.ThermalResistor',
+    'Modelica.Thermal.HeatTransfer.Components.Convection',
+    'Modelica.Thermal.HeatTransfer.Components.ConvectiveResistor',
+    'Modelica.Thermal.HeatTransfer.Components.BodyRadiation',
+    'Modelica.Thermal.HeatTransfer.Components.ThermalCollector',
+
+    'Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor',
+    'Modelica.Thermal.HeatTransfer.Sensors.RelTemperatureSensor',
+    'Modelica.Thermal.HeatTransfer.Sensors.HeatFlowSensor',
+    'Modelica.Thermal.HeatTransfer.Sensors.ConditionalFixedHeatFlowSensor',
+
+    'Modelica.Thermal.HeatTransfer.Sources.FixedTemperature',
+    'Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature',
+    'Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow',
+    'Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow',
+
+    'Modelica.Thermal.HeatTransfer.Celsius.ToKelvin',
+    'Modelica.Thermal.HeatTransfer.Celsius.FromKelvin',
+    'Modelica.Thermal.HeatTransfer.Celsius.FixedTemperature',
+    'Modelica.Thermal.HeatTransfer.Celsius.PrescribedTemperature',
+    'Modelica.Thermal.HeatTransfer.Celsius.TemperatureSensor',
+
+    'Modelica.Thermal.HeatTransfer.Fahrenheit.ToKelvin',
+    'Modelica.Thermal.HeatTransfer.Fahrenheit.FromKelvin',
+    'Modelica.Thermal.HeatTransfer.Fahrenheit.FixedTemperature',
+    'Modelica.Thermal.HeatTransfer.Fahrenheit.PrescribedTemperature',
+    'Modelica.Thermal.HeatTransfer.Fahrenheit.TemperatureSensor',
+
+    'Modelica.Thermal.HeatTransfer.Rankine.ToKelvin',
+    'Modelica.Thermal.HeatTransfer.Rankine.FromKelvin',
+    'Modelica.Thermal.HeatTransfer.Rankine.FixedTemperature',
+    'Modelica.Thermal.HeatTransfer.Rankine.PrescribedTemperature',
+    'Modelica.Thermal.HeatTransfer.Rankine.TemperatureSensor'
+]
+
+COMPLEX_BLOCKS = [
+    'Modelica.ComplexBlocks.ComplexMath.Conj',
+    'Modelica.ComplexBlocks.ComplexMath.Gain',
+    'Modelica.ComplexBlocks.ComplexMath.Sum',
+    'Modelica.ComplexBlocks.ComplexMath.Feedback',
+    'Modelica.ComplexBlocks.ComplexMath.Add',
+    'Modelica.ComplexBlocks.ComplexMath.Add3',
+    'Modelica.ComplexBlocks.ComplexMath.Product',
+    'Modelica.ComplexBlocks.ComplexMath.Division',
+    'Modelica.ComplexBlocks.ComplexMath.Sqrt',
+    'Modelica.ComplexBlocks.ComplexMath.Sin',
+    'Modelica.ComplexBlocks.ComplexMath.Cos',
+    'Modelica.ComplexBlocks.ComplexMath.Tan',
+    'Modelica.ComplexBlocks.ComplexMath.Asin',
+    'Modelica.ComplexBlocks.ComplexMath.Acos',
+    'Modelica.ComplexBlocks.ComplexMath.Atan',
+    'Modelica.ComplexBlocks.ComplexMath.Sinh',
+    'Modelica.ComplexBlocks.ComplexMath.Cosh',
+    'Modelica.ComplexBlocks.ComplexMath.Tanh',
+    'Modelica.ComplexBlocks.ComplexMath.Exp',
+    'Modelica.ComplexBlocks.ComplexMath.Log',
+    'Modelica.ComplexBlocks.ComplexMath.RealToComplex',
+    'Modelica.ComplexBlocks.ComplexMath.PolarToComplex',
+    'Modelica.ComplexBlocks.ComplexMath.ComplexToReal',
+    'Modelica.ComplexBlocks.ComplexMath.ComplexToPolar',
+    'Modelica.ComplexBlocks.ComplexMath.TransferFunction',
+
+    'Modelica.ComplexBlocks.Sources.ComplexExpression',
+    'Modelica.ComplexBlocks.Sources.ComplexConstant',
+    'Modelica.ComplexBlocks.Sources.ComplexStep',
+    'Modelica.ComplexBlocks.Sources.ComplexRotatingPhasor',
+    'Modelica.ComplexBlocks.Sources.LogFrequencySweep'
+]
+
+BLOCKS_CONTINUOUS = [
+    'Modelica.Thermal.FluidHeatFlow.Sources.IdealPump',
+    'Modelica.Blocks.Continuous.LimIntegrator',
+    'Modelica.Blocks.Continuous.Derivative',
+    'Modelica.Blocks.Continuous.FirstOrder',
+    'Modelica.Blocks.Continuous.SecondOrder',
+    'Modelica.Blocks.Continuous.PI',
+    'Modelica.Blocks.Continuous.PID',
+    'Modelica.Blocks.Continuous.LimPID',
+    'Modelica.Blocks.Continuous.TransferFunction',
+    'Modelica.Blocks.Continuous.StateSpace',
+    'Modelica.Blocks.Continuous.Der',
+    'Modelica.Blocks.Continuous.LowpassButterworth',
+    'Modelica.Blocks.Continuous.CriticalDamping',
+    'Modelica.Blocks.Continuous.Filter',
+
+    'Modelica.Blocks.Discrete.Sampler',
+    'Modelica.Blocks.Discrete.ZeroOrderHold',
+    'Modelica.Blocks.Discrete.FirstOrderHold',
+    'Modelica.Blocks.Discrete.UnitDelay',
+    'Modelica.Blocks.Discrete.TransferFunction',
+    'Modelica.Blocks.Discrete.StateSpace',
+    'Modelica.Blocks.Discrete.TriggeredSampler',
+    'Modelica.Blocks.Discrete.TriggeredMax',
+
+
+    'Modelica.Blocks.Math.InverseBlockConstraints',
+    'Modelica.Blocks.Math.Gain',
+    'Modelica.Blocks.Math.MatrixGain',
+    'Modelica.Blocks.Math.MultiSum',
+    'Modelica.Blocks.Math.MultiProduct',
+    'Modelica.Blocks.Math.MultiSwitch',
+    'Modelica.Blocks.Math.Sum',
+    'Modelica.Blocks.Math.Feedback',
+    'Modelica.Blocks.Math.Add',
+    'Modelica.Blocks.Math.Add3',
+    'Modelica.Blocks.Math.Product',
+    'Modelica.Blocks.Math.Division',
+    'Modelica.Blocks.Math.Abs',
+    'Modelica.Blocks.Math.Sign',
+    'Modelica.Blocks.Math.Sqrt',
+    'Modelica.Blocks.Math.Sin',
+    'Modelica.Blocks.Math.Cos',
+    'Modelica.Blocks.Math.Tan',
+    'Modelica.Blocks.Math.Asin',
+    'Modelica.Blocks.Math.Acos',
+    'Modelica.Blocks.Math.Atan',
+    'Modelica.Blocks.Math.Atan2',
+    'Modelica.Blocks.Math.Sinh',
+    'Modelica.Blocks.Math.Cosh',
+    'Modelica.Blocks.Math.Tanh',
+    'Modelica.Blocks.Math.Exp',
+    'Modelica.Blocks.Math.Log',
+    'Modelica.Blocks.Math.Log10',
+    'Modelica.Blocks.Math.RealToInteger',
+    'Modelica.Blocks.Math.IntegerToReal'
+
+    'Modelica.Blocks.Sources.RealExpression',
+    'Modelica.Blocks.Sources.IntegerExpression',
+    'Modelica.Blocks.Sources.BooleanExpression',
+    'Modelica.Blocks.Sources.Clock',
+    'Modelica.Blocks.Sources.Constant',
+    'Modelica.Blocks.Sources.Step',
+    'Modelica.Blocks.Sources.Ramp',
+    'Modelica.Blocks.Sources.Sine',
+    'Modelica.Blocks.Sources.Cosine',
+    'Modelica.Blocks.Sources.ExpSine',
+    'Modelica.Blocks.Sources.Exponentials',
+    'Modelica.Blocks.Sources.Pulse',
+    'Modelica.Blocks.Sources.SawTooth',
+    'Modelica.Blocks.Sources.Trapezoid',
+
+    'Modelica.Blocks.Sources.BooleanConstant',
+    'Modelica.Blocks.Sources.BooleanStep',
+    'Modelica.Blocks.Sources.BooleanPulse',
+    'Modelica.Blocks.Sources.SampleTrigger',
+    'Modelica.Blocks.Sources.BooleanTable',
+
+    'Modelica.Blocks.Sources.IntegerConstant',
+    'Modelica.Blocks.Sources.IntegerStep',
+    'Modelica.Blocks.Sources.IntegerTable'
+]
+
 DOMAINS = [
     'Modelica.Electrical.Analog',
     'Modelica.Mechanics.Rotational',
@@ -183,7 +355,7 @@ DOMAINS = [
     'Modelica.Thermal.HeatTransfer'
 ]
 
-COMPONENTS = ELECTRICAL_ANALOG + ELECTRICAL_DIGITAL + TRANSLATIONAL_MECHANICS + ROTATIONAL_MECHANICS
+COMPONENTS = ELECTRICAL_ANALOG + TRANSLATIONAL_MECHANICS + ROTATIONAL_MECHANICS + FLUID_HEAT_FLOW + HEAT_TRANSFER + BLOCKS_CONTINUOUS
 
 #COMPONENTS = ['Modelica.Mechanics.Rotational.Components.Gearbox']
 result = []

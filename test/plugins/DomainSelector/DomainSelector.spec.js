@@ -53,6 +53,7 @@ describe('DomainSelector', function () {
     });
 
     it('should run DomainSelector and update the branch', function (done) {
+        this.timeout(10000);
         let manager = new PluginCliManager(null, logger, gmeConfig),
             pluginConfig = {
                 domains: ['Modelica.Mechanics.Rotational'].join(':'),

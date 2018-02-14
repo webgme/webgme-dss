@@ -62,8 +62,9 @@ class PartBrowserItem extends Component {
         const {nodeData, connectDragSource, listView} = this.props;
 
         return connectDragSource(
-            <div style={{opacity: 0.99, paddingTop: listView ? 10 : 0, cursor: 'pointer'}}>
-                <span><Samy svgXML={SVGCACHE[nodeData.modelicaUri].base}
+            <div style={{display: 'inline-flex', width: '100%', opacity: 0.99, paddingTop: listView ? 10 : 0, cursor: 'pointer'}}>
+                <div>
+                <Samy svgXML={SVGCACHE[nodeData.modelicaUri].base}
                             style={{
                                 height: '100%',
                                 width: 40,
@@ -71,9 +72,16 @@ class PartBrowserItem extends Component {
                             }}>
                     <SvgProxy selector="text" display={'none'}/>
                     <SvgProxy selector="*" stroke-width={'0.75mm'}/>
-                </Samy></span>
+                </Samy>
+                </div>
                 {listView ? null :
-                    <Typography style={{display: 'inline', verticalAlign: 'middle'}}>{nodeData.name}</Typography>
+                    <div style={{
+                        paddingTop: 5,
+                        overflowX: 'hidden',
+                        textOverflow: 'ellipsis',
+                        fontSize: 13
+                    }}>
+                        {nodeData.name}</div>
                 }
             </div>);
     }

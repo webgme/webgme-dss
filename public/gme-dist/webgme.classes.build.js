@@ -19,6 +19,7 @@
             'ground1',
             'resistor2',
             'sinceCurrent1',
+            'aVeryVeryVeryLongNameJustToCheck',
             'resistor1',
             'Inductor',
             'p',

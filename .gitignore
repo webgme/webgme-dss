@@ -32,6 +32,7 @@ server-error.log
 outputs
 scripts/py_modelica_exporter/Icons
 scripts/py_modelica_exporter/components.json
+scripts/py_modelica_exporter/modelica.json
 
 **/*.pyc
 

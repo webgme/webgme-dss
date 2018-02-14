@@ -81,9 +81,9 @@ export default class App extends Component {
                                     }}>WebGME Dynamic Systems Studio is a design studio for Modelica<sup>®</sup> with
                                         planned simulation backed-end support from the OpenModelica compiler...</p>
                                 </header>
-                                <Toolbar disableGutters={true}>
+                                <Toolbar disableGutters={true} style={{backgroundColor:'#222'}}>
                                     <Typography style={{flex: 1}}/>
-                                    <User/>
+                                    <User useWebGMEColors={true}/>
                                 </Toolbar>
                                 <Projects gmeClient={window.gmeClient}/>
                             </div>

@@ -66,7 +66,7 @@ class PartBrowserItem extends Component {
                 <div>
                 <Samy svgXML={SVGCACHE[nodeData.modelicaUri].base}
                             style={{
-                                height: '100%',
+                                height: 26,
                                 width: 40,
                                 verticalAlign: 'middle'
                             }}>

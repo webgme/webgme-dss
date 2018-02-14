@@ -16,7 +16,7 @@ import PartBrowserItem from './PartBrowserItem';
 import {treeBeardTheme, getTreeDecorators} from "../treeOverrides";
 
 const TREE_PATH_SEP = '$';
-const EXPAND_ALL = true;
+const EXPAND_ALL = false;
 
 const mapStateToProps = state => {
     return {

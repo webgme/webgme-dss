@@ -17,7 +17,7 @@ const activeSelection = (state = [], action) => {
     return state;
 };
 
-const leftDrawer = (state = true, action) => {
+const leftDrawer = (state = false, action) => {
     if (action.type === 'SHOW_LEFT_DRAWER') {
         return true;
     } else if (action.type === 'HIDE_LEFT_DRAWER') {

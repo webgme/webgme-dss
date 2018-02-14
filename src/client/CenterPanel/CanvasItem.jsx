@@ -89,7 +89,7 @@ class CanvasItem extends Component {
 
     constructor(props) {
         super(props);
-        console.count('CanvasItem:ctor');
+        //console.count('CanvasItem:ctor');
     }
 
     onMouseEnter = () => {

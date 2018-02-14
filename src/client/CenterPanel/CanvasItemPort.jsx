@@ -22,7 +22,7 @@ export default class CanvasItemPort extends Component {
 
     constructor(/*props*/) {
         super();
-        console.count('CanvasItemPort:ctor');
+        //console.count('CanvasItemPort:ctor');
     }
 
     createConnection = (source, type) => {
@@ -74,10 +74,22 @@ export default class CanvasItemPort extends Component {
             {freeze, mouseOver} = this.state,
             left, top, width, height, border;
 
-        if (!freeze && (hidden ||
-                validTypes.src === undefined ||
-                (connectionManager.isConnecting && validTypes.dst !== connectionManager.type))) {
-            return null;
+        if (!freeze) {
+            if (hidden) {
+                return null;
+            }
+
+            if (connectionManager.isConnecting) {
+                // It's connecting - is it a valid destination?
+                if (validTypes.dst !== connectionManager.type) {
+                    return null;
+                }
+            } else {
+                // It's NOT connecting - is it a valid source?
+                if (validTypes.src === undefined) {
+                    return null;
+                }
+            }
         }
 
         left = mouseOver ? (position ? position.x - 5 : 0) + 'px' : (position ? position.x : 0) + 'px';
@@ -88,6 +100,8 @@ export default class CanvasItemPort extends Component {
 
         return (<div style={{
             position: 'absolute',
+            backgroundColor: mouseOver ? 'lightgreen' : undefined,
+            opacity: 0.5,
             left: left,
             top: top,
             width: width,

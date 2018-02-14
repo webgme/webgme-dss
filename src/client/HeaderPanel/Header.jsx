@@ -13,6 +13,7 @@ import {toggleModelingView} from '../actions';
 import {appHeader as style} from '../styles';
 
 import Zoom from './Zoom';
+import User from './User';
 
 import logo from '../logo.svg';
 
@@ -49,6 +50,7 @@ class Header extends Component {
                         {projectName}
                     </Typography>
                     <Zoom/>
+                    <User/>
                 </Toolbar>
             </AppBar>
         );

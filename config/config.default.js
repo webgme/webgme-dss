@@ -14,4 +14,9 @@ config.plugin.allowServerExecution = true;
 // Example:     /assets/DecoratorSVG/Modelica.Electrical.Analog.Basic.Ground.svg
 config.visualization.svgDirs = [path.join(__dirname, '../public/assets/DecoratorSVG')];
 
+config.authentication.enable = true;
+config.authentication.allowGuests = true;
+
+config.authentication.userManagementPage = require.resolve('webgme-user-management-page');
+
 module.exports = config;

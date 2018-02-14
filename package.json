@@ -25,7 +25,8 @@
     "react-treebeard": "^2.1.0",
     "recharts": "^1.0.0-beta.10",
     "superagent": "^3.8.2",
-    "webgme-engine": "^2.19.5"
+    "webgme-engine": "^2.19.5",
+    "webgme-user-management-page": "^0.3.5"
   },
   "scripts": {
     "start": "node server.js",

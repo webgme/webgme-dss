@@ -151,7 +151,7 @@ class Canvas extends SingleConnectedNode {
         this.em = new BasicEventManager();
     }
 
-    populateChildren(nodeObj, initial) {
+    populateChildren(nodeObj) {
         let childrenIds = nodeObj.getChildrenIds(),
             newChildren;
 
@@ -191,14 +191,15 @@ class Canvas extends SingleConnectedNode {
     };
 
     onMouseMove = (event) => {
+        const {scrollPos} = this.props;
         this.cm.onMouseMove({
-            x: event.clientX + this.props.scrollPos.x - this.offset.x,
-            y: event.clientY + this.props.scrollPos.y - this.offset.y
+            x: event.clientX + scrollPos.x - this.offset.x,
+            y: event.clientY + scrollPos.y - this.offset.y
         });
     };
 
     render() {
-        const {connectDropTarget, isOver, activeNode, gmeClient} = this.props,
+        const {connectDropTarget, activeNode, gmeClient} = this.props,
             {children, dragMode} = this.state,
             self = this;
 

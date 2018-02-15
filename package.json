@@ -5,6 +5,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "csv-parse": "^2.0.0",
+    "eslint-config-google": "^0.9.1",
     "immutability-helper": "^2.6.4",
     "material-ui": "1.0.0-beta.30",
     "material-ui-icons": "^1.0.0-beta.17",

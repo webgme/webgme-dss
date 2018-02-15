@@ -63,9 +63,9 @@ class Project extends Component {
     };
 
     componentDidMount() {
-        const {gmeClient, setActiveNode, setSystemWaiting} = this.props;
+        const {gmeClient, setActiveNode, setSystemWaiting, projectId} = this.props;
 
-        gmeClient.selectProject(this.props.projectId, 'master', (err) => {
+        gmeClient.selectProject(projectId, 'master', (err) => {
             if (err) {
                 console.error(err);
                 return;
@@ -97,7 +97,9 @@ class Project extends Component {
     }
 
     componentWillUnmount() {
-        this.props.gmeClient.closeProject(err => {
+        const {gmeClient} = this.props;
+
+        gmeClient.closeProject(err => {
             if (err) {
                 console.error(err);
             }
@@ -106,7 +108,7 @@ class Project extends Component {
 
     render() {
         let content;
-        const {gmeClient, projectId, activeNode} = this.props;
+        const {gmeClient, projectId, activeNode, modelingView, toggleLeftDrawer, toggleRightDrawer, toggleModelingView} = this.props;
         const {scale} = this.state;
         const [owner, name] = projectId.split('+');
 
@@ -137,13 +139,13 @@ class Project extends Component {
                     <RightDrawer gmeClient={gmeClient}/>
 
                     <BottomNavigation
-                        value={this.props.modelingView ? 0 : 1}
+                        value={modelingView ? 0 : 1}
                         onChange={(event, value) => {
                             if (value === 1) {
-                                this.props.toggleLeftDrawer(true);
-                                this.props.toggleRightDrawer(false);
+                                toggleLeftDrawer(true);
+                                toggleRightDrawer(false);
                             }
-                            this.props.toggleModelingView(value === 0);
+                            toggleModelingView(value === 0);
                         }}
                         showLabels
                         style={{

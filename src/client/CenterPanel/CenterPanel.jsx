@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 
 import Canvas from './Canvas';
@@ -18,7 +17,7 @@ const mapStateToProps = state => {
     }
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (/*dispatch*/) => {
     return {}
 };
 

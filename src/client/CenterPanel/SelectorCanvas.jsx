@@ -13,7 +13,7 @@ const mapStateToProps = state => {
     }
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (/*dispatch*/) => {
     return {}
 };
 
@@ -40,7 +40,7 @@ class SelectorCanvas extends SingleConnectedNode {
         this.em = new BasicEventManager();
     }
 
-    populateChildren(nodeObj, initial) {
+    populateChildren(nodeObj) {
         let childrenIds = nodeObj.getChildrenIds(),
             newChildren;
 

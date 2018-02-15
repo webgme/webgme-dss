@@ -11,8 +11,9 @@ export default class BasicConnection extends Component {
     };
 
     onClick = (event) => {
-        if (this.props.onClick) {
-            this.props.onClick(event);
+        const {onClick} = this.props;
+        if (onClick) {
+            onClick(event);
         }
     };
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import {DragSource} from 'react-dnd';
-import {Samy} from 'react-samy-svg';
+import Samy from 'react-samy-svg/src/Samy';
 
 import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui-icons/Delete';
@@ -101,18 +101,24 @@ class CanvasItem extends Component {
     };
 
     isSelected = () => {
-        return this.props.selection.includes(this.props.activeNode);
+        const {selection, activeNode} = this.props;
+
+        return selection.includes(activeNode);
     };
 
     componentDidMount() {
+        const {activeNode} = this.props;
         let territory = {};
-        territory[this.props.activeNode] = {children: 0};
+
+        territory[activeNode] = {children: 0};
 
         this.setState({territory: territory});
     }
 
     deleteNode = () => {
-        this.props.gmeClient.deleteNode(this.props.activeNode);
+        const {gmeClient, activeNode} = this.props;
+
+        gmeClient.deleteNode(activeNode);
     };
 
     srcEvent = (id, event) => {
@@ -145,10 +151,12 @@ class CanvasItem extends Component {
             metaNodes = gmeClient.getAllMetaNodes(true);
         let info = {name: childNode.getAttribute('name'), validConnection: {}};
         for (let path in metaNodes) {
-            if (childNode.isValidTargetOf(path, 'src'))
-                info.validConnection.src = path;
-            if (childNode.isValidTargetOf(path, 'dst'))
-                info.validConnection.dst = path;
+            if (metaNodes.hasOwnProperty(path)) {
+                if (childNode.isValidTargetOf(path, 'src'))
+                    info.validConnection.src = path;
+                if (childNode.isValidTargetOf(path, 'dst'))
+                    info.validConnection.dst = path;
+            }
         }
 
         return info;
@@ -267,28 +275,31 @@ class CanvasItem extends Component {
         if (node === null)
             return null;
         for (let key in attributes) {
-            attributeItems.push((
-                <svg key={key}
-                     style={{
-                         position: 'absolute',
-                         top: /*position.y + */attributes[key].bbox.y * scale,
-                         left: /*position.x + */attributes[key].bbox.x * scale
-                     }}
-                     viewBox={'' + (attributes[key].bbox.x * scale) + ' ' + (attributes[key].bbox.y * scale) +
-                     ' ' + (attributes[key].bbox.width * scale) +
-                     ' ' + (attributes[key].bbox.height * scale)}>
-                    <text
-                        x={(attributes[key].parameters.x || 0) * scale}
-                        y={(attributes[key].parameters.y || 0) * scale}
-                        alignmentBaseline={attributes[key].parameters['alignment-baseline'] || 'middle'}
-                        fill={attributes[key].parameters.fill || 'rgb(0,0,255)'}
-                        fontFamily={attributes[key].parameters['font-family'] || 'Veranda'}
-                        fontSize={Number(attributes[key].parameters['font-size'] || '18') * scale}
-                        textAnchor={attributes[key].parameters['text-anchor'] || 'middle'}>
-                        {attributes[key].text.substring(0, attributes[key].position) +
-                        node.getAttribute(key) +
-                        attributes[key].text.substring(attributes[key].position)}</text>
-                </svg>));
+            if (attributes.hasOwnProperty(key)) {
+
+                attributeItems.push((
+                    <svg key={key}
+                         style={{
+                             position: 'absolute',
+                             top: /*position.y + */attributes[key].bbox.y * scale,
+                             left: /*position.x + */attributes[key].bbox.x * scale
+                         }}
+                         viewBox={'' + (attributes[key].bbox.x * scale) + ' ' + (attributes[key].bbox.y * scale) +
+                         ' ' + (attributes[key].bbox.width * scale) +
+                         ' ' + (attributes[key].bbox.height * scale)}>
+                        <text
+                            x={(attributes[key].parameters.x || 0) * scale}
+                            y={(attributes[key].parameters.y || 0) * scale}
+                            alignmentBaseline={attributes[key].parameters['alignment-baseline'] || 'middle'}
+                            fill={attributes[key].parameters.fill || 'rgb(0,0,255)'}
+                            fontFamily={attributes[key].parameters['font-family'] || 'Veranda'}
+                            fontSize={Number(attributes[key].parameters['font-size'] || '18') * scale}
+                            textAnchor={attributes[key].parameters['text-anchor'] || 'middle'}>
+                            {attributes[key].text.substring(0, attributes[key].position) +
+                            node.getAttribute(key) +
+                            attributes[key].text.substring(attributes[key].position)}</text>
+                    </svg>));
+            }
         }
 
         return attributeItems;

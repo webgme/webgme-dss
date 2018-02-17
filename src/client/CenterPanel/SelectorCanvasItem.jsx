@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import Samy from 'react-samy-svg/src/Samy';
+// noinspection JSUnresolvedVariable
+import {Samy} from 'react-samy-svg';
 
 import Territory from '../gme/BaseComponents/Territory';
 import BasicConnection from './BasicConnection';

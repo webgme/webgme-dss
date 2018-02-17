@@ -25,51 +25,64 @@ export default class PluginConfigDialog extends Component {
 
     constructor(props) {
         super(props);
-        this.props.metadata.configStructure.forEach((descriptor) => {
-            this.state.configItems[descriptor.name] = descriptor.value;
+
+        const {metadata} = this.props,
+            {configStructure} = metadata;
+        let {configItems} = this.state;
+        configStructure.forEach((descriptor) => {
+            configItems[descriptor.name] = descriptor.value;
         });
     }
 
     onReady = () => {
-        this.props.onOK(this.state.configItems);
+        const {onOK} = this.props,
+            {configItems} = this.state;
+
+        onOK(configItems);
     };
 
     onChange = (name, value) => {
+        const {configItems} = this.state;
         this.setState({
-            configItems: update(this.state.configItems, {
+            configItems: update(configItems, {
                 [name]: {$set: value}
             })
         });
     };
 
     componentWillMount() {
-        const {metadata, fastForward} = this.props;
+        const {metadata, fastForward} = this.props,
+            {configStructure} = metadata;
 
-        if (fastForward && metadata.configStructure.length === 0) {
+        if (fastForward && configStructure.length === 0) {
             this.onReady();
         }
     }
 
     render() {
-        const {metadata} = this.props;
+        const {metadata, onOK} = this.props,
+            {configStructure} = metadata,
+            {configItems} = this.state;
 
-        let form = metadata.configStructure.map((descriptor) => {
+        let form = configStructure.map((descriptor) => {
+            const {name, displayName, valueItems, description, readOnly} = descriptor;
+            let {valueType} = descriptor;
 
-            if (descriptor.name.indexOf('color') !== -1) {
-                descriptor.valueType = AttributeTypes.color;
+            if (name.indexOf('color') !== -1) {
+                valueType = AttributeTypes.color;
             }
 
             return (<AttributeItem
-                key={descriptor.name}
-                value={this.state.configItems[descriptor.name]}
-                name={descriptor.displayName}
-                values={descriptor.valueItems}
-                type={descriptor.valueType}
+                key={name}
+                value={configItems[name]}
+                name={displayName}
+                values={valueItems}
+                type={valueType}
                 onChange={(newValue) => {
-                    this.onChange(descriptor.name, newValue)
+                    this.onChange(name, newValue)
                 }}
-                description={descriptor.description}
-                options={{readOnly: descriptor.readOnly}}/>);
+                description={description}
+                options={{readOnly: readOnly}}/>);
         });
 
         return (
@@ -84,7 +97,7 @@ export default class PluginConfigDialog extends Component {
                 <DialogActions>
                     <Button onClick={this.onReady} color='primary'>Run</Button>
                     <Button onClick={() => {
-                        this.props.onOK()
+                        onOK()
                     }} color='secondary'>Cancel</Button>
                 </DialogActions>
             </Dialog>

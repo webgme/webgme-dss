@@ -15,7 +15,10 @@ export default class BasicConnectingComponent extends Component {
 
     constructor(props) {
         super(props);
-        this.props.connectionManager.setListener(this.onChange);
+
+        const {connectionManager} = this.props;
+
+        connectionManager.setListener(this.onChange);
     }
 
     onChange = (event) => {

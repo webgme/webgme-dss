@@ -137,7 +137,6 @@ class ResultList extends Component {
     handleExpand = resId => (event, expanded) => {
         // extract attribute simRes and add it to the state
         const {setResultNode} = this.props;
-        const {results} = this.state;
 
         if (expanded) {
             setResultNode(resId);
@@ -149,12 +148,12 @@ class ResultList extends Component {
     };
 
     render() {
-        const {minimized, gmeClient, plotModel} = this.props;
+        const {minimized, plotModel, gmeClient} = this.props;
         const {territory, results, expandedResId} = this.state;
 
         return (
             <div style={{display: minimized ? 'none' : undefined}}>
-                <Territory gmeClient={this.props.gmeClient} territory={territory}
+                <Territory gmeClient={gmeClient} territory={territory}
                            onUpdate={this.handleEvents} onlyActualEvents={true}/>
 
                 {Object.keys(results).map(resId => {

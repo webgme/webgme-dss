@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import {DragSource} from 'react-dnd';
 import {getEmptyImage} from 'react-dnd-html5-backend'
 
+// noinspection JSUnresolvedVariable
 import {Samy, SvgProxy} from 'react-samy-svg';
-import Typography from 'material-ui/Typography';
 
 import {DRAG_TYPES} from '../CONSTANTS';
 import SVGCACHE from './../../svgcache';
@@ -49,9 +49,10 @@ class PartBrowserItem extends Component {
     };
 
     componentDidMount() {
+        const {connectDragPreview} = this.props;
         // Use empty image as a drag preview so browsers don't draw it
         // and we can draw whatever we want on the custom drag layer instead.
-        this.props.connectDragPreview(getEmptyImage(), {
+        connectDragPreview(getEmptyImage(), {
             // IE fallback: specify that we'd rather screenshot the node
             // when it already knows it's being dragged so we can hide it with CSS.
             captureDraggingState: true
@@ -62,17 +63,23 @@ class PartBrowserItem extends Component {
         const {nodeData, connectDragSource, listView} = this.props;
 
         return connectDragSource(
-            <div style={{display: 'inline-flex', width: '100%', opacity: 0.99, paddingTop: listView ? 10 : 0, cursor: 'pointer'}}>
+            <div style={{
+                display: 'inline-flex',
+                width: '100%',
+                opacity: 0.99,
+                paddingTop: listView ? 10 : 0,
+                cursor: 'pointer'
+            }}>
                 <div>
-                <Samy svgXML={SVGCACHE[nodeData.modelicaUri].base}
-                            style={{
-                                height: 26,
-                                width: 40,
-                                verticalAlign: 'middle'
-                            }}>
-                    <SvgProxy selector="text" display={'none'}/>
-                    <SvgProxy selector="*" stroke-width={'0.75mm'}/>
-                </Samy>
+                    <Samy svgXML={SVGCACHE[nodeData.modelicaUri].base}
+                          style={{
+                              height: 26,
+                              width: 40,
+                              verticalAlign: 'middle'
+                          }}>
+                        <SvgProxy selector="text" display={'none'}/>
+                        <SvgProxy selector="*" stroke-width={'0.75mm'}/>
+                    </Samy>
                 </div>
                 {listView ? null :
                     <div style={{

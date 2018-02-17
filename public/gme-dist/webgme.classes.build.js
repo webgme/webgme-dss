@@ -3730,7 +3730,10 @@
                                     })
                                 }, 50);
 
-                                return {'catch': () => {}};
+                                return {
+                                    'catch': () => {
+                                    }
+                                };
                             }
                         }
                     }
@@ -3876,6 +3879,9 @@
                         _id: '#3ff0ed256f3b02610e6a34042821598244e50b40'
                     }]
                 );
+            },
+            copyNode: (nodeId, parentId) => {
+                return '/3/' + cnt;
             }
         };
     };

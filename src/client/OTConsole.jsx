@@ -27,7 +27,7 @@ class OTConsole extends Component {
     };
 
     state = {
-        project: this.props.gmeClient.getProjectObject(),
+        project: null,
         delta: new Delta(),
         document: null,
         attributeValue: null,
@@ -35,7 +35,15 @@ class OTConsole extends Component {
         watcherId: null
     };
 
-    onTerritoryUpdate = (hash, loads, updates, unloads) => {
+    constructor(props) {
+        super(props);
+
+        const {gmeClient} = this.props;
+
+        this.state.project = gmeClient.getProjectObject();
+    }
+
+    onTerritoryUpdate = (hash, loads, updates/*, unloads*/) => {
         const {resultNode, gmeClient, attributeName, onTest} = this.props;
         const {delta, attributeValue, document, project} = this.state;
 

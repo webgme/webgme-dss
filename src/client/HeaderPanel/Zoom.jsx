@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import IconButton from 'material-ui/IconButton';
-import LinearProgress from 'material-ui/Progress/LinearProgress';
 import ZoomIn from 'material-ui-icons/ZoomIn';
 import ZoomOut from 'material-ui-icons/ZoomOut';
 import Tooltip from 'material-ui/Tooltip';
-import Divider from 'material-ui/Divider';
 import {setScale} from "../actions";
 
 const scales = [0.2, 0.3, 0.4, 0.6, 0.8, 1, 1.2, 1.5, 2, 3, 5];
@@ -49,14 +46,14 @@ class Zoom extends Component {
             (<Tooltip id={'Zoom-in-tooltip'}
                       title={scaleIndex === scales.length - 1 ? '' : 'Increase scale to ' +
                           scales[scaleIndex + 1] + '.'}>
-                <IconButton onClick={this.zoomIn} disabled={scaleIndex === scales.length - 1 ? true : false}
+                <IconButton onClick={this.zoomIn} disabled={scaleIndex === scales.length}
                             style={{marginLeft: '50px', marginRight: '-10px'}}>
                     <ZoomIn/>
                 </IconButton>
             </Tooltip>),
             (<Tooltip id={'Zoom-in-tooltip'}
                       title={scaleIndex === 0 ? '' : 'Decrease scale to ' + scales[scaleIndex - 1] + '.'}>
-                <IconButton onClick={this.zoomOut} disabled={scaleIndex === 0 ? true : false}>
+                <IconButton onClick={this.zoomOut} disabled={scaleIndex === 0}>
                     <ZoomOut/>
                 </IconButton>
             </Tooltip>)

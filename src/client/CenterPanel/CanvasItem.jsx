@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import {DragSource} from 'react-dnd';
-import Samy from 'react-samy-svg/src/Samy';
+// noinspection JSUnresolvedVariable
+import {Samy} from 'react-samy-svg';
 
 import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui-icons/Delete';
@@ -86,11 +87,6 @@ class CanvasItem extends Component {
         territory: null,
         justRemovedIds: []
     };
-
-    constructor(props) {
-        super(props);
-        //console.count('CanvasItem:ctor');
-    }
 
     onMouseEnter = () => {
         this.setState({showActions: true});

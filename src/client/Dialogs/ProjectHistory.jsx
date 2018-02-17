@@ -6,10 +6,8 @@ import Dialog, {
     DialogTitle,
 } from 'material-ui/Dialog';
 import moment from 'moment';
-import Avatar from 'material-ui/Avatar';
 import Button from 'material-ui/Button';
 import Badge from 'material-ui/Badge';
-import Typography from 'material-ui/Typography';
 import {connect} from 'react-redux';
 import IconButton from 'material-ui/IconButton';
 import Visibility from 'material-ui-icons/Visibility';
@@ -17,19 +15,18 @@ import PlayArrow from 'material-ui-icons/PlayArrow';
 import Grid from 'material-ui/Grid';
 import Tooltip from 'material-ui/Tooltip';
 import NotifyDialog from './NotifyDialog';
-import ListSubheader from 'material-ui/List/ListSubheader';
-import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
+import List, {ListItem, ListItemText} from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
 import ExpandLess from 'material-ui-icons/ExpandLess';
 import ExpandMore from 'material-ui-icons/ExpandMore';
 
 import ModelicaDiffMetadata from '../../plugins/ModelicaDiff/metadata';
 
-const mapStateToProps = state => {
+const mapStateToProps = (/*state*/) => {
     return {}
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (/*dispatch*/) => {
     return {}
 };
 
@@ -206,9 +203,8 @@ class ProjectHistory extends Component {
 
     render() {
         const {onOK, gmeClient, batchSize} = this.props,
-            {commits, activeCommit, showDiff, diff} = this.state,
+            {commits, activeCommit, showDiff} = this.state,
             project = gmeClient.getProjectObject(),
-            projectId = project.projectId,
             showDiffFn = this.showDiff;
         let items = commits.map(commit => {
             let when = new Date(parseInt(commit.time, 10)),
@@ -239,10 +235,9 @@ class ProjectHistory extends Component {
                     </Tooltip>
                     <Tooltip id={'revert-tooltip'} title={'Start editing from this version'}>
                         <IconButton onClick={() => {
+                            let {setBranchHash} = project;
                             //FIXE how to handle error... I guess modal popup warning???
-                            project.setBranchHash('master', commit._id, activeCommit, (err) => {
-                                onOK();
-                            });
+                            setBranchHash('master', commit._id, activeCommit, onOK);
                         }}>
                             <PlayArrow/>
                         </IconButton>

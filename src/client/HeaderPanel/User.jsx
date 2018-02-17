@@ -51,12 +51,12 @@ export default class User extends Component {
         return [<Typography type={'subheading'} style={nameStyle}>{userInfo._id}</Typography>,
             (<Tooltip title={'Profile'}>
                 <IconButton>
-                    <a href="/profile/home"><AccountCircle style={accountStyle}/></a>
+                    <a href={'/profile/home'}><AccountCircle style={accountStyle}/></a>
                 </IconButton>
             </Tooltip>),
             (<Tooltip title={'Log out'}>
                 <IconButton>
-                    <a href="/logout"><Cancel style={logoutStyle}/></a>
+                    <a href={'/logout'}><Cancel style={logoutStyle}/></a>
                 </IconButton>
             </Tooltip>)];
     }

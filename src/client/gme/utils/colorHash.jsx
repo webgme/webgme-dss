@@ -23,11 +23,10 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-
 export default function colorHash(inputString) {
     let sum = 0;
 
-    for (let i in inputString) {
+    for (let i = 0; i < inputString.length; i += 1) {
         sum += inputString.charCodeAt(i);
     }
 
@@ -44,10 +43,10 @@ export default function colorHash(inputString) {
     hex += ("00" + b.toString(20)).substr(-2, 2).toUpperCase();
 
     return {
-        r: r
-        , g: g
-        , b: b
-        , rgb: rgb
-        , hex: hex
+        r: r,
+        g: g,
+        b: b,
+        rgb: rgb,
+        hex: hex
     };
 }

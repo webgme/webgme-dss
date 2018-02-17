@@ -1,9 +1,10 @@
+/* globals window */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Link, withRouter} from 'react-router-dom';
 
 import {connect} from 'react-redux';
-import {setActiveNode, setSystemWaiting} from "../actions";
+import {setSystemWaiting} from "../actions";
 
 import superagent from 'superagent';
 
@@ -31,7 +32,7 @@ const styles = theme => ({
     }
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (/*state*/) => {
     return {}
 };
 
@@ -63,7 +64,7 @@ class CreateProject extends Component {
     };
 
     onCreateNewProject = (data) => {
-        const {setSystemWaiting} = this.props;
+        const {setSystemWaiting, gmeClient, history} = this.props;
 
         this.setState({showDialog: false});
         if (!data) {
@@ -75,7 +76,7 @@ class CreateProject extends Component {
 
         let path = [
             window.location.origin,
-            this.props.gmeClient.gmeConfig.rest.components.DomainManager.mount,
+            gmeClient.gmeConfig.rest.components.DomainManager.mount,
             'createProject'
         ].join('/');
 
@@ -93,7 +94,7 @@ class CreateProject extends Component {
                 } else {
                     console.log(result);
                     const [owner, name] = result.body.projectId.split('+');
-                    this.props.history.push(`/p/${owner}/${name}`);
+                    history.push(`/p/${owner}/${name}`);
                 }
             });
     };
@@ -102,6 +103,7 @@ class CreateProject extends Component {
         const {projects, classes} = this.props;
 
         let cards = TEMPLATE_PROJECTS.map(seedInfo => {
+            const {infoUrl} = seedInfo;
             let buttons = [];
             if (projects) {
                 buttons.push(<Button key="createBtn" dense color="primary" onClick={() => {
@@ -110,8 +112,8 @@ class CreateProject extends Component {
                     Create
                 </Button>);
 
-                if (seedInfo.infoUrl) {
-                    buttons.push(<Button key="infoBtn" dense color="primary" component={Link} to={seedInfo.infoUrl}
+                if (infoUrl) {
+                    buttons.push(<Button key="infoBtn" dense color="primary" component={Link} to={infoUrl}
                                          target="_blank">
                         Learn More
                     </Button>);

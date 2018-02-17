@@ -1,11 +1,11 @@
 //https://github.com/alexcurtis/react-treebeard
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import ExpansionPanel, {ExpansionPanelDetails, ExpansionPanelSummary} from 'material-ui/ExpansionPanel';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
-import { withTheme } from 'material-ui/styles';
+import {withTheme} from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 import {Treebeard} from 'react-treebeard';
 
@@ -45,18 +45,21 @@ class PartBrowser extends SingleConnectedNode {
         super(props);
         console.count('PartBrowser:constructor');
 
+        const {scale} = this.props;
+
         this.tree = {};
         this.items = [];
-        this.decorators = getTreeDecorators(PartBrowserItem, {scale: this.props.scale})
+        this.decorators = getTreeDecorators(PartBrowserItem, {scale: scale});
     }
 
-    componentWillUpdate(nextProps, nextState) {
+    componentWillUpdate(nextProps, nextState, nextContext) {
         // TODO: Revise this check when/if incremental updates to validChildren will be done.
-        if (nextState.validChildren !== this.state.validChildren) {
+        const {validChildren} = nextState;
+        if (validChildren !== this.state.validChildren) {
             // Build up a new tree structure.
             this.tree = {children: [], folders: {}, path: 'ROOT'};
 
-            nextState.validChildren
+            validChildren
                 .forEach((childDesc) => {
                     let treeNode = this.tree;
                     this.items.push(childDesc);
@@ -115,13 +118,14 @@ class PartBrowser extends SingleConnectedNode {
     }
 
     onNodeLoad(nodeObj) {
+
         this.updateValidChildren(nodeObj.getValidChildrenTypesDetailed());
     }
 
     onNodeUpdate(nodeObj) {
-        const newValidChildrenMap = nodeObj.getValidChildrenTypesDetailed();
-        const currentValidChildrenMap = this.state.validChildren;
-        const [newIds, prevIds] = [newValidChildrenMap, currentValidChildrenMap].map(Object.keys);
+        const newValidChildrenMap = nodeObj.getValidChildrenTypesDetailed(),
+            currentValidChildrenMap = this.state.validChildren,
+            [newIds, prevIds] = [newValidChildrenMap, currentValidChildrenMap].map(Object.keys);
 
         if (newIds.length !== prevIds.length) {
             this.updateValidChildren(newValidChildrenMap);
@@ -164,6 +168,8 @@ class PartBrowser extends SingleConnectedNode {
     };
 
     buildTreeStructure = (treeNode) => {
+        const {scale} = this.props;
+
         if (treeNode.isFolder) {
             if (treeNode.isRoot) {
                 return (
@@ -185,13 +191,13 @@ class PartBrowser extends SingleConnectedNode {
             }
         } else {
             return (
-                <PartBrowserItem key={treeNode.id} nodeData={treeNode} scale={this.props.scale}/>
+                <PartBrowserItem key={treeNode.id} nodeData={treeNode} scale={scale}/>
             )
         }
     };
 
     render() {
-        const {minimized} = this.props;
+        const {minimized, scale} = this.props;
         let cnt = 0;
 
         if (!this.state.loaded) {
@@ -205,13 +211,13 @@ class PartBrowser extends SingleConnectedNode {
                 </div>
                 <div style={{display: minimized ? undefined : 'none'}}>
                     {this.items
-                        .filter(child => {
+                        .filter((/*child*/) => {
                             // TODO: These should be filtered based on recent components used..
                             cnt += 1;
                             return cnt <= 10;
                         })
                         .map(child => {
-                            return <PartBrowserItem key={child.id} nodeData={child} scale={this.props.scale}
+                            return <PartBrowserItem key={child.id} nodeData={child} scale={scale}
                                                     listView={true}/>;
                         })
                     }

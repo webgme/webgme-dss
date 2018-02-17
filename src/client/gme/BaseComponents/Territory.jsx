@@ -43,17 +43,19 @@ export default class Territory extends Component {
         }
     }
 
-    componentWillReceiveProps(newProps) {
-        const {gmeClient} = newProps,
+    componentWillReceiveProps(nextProps) {
+        const {gmeClient} = nextProps,
             {territory} = this.props;
 
-        if (JSON.stringify(territory) !== JSON.stringify(newProps.territory)) {
-            gmeClient.updateTerritory(this.uiId, newProps.territory || {});
+        if (JSON.stringify(territory) !== JSON.stringify(nextProps.territory)) {
+            gmeClient.updateTerritory(this.uiId, nextProps.territory || {});
         }
     }
 
     componentWillUnmount() {
-        this.props.gmeClient.removeUI(this.uiId);
+        const {gmeClient} = this.props;
+
+        gmeClient.removeUI(this.uiId);
     }
 
     render() {

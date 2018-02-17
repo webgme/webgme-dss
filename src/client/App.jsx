@@ -1,8 +1,10 @@
 // From libraries
+/* eslint-env browser */
+/* global window */
 import React, {Component} from 'react';
 
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
 
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 

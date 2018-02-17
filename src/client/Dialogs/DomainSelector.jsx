@@ -21,7 +21,6 @@ import seedInfo from '../../seeds/Modelica/metadata.json';
 import getIndexedName from '../gme/utils/getIndexedName';
 import {AttributeItem} from "../RightPanel/AttributeEditor";
 
-
 export default class DomainSelector extends Component {
     static propTypes = {
         domains: PropTypes.array.isRequired,
@@ -37,10 +36,9 @@ export default class DomainSelector extends Component {
         selected: {}
     };
 
-    constructor(props) {
-        super(props);
-
-        let {domains, defaultName, takenNames} = props;
+    componentWillMount() {
+        const {domains, defaultName, takenNames} = this.props;
+        let selected = {};
 
         if (defaultName) {
             this.name = getIndexedName(defaultName, takenNames);
@@ -48,14 +46,16 @@ export default class DomainSelector extends Component {
 
         if (domains) {
             seedInfo.domains.forEach(domain => {
-                this.state.selected[domain] = domains.includes(domain);
+                selected[domain] = domains.includes(domain);
             });
+            this.setState({selected: selected});
         }
     }
 
     onOKClick = () => {
         // TODO: Populate these correctly
-        this.props.onOK({
+        const {onOK} = this.props;
+        onOK({
             name: this.name,
             domains: Object.keys(this.state.selected)
                 .filter(domain => {
@@ -73,11 +73,12 @@ export default class DomainSelector extends Component {
     };
 
     render() {
+        const {defaultName, showDomainSelection, title, onCancel} = this.props,
+            {selected} = this.state;
+        let form = null,
+            nameInput = null;
 
-        let form = null;
-        let nameInput = null;
-
-        if (typeof this.props.defaultName === 'string') {
+        if (defaultName === 'string') {
             nameInput = <AttributeItem value={this.name}
                                        onChange={newValue => {
                                            // FIXME: Should name really be a field of the instance?
@@ -87,7 +88,7 @@ export default class DomainSelector extends Component {
                                        type={'string'}/>
         }
 
-        if (this.props.showDomainSelection) {
+        if (showDomainSelection) {
             form = (
                 <FormControl component="fieldset">
                     <FormLabel component="legend">Select Domains</FormLabel>
@@ -95,13 +96,13 @@ export default class DomainSelector extends Component {
                         {seedInfo.domains.map((domain) => {
                             return (
                                 <FormControlLabel key={domain}
-                                    control={
-                                        <Checkbox
-                                            checked={this.state.selected[domain]}
-                                            onChange={this.handleCheckChange(domain)}
-                                            value={domain}/>
-                                    }
-                                    label={domain}
+                                                  control={
+                                                      <Checkbox
+                                                          checked={selected[domain]}
+                                                          onChange={this.handleCheckChange(domain)}
+                                                          value={domain}/>
+                                                  }
+                                                  label={domain}
                                 />)
                         })}
                     </FormGroup>
@@ -111,7 +112,7 @@ export default class DomainSelector extends Component {
 
         return (
             <Dialog open={true}>
-                <DialogTitle>{this.props.title}</DialogTitle>
+                <DialogTitle>{title}</DialogTitle>
                 <DialogContent style={{display: 'flex'}}>
                     {form}
                     {nameInput}
@@ -119,7 +120,7 @@ export default class DomainSelector extends Component {
                 <DialogActions>
                     <Button onClick={this.onOKClick} color='primary'>OK</Button>
                     <Button onClick={() => {
-                        this.props.onCancel()
+                        onCancel()
                     }} color='secondary'>Cancel</Button>
                 </DialogActions>
             </Dialog>

@@ -10,6 +10,7 @@ import Typography from 'material-ui/Typography';
 import Select from 'material-ui/Select';
 import Switch from 'material-ui/Switch';
 import {GithubPicker} from 'react-color';
+// noinspection JSUnresolvedVariable
 import {Samy} from 'react-samy-svg';
 
 import Territory from '../gme/BaseComponents/Territory';

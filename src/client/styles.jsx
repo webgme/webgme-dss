@@ -13,6 +13,7 @@ export const centerPanel = {
     overflow: 'auto'
 };
 
+/*
 export const splitPanel = {
     top: LAYOUT_SIZES.HEADER_HEIGHT,
     left: LAYOUT_SIZES.SIDE_PANEL_WIDTH_MINIMIZED,
@@ -21,3 +22,4 @@ export const splitPanel = {
     position: 'fixed',
     overflow: 'auto'
 };
+*/

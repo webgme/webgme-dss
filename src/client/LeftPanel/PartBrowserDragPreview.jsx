@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {DragLayer} from 'react-dnd';
 
+// noinspection JSUnresolvedVariable
 import {Samy} from 'react-samy-svg';
 import {connect} from 'react-redux';
 import {DRAG_TYPES} from '../CONSTANTS';
@@ -13,7 +14,7 @@ const mapStateToProps = state => {
     }
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (/*dispatch*/) => {
     return {};
 };
 

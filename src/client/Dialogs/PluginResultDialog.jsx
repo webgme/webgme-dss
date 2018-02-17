@@ -11,7 +11,7 @@ import Typography from 'material-ui/Typography';
 import {connect} from 'react-redux';
 import {setActiveSelection} from "../actions";
 
-const mapStateToProps = state => {
+const mapStateToProps = (/*state*/) => {
     return {}
 };
 
@@ -22,6 +22,7 @@ const mapDispatchToProps = dispatch => {
         }
     }
 };
+
 class PluginResultDialog extends Component {
     static propTypes = {
         onOK: PropTypes.func.isRequired,
@@ -41,10 +42,11 @@ class PluginResultDialog extends Component {
             colors = this.colors;
         let messages = result.messages.map((message) => {
             //message.activeNode.id
-            return (<Card style={{backgroundColor: colors[message.severity]}} raised={true}>
+            const {severity, activeNode} = message;
+            return (<Card style={{backgroundColor: colors[severity]}} raised={true}>
                 <CardContent>
                     <Typography type="headline" component="h2">
-                        {message.severity}
+                        {severity}
                     </Typography>
                     <Typography component="p">
                         {message.message}
@@ -52,7 +54,7 @@ class PluginResultDialog extends Component {
                 </CardContent>
                 <CardActions>
                     <Button size="small" color="primary" onClick={() => {
-                        setActiveSelection([message.activeNode.id]);
+                        setActiveSelection([activeNode.id]);
                         onOK();
                     }}>
                         Check node
@@ -73,6 +75,6 @@ class PluginResultDialog extends Component {
             </Dialog>
         );
     }
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(PluginResultDialog);

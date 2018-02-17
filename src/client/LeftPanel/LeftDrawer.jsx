@@ -1,3 +1,5 @@
+/* eslint-env browser */
+/* globals window */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -22,7 +24,6 @@ import ModelCheckMetadata from '../../plugins/ModelCheck/metadata';
 import getMetaNodeByName from '../gme/utils/getMetaNodeByName';
 
 import {removePlotVariable, toggleLeftDrawer, toggleModelingView, setResultNode, toggleRightDrawer} from '../actions';
-import {downloadBlobArtifact} from '../gme/utils/saveUrlToDisk';
 
 import PartBrowser from './PartBrowser';
 import ResultList from './ResultList';
@@ -84,7 +85,11 @@ class LeftDrawer extends Component {
     };
 
     onUpdateDomains = (data) => {
+        const {gmeClient} = this.props,
+            {rest} = gmeClient.gmeConfig;
+
         this.setState({showDomainSelector: false});
+
         if (!data) {
             // Cancelled
             return;
@@ -94,11 +99,9 @@ class LeftDrawer extends Component {
 
         let path = [
             window.location.origin,
-            this.props.gmeClient.gmeConfig.rest.components.DomainManager.mount,
+            rest.components.DomainManager.mount,
             'updateProject'
         ].join('/');
-
-        const {gmeClient} = this.props;
 
         superagent.post(path)
             .send({
@@ -118,7 +121,7 @@ class LeftDrawer extends Component {
     };
 
     runSimulator = config => {
-        const {gmeClient, activeNode} = this.props;
+        const {gmeClient, activeNode, toggleModelingView, show, setResultNode, toggleRightDrawer} = this.props;
         const pluginId = SystemSimulatorMetadata.id;
         this.setState({showSimulator: false});
         if (!config) {
@@ -178,10 +181,10 @@ class LeftDrawer extends Component {
                 context.pluginConfig = config;
                 gmeClient.removeUI(uiId);
 
-                this.props.toggleModelingView(false);
-                this.props.show();
-                this.props.setResultNode(resId);
-                this.props.toggleRightDrawer(false);
+                toggleModelingView(false);
+                show();
+                setResultNode(resId);
+                toggleRightDrawer(false);
                 gmeClient.runServerPlugin(pluginId, context, (err, result) => {
                     if (err) {
                         console.error(err);
@@ -245,7 +248,7 @@ class LeftDrawer extends Component {
     };
 
     render() {
-        const {classes, gmeClient, open, modelingView, variables} = this.props;
+        const {classes, gmeClient, open, modelingView, variables, removePlotVariable, hide, show} = this.props;
         let actionButtons;
 
         if (modelingView) {
@@ -284,7 +287,7 @@ class LeftDrawer extends Component {
                         open={open}
                         classes={{paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose)}}>
                 <span>
-                <IconButton onClick={open ? this.props.hide : this.props.show}>
+                <IconButton onClick={open ? hide : show}>
                     {open ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                 </IconButton>
                     {modelingView ?
@@ -297,7 +300,7 @@ class LeftDrawer extends Component {
                         )) :
                         open ? [] : actionButtons.map(desc => (
                             <IconButton key={desc.id} onClick={() => {
-                                this.props.removePlotVariable(desc.id);
+                                removePlotVariable(desc.id);
                             }}>
                                 {desc.iconClass}
                             </IconButton>

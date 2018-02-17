@@ -1,3 +1,6 @@
 {
-  "extends": "google"
+  "extends": [
+    "google",
+    "plugin:react/recommended"
+  ]
 }

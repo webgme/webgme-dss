@@ -9,25 +9,26 @@ import PropTypes from 'prop-types';
 export default class SingleConnectedNode extends Component {
     constructor(props) {
         super(props);
+        const {activeNode} = this.props || {};
 
         this.uiId = null;
         this.territory = {};
-        if (typeof this.props.activeNode === 'string') {
-            this.territory[this.props.activeNode] = {children: 0};
+        if (typeof activeNode === 'string') {
+            this.territory[activeNode] = {children: 0};
         }
     }
 
     componentDidMount() {
-        const client = this.props.gmeClient;
+        const {gmeClient} = this.props;
 
-        this.uiId = client.addUI(null, (events) => {
+        this.uiId = gmeClient.addUI(null, (events) => {
             let didChange = false;
             for (let i = 0; i < events.length; i += 1) {
                 if (events[i].etype === 'load') {
-                    this.onNodeLoad(client.getNode(events[i].eid));
+                    this.onNodeLoad(gmeClient.getNode(events[i].eid));
                     didChange = true;
                 } else if (events[i].etype === 'update') {
-                    this.onNodeUpdate(client.getNode(events[i].eid));
+                    this.onNodeUpdate(gmeClient.getNode(events[i].eid));
                     didChange = true;
                 } else if (events[i].etype === 'unload') {
                     this.onNodeUnload(events[i].eid);
@@ -42,14 +43,15 @@ export default class SingleConnectedNode extends Component {
             }
         });
 
-        client.updateTerritory(this.uiId, this.territory);
+        gmeClient.updateTerritory(this.uiId, this.territory);
     }
 
-    componentWillReceiveProps(newProps) {
-        const {gmeClient, activeNode} = this.props;
+    componentWillReceiveProps(nextProps, nextContent) {
+        const {gmeClient, activeNode} = this.props,
+            nextNode = nextProps.activeNode;
 
-        if (newProps.activeNode !== activeNode) {
-            this.territory = {[newProps.activeNode]: {children: 0}};
+        if (nextNode !== activeNode) {
+            this.territory = {[nextNode]: {children: 0}};
             gmeClient.updateTerritory(this.uiId, this.territory);
         }
     }
@@ -86,7 +88,9 @@ export default class SingleConnectedNode extends Component {
     }
 
     componentWillUnmount() {
-        this.props.gmeClient.removeUI(this.uiId);
+        const {gmeClient} = this.props;
+
+        gmeClient.removeUI(this.uiId);
     }
 }
 

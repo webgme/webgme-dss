@@ -37,10 +37,12 @@ class LeafNode extends Component {
     };
 
     onSelectVariable = (event, checked) => {
+        const {nodeData, addPlotVariable, removePlotVariable} = this.props;
+
         if (checked) {
-            this.props.addPlotVariable(this.props.nodeData.id);
+            addPlotVariable(nodeData.id);
         } else {
-            this.props.removePlotVariable(this.props.nodeData.id);
+            removePlotVariable(nodeData.id);
         }
     };
 
@@ -51,17 +53,16 @@ class LeafNode extends Component {
 
         // TODO: Style me
         return (<FormControlLabel style={{height: 28}} control={
-                                  <Checkbox
-                                      style={{height: 30}}
-                                      checked={isChecked}
-                                      onChange={this.onSelectVariable}
-                                      value={varName}/>
-                              }
-                              label={varName}
-            />);
+            <Checkbox
+                style={{height: 30}}
+                checked={isChecked}
+                onChange={this.onSelectVariable}
+                value={varName}/>
+        }
+                                  label={varName}
+        />);
     }
 }
-
 
 class SimulationResultSelector extends Component {
     static propTypes = {
@@ -72,10 +73,13 @@ class SimulationResultSelector extends Component {
         cursor: null
     };
 
-    constructor(props) {
-        super(props);
+    constructor(/*props*/) {
+        super();
+
+        const {simRes} = this.props;
+
         this.decorators = getTreeDecorators(connect(mapStateToProps, mapDispatchToProps)(LeafNode), {});
-        this.treeNodes = this.getTreeNodes(this.props.simRes.variables);
+        this.treeNodes = this.getTreeNodes(simRes.variables);
     }
 
     getTreeNodes(variables) {
@@ -134,7 +138,9 @@ class SimulationResultSelector extends Component {
         if (this.state.cursor) {
             // FIXME: This is modifying the state directly - however can we set the previous node
             // FIXME: to be deactivated with out modifying it?
-            this.state.cursor.active = false;
+            let oldCursor = this.state.cursor;
+            oldCursor.active = false;
+            // this.state.cursor.active = false;
         }
 
         node.active = true;

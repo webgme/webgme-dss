@@ -6,10 +6,7 @@ import {Link} from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
-import MenuIcon from 'material-ui-icons/Menu';
 
-import IconButton from 'material-ui/IconButton';
-import {toggleModelingView} from '../actions';
 import {appHeader as style} from '../styles';
 
 import Zoom from './Zoom';
@@ -23,7 +20,7 @@ const mapStateToProps = state => {
     }
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (/*dispatch*/) => {
     return {}
 };
 
@@ -36,10 +33,10 @@ class Header extends Component {
     };
 
     render() {
-        const {projectName, projectOwner, branchName} = this.props;
+        const {projectName, modelingView} = this.props;
 
         return (
-            <AppBar color={this.props.modelingView ? 'primary' : 'default'}>
+            <AppBar color={modelingView ? 'primary' : 'default'}>
                 <Toolbar style={style}>
                     <Link to={''} style={{textDecoration: 'none'}}>
                         <img src={logo} alt="logo" style={{height: 40, marginLeft: -15, marginRight: 30}}/>

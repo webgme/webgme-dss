@@ -14,7 +14,7 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import User from './HeaderPanel/User';
 // Own modules
-import reducers from "./reducers";
+import reducers from './reducers';
 
 import logo from './logo.svg';
 import './App.css';
@@ -24,21 +24,16 @@ import ModalSpinner from './gme/BaseComponents/ModalSpinner';
 
 const theme = createMuiTheme({
     palette: {
-        type: 'light' //dark
-    }
+        type: 'light', // dark
+    },
 });
 
-let store = createStore(reducers);
+const store = createStore(reducers);
 
 export default class App extends Component {
     state = {
         initialConnect: false,
-        waiting: false
-    };
-
-    stateChange = () => {
-        const newState = store.getState();
-        this.setState({waiting: newState.systemWaiting});
+        waiting: false,
     };
 
     componentDidMount() {
@@ -57,44 +52,58 @@ export default class App extends Component {
         };
     }
 
+    stateChange = () => {
+        const newState = store.getState();
+        this.setState({waiting: newState.systemWaiting});
+    };
+
     render() {
         const {initialConnect, waiting} = this.state;
         let content = (
             <header className="App-header">
-                <img src={logo} className={"App-logo-loading"} alt="logo"/>
-                <h1 className="App-title">{"Connecting to WebGME"}</h1>
+                <img src={logo} className="App-logo-loading" alt="logo" />
+                <h1 className="App-title">Connecting to WebGME</h1>
             </header>);
 
         if (initialConnect) {
             content = (
                 <div>
-                    <Route exact={true} path="/" render={() => {
-                        return (
+                    <Route
+                        exact
+                        path="/"
+                        render={() => (
                             <div>
                                 <header className="App-header">
-                                    <img src={logo} className={"App-logo"} alt="logo"/>
-                                    <h1 className="App-title">{"Welcome to WebGME-DSS"}</h1>
+                                    <img src={logo} className="App-logo" alt="logo" />
+                                    <h1 className="App-title">Welcome to WebGME-DSS</h1>
                                     <p style={{
                                         color: 'lightgrey',
                                         maxWidth: 400,
                                         textAlign: 'center',
                                         display: 'inline-block',
-                                        fontSize: 14
-                                    }}>WebGME Dynamic Systems Studio is a design studio for Modelica<sup>®</sup> with
-                                        planned simulation backed-end support from the OpenModelica compiler...</p>
+                                        fontSize: 14,
+                                    }}
+                                    >WebGME Dynamic Systems Studio is a design studio for Modelica<sup>®</sup> with
+                                        planned simulation backed-end support from the OpenModelica compiler...
+                                    </p>
                                 </header>
-                                <Toolbar disableGutters={true} style={{backgroundColor:'#222'}}>
-                                    <Typography style={{flex: 1}}/>
-                                    <User useWebGMEColors={true}/>
+                                <Toolbar disableGutters style={{backgroundColor: '#222'}}>
+                                    <Typography style={{flex: 1}} />
+                                    <User useWebGMEColors />
                                 </Toolbar>
-                                <Projects gmeClient={window.gmeClient}/>
+                                <Projects gmeClient={window.gmeClient} />
                             </div>
-                        );
-                    }}/>
-                    <Route path="/p/:owner/:name" render={({match}) => (
-                        <Project projectId={`${match.params.owner}+${match.params.name}`}
-                                 gmeClient={window.gmeClient}/>
-                    )}/>
+                        )}
+                    />
+                    <Route
+                        path="/p/:owner/:name"
+                        render={({match}) => (
+                            <Project
+                                projectId={`${match.params.owner}+${match.params.name}`}
+                                gmeClient={window.gmeClient}
+                            />
+                        )}
+                    />
                 </div>);
         }
 
@@ -104,7 +113,7 @@ export default class App extends Component {
                     <Router>
                         <MuiThemeProvider theme={theme}>
                             {content}
-                            <ModalSpinner visible={waiting}/>
+                            <ModalSpinner visible={waiting} />
                         </MuiThemeProvider>
                     </Router>
                 </div>

@@ -8,14 +8,13 @@ export default class ModalSpinner extends Component {
         return (
             <Modal open={visible}>
                 {visible ? <div style={{position: 'absolute', top: '50%', width: '100%'}}>
-                    <LinearProgress/>
-                    <br/>
-                    <LinearProgress color="secondary"/>
-                    <br/>
-                    <LinearProgress/>
-                </div> : null}
+                    <LinearProgress />
+                    <br />
+                    <LinearProgress color="secondary" />
+                    <br />
+                    <LinearProgress />
+                           </div> : null}
             </Modal>
-        )
-
+        );
     }
-};
+}

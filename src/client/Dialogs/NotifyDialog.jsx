@@ -6,27 +6,26 @@ import Dialog, {
     DialogContent,
     DialogTitle,
 } from 'material-ui/Dialog';
-import Button from 'material-ui/Button'
+import Button from 'material-ui/Button';
 
 export default class NotifyDialog extends Component {
     static propTypes = {
         title: PropTypes.string,
         text: PropTypes.string.isRequired,
-        onOK: PropTypes.func.isRequired
+        onOK: PropTypes.func.isRequired,
     };
 
     render() {
-
         const {text, onOK, title} = this.props;
 
         return (
-            <Dialog open={true}>
+            <Dialog open>
                 <DialogTitle>{title || 'Notification'}</DialogTitle>
                 <DialogContent style={{display: 'flex'}}>
                     {text}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={onOK} color='primary'>OK</Button>
+                    <Button onClick={onOK} color="primary">OK</Button>
                 </DialogActions>
             </Dialog>
         );

@@ -14,22 +14,18 @@ import User from './User';
 
 import logo from '../logo.svg';
 
-const mapStateToProps = state => {
-    return {
-        modelingView: state.modelingView
-    }
-};
+const mapStateToProps = state => ({
+    modelingView: state.modelingView,
+});
 
-const mapDispatchToProps = (/*dispatch*/) => {
-    return {}
-};
+const mapDispatchToProps = (/* dispatch */) => ({});
 
 class Header extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
         projectName: PropTypes.string.isRequired,
         projectOwner: PropTypes.string.isRequired,
-        branchName: PropTypes.string.isRequired
+        branchName: PropTypes.string.isRequired,
     };
 
     render() {
@@ -38,17 +34,17 @@ class Header extends Component {
         return (
             <AppBar color={modelingView ? 'primary' : 'default'}>
                 <Toolbar style={style}>
-                    <Link to={''} style={{textDecoration: 'none'}}>
-                        <img src={logo} alt="logo" style={{height: 40, marginLeft: -15, marginRight: 30}}/>
+                    <Link to="" style={{textDecoration: 'none'}}>
+                        <img src={logo} alt="logo" style={{height: 40, marginLeft: -15, marginRight: 30}} />
                     </Link>
                     <Typography type="title" color="inherit" noWrap>
-                        {/*{this.props.modelingView ? `Edit ${branchName} branch of ${projectOwner} / ${projectName}` :*/}
-                        {/*`Simulations of ${branchName} branch of ${projectOwner} / ${projectName}`}*/}
+                        {/* {this.props.modelingView ? `Edit ${branchName} branch of ${projectOwner} / ${projectName}` : */}
+                        {/* `Simulations of ${branchName} branch of ${projectOwner} / ${projectName}`} */}
                         {projectName}
                     </Typography>
-                    <Zoom/>
-                    <Typography style={{flex: 1}}/>
-                    <User/>
+                    <Zoom />
+                    <Typography style={{flex: 1}} />
+                    <User />
                 </Toolbar>
             </AppBar>
         );

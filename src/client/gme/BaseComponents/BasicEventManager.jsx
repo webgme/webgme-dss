@@ -12,7 +12,7 @@ export default class BasicEventManager {
     }
 
     fire(id, event) {
-        let oldEvent = this.lastEvents[id];
+        const oldEvent = this.lastEvents[id];
         this.lastEvents[id] = event;
         if (JSON.stringify(oldEvent) !== JSON.stringify(event)) {
             (this.subscribers[id] || []).forEach((eventFn) => {
@@ -31,4 +31,4 @@ export default class BasicEventManager {
         this.subscribers[id] = this.subscribers[id] || [];
         this.subscribers[id].splice(this.subscribers[id].indexOf(eventFn), 1);
     }
-};
+}

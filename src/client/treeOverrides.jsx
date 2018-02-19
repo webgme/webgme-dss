@@ -1,8 +1,8 @@
 import React from 'react';
-import {decorators, theme} from "react-treebeard";
+import {decorators, theme} from 'react-treebeard';
 
 
-//theme.tree.base.backgroundColor = props.theme.palette.background.paper;
+// theme.tree.base.backgroundColor = props.theme.palette.background.paper;
 theme.tree.base.backgroundColor = 'white';
 theme.tree.base.color = 'black';
 theme.tree.node.activeLink.background = 'lightgrey';
@@ -19,27 +19,25 @@ export class TreeContainer extends decorators.Container {
         const {style, node} = this.props;
 
         if (node.isRoot) {
-            return <div/>;
+            return <div />;
         }
-        else {
-            return <decorators.Toggle style={style.toggle}/>;
-        }
+
+        return <decorators.Toggle style={style.toggle} />;
     }
 }
 
 const defaultHeader = decorators.Header;
 
 export function getTreeDecorators(LeafItem, leafProps) {
-
     decorators.Container = TreeContainer;
 
     decorators.Header = (props) => {
         if (props.node.isRoot) {
-            return <div/>;
+            return <div />;
         } else if (props.node.isFolder) {
             return defaultHeader(props);
         }
 
-        return <LeafItem nodeData={props.node} {...leafProps}/>
+        return <LeafItem nodeData={props.node} {...leafProps} />;
     };
 }

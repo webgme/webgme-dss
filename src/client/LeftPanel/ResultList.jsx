@@ -16,26 +16,22 @@ import Territory from '../gme/BaseComponents/Territory';
 import getMetaNodeByName from '../gme/utils/getMetaNodeByName';
 import {setPlotNode, setSimResData, setResultNode} from '../actions';
 
-const mapStateToProps = state => {
-    return {
-        plotModel: state.plotData.nodeId,
-        resultNode: state.resultNode
-    }
-};
+const mapStateToProps = state => ({
+    plotModel: state.plotData.nodeId,
+    resultNode: state.resultNode,
+});
 
-const mapDispatchToProps = dispatch => {
-    return {
-        setPlotNode: nodeId => {
-            dispatch(setPlotNode(nodeId));
-        },
-        setSimResData: simRes => {
-            dispatch(setSimResData(simRes));
-        },
-        setResultNode: resultNode => {
-            dispatch(setResultNode(resultNode));
-        }
-    }
-};
+const mapDispatchToProps = dispatch => ({
+    setPlotNode: (nodeId) => {
+        dispatch(setPlotNode(nodeId));
+    },
+    setSimResData: (simRes) => {
+        dispatch(setSimResData(simRes));
+    },
+    setResultNode: (resultNode) => {
+        dispatch(setResultNode(resultNode));
+    },
+});
 
 class ResultList extends Component {
     static propTypes = {
@@ -47,7 +43,7 @@ class ResultList extends Component {
         containerId: null,
         expandedResId: null,
         territory: null,
-        results: {}
+        results: {},
     };
 
     constructor(props) {
@@ -58,14 +54,14 @@ class ResultList extends Component {
         if (simResNode) {
             this.state.containerId = simResNode.getId();
             this.state.territory = {
-                [this.state.containerId]: {children: 1}
+                [this.state.containerId]: {children: 1},
             };
         } else {
             console.error(new Error('Could not find SimulationResults in meta...'));
         }
     }
 
-    switchPlotNode = resId => {
+    switchPlotNode = (resId) => {
         const {setPlotNode, setSimResData} = this.props;
         const {results} = this.state;
 
@@ -81,20 +77,20 @@ class ResultList extends Component {
     handleEvents = (hash, loads, updates, unloads) => {
         const {gmeClient, resultNode, setResultNode} = this.props;
         const {containerId} = this.state;
-        let updateDesc = {};
+        const updateDesc = {};
 
-        loads.forEach(nodeId => {
+        loads.forEach((nodeId) => {
             if (nodeId !== containerId) {
-                let nodeObj = gmeClient.getNode(nodeId);
-                let modelId = nodeObj.getChildrenIds()[0]; // FIXME: This is assuming one and only one model
-                let isRunning = !nodeObj.getAttribute('stdout');
+                const nodeObj = gmeClient.getNode(nodeId);
+                const modelId = nodeObj.getChildrenIds()[0]; // FIXME: This is assuming one and only one model
+                const isRunning = !nodeObj.getAttribute('stdout');
                 updateDesc[nodeId] = {
                     $set: {
                         name: nodeObj.getAttribute('name'),
-                        isRunning: isRunning,
-                        modelId: modelId,
-                        simRes: nodeObj.getAttribute('simRes')
-                    }
+                        isRunning,
+                        modelId,
+                        simRes: nodeObj.getAttribute('simRes'),
+                    },
                 };
 
                 if (nodeId === resultNode && isRunning === false) {
@@ -103,17 +99,17 @@ class ResultList extends Component {
             }
         });
 
-        updates.forEach(nodeId => {
+        updates.forEach((nodeId) => {
             if (nodeId !== containerId) {
-                let nodeObj = gmeClient.getNode(nodeId);
-                let modelId = nodeObj.getChildrenIds()[0]; // FIXME: This is assuming one and only one model
-                let isRunning = !nodeObj.getAttribute('stdout');
+                const nodeObj = gmeClient.getNode(nodeId);
+                const modelId = nodeObj.getChildrenIds()[0]; // FIXME: This is assuming one and only one model
+                const isRunning = !nodeObj.getAttribute('stdout');
 
                 updateDesc[nodeId] = {
                     name: {$set: nodeObj.getAttribute('name')},
                     isRunning: {$set: isRunning},
                     modelId: {$set: modelId},
-                    simRes: {$set: nodeObj.getAttribute('simRes')}
+                    simRes: {$set: nodeObj.getAttribute('simRes')},
                 };
 
                 if (nodeId === resultNode && isRunning === false) {
@@ -130,8 +126,8 @@ class ResultList extends Component {
         }
 
         this.setState({
-            results: update(this.state.results, updateDesc)
-        })
+            results: update(this.state.results, updateDesc),
+        });
     };
 
     handleExpand = resId => (event, expanded) => {
@@ -153,55 +149,63 @@ class ResultList extends Component {
 
         return (
             <div style={{display: minimized ? 'none' : undefined}}>
-                <Territory gmeClient={gmeClient} territory={territory}
-                           onUpdate={this.handleEvents} onlyActualEvents={true}/>
+                <Territory
+                    gmeClient={gmeClient}
+                    territory={territory}
+                    onUpdate={this.handleEvents}
+                    onlyActualEvents
+                />
 
-                {Object.keys(results).map(resId => {
-                        const resInfo = results[resId];
-                        const hasResults = resInfo.modelId === plotModel;
-                        const isExpanded = resId === expandedResId;
-                        const failed = resInfo.isRunning === false && !resInfo.simRes;
+                {Object.keys(results).map((resId) => {
+                    const resInfo = results[resId];
+                    const hasResults = resInfo.modelId === plotModel;
+                    const isExpanded = resId === expandedResId;
+                    const failed = resInfo.isRunning === false && !resInfo.simRes;
 
-                        let statusIcon = resInfo.isRunning ? <CircularProgress size={24}/> :
-                            <CheckIcon style={{color: 'lightgreen'}}/>;
+                    let statusIcon = resInfo.isRunning ? <CircularProgress size={24} /> :
+                        <CheckIcon style={{color: 'lightgreen'}} />;
 
-                        if (failed) {
-                            statusIcon = <ErrorIcon style={{color: 'red'}}/>;
-                        }
+                    if (failed) {
+                        statusIcon = <ErrorIcon style={{color: 'red'}} />;
+                    }
 
-                        return (
-                            <ExpansionPanel key={resId}
-                                            expanded={isExpanded}
-                                            onChange={this.handleExpand(resId)}>
-                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                                    <div style={{marginRight: 6, marginLeft: -18}}>
-                                        {statusIcon}
-                                    </div>
-                                    <Typography type='subheading' style={{
+                    return (
+                        <ExpansionPanel
+                            key={resId}
+                            expanded={isExpanded}
+                            onChange={this.handleExpand(resId)}
+                        >
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                <div style={{marginRight: 6, marginLeft: -18}}>
+                                    {statusIcon}
+                                </div>
+                                <Typography
+                                    type="subheading"
+                                    style={{
                                         textOverflow: 'ellipsis',
                                         maxWidth: 160,
-                                        overflow: 'hidden'
-                                    }}>{resInfo.name}</Typography>
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>
-                                    { (() => {
-                                        if (hasResults) {
-                                            return <SimulationResultSelector gmeClient={gmeClient} nodeId={resId}/>;
-                                        } else if (failed) {
-                                            return <div>simulation failed</div>;
-                                        } else {
-                                            return (
-                                                <div>
-                                                <LinearProgress/>
-                                                <br/>
-                                                <LinearProgress color="secondary"/>
-                                            </div>);
-                                        }
-                                    })()}
-                                </ExpansionPanelDetails>
-                            </ExpansionPanel>);
-                    }
-                )}
+                                        overflow: 'hidden',
+                                    }}
+                                >{resInfo.name}
+                                </Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>
+                                { (() => {
+                                    if (hasResults) {
+                                        return <SimulationResultSelector gmeClient={gmeClient} nodeId={resId} />;
+                                    } else if (failed) {
+                                        return <div>simulation failed</div>;
+                                    }
+                                    return (
+                                        <div>
+                                            <LinearProgress />
+                                            <br />
+                                            <LinearProgress color="secondary" />
+                                        </div>);
+                                })()}
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>);
+                })}
             </div>);
     }
 }

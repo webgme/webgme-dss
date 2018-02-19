@@ -30,23 +30,23 @@ export default function colorHash(inputString) {
         sum += inputString.charCodeAt(i);
     }
 
-    let r = ~~(('0.' + Math.sin(sum + 1).toString().substr(6)) * 256);
-    let g = ~~(('0.' + Math.sin(sum + 2).toString().substr(6)) * 256);
-    let b = ~~(('0.' + Math.sin(sum + 3).toString().substr(6)) * 256);
+    const r = ~~((`0.${Math.sin(sum + 1).toString().substr(6)}`) * 256);
+    const g = ~~((`0.${Math.sin(sum + 2).toString().substr(6)}`) * 256);
+    const b = ~~((`0.${Math.sin(sum + 3).toString().substr(6)}`) * 256);
 
-    let rgb = "rgb(" + r + ", " + g + ", " + b + ")";
+    const rgb = `rgb(${r}, ${g}, ${b})`;
 
-    let hex = "#";
+    let hex = '#';
 
-    hex += ("00" + r.toString(16)).substr(-2, 2).toUpperCase();
-    hex += ("00" + g.toString(18)).substr(-2, 2).toUpperCase();
-    hex += ("00" + b.toString(20)).substr(-2, 2).toUpperCase();
+    hex += (`00${r.toString(16)}`).substr(-2, 2).toUpperCase();
+    hex += (`00${g.toString(18)}`).substr(-2, 2).toUpperCase();
+    hex += (`00${b.toString(20)}`).substr(-2, 2).toUpperCase();
 
     return {
-        r: r,
-        g: g,
-        b: b,
-        rgb: rgb,
-        hex: hex
+        r,
+        g,
+        b,
+        rgb,
+        hex,
     };
 }

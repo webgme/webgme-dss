@@ -5,21 +5,16 @@
  * @returns {string}
  */
 function getIndexedName(name, currentNames) {
-    let indices = currentNames
-        .filter(n => {
-            return n.startsWith(name);
-        })
-        .map(n => {
-            let indexStr = n.substring(name.length);
+    const indices = currentNames
+        .filter(n => n.startsWith(name))
+        .map((n) => {
+            const indexStr = n.substring(name.length);
             if (indexStr === '') {
                 return 0;
-            } else {
-                return parseInt(indexStr, 10);
             }
+            return parseInt(indexStr, 10);
         })
-        .filter(index => {
-            return isNaN(index) === false;
-        });
+        .filter(index => isNaN(index) === false);
 
     if (indices.length === 0) {
         return name;

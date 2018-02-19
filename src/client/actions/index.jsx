@@ -1,104 +1,81 @@
-export const setActiveNode = activeNode => {
-    return {
-        type: 'SET_ACTIVE_NODE',
-        activeNode
-    };
-};
+export const setActiveNode = activeNode => ({
+    type: 'SET_ACTIVE_NODE',
+    activeNode,
+});
 
-export const setActiveSelection = activeSelection => {
-    return {
-        type: 'SET_ACTIVE_SELECTION',
-        activeSelection
-    };
-};
+export const setActiveSelection = activeSelection => ({
+    type: 'SET_ACTIVE_SELECTION',
+    activeSelection,
+});
 
-export const toggleLeftDrawer = show => {
+export const toggleLeftDrawer = (show) => {
     if (show) {
         return {
-            type: 'SHOW_LEFT_DRAWER'
-        };
-    } else {
-        return {
-            type: 'HIDE_LEFT_DRAWER'
+            type: 'SHOW_LEFT_DRAWER',
         };
     }
+    return {
+        type: 'HIDE_LEFT_DRAWER',
+    };
 };
 
-export const toggleRightDrawer = show => {
+export const toggleRightDrawer = (show) => {
     if (show) {
         return {
-            type: 'SHOW_RIGHT_DRAWER'
-        };
-    } else {
-        return {
-            type: 'HIDE_RIGHT_DRAWER'
+            type: 'SHOW_RIGHT_DRAWER',
         };
     }
-};
-
-export const setScale = scale => {
     return {
-        type: 'SET_SCALE',
-        scale
+        type: 'HIDE_RIGHT_DRAWER',
     };
 };
 
-export const addPlotVariable = variable => {
-    return {
-        type: 'ADD_PLOT_VARIABLE',
-        variable
-    };
-};
+export const setScale = scale => ({
+    type: 'SET_SCALE',
+    scale,
+});
 
-export const removePlotVariable = variable => {
-    return {
-        type: 'REMOVE_PLOT_VARIABLE',
-        variable
-    };
-};
+export const addPlotVariable = variable => ({
+    type: 'ADD_PLOT_VARIABLE',
+    variable,
+});
 
-export const clearPlotVariables = () => {
-    return {
-        type: 'CLEAR_PLOT_VARIABLES'
-    };
-};
+export const removePlotVariable = variable => ({
+    type: 'REMOVE_PLOT_VARIABLE',
+    variable,
+});
 
-export const setPlotNode = (nodeId) => {
-    return {
-        type: 'SET_PLOT_NODE',
-        nodeId
-    };
-};
+export const clearPlotVariables = () => ({
+    type: 'CLEAR_PLOT_VARIABLES',
+});
 
-export const setSimResData = (simRes) => {
-    return {
-        type: 'SET_SIM_RES_DATA',
-        simRes
-    };
-};
+export const setPlotNode = nodeId => ({
+    type: 'SET_PLOT_NODE',
+    nodeId,
+});
 
-export const setResultNode = resultNode => {
-    return {
-        type: 'SET_RESULT_NODE',
-        resultNode
-    };
-};
+export const setSimResData = simRes => ({
+    type: 'SET_SIM_RES_DATA',
+    simRes,
+});
 
-export const toggleModelingView = show => {
+export const setResultNode = resultNode => ({
+    type: 'SET_RESULT_NODE',
+    resultNode,
+});
+
+export const toggleModelingView = (show) => {
     if (show) {
         return {
-            type: 'MODELING_VIEW'
-        };
-    } else {
-        return {
-            type: 'SIMULATION_VIEW'
+            type: 'MODELING_VIEW',
         };
     }
-};
-
-export const setSystemWaiting = systemWaiting => {
     return {
-        type: 'SET_SYSTEM_WAITING',
-        systemWaiting
+        type: 'SIMULATION_VIEW',
     };
 };
+
+export const setSystemWaiting = systemWaiting => ({
+    type: 'SET_SYSTEM_WAITING',
+    systemWaiting,
+});

@@ -6,30 +6,35 @@ export default class Territory extends Component {
         gmeClient: PropTypes.object.isRequired,
         territory: PropTypes.object,
         onUpdate: PropTypes.func,
-        onlyActualEvents: PropTypes.bool.isRequired
+        onlyActualEvents: PropTypes.bool.isRequired,
     };
 
     uiId = null;
 
     componentDidMount() {
-        const {gmeClient, territory, onUpdate, onlyActualEvents} = this.props;
+        const {
+            gmeClient, territory, onUpdate, onlyActualEvents,
+        } = this.props;
 
         this.uiId = gmeClient.addUI(null, (events) => {
-            let load = [], update = [], unload = [], hash;
+            let load = [],
+                update = [],
+                unload = [],
+                hash;
 
             events.forEach((event) => {
                 switch (event.etype) {
-                    case 'load':
-                        load.push(event.eid);
-                        break;
-                    case 'update':
-                        update.push(event.eid);
-                        break;
-                    case 'unload':
-                        unload.push(event.eid);
-                        break;
-                    default:
-                    //technical event, do not care
+                case 'load':
+                    load.push(event.eid);
+                    break;
+                case 'update':
+                    update.push(event.eid);
+                    break;
+                case 'unload':
+                    unload.push(event.eid);
+                    break;
+                default:
+                    // technical event, do not care
                 }
             });
             hash = gmeClient.getNode('').getId();

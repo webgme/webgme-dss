@@ -9,15 +9,15 @@ import Typography from 'material-ui/Typography';
 
 export default class User extends Component {
     static propTypes = {
-        useWebGMEColors: PropTypes.bool
+        useWebGMEColors: PropTypes.bool,
     };
 
     static defaultProps = {
-        useWebGMEColors: false
+        useWebGMEColors: false,
     };
 
     state = {
-        userInfo: null
+        userInfo: null,
     };
 
     componentDidMount() {
@@ -30,17 +30,18 @@ export default class User extends Component {
                 } else {
                     userInfo = res.body;
                 }
-                this.setState({userInfo: userInfo});
+                this.setState({userInfo});
             });
     }
 
     render() {
         const {userInfo} = this.state,
             {useWebGMEColors} = this.props;
-        let accountStyle = {}, nameStyle = {}, logoutStyle = {};
+        let accountStyle = {},
+            nameStyle = {},
+            logoutStyle = {};
 
-        if (userInfo === null)
-            return null;
+        if (userInfo === null) { return null; }
 
         if (useWebGMEColors) {
             nameStyle = {color: '#70AD47'};
@@ -48,16 +49,16 @@ export default class User extends Component {
             logoutStyle = {color: '#FF0000'};
         }
         // console.log(userInfo);
-        return [<Typography type={'subheading'} style={nameStyle}>{userInfo._id}</Typography>,
-            (<Tooltip title={'Profile'}>
+        return [<Typography type="subheading" style={nameStyle}>{userInfo._id}</Typography>,
+            (<Tooltip title="Profile">
                 <IconButton>
-                    <a href={'/profile/home'}><AccountCircle style={accountStyle}/></a>
+                    <a href="/profile/home"><AccountCircle style={accountStyle} /></a>
                 </IconButton>
-            </Tooltip>),
-            (<Tooltip title={'Log out'}>
+             </Tooltip>),
+            (<Tooltip title="Log out">
                 <IconButton>
-                    <a href={'/logout'}><Cancel style={logoutStyle}/></a>
+                    <a href="/logout"><Cancel style={logoutStyle} /></a>
                 </IconButton>
-            </Tooltip>)];
+             </Tooltip>)];
     }
 }

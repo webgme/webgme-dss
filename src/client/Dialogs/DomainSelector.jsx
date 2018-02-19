@@ -14,12 +14,12 @@ import {
     FormControlLabel,
     FormHelperText,
 } from 'material-ui/Form';
-import Button from 'material-ui/Button'
+import Button from 'material-ui/Button';
 import Checkbox from 'material-ui/Checkbox';
 import seedInfo from '../../seeds/Modelica/metadata.json';
 
 import getIndexedName from '../gme/utils/getIndexedName';
-import {AttributeItem} from "../RightPanel/AttributeEditor";
+import {AttributeItem} from '../RightPanel/AttributeEditor';
 
 export default class DomainSelector extends Component {
     static propTypes = {
@@ -29,26 +29,26 @@ export default class DomainSelector extends Component {
         takenNames: PropTypes.array,
         title: PropTypes.string.isRequired,
         onOK: PropTypes.func.isRequired,
-        onCancel: PropTypes.func.isRequired
+        onCancel: PropTypes.func.isRequired,
     };
 
     state = {
-        selected: {}
+        selected: {},
     };
 
     componentWillMount() {
         const {domains, defaultName, takenNames} = this.props;
-        let selected = {};
+        const selected = {};
 
         if (defaultName) {
             this.name = getIndexedName(defaultName, takenNames);
         }
 
         if (domains) {
-            seedInfo.domains.forEach(domain => {
+            seedInfo.domains.forEach((domain) => {
                 selected[domain] = domains.includes(domain);
             });
-            this.setState({selected: selected});
+            this.setState({selected});
         }
     }
 
@@ -58,34 +58,36 @@ export default class DomainSelector extends Component {
         onOK({
             name: this.name,
             domains: Object.keys(this.state.selected)
-                .filter(domain => {
-                    return this.state.selected[domain];
-                })
+                .filter(domain => this.state.selected[domain]),
         });
     };
 
     handleCheckChange = domainName => (event, checked) => {
         this.setState({
             selected: update(this.state.selected, {
-                [domainName]: {$set: checked}
-            })
+                [domainName]: {$set: checked},
+            }),
         });
     };
 
     render() {
-        const {defaultName, showDomainSelection, title, onCancel} = this.props,
+        const {
+                defaultName, showDomainSelection, title, onCancel,
+            } = this.props,
             {selected} = this.state;
         let form = null,
             nameInput = null;
 
         if (defaultName === 'string') {
-            nameInput = <AttributeItem value={this.name}
-                                       onChange={newValue => {
-                                           // FIXME: Should name really be a field of the instance?
-                                           this.name = newValue.trim();
-                                       }}
-                                       name={'Name'}
-                                       type={'string'}/>
+            nameInput = (<AttributeItem
+                value={this.name}
+                onChange={(newValue) => {
+                    // FIXME: Should name really be a field of the instance?
+                    this.name = newValue.trim();
+                }}
+                name="Name"
+                type="string"
+            />);
         }
 
         if (showDomainSelection) {
@@ -93,35 +95,39 @@ export default class DomainSelector extends Component {
                 <FormControl component="fieldset">
                     <FormLabel component="legend">Select Domains</FormLabel>
                     <FormGroup>
-                        {seedInfo.domains.map((domain) => {
-                            return (
-                                <FormControlLabel key={domain}
-                                                  control={
-                                                      <Checkbox
-                                                          checked={selected[domain]}
-                                                          onChange={this.handleCheckChange(domain)}
-                                                          value={domain}/>
-                                                  }
-                                                  label={domain}
-                                />)
-                        })}
+                        {seedInfo.domains.map(domain => (
+                            <FormControlLabel
+                                key={domain}
+                                control={
+                                    <Checkbox
+                                        checked={selected[domain]}
+                                        onChange={this.handleCheckChange(domain)}
+                                        value={domain}
+                                    />
+                                }
+                                label={domain}
+                            />))}
                     </FormGroup>
                     <FormHelperText>You'll need at least one</FormHelperText>
                 </FormControl>);
         }
 
         return (
-            <Dialog open={true}>
+            <Dialog open>
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent style={{display: 'flex'}}>
                     {form}
                     {nameInput}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.onOKClick} color='primary'>OK</Button>
-                    <Button onClick={() => {
-                        onCancel()
-                    }} color='secondary'>Cancel</Button>
+                    <Button onClick={this.onOKClick} color="primary">OK</Button>
+                    <Button
+                        onClick={() => {
+                            onCancel();
+                        }}
+                        color="secondary"
+                    >Cancel
+                    </Button>
                 </DialogActions>
             </Dialog>
         );

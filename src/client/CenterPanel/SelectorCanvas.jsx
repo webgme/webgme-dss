@@ -3,19 +3,15 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import SingleConnectedNode from '../gme/BaseComponents/SingleConnectedNode';
-import SelectorCanvasItem from "./SelectorCanvasItem";
+import SelectorCanvasItem from './SelectorCanvasItem';
 import BasicEventManager from '../gme/BaseComponents/BasicEventManager';
 
-const mapStateToProps = state => {
-    return {
-        activeNode: state.plotData.nodeId,
-        scale: state.scale
-    }
-};
+const mapStateToProps = state => ({
+    activeNode: state.plotData.nodeId,
+    scale: state.scale,
+});
 
-const mapDispatchToProps = (/*dispatch*/) => {
-    return {}
-};
+const mapDispatchToProps = (/* dispatch */) => ({});
 
 class SelectorCanvas extends SingleConnectedNode {
     static propTypes = {
@@ -23,12 +19,12 @@ class SelectorCanvas extends SingleConnectedNode {
         scrollPos: PropTypes.object.isRequired,
 
         activeNode: PropTypes.string.isRequired,
-        scale: PropTypes.number.isRequired
+        scale: PropTypes.number.isRequired,
     };
 
     state = {
         children: [],
-        nodeInfo: {}
+        nodeInfo: {},
     };
 
     em = null;
@@ -44,14 +40,12 @@ class SelectorCanvas extends SingleConnectedNode {
         let childrenIds = nodeObj.getChildrenIds(),
             newChildren;
 
-        newChildren = childrenIds.map((id) => {
-            return {id: id};
-        });
+        newChildren = childrenIds.map(id => ({id}));
         this.setState({
             children: newChildren,
             nodeInfo: {
-                name: nodeObj.getAttribute('name')
-            }
+                name: nodeObj.getAttribute('name'),
+            },
         });
     }
 
@@ -70,27 +64,27 @@ class SelectorCanvas extends SingleConnectedNode {
 
         console.log(activeNode);
 
-        let childrenItems = children.map((child) => {
-            return (<SelectorCanvasItem
-                key={child.id}
-                gmeClient={gmeClient}
-                activeNode={child.id}
-                contextNode={activeNode}
-                eventManager={self.em}/>);
-        });
-        return (<div ref={(canvas) => {
-            if (canvas)
-                self.offset = {x: canvas.offsetParent.offsetLeft, y: canvas.offsetParent.offsetTop};
-        }}
-                     style={{
-                         width: '100%',
-                         height: '100%',
-                         overflow: 'auto',
-                         zIndex: 1,
-                         position: 'relative'
-                     }}>
+        const childrenItems = children.map(child => (<SelectorCanvasItem
+            key={child.id}
+            gmeClient={gmeClient}
+            activeNode={child.id}
+            contextNode={activeNode}
+            eventManager={self.em}
+        />));
+        return (<div
+            ref={(canvas) => {
+                if (canvas) { self.offset = {x: canvas.offsetParent.offsetLeft, y: canvas.offsetParent.offsetTop}; }
+            }}
+            style={{
+                width: '100%',
+                height: '100%',
+                overflow: 'auto',
+                zIndex: 1,
+                position: 'relative',
+            }}
+        >
             {childrenItems}
-        </div>);
+                </div>);
     }
 }
 

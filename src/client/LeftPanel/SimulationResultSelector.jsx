@@ -5,44 +5,45 @@ import {connect} from 'react-redux';
 
 import Checkbox from 'material-ui/Checkbox';
 import {
-    FormControlLabel
+    FormControlLabel,
 } from 'material-ui/Form';
 import {Treebeard} from 'react-treebeard';
-import {treeBeardTheme, getTreeDecorators} from "../treeOverrides";
+import {treeBeardTheme, getTreeDecorators} from '../treeOverrides';
 import getObjectSorter from '../gme/utils/getObjectSorter';
 
 import {addPlotVariable, removePlotVariable} from '../actions';
 
-const mapStateToProps = state => {
-    return {
-        selectedVariables: state.plotData.variables,
-        simRes: state.plotData.simRes
-    }
-};
+const mapStateToProps = state => ({
+    selectedVariables: state.plotData.variables,
+    simRes: state.plotData.simRes,
+});
 
-const mapDispatchToProps = dispatch => {
-    return {
-        addPlotVariable: varName => {
-            dispatch(addPlotVariable(varName));
-        },
-        removePlotVariable: varName => {
-            dispatch(removePlotVariable(varName));
-        }
-    }
-};
+const mapDispatchToProps = dispatch => ({
+    addPlotVariable: (varName) => {
+        dispatch(addPlotVariable(varName));
+    },
+    removePlotVariable: (varName) => {
+        dispatch(removePlotVariable(varName));
+    },
+});
 
 class LeafNode extends Component {
     static propTypes = {
-        nodeData: PropTypes.object.isRequired
+        nodeData: PropTypes.shape({
+            name: PropTypes.string,
+        }).isRequired,
+        addPlotVariable: PropTypes.func.isRequired,
+        removePlotVariable: PropTypes.func.isRequired,
+        selectedVariables: PropTypes.arrayOf(PropTypes.string).isRequired,
     };
 
     onSelectVariable = (event, checked) => {
-        const {nodeData, addPlotVariable, removePlotVariable} = this.props;
+        const {nodeData} = this.props;
 
         if (checked) {
-            addPlotVariable(nodeData.id);
+            this.props.addPlotVariable(nodeData.id);
         } else {
-            removePlotVariable(nodeData.id);
+            this.props.removePlotVariable(nodeData.id);
         }
     };
 
@@ -52,93 +53,45 @@ class LeafNode extends Component {
         const isChecked = selectedVariables.includes(nodeData.id);
 
         // TODO: Style me
-        return (<FormControlLabel style={{height: 28}} control={
-            <Checkbox
-                style={{height: 30}}
-                checked={isChecked}
-                onChange={this.onSelectVariable}
-                value={varName}/>
-        }
-                                  label={varName}
-        />);
+        return (
+            <FormControlLabel
+                style={{height: 28}}
+                control={
+                    <Checkbox
+                        style={{height: 30}}
+                        checked={isChecked}
+                        onChange={this.onSelectVariable}
+                        value={varName}
+                    />
+                }
+                label={varName}
+            />);
     }
 }
 
 class SimulationResultSelector extends Component {
     static propTypes = {
-        gmeClient: PropTypes.object.isRequired
+        simRes: PropTypes.shape({
+            variables: PropTypes.arrayOf(PropTypes.string),
+        }).isRequired,
     };
 
-    state = {
-        cursor: null
-    };
-
-    constructor(/*props*/) {
-        super();
-
-        const {simRes} = this.props;
+    constructor(props) {
+        super(props);
 
         this.decorators = getTreeDecorators(connect(mapStateToProps, mapDispatchToProps)(LeafNode), {});
-        this.treeNodes = this.getTreeNodes(simRes.variables);
+        this.treeNodes = this.getTreeNodes();
     }
 
-    getTreeNodes(variables) {
-        let rootNode = {
-            isRoot: true,
-            toggled: true,
-            name: 'root',
-            isFolder: true,
-            children: [],
-            folders: {}
-        };
-
-        const sorter = getObjectSorter('sortName', true, true);
-
-        Object.keys(variables).forEach(varName => {
-            let treeNode = rootNode;
-            let isDer = varName.startsWith('der(');
-            let fullPath = varName;
-
-            if (isDer) {
-                fullPath = varName.substr('der('.length).slice(0, -1);
-            }
-
-            fullPath.split('.').forEach((path, i, arr) => {
-                if (i === arr.length - 1) {
-                    treeNode.children.push(update(variables[varName], {
-                        sortName: {$set: ':' + path},
-                        name: {$set: isDer ? `der( ${path} )` : path},
-                        id: {$set: varName}
-                    }));
-                } else {
-                    if (!treeNode.folders[path]) {
-                        treeNode.folders[path] = {
-                            isFolder: true,
-                            sortName: path,
-                            toggled: false,
-                            name: path,
-                            folders: {},
-                            children: []
-                        };
-
-                        treeNode.children.push(treeNode.folders[path]);
-                    }
-
-                    treeNode = treeNode.folders[path];
-                }
-
-                treeNode.children.sort(sorter);
-            });
-        });
-
-        return rootNode;
-    }
+    state = {
+        cursor: null,
+    };
 
     onTreeNodeToggle = (node, toggled) => {
         if (this.state.cursor) {
             // FIXME: This is modifying the state directly - however can we set the previous node
             // FIXME: to be deactivated with out modifying it?
-            let oldCursor = this.state.cursor;
+            const oldCursor = this.state.cursor;
             oldCursor.active = false;
             // this.state.cursor.active = false;
         }
@@ -154,12 +107,67 @@ class SimulationResultSelector extends Component {
         this.setState({cursor: node});
     };
 
+    getTreeNodes() {
+        const rootNode = {
+            isRoot: true,
+            toggled: true,
+            name: 'root',
+            isFolder: true,
+            children: [],
+            folders: {},
+        };
+
+        const {variables} = this.props.simRes;
+        const sorter = getObjectSorter('sortName', true, true);
+
+
+        Object.keys(variables).forEach((varName) => {
+            let treeNode = rootNode;
+            const isDer = varName.startsWith('der(');
+            let fullPath = varName;
+
+            if (isDer) {
+                fullPath = varName.substr('der('.length).slice(0, -1);
+            }
+
+            fullPath.split('.').forEach((path, i, arr) => {
+                if (i === arr.length - 1) {
+                    treeNode.children.push(update(variables[varName], {
+                        sortName: {$set: `:${path}`},
+                        name: {$set: isDer ? `der( ${path} )` : path},
+                        id: {$set: varName},
+                    }));
+                } else {
+                    if (!treeNode.folders[path]) {
+                        treeNode.folders[path] = {
+                            isFolder: true,
+                            sortName: path,
+                            toggled: false,
+                            name: path,
+                            folders: {},
+                            children: [],
+                        };
+
+                        treeNode.children.push(treeNode.folders[path]);
+                    }
+
+                    treeNode = treeNode.folders[path];
+                }
+
+                treeNode.children.sort(sorter);
+            });
+        });
+
+        return rootNode;
+    }
+
     render() {
         return (
-            <Treebeard data={this.treeNodes}
-                       onToggle={this.onTreeNodeToggle}
-                       decorators={this.decorators}
-                       style={treeBeardTheme}
+            <Treebeard
+                data={this.treeNodes}
+                onToggle={this.onTreeNodeToggle}
+                decorators={this.decorators}
+                style={treeBeardTheme}
             />
         );
     }

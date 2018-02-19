@@ -12,12 +12,12 @@ export default class CanvasItemPort extends Component {
         dimensions: PropTypes.object,
         hidden: PropTypes.bool.isRequired,
         absolutePosition: PropTypes.object.isRequired,
-        validTypes: PropTypes.object.isRequired
+        validTypes: PropTypes.object.isRequired,
     };
 
     state = {
         freeze: false,
-        mouseOver: false
+        mouseOver: false,
     };
 
     createConnection = (source, type) => {
@@ -33,22 +33,23 @@ export default class CanvasItemPort extends Component {
 
     onClick = (event) => {
         let self = this,
-            {connectionManager, activeNode, absolutePosition, dimensions, validTypes} = this.props;
+            {
+                connectionManager, activeNode, absolutePosition, dimensions, validTypes,
+            } = this.props;
 
         event.stopPropagation();
         event.preventDefault();
 
         if (connectionManager.isConnecting) {
-            let connectionParams = connectionManager.endConnection();
+            const connectionParams = connectionManager.endConnection();
             if (connectionParams.source !== activeNode) {
                 this.createConnection(connectionParams.source, connectionParams.type);
             }
             this.setState({freeze: false});
         } else {
-
             connectionManager.startConnection(activeNode, validTypes.src, {
                 x: absolutePosition.x + (dimensions.x / 2),
-                y: absolutePosition.y + (dimensions.y / 2)
+                y: absolutePosition.y + (dimensions.y / 2),
             }, () => {
                 self.setState({freeze: false});
             });
@@ -65,9 +66,15 @@ export default class CanvasItemPort extends Component {
     };
 
     render() {
-        let {hidden, position, dimensions, validTypes, connectionManager} = this.props,
+        let {
+                hidden, position, dimensions, validTypes, connectionManager,
+            } = this.props,
             {freeze, mouseOver} = this.state,
-            left, top, width, height, border;
+            left,
+            top,
+            width,
+            height,
+            border;
 
         let background;
         if (freeze) {
@@ -94,26 +101,27 @@ export default class CanvasItemPort extends Component {
             }
         }
 
-        left = mouseOver ? (position ? position.x - 5 : 0) + 'px' : (position ? position.x : 0) + 'px';
-        top = mouseOver ? (position ? position.y - 5 : 0) + 'px' : (position ? position.y : 0) + 'px';
-        width = mouseOver ? (dimensions ? dimensions.x + 8 : 13) + 'px' : (dimensions ? dimensions.x : 5) + 'px';
-        height = mouseOver ? (dimensions ? dimensions.y + 8 : 13) + 'px' : (dimensions ? dimensions.y : 5) + 'px';
+        left = mouseOver ? `${position ? position.x - 5 : 0}px` : `${position ? position.x : 0}px`;
+        top = mouseOver ? `${position ? position.y - 5 : 0}px` : `${position ? position.y : 0}px`;
+        width = mouseOver ? `${dimensions ? dimensions.x + 8 : 13}px` : `${dimensions ? dimensions.x : 5}px`;
+        height = mouseOver ? `${dimensions ? dimensions.y + 8 : 13}px` : `${dimensions ? dimensions.y : 5}px`;
         border = mouseOver ? '2px solid #000000' : '1px solid #000000';
 
-        return (<div style={{
-            position: 'absolute',
-            backgroundColor: background,
-            opacity: 0.5,
-            left: left,
-            top: top,
-            width: width,
-            height: height,
-            border: background ? border : null,
-            zIndex: ZLEVELS.port
-        }}
-                     onMouseEnter={this.onMouseEnter}
-                     onMouseLeave={this.onMouseLeave}
-                     onClick={this.onClick}/>);
+        return (<div
+            style={{
+                position: 'absolute',
+                backgroundColor: background,
+                opacity: 0.5,
+                left,
+                top,
+                width,
+                height,
+                border: background ? border : null,
+                zIndex: ZLEVELS.port,
+            }}
+            onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
+            onClick={this.onClick}
+        />);
     }
-
 }

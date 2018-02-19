@@ -5,6 +5,6 @@ export const ZLEVELS = {
     connectionItem: 6,
     item: 10, // 7-9 is reserved for future improvements
     attribute: 11,
-    action: 12,// 13-14 is reserved
-    port: 15
+    action: 12, // 13-14 is reserved
+    port: 15,
 };

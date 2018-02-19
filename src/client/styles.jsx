@@ -1,7 +1,7 @@
-import {LAYOUT_SIZES} from "./CONSTANTS";
+import {LAYOUT_SIZES} from './CONSTANTS';
 
 export const appHeader = {
-    minHeight: LAYOUT_SIZES.HEADER_HEIGHT
+    minHeight: LAYOUT_SIZES.HEADER_HEIGHT,
 };
 
 export const centerPanel = {
@@ -10,7 +10,7 @@ export const centerPanel = {
     width: '100%',
     height: '100vh',
     position: 'fixed',
-    overflow: 'auto'
+    overflow: 'auto',
 };
 
 /*

@@ -6,23 +6,23 @@ import SVGCACHE from './../../svgcache';
 
 import SingleConnectedNode from '../gme/BaseComponents/SingleConnectedNode';
 import {DRAG_TYPES} from '../CONSTANTS';
-import CanvasItem from "./CanvasItem";
+import CanvasItem from './CanvasItem';
 import ConnectionManager from '../gme/BaseComponents/ConnectionManager';
 import BasicConnectingComponent from '../gme/BaseComponents/BasicConnectingComponent';
 import BasicEventManager from '../gme/BaseComponents/BasicEventManager';
 import {toggleRightDrawer, setActiveSelection} from '../actions';
-import getIndexedName from "../gme/utils/getIndexedName";
+import getIndexedName from '../gme/utils/getIndexedName';
 
 import {ZLEVELS} from '../gme/utils/zLevels';
 
-//TODO we anly take loaded children into account
+// TODO we anly take loaded children into account
 function getChildrenNames(gmeClient, nodeId) {
     const container = gmeClient.getNode(nodeId),
         childrenIds = container.getChildrenIds();
-    let names = [];
+    const names = [];
 
     childrenIds.forEach((childId) => {
-        let node = gmeClient.getNode(childId);
+        const node = gmeClient.getNode(childId);
         if (node) {
             names.push(node.getAttribute('name'));
         }
@@ -52,7 +52,7 @@ const canvasTarget = {
 
             let position = {
                     x: (dragOffset.x - canvas.offset.x + canvas.props.scrollPos.x) / props.scale,
-                    y: (dragOffset.y - canvas.offset.y + canvas.props.scrollPos.y) / props.scale
+                    y: (dragOffset.y - canvas.offset.y + canvas.props.scrollPos.y) / props.scale,
                 },
                 name = metaNode.getAttribute('ShortName') || metaNode.getAttribute('name');
 
@@ -70,14 +70,14 @@ const canvasTarget = {
 
             props.gmeClient.createNode({
                 parentId: props.activeNode,
-                baseId: dragItem.gmeId
+                baseId: dragItem.gmeId,
             }, {
                 attributes: {
-                    name: name
+                    name,
                 },
                 registry: {
-                    position
-                }
+                    position,
+                },
             });
         }
 
@@ -86,41 +86,35 @@ const canvasTarget = {
     hover(props, monitor, component) {
         const item = monitor.getItem();
         let dragState;
-        if (item.create)
-            dragState = 'create';
-        if (item.move)
-            dragState = 'move';
+        if (item.create) { dragState = 'create'; }
+        if (item.move) { dragState = 'move'; }
 
         component.setState({dragMode: dragState});
-    }
+    },
 };
 
 function collect(connect, monitor) {
     return {
         connectDropTarget: connect.dropTarget(),
-        isOver: monitor.isOver()
+        isOver: monitor.isOver(),
     };
 }
 
-const mapStateToProps = state => {
-    return {
-        activeNode: state.activeNode,
-        selection: state.activeSelection,
-        scale: state.scale
-    }
-};
+const mapStateToProps = state => ({
+    activeNode: state.activeNode,
+    selection: state.activeSelection,
+    scale: state.scale,
+});
 
-const mapDispatchToProps = dispatch => {
-    return {
-        hide: () => {
-            dispatch(toggleRightDrawer(false));
-        },
-        clearSelection: () => {
-            dispatch(setActiveSelection([]));
-            dispatch(toggleRightDrawer(false));
-        }
-    }
-};
+const mapDispatchToProps = dispatch => ({
+    hide: () => {
+        dispatch(toggleRightDrawer(false));
+    },
+    clearSelection: () => {
+        dispatch(setActiveSelection([]));
+        dispatch(toggleRightDrawer(false));
+    },
+});
 
 class Canvas extends SingleConnectedNode {
     static propTypes = {
@@ -131,13 +125,13 @@ class Canvas extends SingleConnectedNode {
         scale: PropTypes.number.isRequired,
 
         connectDropTarget: PropTypes.func.isRequired,
-        isOver: PropTypes.bool.isRequired
+        isOver: PropTypes.bool.isRequired,
     };
 
     state = {
         children: [],
         nodeInfo: {},
-        dragMode: 'none'
+        dragMode: 'none',
     };
 
     cm = null;
@@ -155,14 +149,12 @@ class Canvas extends SingleConnectedNode {
         let childrenIds = nodeObj.getChildrenIds(),
             newChildren;
 
-        newChildren = childrenIds.map((id) => {
-            return {id: id};
-        });
+        newChildren = childrenIds.map(id => ({id}));
         this.setState({
             children: newChildren,
             nodeInfo: {
-                name: nodeObj.getAttribute('name')
-            }
+                name: nodeObj.getAttribute('name'),
+            },
         });
     }
 
@@ -194,7 +186,7 @@ class Canvas extends SingleConnectedNode {
         const {scrollPos} = this.props;
         this.cm.onMouseMove({
             x: event.clientX + scrollPos.x - this.offset.x,
-            y: event.clientY + scrollPos.y - this.offset.y
+            y: event.clientY + scrollPos.y - this.offset.y,
         });
     };
 
@@ -203,45 +195,44 @@ class Canvas extends SingleConnectedNode {
             {children, dragMode} = this.state,
             self = this;
 
-        let childrenItems = children.map((child) => {
-            return (<CanvasItem
-                key={child.id}
-                gmeClient={gmeClient}
-                activeNode={child.id}
-                contextNode={activeNode}
-                connectionManager={self.cm}
-                eventManager={self.em}/>);
-        });
-        return connectDropTarget(
-            <div ref={(canvas) => {
-                if (canvas)
-                    self.offset = {x: canvas.offsetParent.offsetLeft, y: canvas.offsetParent.offsetTop};
+        const childrenItems = children.map(child => (<CanvasItem
+            key={child.id}
+            gmeClient={gmeClient}
+            activeNode={child.id}
+            contextNode={activeNode}
+            connectionManager={self.cm}
+            eventManager={self.em}
+        />));
+        return connectDropTarget(<div
+            ref={(canvas) => {
+                if (canvas) { self.offset = {x: canvas.offsetParent.offsetLeft, y: canvas.offsetParent.offsetTop}; }
             }}
-                 style={{
-                     backgroundColor: dragMode === 'create' ? 'lightgreen' : undefined,
-                     width: '100%',
-                     height: '100%',
-                     overflow: 'scroll',
-                     zIndex: ZLEVELS.canvas,
-                     position: 'absolute'
-                 }}
-                 onClick={this.onMouseClick}
-                 onContextMenu={this.onMouseClick}
-                 onMouseLeave={this.onMouseLeave}
-                 onMouseMove={this.onMouseMove}>
-                <BasicConnectingComponent connectionManager={this.cm}/>
-                {/*<div style={{*/}
-                {/*position: 'sticky',*/}
-                {/*top: '5%',*/}
-                {/*left: '5%',*/}
-                {/*right: '95%',*/}
-                {/*bottom: '95%',*/}
-                {/*fontSize: '24px',*/}
-                {/*opacity: 0.3,*/}
-                {/*zIndex: 2*/}
-                {/*}}>{`Node ${nodeInfo.name} open`}</div>*/}
-                {childrenItems}
-            </div>);
+            style={{
+                backgroundColor: dragMode === 'create' ? 'lightgreen' : undefined,
+                width: '100%',
+                height: '100%',
+                overflow: 'scroll',
+                zIndex: ZLEVELS.canvas,
+                position: 'absolute',
+            }}
+            onClick={this.onMouseClick}
+            onContextMenu={this.onMouseClick}
+            onMouseLeave={this.onMouseLeave}
+            onMouseMove={this.onMouseMove}
+        >
+            <BasicConnectingComponent connectionManager={this.cm} />
+            {/* <div style={{ */}
+            {/* position: 'sticky', */}
+            {/* top: '5%', */}
+            {/* left: '5%', */}
+            {/* right: '95%', */}
+            {/* bottom: '95%', */}
+            {/* fontSize: '24px', */}
+            {/* opacity: 0.3, */}
+            {/* zIndex: 2 */}
+            {/* }}>{`Node ${nodeInfo.name} open`}</div> */}
+            {childrenItems}
+                                 </div>);
     }
 }
 

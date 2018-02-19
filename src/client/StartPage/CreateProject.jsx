@@ -2,11 +2,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Link, withRouter} from 'react-router-dom';
+import superagent from 'superagent';
 
 import {connect} from 'react-redux';
-import {setSystemWaiting} from "../actions";
-
-import superagent from 'superagent';
 
 import {withStyles} from 'material-ui/styles';
 import Card, {CardActions, CardContent, CardMedia} from 'material-ui/Card';
@@ -15,51 +13,48 @@ import Typography from 'material-ui/Typography';
 import {CircularProgress} from 'material-ui/Progress';
 import Grid from 'material-ui/Grid';
 
+import {setSystemWaiting} from '../actions';
 import DomainSelector from '../Dialogs/DomainSelector';
-import TEMPLATE_PROJECTS from './templateProjects';
+import TEMPLATE_PROJECTS from './templateProjects.json';
 
-//http://www.publicdomainpictures.net
+// http://www.publicdomainpictures.net
 
 const styles = theme => ({
     cardContent: {
-        minHeight: 160
+        minHeight: 160,
     },
     media: {
         height: 120,
     },
     progress: {
         margin: `0 ${theme.spacing.unit * 2}px`,
-    }
+    },
 });
 
-const mapStateToProps = (/*state*/) => {
-    return {}
-};
+const mapStateToProps = (/* state */) => ({});
 
-const mapDispatchToProps = dispatch => {
-    return {
-        setSystemWaiting: isWaiting => {
-            dispatch(setSystemWaiting(isWaiting))
-        }
-    }
-};
+const mapDispatchToProps = dispatch => ({
+    setSystemWaiting: (isWaiting) => {
+        dispatch(setSystemWaiting(isWaiting));
+    },
+});
 
 class CreateProject extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
-        projects: PropTypes.array,
-        classes: PropTypes.object.isRequired
+        projects: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).iRequired,
+        classes: PropTypes.object.isRequired,
     };
 
     state = {
         showDialog: false,
-        createData: null
+        createData: null,
     };
 
     onCreateNewClick = (createData) => {
         this.setState({
-            createData: createData,
-            showDialog: true
+            createData,
+            showDialog: true,
         });
     };
 
@@ -74,10 +69,10 @@ class CreateProject extends Component {
 
         console.log('create data:', data);
 
-        let path = [
+        const path = [
             window.location.origin,
             gmeClient.gmeConfig.rest.components.DomainManager.mount,
-            'createProject'
+            'createProject',
         ].join('/');
 
         setSystemWaiting(true);
@@ -85,7 +80,7 @@ class CreateProject extends Component {
         superagent.post(path)
             .send({
                 projectName: data.name,
-                domains: data.domains
+                domains: data.domains,
             })
             .end((err, result) => {
                 if (err) {
@@ -102,24 +97,35 @@ class CreateProject extends Component {
     render() {
         const {projects, classes} = this.props;
 
-        let cards = TEMPLATE_PROJECTS.map(seedInfo => {
+        const cards = TEMPLATE_PROJECTS.map((seedInfo) => {
             const {infoUrl} = seedInfo;
-            let buttons = [];
+            const buttons = [];
             if (projects) {
-                buttons.push(<Button key="createBtn" dense color="primary" onClick={() => {
-                    this.onCreateNewClick(seedInfo.createData)
-                }}>
+                buttons.push(<Button
+                    key="createBtn"
+                    dense
+                    color="primary"
+                    onClick={() => {
+                        this.onCreateNewClick(seedInfo.createData);
+                    }}
+                >
                     Create
-                </Button>);
+                             </Button>);
 
                 if (infoUrl) {
-                    buttons.push(<Button key="infoBtn" dense color="primary" component={Link} to={infoUrl}
-                                         target="_blank">
+                    buttons.push(<Button
+                        key="infoBtn"
+                        dense
+                        color="primary"
+                        component={Link}
+                        to={infoUrl}
+                        target="_blank"
+                    >
                         Learn More
-                    </Button>);
+                                 </Button>);
                 }
             } else {
-                buttons.push(<CircularProgress key="progress" className={classes.progress}/>);
+                buttons.push(<CircularProgress key="progress" className={classes.progress} />);
             }
 
             return (
@@ -146,7 +152,7 @@ class CreateProject extends Component {
             );
         });
 
-        let {showDialog, createData} = this.state;
+        const {showDialog, createData} = this.state;
         return (
             <div>
                 <Grid container spacing={24}>
@@ -154,20 +160,19 @@ class CreateProject extends Component {
                 </Grid>
 
                 {showDialog ?
-                    <DomainSelector title={'Create New Project'}
-                                    onOK={this.onCreateNewProject}
-                                    onCancel={this.onCreateNewProject}
-                                    defaultName={createData.defaultName}
-                                    takenNames={projects
-                                        .filter(pInfo => {
-                                            return pInfo.owner === 'guest'; //FIXME: We need to get user info
-                                        })
-                                        .map(pInfo => {
-                                            return pInfo.name;
-                                        })
-                                    }
-                                    domains={createData.domains}
-                                    showDomainSelection={createData.domains.length === 0}
+                    <DomainSelector
+                        title="Create New Project"
+                        onOK={this.onCreateNewProject}
+                        onCancel={this.onCreateNewProject}
+                        defaultName={createData.defaultName}
+                        takenNames={projects
+                            .filter(pInfo =>
+                                pInfo.owner === 'guest', // FIXME: We need to get user info
+                            )
+                            .map(pInfo => pInfo.name)
+                        }
+                        domains={createData.domains}
+                        showDomainSelection={createData.domains.length === 0}
                     /> : null}
             </div>
         );

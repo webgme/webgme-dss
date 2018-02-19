@@ -96,5 +96,5 @@ export default class SingleConnectedNode extends Component {
 
 SingleConnectedNode.propTypes = {
     gmeClient: PropTypes.object.isRequired,
-    activeNode: PropTypes.string.isRequired
+    activeNode: PropTypes.string.isRequired,
 };

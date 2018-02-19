@@ -1,6 +1,41 @@
 {
+  "parser": "babel-eslint",
   "extends": [
-    "google",
-    "plugin:react/recommended"
-  ]
+    "airbnb"
+  ],
+  "rules": {
+    "indent": [
+      "error",
+      4
+    ],
+    "react/jsx-indent-props": [
+      "error",
+      4
+    ],
+    "react/jsx-indent": [
+      "error",
+      4
+    ],
+    "object-curly-spacing": [
+      "error",
+      "never"
+    ],
+    "max-len": [
+      "error",
+      120
+    ],
+    "react/jsx-tag-spacing": [
+      "error",
+      {
+        "closingSlash": "never",
+        "beforeSelfClosing": "never"
+      }
+    ],
+    "react/forbid-prop-types": [
+      "error",
+      {
+        "forbid": ["any"]
+      }
+    ]
+  }
 }

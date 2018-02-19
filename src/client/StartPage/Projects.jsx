@@ -12,12 +12,12 @@ import Typography from 'material-ui/Typography';
 
 export default class Projects extends Component {
     static propTypes = {
-        gmeClient: PropTypes.object.isRequired
+        gmeClient: PropTypes.object.isRequired,
     };
 
     state = {
         err: null,
-        projects: null
+        projects: null,
     };
 
     componentDidMount() {
@@ -31,13 +31,11 @@ export default class Projects extends Component {
                 return;
             }
 
-            projects = projects.filter((pInfo) => {
-                return pInfo.info.kind && pInfo.info.kind.startsWith('DSS:');
-            });
+            projects = projects.filter(pInfo => pInfo.info.kind && pInfo.info.kind.startsWith('DSS:'));
 
             projects.sort(nameSort);
 
-            this.setState({projects: projects});
+            this.setState({projects});
         });
     };
 
@@ -46,17 +44,17 @@ export default class Projects extends Component {
             <div style={{flexGrow: 1, margin: 20}}>
                 <Grid container spacing={24}>
                     <Grid item lg={7}>
-                        {/*<Paper elevation={4}>*/}
-                        <CreateProject gmeClient={this.props.gmeClient} projects={this.state.projects}/>
-                        {/*</Paper>*/}
+                        {/* <Paper elevation={4}> */}
+                        <CreateProject gmeClient={this.props.gmeClient} projects={this.state.projects} />
+                        {/* </Paper> */}
                     </Grid>
                     <Grid item lg={5}>
-                        {/*<Paper elevation={4}>*/}
-                            <Typography type="title">
+                        {/* <Paper elevation={4}> */}
+                        <Typography type="title">
                                 CURRENT PROJECTS
-                            </Typography>
-                            <ProjectList gmeClient={this.props.gmeClient} projects={this.state.projects}/>
-                        {/*</Paper>*/}
+                        </Typography>
+                        <ProjectList gmeClient={this.props.gmeClient} projects={this.state.projects} />
+                        {/* </Paper> */}
                     </Grid>
                 </Grid>
             </div>);
@@ -64,5 +62,5 @@ export default class Projects extends Component {
 }
 
 Projects.propTypes = {
-    gmeClient: PropTypes.object
+    gmeClient: PropTypes.object,
 };

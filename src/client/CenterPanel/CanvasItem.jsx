@@ -25,37 +25,33 @@ const canvasItemSource = {
         return {
             gmeId: props.activeNode,
             move: true,
-            copy: false
+            copy: false,
         };
-    }
+    },
 };
 
 function collect(connect, monitor) {
     return {
         connectDragSource: connect.dragSource(),
         connectDragPreview: connect.dragPreview(),
-        isDragging: monitor.isDragging()
-    }
+        isDragging: monitor.isDragging(),
+    };
 }
 
-const mapStateToProps = state => {
-    return {
-        scale: state.scale,
-        selection: state.activeSelection
-    }
-};
+const mapStateToProps = state => ({
+    scale: state.scale,
+    selection: state.activeSelection,
+});
 
-const mapDispatchToProps = dispatch => {
-    return {
-        activateAttributeDrawer: id => {
-            dispatch(toggleRightDrawer(true));
-            dispatch(setActiveSelection([id]));
-        },
-        selectNode: id => {
-            dispatch(setActiveSelection([id]));
-        }
-    }
-};
+const mapDispatchToProps = dispatch => ({
+    activateAttributeDrawer: (id) => {
+        dispatch(toggleRightDrawer(true));
+        dispatch(setActiveSelection([id]));
+    },
+    selectNode: (id) => {
+        dispatch(setActiveSelection([id]));
+    },
+});
 
 class CanvasItem extends Component {
     static propTypes = {
@@ -69,10 +65,10 @@ class CanvasItem extends Component {
         connectionManager: PropTypes.object.isRequired,
         eventManager: PropTypes.object.isRequired,
         selectNode: PropTypes.func.isRequired,
-        activateAttributeDrawer: PropTypes.func.isRequired
+        activateAttributeDrawer: PropTypes.func.isRequired,
     };
 
-    //TODO we need to gather the children info (new base class maybe)
+    // TODO we need to gather the children info (new base class maybe)
     state = {
         position: null,
         name: null,
@@ -85,7 +81,7 @@ class CanvasItem extends Component {
         currentRootHash: null,
         endPoints: {src: {id: null}, dst: {id: null}},
         territory: null,
-        justRemovedIds: []
+        justRemovedIds: [],
     };
 
     onMouseEnter = () => {
@@ -104,11 +100,11 @@ class CanvasItem extends Component {
 
     componentDidMount() {
         const {activeNode} = this.props;
-        let territory = {};
+        const territory = {};
 
         territory[activeNode] = {children: 0};
 
-        this.setState({territory: territory});
+        this.setState({territory});
     }
 
     deleteNode = () => {
@@ -120,38 +116,34 @@ class CanvasItem extends Component {
     srcEvent = (id, event) => {
         const {position} = this.state.endPoints.src;
 
-        if (id !== this.state.endPoints.src.id)
-            return;
+        if (id !== this.state.endPoints.src.id) { return; }
         if (event.position === null || position === null ||
             event.position.x !== position.x || event.position.y !== position.y) {
-            let endPoints = this.state.endPoints;
+            const endPoints = this.state.endPoints;
             endPoints.src.position = event.position;
-            this.setState({endPoints: endPoints});
+            this.setState({endPoints});
         }
     };
 
     dstEvent = (id, event) => {
         const {position} = this.state.endPoints.dst;
-        if (id !== this.state.endPoints.dst.id)
-            return;
+        if (id !== this.state.endPoints.dst.id) { return; }
         if (event.position === null || position === null ||
             event.position.x !== position.x || event.position.y !== position.y) {
-            let endPoints = this.state.endPoints;
+            const endPoints = this.state.endPoints;
             endPoints.dst.position = event.position;
-            this.setState({endPoints: endPoints});
+            this.setState({endPoints});
         }
     };
 
     getChildInfo = (childNode) => {
         const {gmeClient} = this.props,
             metaNodes = gmeClient.getAllMetaNodes(true);
-        let info = {name: childNode.getAttribute('name'), validConnection: {}};
-        for (let path in metaNodes) {
+        const info = {name: childNode.getAttribute('name'), validConnection: {}};
+        for (const path in metaNodes) {
             if (metaNodes.hasOwnProperty(path)) {
-                if (childNode.isValidTargetOf(path, 'src'))
-                    info.validConnection.src = path;
-                if (childNode.isValidTargetOf(path, 'dst'))
-                    info.validConnection.dst = path;
+                if (childNode.isValidTargetOf(path, 'src')) { info.validConnection.src = path; }
+                if (childNode.isValidTargetOf(path, 'dst')) { info.validConnection.dst = path; }
             }
         }
 
@@ -164,8 +156,8 @@ class CanvasItem extends Component {
 
         // console.log('event-', hash, loads, updates, unloads);
         if (unloads.indexOf(activeNode) !== -1) {
-            //main object have been unloaded so remove everything...
-            let endPoints = this.state.endPoints;
+            // main object have been unloaded so remove everything...
+            const endPoints = this.state.endPoints;
 
             if (endPoints.src.event) {
                 eventManager.unsubscribe(endPoints.src.id, endPoints.src.event);
@@ -186,7 +178,7 @@ class CanvasItem extends Component {
                 currentRootHash: null,
                 endPoints: {src: {id: null}, dst: {id: null}},
                 territory: null,
-                justRemovedIds: []
+                justRemovedIds: [],
             });
             return;
         }
@@ -205,11 +197,11 @@ class CanvasItem extends Component {
         if (isConnection) {
             newEndpoints = {
                 src: {id: nodeObj.getPointerId('src'), position: null, event: this.srcEvent},
-                dst: {id: nodeObj.getPointerId('dst'), position: null, event: this.dstEvent}
+                dst: {id: nodeObj.getPointerId('dst'), position: null, event: this.dstEvent},
             };
 
             if (endPoints.src.id !== newEndpoints.src.id || endPoints.dst.id !== newEndpoints.dst.id) {
-                //subscription to events
+                // subscription to events
                 let event;
 
                 event = eventManager.subscribe(newEndpoints.src.id, newEndpoints.src.event);
@@ -224,7 +216,6 @@ class CanvasItem extends Component {
                 newEndpoints = endPoints;
             }
             territory[activeNode] = {children: 0};
-
         } else {
             newEndpoints = endPoints;
             childrenName2Id = this.state.childrenName2Id;
@@ -232,7 +223,7 @@ class CanvasItem extends Component {
             modelicaUri = metaNode.getAttribute('ModelicaURI') || 'Default';
             childrenPaths.forEach((childPath) => {
                 if (loads.indexOf(childPath) !== -1 || updates.indexOf(childPath) !== -1) {
-                    let childNode = gmeClient.getNode(childPath);
+                    const childNode = gmeClient.getNode(childPath);
                     childrenName2Id[childNode.getAttribute('name')] = childPath;
                     childInfo[childPath] = this.getChildInfo(childNode);
                 } else if (unloads.indexOf(childPath) !== -1) {
@@ -251,13 +242,13 @@ class CanvasItem extends Component {
         this.setState({
             position: nodeObj.getRegistry('position'),
             name: nodeObj.getAttribute('name'),
-            modelicaUri: modelicaUri,
-            isConnection: isConnection,
+            modelicaUri,
+            isConnection,
             endPoints: newEndpoints,
-            childrenName2Id: childrenName2Id,
-            childInfo: childInfo,
-            territory: territory,
-            justRemovedIds: unloads
+            childrenName2Id,
+            childInfo,
+            territory,
+            justRemovedIds: unloads,
         });
     };
 
@@ -268,21 +259,21 @@ class CanvasItem extends Component {
         let node = gmeClient.getNode(activeNode),
             attributeItems = [];
 
-        if (node === null)
-            return null;
-        for (let key in attributes) {
+        if (node === null) { return null; }
+        for (const key in attributes) {
             if (attributes.hasOwnProperty(key)) {
-
                 attributeItems.push((
-                    <svg key={key}
-                         style={{
-                             position: 'absolute',
-                             top: /*position.y + */attributes[key].bbox.y * scale,
-                             left: /*position.x + */attributes[key].bbox.x * scale
-                         }}
-                         viewBox={'' + (attributes[key].bbox.x * scale) + ' ' + (attributes[key].bbox.y * scale) +
-                         ' ' + (attributes[key].bbox.width * scale) +
-                         ' ' + (attributes[key].bbox.height * scale)}>
+                    <svg
+                        key={key}
+                        style={{
+                            position: 'absolute',
+                            top: /* position.y + */attributes[key].bbox.y * scale,
+                            left: /* position.x + */attributes[key].bbox.x * scale,
+                        }}
+                        viewBox={`${attributes[key].bbox.x * scale} ${attributes[key].bbox.y * scale
+                        } ${attributes[key].bbox.width * scale
+                        } ${attributes[key].bbox.height * scale}`}
+                    >
                         <text
                             x={(attributes[key].parameters.x || 0) * scale}
                             y={(attributes[key].parameters.y || 0) * scale}
@@ -290,10 +281,12 @@ class CanvasItem extends Component {
                             fill={attributes[key].parameters.fill || 'rgb(0,0,255)'}
                             fontFamily={attributes[key].parameters['font-family'] || 'Veranda'}
                             fontSize={Number(attributes[key].parameters['font-size'] || '18') * scale}
-                            textAnchor={attributes[key].parameters['text-anchor'] || 'middle'}>
+                            textAnchor={attributes[key].parameters['text-anchor'] || 'middle'}
+                        >
                             {attributes[key].text.substring(0, attributes[key].position) +
                             node.getAttribute(key) +
-                            attributes[key].text.substring(attributes[key].position)}</text>
+                            attributes[key].text.substring(attributes[key].position)}
+                        </text>
                     </svg>));
             }
         }
@@ -306,40 +299,42 @@ class CanvasItem extends Component {
             {showActions} = this.state;
         let items;
 
-        if (!showActions && !force)
-            return null;
+        if (!showActions && !force) { return null; }
 
         items = [
-            (<IconButton key={'delete'}
-                         style={{
-                             height: '20px',
-                             width: '20px',
-                             position: 'absolute',
-                             top: '0px',
-                             right: '0px',
-                             zIndex: ZLEVELS.action
-                         }}
-                         onClick={this.deleteNode}>
-                <DeleteIcon style={{height: '20px', width: '20px'}}/>
-            </IconButton>),
-            (<IconButton key={'attribute'}
-                         style={{
-                             height: '20px',
-                             width: '20px',
-                             position: 'absolute',
-                             top: '0px',
-                             right: '20px',
-                             zIndex: ZLEVELS.action
-                         }}
-                         onClick={() => {
-                             activateAttributeDrawer(activeNode);
-                         }}>
-                <ModeEdit style={{height: '20px', width: '20px'}}/>
-            </IconButton>)
+            (<IconButton
+                key="delete"
+                style={{
+                    height: '20px',
+                    width: '20px',
+                    position: 'absolute',
+                    top: '0px',
+                    right: '0px',
+                    zIndex: ZLEVELS.action,
+                }}
+                onClick={this.deleteNode}
+            >
+                <DeleteIcon style={{height: '20px', width: '20px'}} />
+             </IconButton>),
+            (<IconButton
+                key="attribute"
+                style={{
+                    height: '20px',
+                    width: '20px',
+                    position: 'absolute',
+                    top: '0px',
+                    right: '20px',
+                    zIndex: ZLEVELS.action,
+                }}
+                onClick={() => {
+                    activateAttributeDrawer(activeNode);
+                }}
+            >
+                <ModeEdit style={{height: '20px', width: '20px'}} />
+             </IconButton>),
         ];
 
-        if (onlyDelete)
-            items.splice(1, 1);
+        if (onlyDelete) { items.splice(1, 1); }
 
         return items;
     };
@@ -355,7 +350,7 @@ class CanvasItem extends Component {
                 eventManager,
                 activeNode,
                 selectNode,
-                activateAttributeDrawer
+                activateAttributeDrawer,
             } = this.props,
             {
                 showActions,
@@ -363,11 +358,12 @@ class CanvasItem extends Component {
                 position,
                 childrenName2Id,
                 childInfo,
-                justRemovedIds
+                justRemovedIds,
             } = this.state,
             {ports, bbox, base} = SVGCACHE[modelicaUri];
         let portComponents = [],
-            i, keys,
+            i,
+            keys,
             events = [];
 
         justRemovedIds.forEach((removedId) => {
@@ -389,14 +385,15 @@ class CanvasItem extends Component {
                     validTypes={childInfo[childrenName2Id[keys[i]]].validConnection}
                     absolutePosition={{
                         x: position.x * scale + (scale * ports[keys[i]].x),
-                        y: position.y * scale + (scale * ports[keys[i]].y)
-                    }}/>));
+                        y: position.y * scale + (scale * ports[keys[i]].y),
+                    }}
+                />));
                 events.push({
                     id: childrenName2Id[keys[i]],
                     position: {
                         x: position.x * scale + (scale * (ports[keys[i]].x + (ports[keys[i]].width / 2))),
-                        y: position.y * scale + (scale * (ports[keys[i]].y + (ports[keys[i]].height / 2)))
-                    }
+                        y: position.y * scale + (scale * (ports[keys[i]].y + (ports[keys[i]].height / 2))),
+                    },
                 });
             }
         }
@@ -405,49 +402,53 @@ class CanvasItem extends Component {
             eventManager.fire(event.id, {position: event.position});
         });
 
-        return connectDragSource(
-            <div style={{
+        return connectDragSource(<div
+            style={{
                 opacity: isDragging ? 0.3 : 0.99,
                 position: 'absolute',
                 top: position.y * scale,
                 left: position.x * scale,
                 height: bbox.height * scale,
                 width: bbox.width * scale,
-                border: showActions || this.isSelected() ? "1px dashed #000000" : "1px solid transparent",
-                zIndex: 10
+                border: showActions || this.isSelected() ? '1px dashed #000000' : '1px solid transparent',
+                zIndex: 10,
             }}
-                 onMouseEnter={this.onMouseEnter}
-                 onMouseLeave={this.onMouseLeave}
-                 onClick={(event) => {
-                     event.stopPropagation();
-                     event.preventDefault();
-                     selectNode(activeNode);
-                 }}
-                 onDoubleClick={(event) => {
-                     event.stopPropagation();
-                     event.preventDefault();
-                     activateAttributeDrawer(activeNode);
-                 }}>
-                {portComponents}
-                <Samy svgXML={base}
-                      style={{
-                          height: bbox.height * scale,
-                          width: bbox.width * scale
-                      }}/>
-                {this.getAttributeItems()}
-                {this.getActionItems()}
-            </div>);
+            onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
+            onClick={(event) => {
+                event.stopPropagation();
+                event.preventDefault();
+                selectNode(activeNode);
+            }}
+            onDoubleClick={(event) => {
+                event.stopPropagation();
+                event.preventDefault();
+                activateAttributeDrawer(activeNode);
+            }}
+        >
+            {portComponents}
+            <Samy
+                svgXML={base}
+                style={{
+                    height: bbox.height * scale,
+                    width: bbox.width * scale,
+                }}
+            />
+            {this.getAttributeItems()}
+            {this.getActionItems()}
+                                 </div>);
     };
 
     connectionRender = () => {
         const {endPoints, showActions} = this.state,
             {activeNode} = this.props;
-        let points, midpoint;
+        let points,
+            midpoint;
 
         if (endPoints.src.position && endPoints.dst.position) {
             midpoint = {
                 x: endPoints.src.position.x,
-                y: endPoints.dst.position.y
+                y: endPoints.dst.position.y,
             };
 
             points = [endPoints.src.position, JSON.parse(JSON.stringify(midpoint)), endPoints.dst.position];
@@ -463,21 +464,25 @@ class CanvasItem extends Component {
                 midpoint.y = endPoints.src.position.y;
             }
 
-            return [(<div style={{
-                position: 'absolute',
-                top: midpoint.y - 20,
-                left: midpoint.x - 20,
-                height: 40,
-                width: 40,
-                zIndex: ZLEVELS.connectionItem
-            }}
-                          onMouseEnter={this.onMouseEnter}
-                          onMouseLeave={this.onMouseLeave}>{this.getActionItems(false, true)}</div>),
+            return [(<div
+                style={{
+                    position: 'absolute',
+                    top: midpoint.y - 20,
+                    left: midpoint.x - 20,
+                    height: 40,
+                    width: 40,
+                    zIndex: ZLEVELS.connectionItem,
+                }}
+                onMouseEnter={this.onMouseEnter}
+                onMouseLeave={this.onMouseLeave}
+            >{this.getActionItems(false, true)}
+            </div>),
                 (<BasicConnection
                     key={activeNode}
                     path={points}
                     dashed={showActions}
-                    hasWrapper={false}/>)];
+                    hasWrapper={false}
+                />)];
         }
 
         return null;
@@ -489,30 +494,28 @@ class CanvasItem extends Component {
         let content;
 
         switch (isConnection) {
-            case true:
-                content = this.connectionRender();
-                break;
-            case false:
-                content = this.boxRender();
-                break;
-            default:
-                content = null;
+        case true:
+            content = this.connectionRender();
+            break;
+        case false:
+            content = this.boxRender();
+            break;
+        default:
+            content = null;
         }
 
         return (<div>
             <Territory
-                key={activeNode + '_territory'}
+                key={`${activeNode}_territory`}
                 activeNode={activeNode}
                 gmeClient={gmeClient}
                 territory={territory}
-                onlyActualEvents={true}
-                onUpdate={this.territoryUpdates}/>
+                onlyActualEvents
+                onUpdate={this.territoryUpdates}
+            />
             {content}
-        </div>);
+                </div>);
     }
-
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-    DragSource(DRAG_TYPES.GME_NODE, canvasItemSource, collect)(CanvasItem)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(DragSource(DRAG_TYPES.GME_NODE, canvasItemSource, collect)(CanvasItem));

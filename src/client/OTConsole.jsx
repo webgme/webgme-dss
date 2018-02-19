@@ -8,31 +8,18 @@ import PropTypes from 'prop-types';
 import './Console.css';
 import Territory from './gme/BaseComponents/Territory';
 
-const mapStateToProps = state => {
-    return {
-        resultNode: state.resultNode
-    }
-};
+const mapStateToProps = state => ({
+    resultNode: state.resultNode,
+});
 
-const mapDispatchToProps = () => {
-    return {}
-};
+const mapDispatchToProps = () => ({});
 
 class OTConsole extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
         attributeName: PropTypes.string.isRequired,
 
-        onTest: PropTypes.func
-    };
-
-    state = {
-        project: null,
-        delta: new Delta(),
-        document: null,
-        attributeValue: null,
-        docId: null,
-        watcherId: null
+        onTest: PropTypes.func,
     };
 
     constructor(props) {
@@ -43,14 +30,29 @@ class OTConsole extends Component {
         this.state.project = gmeClient.getProjectObject();
     }
 
-    onTerritoryUpdate = (hash, loads, updates/*, unloads*/) => {
-        const {resultNode, gmeClient, attributeName, onTest} = this.props;
-        const {delta, attributeValue, document, project} = this.state;
+    state = {
+        project: null,
+        delta: new Delta(),
+        document: null,
+        attributeValue: null,
+        docId: null,
+        watcherId: null,
+    };
 
-        let nodeObj, newState = {}, haveUpdated = false;
+    onTerritoryUpdate = (hash, loads, updates/* , unloads */) => {
+        const {
+            resultNode, gmeClient, attributeName, onTest,
+        } = this.props;
+        const {
+            delta, attributeValue, document, project,
+        } = this.state;
+
+        let nodeObj,
+            newState = {},
+            haveUpdated = false;
 
         if (loads.indexOf(resultNode) !== -1) {
-            //initializing
+            // initializing
             nodeObj = gmeClient.getNode(resultNode);
             newState.attributeValue = nodeObj.getAttribute(attributeName);
             newState.delta = delta.insert(newState.attributeValue);
@@ -59,9 +61,9 @@ class OTConsole extends Component {
                     branchName: 'master',
                     nodeId: resultNode,
                     attrName: attributeName,
-                    attrValue: newState.attributeValue
+                    attrValue: newState.attributeValue,
                 }, this.atOperation, this.atSelection)
-                    .then(initData => {
+                    .then((initData) => {
                         if (onTest) {
                             onTest(initData);
                         }
@@ -69,7 +71,7 @@ class OTConsole extends Component {
                         this.setState({
                             docId: initData.docId,
                             document: initData.document,
-                            watcherId: initData.watcherId
+                            watcherId: initData.watcherId,
                         });
                     });
 
@@ -93,19 +95,19 @@ class OTConsole extends Component {
         }
     };
 
-    //TODO we should be able to have different color for the latest change
+    // TODO we should be able to have different color for the latest change
     atOperation = (operation) => {
         this.setState({document: operation.apply(this.state.document)});
     };
 
-    //TODO we need to transform this into operations if we want to support
+    // TODO we need to transform this into operations if we want to support
     atSelection = (selection) => {
     };
 
     componentWillUnmount() {
         const {project, docId, watcherId} = this.state;
         if (project && docId) {
-            project.unwatchDocument({docId: docId, watcherId: watcherId});
+            project.unwatchDocument({docId, watcherId});
         }
     }
 
@@ -114,10 +116,12 @@ class OTConsole extends Component {
         const {document} = this.state;
 
         return (<div style={{backgroundColor: '#002b36', height: '100%', width: '100%'}}>
-            {resultNode ? <Territory gmeClient={gmeClient}
-                                     onlyActualEvents={true}
-                                     onUpdate={this.onTerritoryUpdate}
-                                     territory={{[resultNode]: {children: 0}}}/> : <div/>}
+            {resultNode ? <Territory
+                gmeClient={gmeClient}
+                onlyActualEvents
+                onUpdate={this.onTerritoryUpdate}
+                territory={{[resultNode]: {children: 0}}}
+            /> : <div />}
             <ReactQuill
                 style={{
                     backgroundColor: '#002b36',
@@ -125,12 +129,13 @@ class OTConsole extends Component {
                     fontSize: 12,
                     marginLeft: 300, // FIXME: These should not be here
                     height: 300,
-                    fontFamily: 'monospace'
+                    fontFamily: 'monospace',
                 }}
                 theme={null}
                 value={document}
-                readOnly={true}/>
-        </div>);
+                readOnly
+            />
+                </div>);
     }
 }
 

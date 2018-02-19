@@ -1,4 +1,4 @@
-//https://github.com/alexcurtis/react-treebeard
+// https://github.com/alexcurtis/react-treebeard
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -13,17 +13,15 @@ import SingleConnectedNode from '../gme/BaseComponents/SingleConnectedNode';
 import {nameSort} from '../gme/utils/getObjectSorter';
 
 import PartBrowserItem from './PartBrowserItem';
-import {treeBeardTheme, getTreeDecorators} from "../treeOverrides";
+import {treeBeardTheme, getTreeDecorators} from '../treeOverrides';
 
 const TREE_PATH_SEP = '$';
 const EXPAND_ALL = false;
 
-const mapStateToProps = state => {
-    return {
-        activeNode: state.activeNode,
-        scale: state.scale
-    }
-};
+const mapStateToProps = state => ({
+    activeNode: state.activeNode,
+    scale: state.scale,
+});
 
 class PartBrowser extends SingleConnectedNode {
     static propTypes = {
@@ -32,13 +30,13 @@ class PartBrowser extends SingleConnectedNode {
         activeNode: PropTypes.string.isRequired,
         scale: PropTypes.number.isRequired,
 
-        minimized: PropTypes.bool.isRequired
+        minimized: PropTypes.bool.isRequired,
     };
 
     state = {
         loaded: false,
         validChildren: [],
-        cursor: null
+        cursor: null,
     };
 
     constructor(props) {
@@ -49,7 +47,7 @@ class PartBrowser extends SingleConnectedNode {
 
         this.tree = {};
         this.items = [];
-        this.decorators = getTreeDecorators(PartBrowserItem, {scale: scale});
+        this.decorators = getTreeDecorators(PartBrowserItem, {scale});
     }
 
     componentWillUpdate(nextProps, nextState, nextContext) {
@@ -76,10 +74,10 @@ class PartBrowser extends SingleConnectedNode {
                                             isRoot: i === 0,
                                             toggled: EXPAND_ALL || i === 0,
                                             name: path,
-                                            path: treeNode.path + '$' + path,
+                                            path: `${treeNode.path}$${path}`,
                                             description: 'TODO: Fetch info',
                                             folders: {},
-                                            children: []
+                                            children: [],
                                         };
 
                                         treeNode.children.push(treeNode.folders[path]);
@@ -105,20 +103,19 @@ class PartBrowser extends SingleConnectedNode {
                 id: metaNode.getId(),
                 name: metaNode.getAttribute('ShortName') || metaNode.getAttribute('name'),
                 treePath: modelicaUri ? modelicaUri.split('.').slice(1).join('$') : null,
-                modelicaUri: modelicaUri ? modelicaUri : 'Default',
-                iconUrl: modelicaUri ? `/assets/DecoratorSVG/${modelicaUri}.svg` : '/assets/DecoratorSVG/Default.svg'
+                modelicaUri: modelicaUri || 'Default',
+                iconUrl: modelicaUri ? `/assets/DecoratorSVG/${modelicaUri}.svg` : '/assets/DecoratorSVG/Default.svg',
             };
         });
 
         this.setState({
             loaded: true,
-            validChildren: validChildren,
-            validChildrenMap: validChildrenMap
+            validChildren,
+            validChildrenMap,
         });
     }
 
     onNodeLoad(nodeObj) {
-
         this.updateValidChildren(nodeObj.getValidChildrenTypesDetailed());
     }
 
@@ -174,26 +171,26 @@ class PartBrowser extends SingleConnectedNode {
             if (treeNode.isRoot) {
                 return (
                     <ExpansionPanel key={treeNode.path} defaultExpanded>
-                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                            <Typography type='subheading'>{treeNode.name}</Typography>
+                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography type="subheading">{treeNode.name}</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>
-                            <Treebeard data={treeNode}
-                                       onToggle={this.onTreeNodeToggle}
-                                       decorators={this.decorators}
-                                       style={treeBeardTheme}/>
+                            <Treebeard
+                                data={treeNode}
+                                onToggle={this.onTreeNodeToggle}
+                                decorators={this.decorators}
+                                style={treeBeardTheme}
+                            />
                         </ExpansionPanelDetails>
                     </ExpansionPanel>);
-            } else {
-                return (
-                    treeNode.children.sort(nameSort).map(this.buildTreeStructure)
-                )
             }
-        } else {
             return (
-                <PartBrowserItem key={treeNode.id} nodeData={treeNode} scale={scale}/>
-            )
+                treeNode.children.sort(nameSort).map(this.buildTreeStructure)
+            );
         }
+        return (
+            <PartBrowserItem key={treeNode.id} nodeData={treeNode} scale={scale} />
+        );
     };
 
     render() {
@@ -211,15 +208,17 @@ class PartBrowser extends SingleConnectedNode {
                 </div>
                 <div style={{display: minimized ? undefined : 'none'}}>
                     {this.items
-                        .filter((/*child*/) => {
+                        .filter((/* child */) => {
                             // TODO: These should be filtered based on recent components used..
                             cnt += 1;
                             return cnt <= 10;
                         })
-                        .map(child => {
-                            return <PartBrowserItem key={child.id} nodeData={child} scale={scale}
-                                                    listView={true}/>;
-                        })
+                        .map(child => (<PartBrowserItem
+                            key={child.id}
+                            nodeData={child}
+                            scale={scale}
+                            listView
+                        />))
                     }
                 </div>
             </div>

@@ -13,7 +13,7 @@ import EditMode from 'material-ui-icons/Edit';
 import MultilineChart from 'material-ui-icons/MultilineChart';
 
 // Own modules
-import {setActiveNode, setSystemWaiting, toggleModelingView, toggleLeftDrawer, toggleRightDrawer} from "./actions";
+import {setActiveNode, setSystemWaiting, toggleModelingView, toggleLeftDrawer, toggleRightDrawer} from './actions';
 
 import PartBrowserDragPreview from './LeftPanel/PartBrowserDragPreview';
 import Header from './HeaderPanel/Header';
@@ -25,45 +25,48 @@ import RightDrawer from './RightPanel/RightDrawer';
 // const HEADER_HEIGHT = 64;
 const START_NODE_ID = '/Z'; // FIXME: This should come from the project info or root-node registry
 
-const mapStateToProps = state => {
-    return {
-        activeNode: state.activeNode,
-        modelingView: state.modelingView
-    }
-};
+const mapStateToProps = state => ({
+    activeNode: state.activeNode,
+    modelingView: state.modelingView,
+});
 
-const mapDispatchToProps = dispatch => {
-    return {
-        setActiveNode: id => {
-            dispatch(setActiveNode(id))
-        },
-        setSystemWaiting: isWaiting => {
-            dispatch(setSystemWaiting(isWaiting))
-        },
-        toggleModelingView: (modeling) => {
-            dispatch(toggleModelingView(modeling));
-        },
-        toggleLeftDrawer: (show) => {
-            dispatch(toggleLeftDrawer(show));
-        },
-        toggleRightDrawer: (show) => {
-            dispatch(toggleRightDrawer(show));
-        }
-    }
-};
+const mapDispatchToProps = dispatch => ({
+    setActiveNode: (id) => {
+        dispatch(setActiveNode(id));
+    },
+    setSystemWaiting: (isWaiting) => {
+        dispatch(setSystemWaiting(isWaiting));
+    },
+    toggleModelingView: (modeling) => {
+        dispatch(toggleModelingView(modeling));
+    },
+    toggleLeftDrawer: (show) => {
+        dispatch(toggleLeftDrawer(show));
+    },
+    toggleRightDrawer: (show) => {
+        dispatch(toggleRightDrawer(show));
+    },
+});
 
 class Project extends Component {
     static propTypes = {
-        gmeClient: PropTypes.object.isRequired,
-        projectId: PropTypes.string.isRequired
+        gmeClient: PropTypes.shape({
+            selectProject: PropTypes.func.isRequired,
+        }).isRequired,
+        projectId: PropTypes.string.isRequired,
+        activeNode: PropTypes.string.isRequired,
+
+        setSystemWaiting: PropTypes.func.isRequired,
+        setActiveNode: PropTypes.func.isRequired,
+        modelingView: PropTypes.bool.isRequired,
     };
 
     state = {
-        scale: 0.6
+        scale: 0.6,
     };
 
     componentDidMount() {
-        const {gmeClient, setActiveNode, setSystemWaiting, projectId} = this.props;
+        const {gmeClient, projectId} = this.props;
 
         gmeClient.selectProject(projectId, 'master', (err) => {
             if (err) {
@@ -71,7 +74,7 @@ class Project extends Component {
                 return;
             }
 
-            setSystemWaiting(false);
+            this.props.setSystemWaiting(false);
 
             const tempUI = gmeClient.addUI(null, (events) => {
                 let activeNode = ''; // Fall back on root-node
@@ -85,11 +88,11 @@ class Project extends Component {
 
                 gmeClient.removeUI(tempUI);
 
-                setActiveNode(activeNode);
+                this.props.setActiveNode(activeNode);
             });
 
             const territory = {
-                [START_NODE_ID]: {children: 0}
+                [START_NODE_ID]: {children: 0},
             };
 
             gmeClient.updateTerritory(tempUI, territory);
@@ -99,7 +102,7 @@ class Project extends Component {
     componentWillUnmount() {
         const {gmeClient} = this.props;
 
-        gmeClient.closeProject(err => {
+        gmeClient.closeProject((err) => {
             if (err) {
                 console.error(err);
             }
@@ -108,7 +111,15 @@ class Project extends Component {
 
     render() {
         let content;
-        const {gmeClient, projectId, activeNode, modelingView, toggleLeftDrawer, toggleRightDrawer, toggleModelingView} = this.props;
+        const {
+            gmeClient,
+            projectId,
+            activeNode,
+            modelingView,
+            toggleLeftDrawer,
+            toggleRightDrawer,
+            toggleModelingView,
+        } = this.props;
         const {scale} = this.state;
         const [owner, name] = projectId.split('+');
 
@@ -126,11 +137,12 @@ class Project extends Component {
                 <div style={{
                     position: 'absolute',
                     width: '100%',
-                    height: '100%'
-                }}>
+                    height: '100%',
+                }}
+                >
                     <PartBrowserDragPreview scale={scale}/>
 
-                    <Header gmeClient={gmeClient} projectOwner={owner} projectName={name} branchName={'master'}/>
+                    <Header gmeClient={gmeClient} projectOwner={owner} projectName={name} branchName="master"/>
 
                     <LeftDrawer gmeClient={gmeClient}/>
 
@@ -153,7 +165,7 @@ class Project extends Component {
                             bottom: 0,
                             left: 'calc(50% - 100px)',
                             width: 200,
-                            opacity: 0.9
+                            opacity: 0.9,
                         }}
                     >
                         <BottomNavigationAction label="Modeling" icon={<EditMode/>} style={{opacity: 0.9}}/>

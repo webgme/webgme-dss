@@ -1,14 +1,16 @@
-import {LAYOUT_SIZES} from "./CONSTANTS";
+import {LAYOUT_SIZES} from './CONSTANTS';
 
-export const sideDrawer = {
+const sideDrawer = {
     drawerPaper: {
         width: LAYOUT_SIZES.SIDE_PANEL_WIDTH,
         overflow: 'auto',
         top: LAYOUT_SIZES.HEADER_HEIGHT,
-        height: `calc(100vh - ${LAYOUT_SIZES.HEADER_HEIGHT}px)`
+        height: `calc(100vh - ${LAYOUT_SIZES.HEADER_HEIGHT}px)`,
     },
     drawerPaperClose: {
         width: LAYOUT_SIZES.SIDE_PANEL_WIDTH_MINIMIZED,
-        overflowX: 'hidden'
-    }
+        overflowX: 'hidden',
+    },
 };
+
+export default sideDrawer;

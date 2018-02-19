@@ -7,7 +7,7 @@ export default class BasicConnection extends Component {
         path: PropTypes.array.isRequired,
         onClick: PropTypes.func,
         hasWrapper: PropTypes.bool.isRequired,
-        dashed: PropTypes.bool.isRequired
+        dashed: PropTypes.bool.isRequired,
     };
 
     onClick = (event) => {
@@ -19,7 +19,10 @@ export default class BasicConnection extends Component {
 
     getBoundingBox = () => {
         let {path} = this.props,
-            minX, maxX, minY, maxY;
+            minX,
+            maxX,
+            minY,
+            maxY;
 
         if (path.length === 0) {
             return null;
@@ -51,15 +54,18 @@ export default class BasicConnection extends Component {
             x: minX,
             y: minY,
             width: Math.max(maxX - minX, 2),
-            height: Math.max(maxY - minY, 2)
+            height: Math.max(maxY - minY, 2),
         };
     };
 
     render() {
         const {path, hasWrapper, dashed} = this.props;
         let box = this.getBoundingBox(),
-            sections = [], i,
-            style = hasWrapper ? {} : {position: 'absolute', top: box.y, left: box.x, zIndex: ZLEVELS.connection};
+            sections = [],
+            i,
+            style = hasWrapper ? {} : {
+                position: 'absolute', top: box.y, left: box.x, zIndex: ZLEVELS.connection,
+            };
 
         if (box === null) {
             return null;
@@ -68,23 +74,25 @@ export default class BasicConnection extends Component {
         for (i = 0; i < path.length - 1; i += 1) {
             sections.push(<path
                 key={i}
-                d={'M' +
-                (path[i].x) + ' ' +
-                (path[i].y) + ' L' +
-                (path[i + 1].x) + ' ' +
-                (path[i + 1].y)}
+                d={`M${
+                    path[i].x} ${
+                    path[i].y} L${
+                    path[i + 1].x} ${
+                    path[i + 1].y}`}
                 strokeWidth={1}
                 strokeDasharray={dashed ? 5 : 0}
-                stroke={'black'}/>)
+                stroke="black"
+            />);
         }
 
-        return (<svg
-            width={box.width}
-            height={box.height}
-            style={style}
-            viewBox={box.x + ' ' + box.y + ' ' + box.width + ' ' + box.height}>
-            {sections}
-        </svg>);
+        return (
+            <svg
+                width={box.width}
+                height={box.height}
+                style={style}
+                viewBox={`${box.x} ${box.y} ${box.width} ${box.height}`}
+            >
+                {sections}
+            </svg>);
     }
-
 }

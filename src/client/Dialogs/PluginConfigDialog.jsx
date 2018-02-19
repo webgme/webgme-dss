@@ -16,11 +16,11 @@ export default class PluginConfigDialog extends Component {
     static propTypes = {
         onOK: PropTypes.func.isRequired,
         metadata: PropTypes.object.isRequired,
-        fastForward: PropTypes.bool
+        fastForward: PropTypes.bool,
     };
 
     state = {
-        configItems: {}
+        configItems: {},
     };
 
     constructor(props) {
@@ -28,7 +28,7 @@ export default class PluginConfigDialog extends Component {
 
         const {metadata} = this.props,
             {configStructure} = metadata;
-        let {configItems} = this.state;
+        const {configItems} = this.state;
         configStructure.forEach((descriptor) => {
             configItems[descriptor.name] = descriptor.value;
         });
@@ -45,8 +45,8 @@ export default class PluginConfigDialog extends Component {
         const {configItems} = this.state;
         this.setState({
             configItems: update(configItems, {
-                [name]: {$set: value}
-            })
+                [name]: {$set: value},
+            }),
         });
     };
 
@@ -64,8 +64,10 @@ export default class PluginConfigDialog extends Component {
             {configStructure} = metadata,
             {configItems} = this.state;
 
-        let form = configStructure.map((descriptor) => {
-            const {name, displayName, valueItems, description, readOnly} = descriptor;
+        const form = configStructure.map((descriptor) => {
+            const {
+                name, displayName, valueItems, description, readOnly,
+            } = descriptor;
             let {valueType} = descriptor;
 
             if (name.indexOf('color') !== -1) {
@@ -79,14 +81,15 @@ export default class PluginConfigDialog extends Component {
                 values={valueItems}
                 type={valueType}
                 onChange={(newValue) => {
-                    this.onChange(name, newValue)
+                    this.onChange(name, newValue);
                 }}
                 description={description}
-                options={{readOnly: readOnly}}/>);
+                options={{readOnly}}
+            />);
         });
 
         return (
-            <Dialog open={true}>
+            <Dialog open>
                 <DialogTitle>{metadata.name}</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -95,12 +98,16 @@ export default class PluginConfigDialog extends Component {
                     {form}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.onReady} color='primary'>Run</Button>
-                    <Button onClick={() => {
-                        onOK()
-                    }} color='secondary'>Cancel</Button>
+                    <Button onClick={this.onReady} color="primary">Run</Button>
+                    <Button
+                        onClick={() => {
+                            onOK();
+                        }}
+                        color="secondary"
+                    >Cancel
+                    </Button>
                 </DialogActions>
             </Dialog>
         );
     }
-};
+}

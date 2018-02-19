@@ -23,18 +23,17 @@ export default class ConnectionManager {
         this.source = source;
         this.startPos = position;
         this.notifyMe = typeof notifyMe === 'function' ? notifyMe : () => {
-            console.log('no notification is sent')
+            console.log('no notification is sent');
         };
         this.fireChange();
     }
 
     endConnection() {
         this.isConnecting = false;
-        let connection = {source: this.source, type: this.type};
+        const connection = {source: this.source, type: this.type};
         this.source = null;
         this.type = null;
-        if (typeof this.notifyMe === 'function')
-            this.notifyMe();
+        if (typeof this.notifyMe === 'function') { this.notifyMe(); }
         this.notifyMe = null;
         this.fireChange();
         return connection;
@@ -58,8 +57,8 @@ export default class ConnectionManager {
             this.changeFn({
                 isConnecting: this.isConnecting,
                 startPos: this.startPos,
-                currentPos: this.currentPos
+                currentPos: this.currentPos,
             });
         }
     }
-};
+}

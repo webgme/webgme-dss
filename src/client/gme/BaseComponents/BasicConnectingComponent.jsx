@@ -4,13 +4,13 @@ import {ZLEVELS} from '../utils/zLevels';
 
 export default class BasicConnectingComponent extends Component {
     static propTypes = {
-        connectionManager: PropTypes.object.isRequired
+        connectionManager: PropTypes.object.isRequired,
     };
 
     state = {
         startPos: null,
         currentPos: null,
-        isConnecting: false
+        isConnecting: false,
     };
 
     constructor(props) {
@@ -27,7 +27,10 @@ export default class BasicConnectingComponent extends Component {
 
     render() {
         const {isConnecting, startPos, currentPos} = this.state;
-        let top, left, width, height;
+        let top,
+            left,
+            width,
+            height;
 
         if (isConnecting) {
             top = Math.min(startPos.y, currentPos.y);
@@ -39,27 +42,27 @@ export default class BasicConnectingComponent extends Component {
                     <svg
                         width={width}
                         height={height}
-                        viewBox={0 + ' ' + 0 + ' ' + (width) + ' ' + (height)}
+                        viewBox={`${0} ${0} ${width} ${height}`}
                         style={{
                             position: 'absolute',
-                            top: (top - 5) + 'px',
-                            left: (left - 5) + 'px',
-                            zIndex: ZLEVELS.connection
+                            top: `${top - 5}px`,
+                            left: `${left - 5}px`,
+                            zIndex: ZLEVELS.connection,
                         }}
                     >
                         <line
-                            strokeWidth={'2'}
-                            stroke={'black'}
-                            strokeDasharray={'5 5'}
+                            strokeWidth="2"
+                            stroke="black"
+                            strokeDasharray="5 5"
                             x1={startPos.x - (left - 5)}
                             y1={startPos.y - (top - 5)}
                             x2={currentPos.x - (left - 5)}
-                            y2={currentPos.y - (top - 5)}/>
+                            y2={currentPos.y - (top - 5)}
+                        />
                     </svg>
                 );
             }
         }
         return null;
     }
-
 }

@@ -1,5 +1,5 @@
-function getObjectSorter (key, ignoreCase, reverse) {
-    let multiplier = reverse ? -1 : 1;
+function getObjectSorter(key, ignoreCase, reverse) {
+    const multiplier = reverse ? -1 : 1;
     return (a, b) => {
         let res = 0,
             aVal = a[key],
@@ -20,10 +20,10 @@ function getObjectSorter (key, ignoreCase, reverse) {
     };
 }
 
-let nameSort = getObjectSorter('name', true);
+const nameSort = getObjectSorter('name', true);
 
 export default getObjectSorter;
 
 export {
-    nameSort
-}
+    nameSort,
+};

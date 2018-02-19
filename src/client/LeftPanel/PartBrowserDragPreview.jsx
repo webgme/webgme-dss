@@ -8,15 +8,11 @@ import {connect} from 'react-redux';
 import {DRAG_TYPES} from '../CONSTANTS';
 import SVGCACHE from '../../svgcache';
 
-const mapStateToProps = state => {
-    return {
-        scale: state.scale
-    }
-};
+const mapStateToProps = state => ({
+    scale: state.scale,
+});
 
-const mapDispatchToProps = (/*dispatch*/) => {
-    return {};
-};
+const mapDispatchToProps = (/* dispatch */) => ({});
 
 // DragLayer
 function collect(monitor) {
@@ -25,7 +21,7 @@ function collect(monitor) {
         itemType: monitor.getItemType(),
         currentOffset: monitor.getClientOffset(),
         initialOffset: monitor.getInitialClientOffset(),
-        isDragging: monitor.isDragging()
+        isDragging: monitor.isDragging(),
     };
 }
 
@@ -35,18 +31,20 @@ class PartBrowserDragPreview extends Component {
         itemType: PropTypes.string,
         currentOffset: PropTypes.shape({
             x: PropTypes.number.isRequired,
-            y: PropTypes.number.isRequired
+            y: PropTypes.number.isRequired,
         }),
         initialOffset: PropTypes.shape({
             x: PropTypes.number.isRequired,
-            y: PropTypes.number.isRequired
+            y: PropTypes.number.isRequired,
         }),
         isDragging: PropTypes.bool.isRequired,
-        scale: PropTypes.number.isRequired
+        scale: PropTypes.number.isRequired,
     };
 
     render() {
-        const {item, itemType, isDragging, currentOffset, initialOffset, scale} = this.props;
+        const {
+            item, itemType, isDragging, currentOffset, initialOffset, scale,
+        } = this.props;
 
         if (!isDragging || !item || itemType !== DRAG_TYPES.GME_NODE ||
             !item.nodeData || !currentOffset || !initialOffset) {
@@ -57,20 +55,21 @@ class PartBrowserDragPreview extends Component {
             transform = `translate(${x}px, ${y}px)`,
             {base, bbox} = SVGCACHE[item.nodeData.modelicaUri];
         return (
-            <Samy svgXML={base}
-                  style={{
-                      position: 'absolute',
-                      top: initialOffset.y - item.offset.y,
-                      left: initialOffset.x - item.offset.x,
-                      zIndex: 1300,
-                      height: bbox.height * scale,
-                      width: bbox.width * scale,
-                      pointerEvents: 'none',
-                      //verticalAlign: 'middle',
-                      transform: transform,
-                      WebkitTransform: transform
-                  }}>
-            </Samy>
+            <Samy
+                svgXML={base}
+                style={{
+                    position: 'absolute',
+                    top: initialOffset.y - item.offset.y,
+                    left: initialOffset.x - item.offset.x,
+                    zIndex: 1300,
+                    height: bbox.height * scale,
+                    width: bbox.width * scale,
+                    pointerEvents: 'none',
+                    // verticalAlign: 'middle',
+                    transform,
+                    WebkitTransform: transform,
+                }}
+            />
         );
     }
 }

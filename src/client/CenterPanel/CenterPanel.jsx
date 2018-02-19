@@ -9,25 +9,21 @@ import SelectorCanvas from './SelectorCanvas';
 import OTConsole from '../OTConsole';
 import {centerPanel as style} from '../styles';
 
-const mapStateToProps = state => {
-    return {
-        modelingView: state.modelingView,
-        activeNode: state.activeNode,
-        plotNode: state.plotData.nodeId
-    }
-};
+const mapStateToProps = state => ({
+    modelingView: state.modelingView,
+    activeNode: state.activeNode,
+    plotNode: state.plotData.nodeId,
+});
 
-const mapDispatchToProps = (/*dispatch*/) => {
-    return {}
-};
+const mapDispatchToProps = (/* dispatch */) => ({});
 
 class CenterPanel extends Component {
     static propTypes = {
-        gmeClient: PropTypes.object.isRequired
+        gmeClient: PropTypes.object.isRequired,
     };
 
     state = {
-        scrollPos: {x: 0, y: 0}
+        scrollPos: {x: 0, y: 0},
     };
 
     onScroll = (event) => {
@@ -38,39 +34,48 @@ class CenterPanel extends Component {
         const {gmeClient, modelingView, plotNode} = this.props;
         const {scrollPos} = this.state;
 
-        let flexStyle = JSON.parse(JSON.stringify(style));
+        const flexStyle = JSON.parse(JSON.stringify(style));
 
         if (!modelingView) {
             flexStyle.backgroundColor = 'rgb(192, 192, 192)';
         }
 
         return (
-            <div onScroll={this.onScroll}
-                 style={flexStyle}>
-                {modelingView ? <Canvas gmeClient={gmeClient} scrollPos={scrollPos}/> :
-                    <div style={{
+            <div
+                onScroll={this.onScroll}
+                style={flexStyle}
+            >
+                {modelingView ? <Canvas gmeClient={gmeClient} scrollPos={scrollPos} /> :
+                <div style={{
                         position: 'fixed',
                         left: 50,
                         top: 50,
                         width: '100%',
-                        height: '100%'
-                    }}>
-                        <Paper elevation={0} style={{
-                            overflow: 'auto',
-                            width: '100%'
-                        }}>
-                            {plotNode ? <Plotter/> : <OTConsole gmeClient={gmeClient} attributeName={'stdout'}/>}
-                        </Paper>
-                        <Paper elevation={0} style={{
-                            top: 351,
-                            left: 50,
-                            bottom: 0,
-                            right: 0,
-                            overflow: 'auto',
-                            position: 'inherit'
-                        }}>
-                            <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>
-                        </Paper>
+                        height: '100%',
+                    }}
+                    >
+                        <Paper
+                        elevation={0}
+                        style={{
+                                overflow: 'auto',
+                                width: '100%',
+                            }}
+                    >
+                        {plotNode ? <Plotter /> : <OTConsole gmeClient={gmeClient} attributeName="stdout" />}
+                    </Paper>
+                        <Paper
+                        elevation={0}
+                        style={{
+                                top: 351,
+                                left: 50,
+                                bottom: 0,
+                                right: 0,
+                                overflow: 'auto',
+                                position: 'inherit',
+                            }}
+                    >
+                        <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos} />
+                    </Paper>
                     </div>
                 }
             </div>

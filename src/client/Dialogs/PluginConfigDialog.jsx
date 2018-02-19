@@ -10,7 +10,7 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
 
-import {AttributeItem, AttributeTypes} from '../RightPanel/AttributeEditor';
+import AttributeItem, {AttributeTypes} from '../RightPanel/AttributeItem';
 
 export default class PluginConfigDialog extends Component {
     static propTypes = {
@@ -19,26 +19,39 @@ export default class PluginConfigDialog extends Component {
         fastForward: PropTypes.bool,
     };
 
-    state = {
-        configItems: {},
+    static defaultProps = {
+        fastForward: false,
     };
 
     constructor(props) {
         super(props);
 
-        const {metadata} = this.props,
-            {configStructure} = metadata;
+        const {metadata} = this.props;
+        const {configStructure} = metadata;
+
         const {configItems} = this.state;
+
         configStructure.forEach((descriptor) => {
             configItems[descriptor.name] = descriptor.value;
         });
     }
 
-    onReady = () => {
-        const {onOK} = this.props,
-            {configItems} = this.state;
+    state = {
+        configItems: {},
+    };
 
-        onOK(configItems);
+    componentWillMount() {
+        const {metadata, fastForward} = this.props;
+        const {configStructure} = metadata;
+
+        if (fastForward && configStructure.length === 0) {
+            this.onReady();
+        }
+    }
+
+    onReady = () => {
+        const {configItems} = this.state;
+        this.props.onOK(configItems);
     };
 
     onChange = (name, value) => {
@@ -50,19 +63,10 @@ export default class PluginConfigDialog extends Component {
         });
     };
 
-    componentWillMount() {
-        const {metadata, fastForward} = this.props,
-            {configStructure} = metadata;
-
-        if (fastForward && configStructure.length === 0) {
-            this.onReady();
-        }
-    }
-
     render() {
-        const {metadata, onOK} = this.props,
-            {configStructure} = metadata,
-            {configItems} = this.state;
+        const {metadata, onOK} = this.props;
+        const {configStructure} = metadata;
+        const {configItems} = this.state;
 
         const form = configStructure.map((descriptor) => {
             const {

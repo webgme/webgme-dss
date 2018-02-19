@@ -22,8 +22,13 @@ const mapDispatchToProps = dispatch => ({
 class PluginResultDialog extends Component {
     static propTypes = {
         onOK: PropTypes.func.isRequired,
+        setActiveSelection: PropTypes.func.isRequired,
         result: PropTypes.object.isRequired,
         title: PropTypes.string,
+    };
+
+    static defaultProps = {
+        title: 'Plugin results',
     };
 
     colors = {
@@ -34,40 +39,39 @@ class PluginResultDialog extends Component {
     };
 
     render() {
-        const {
-                result, onOK, title, setActiveSelection,
-            } = this.props,
-            colors = this.colors;
+        const {result, onOK, title} = this.props;
+
         const messages = result.messages.map((message) => {
             // message.activeNode.id
             const {severity, activeNode} = message;
-            return (<Card style={{backgroundColor: colors[severity]}} raised>
-                <CardContent>
-                    <Typography type="headline" component="h2">
-                        {severity}
-                    </Typography>
-                    <Typography component="p">
-                        {message.message}
-                    </Typography>
-                </CardContent>
-                <CardActions>
-                    <Button
-                        size="small"
-                        color="primary"
-                        onClick={() => {
-                            setActiveSelection([activeNode.id]);
-                            onOK();
-                        }}
-                    >
-                        Check node
-                    </Button>
-                </CardActions>
-                    </Card>);
+            return (
+                <Card style={{backgroundColor: this.colors[severity]}} raised>
+                    <CardContent>
+                        <Typography type="headline" component="h2">
+                            {severity}
+                        </Typography>
+                        <Typography component="p">
+                            {message.message}
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <Button
+                            size="small"
+                            color="primary"
+                            onClick={() => {
+                                this.props.setActiveSelection([activeNode.id]);
+                                onOK();
+                            }}
+                        >
+                            Check node
+                        </Button>
+                    </CardActions>
+                </Card>);
         });
 
         return (
             <Dialog open>
-                <DialogTitle>{title || 'Plugin results'}</DialogTitle>
+                <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
                     {messages}
                 </DialogContent>

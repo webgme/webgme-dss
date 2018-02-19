@@ -42,10 +42,14 @@ const mapDispatchToProps = dispatch => ({
 class CreateProject extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
-        projects: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+        projects: PropTypes.arrayOf(PropTypes.object),
         classes: PropTypes.object.isRequired,
-        history: PropTypes.arrayOf(PropTypes.string).isRequired,
+        history: PropTypes.object.isRequired,
         setSystemWaiting: PropTypes.func.isRequired,
+    };
+
+    static defaultProps = {
+        projects: null,
     };
 
     state = {
@@ -69,7 +73,7 @@ class CreateProject extends Component {
             return;
         }
 
-        //console.log('create data:', data);
+        // console.log('create data:', data);
 
         const path = [
             window.location.origin,

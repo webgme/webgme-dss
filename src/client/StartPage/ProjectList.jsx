@@ -21,8 +21,12 @@ const styles = {
 
 class ProjectList extends Component {
     static propTypes = {
-        projects: PropTypes.arrayOf(PropTypes.object).isRequired,
+        projects: PropTypes.arrayOf(PropTypes.object),
         classes: PropTypes.object.isRequired,
+    };
+
+    static defaultProps = {
+        projects: null,
     };
 
     render() {

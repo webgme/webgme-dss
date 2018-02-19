@@ -19,17 +19,22 @@ import Checkbox from 'material-ui/Checkbox';
 import seedInfo from '../../seeds/Modelica/metadata.json';
 
 import getIndexedName from '../gme/utils/getIndexedName';
-import {AttributeItem} from '../RightPanel/AttributeEditor';
+import AttributeItem from '../RightPanel/AttributeItem';
 
 export default class DomainSelector extends Component {
     static propTypes = {
-        domains: PropTypes.array.isRequired,
+        domains: PropTypes.arrayOf(PropTypes.string).isRequired,
         showDomainSelection: PropTypes.bool.isRequired,
         defaultName: PropTypes.string,
-        takenNames: PropTypes.array,
+        takenNames: PropTypes.arrayOf(PropTypes.string),
         title: PropTypes.string.isRequired,
         onOK: PropTypes.func.isRequired,
         onCancel: PropTypes.func.isRequired,
+    };
+
+    static defaultProps = {
+        defaultName: null,
+        takenNames: [],
     };
 
     state = {
@@ -40,7 +45,7 @@ export default class DomainSelector extends Component {
         const {domains, defaultName, takenNames} = this.props;
         const selected = {};
 
-        if (defaultName) {
+        if (typeof defaultName === 'string') {
             this.name = getIndexedName(defaultName, takenNames);
         }
 
@@ -72,11 +77,12 @@ export default class DomainSelector extends Component {
 
     render() {
         const {
-                defaultName, showDomainSelection, title, onCancel,
-            } = this.props,
-            {selected} = this.state;
-        let form = null,
-            nameInput = null;
+            defaultName, showDomainSelection, title, onCancel,
+        } = this.props;
+        const {selected} = this.state;
+
+        let form = null;
+        let nameInput = null;
 
         if (defaultName === 'string') {
             nameInput = (<AttributeItem
@@ -108,7 +114,7 @@ export default class DomainSelector extends Component {
                                 label={domain}
                             />))}
                     </FormGroup>
-                    <FormHelperText>You'll need at least one</FormHelperText>
+                    <FormHelperText>You&#39;ll need at least one</FormHelperText>
                 </FormControl>);
         }
 

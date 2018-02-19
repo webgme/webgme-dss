@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {ZLEVELS} from '../utils/zLevels';
+import ZLEVELS from '../utils/zLevels';
 
 export default class BasicConnectingComponent extends Component {
     static propTypes = {
         connectionManager: PropTypes.object.isRequired,
-    };
-
-    state = {
-        startPos: null,
-        currentPos: null,
-        isConnecting: false,
     };
 
     constructor(props) {
@@ -21,16 +15,22 @@ export default class BasicConnectingComponent extends Component {
         connectionManager.setListener(this.onChange);
     }
 
+    state = {
+        startPos: null,
+        currentPos: null,
+        isConnecting: false,
+    };
+
     onChange = (event) => {
         this.setState(event);
     };
 
     render() {
         const {isConnecting, startPos, currentPos} = this.state;
-        let top,
-            left,
-            width,
-            height;
+        let top;
+        let left;
+        let width;
+        let height;
 
         if (isConnecting) {
             top = Math.min(startPos.y, currentPos.y);

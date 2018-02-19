@@ -14,9 +14,9 @@ import {DRAG_TYPES} from '../CONSTANTS';
 import CanvasItemPort from './CanvasItemPort';
 import Territory from '../gme/BaseComponents/Territory';
 import BasicConnection from './BasicConnection';
-import SVGCACHE from './../../svgcache';
+import SVGCACHE from './../../svgcache.json';
 import {toggleRightDrawer, setActiveSelection} from '../actions';
-import {ZLEVELS} from '../gme/utils/zLevels';
+import ZLEVELS from '../gme/utils/zLevels';
 
 const canvasItemSource = {
     beginDrag(props) {

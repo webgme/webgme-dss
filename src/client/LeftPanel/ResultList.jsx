@@ -37,13 +37,16 @@ class ResultList extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
         minimized: PropTypes.bool.isRequired,
+
+        setPlotNode: PropTypes.func.isRequired,
+        setSimResData: PropTypes.func.isRequired,
+        setResultNode: PropTypes.func.isRequired,
+        resultNode: PropTypes.string.isRequired,
+        plotModel: PropTypes.string,
     };
 
-    state = {
-        containerId: null,
-        expandedResId: null,
-        territory: null,
-        results: {},
+    static defaultProps = {
+        plotModel: null,
     };
 
     constructor(props) {
@@ -61,21 +64,27 @@ class ResultList extends Component {
         }
     }
 
+    state = {
+        containerId: null,
+        expandedResId: null,
+        territory: null,
+        results: {},
+    };
+
     switchPlotNode = (resId) => {
-        const {setPlotNode, setSimResData} = this.props;
         const {results} = this.state;
 
         if (!resId || !results[resId] || results[resId].isRunning || !results[resId].simRes) {
-            setPlotNode(null);
-            setSimResData({});
+            this.props.setPlotNode(null);
+            this.props.setSimResData({});
         } else {
-            setPlotNode(results[resId].modelId);
-            setSimResData(JSON.parse(results[resId].simRes));
+            this.props.setPlotNode(results[resId].modelId);
+            this.props.setSimResData(JSON.parse(results[resId].simRes));
         }
     };
 
     handleEvents = (hash, loads, updates, unloads) => {
-        const {gmeClient, resultNode, setResultNode} = this.props;
+        const {gmeClient, resultNode} = this.props;
         const {containerId} = this.state;
         const updateDesc = {};
 
@@ -132,10 +141,9 @@ class ResultList extends Component {
 
     handleExpand = resId => (event, expanded) => {
         // extract attribute simRes and add it to the state
-        const {setResultNode} = this.props;
 
         if (expanded) {
-            setResultNode(resId);
+            this.props.setResultNode(resId);
             this.setState({expandedResId: resId});
             this.switchPlotNode(resId);
         } else {
@@ -162,11 +170,12 @@ class ResultList extends Component {
                     const isExpanded = resId === expandedResId;
                     const failed = resInfo.isRunning === false && !resInfo.simRes;
 
-                    let statusIcon = resInfo.isRunning ? <CircularProgress size={24} /> :
-                        <CheckIcon style={{color: 'lightgreen'}} />;
+                    let statusIcon = resInfo.isRunning ?
+                        <CircularProgress size={24}/> :
+                        <CheckIcon style={{color: 'lightgreen'}}/>;
 
                     if (failed) {
-                        statusIcon = <ErrorIcon style={{color: 'red'}} />;
+                        statusIcon = <ErrorIcon style={{color: 'red'}}/>;
                     }
 
                     return (
@@ -175,7 +184,7 @@ class ResultList extends Component {
                             expanded={isExpanded}
                             onChange={this.handleExpand(resId)}
                         >
-                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                                 <div style={{marginRight: 6, marginLeft: -18}}>
                                     {statusIcon}
                                 </div>
@@ -190,17 +199,17 @@ class ResultList extends Component {
                                 </Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>
-                                { (() => {
+                                {(() => {
                                     if (hasResults) {
-                                        return <SimulationResultSelector gmeClient={gmeClient} nodeId={resId} />;
+                                        return <SimulationResultSelector gmeClient={gmeClient} nodeId={resId}/>;
                                     } else if (failed) {
                                         return <div>simulation failed</div>;
                                     }
                                     return (
                                         <div>
-                                            <LinearProgress />
-                                            <br />
-                                            <LinearProgress color="secondary" />
+                                            <LinearProgress/>
+                                            <br/>
+                                            <LinearProgress color="secondary"/>
                                         </div>);
                                 })()}
                             </ExpansionPanelDetails>

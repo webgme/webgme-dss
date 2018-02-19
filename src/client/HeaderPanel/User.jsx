@@ -35,13 +35,15 @@ export default class User extends Component {
     }
 
     render() {
-        const {userInfo} = this.state,
-            {useWebGMEColors} = this.props;
-        let accountStyle = {},
-            nameStyle = {},
-            logoutStyle = {};
+        const {userInfo} = this.state;
+        const {useWebGMEColors} = this.props;
+        let accountStyle = {};
+        let nameStyle = {};
+        let logoutStyle = {};
 
-        if (userInfo === null) { return null; }
+        if (userInfo === null) {
+            return null;
+        }
 
         if (useWebGMEColors) {
             nameStyle = {color: '#70AD47'};
@@ -50,15 +52,17 @@ export default class User extends Component {
         }
         // console.log(userInfo);
         return [<Typography type="subheading" style={nameStyle}>{userInfo._id}</Typography>,
-            (<Tooltip title="Profile">
-                <IconButton>
-                    <a href="/profile/home"><AccountCircle style={accountStyle} /></a>
-                </IconButton>
-             </Tooltip>),
-            (<Tooltip title="Log out">
-                <IconButton>
-                    <a href="/logout"><Cancel style={logoutStyle} /></a>
-                </IconButton>
-             </Tooltip>)];
+            (
+                <Tooltip title="Profile">
+                    <IconButton>
+                        <a href="/profile/home"><AccountCircle style={accountStyle}/></a>
+                    </IconButton>
+                </Tooltip>),
+            (
+                <Tooltip title="Log out">
+                    <IconButton>
+                        <a href="/logout"><Cancel style={logoutStyle}/></a>
+                    </IconButton>
+                </Tooltip>)];
     }
 }

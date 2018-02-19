@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import {nameSort} from '../gme/utils/getObjectSorter';
-import ProjectList from './ProjectList';
-import CreateProject from './CreateProject';
-
 import Grid from 'material-ui/Grid';
 // import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
+
+import {nameSort} from '../gme/utils/getObjectSorter';
+import ProjectList from './ProjectList';
+import CreateProject from './CreateProject';
 
 
 export default class Projects extends Component {
@@ -16,7 +16,6 @@ export default class Projects extends Component {
     };
 
     state = {
-        err: null,
         projects: null,
     };
 
@@ -31,11 +30,11 @@ export default class Projects extends Component {
                 return;
             }
 
-            projects = projects.filter(pInfo => pInfo.info.kind && pInfo.info.kind.startsWith('DSS:'));
+            const dssProjects = projects.filter(pInfo => pInfo.info.kind && pInfo.info.kind.startsWith('DSS:'));
 
-            projects.sort(nameSort);
+            dssProjects.sort(nameSort);
 
-            this.setState({projects});
+            this.setState({projects: dssProjects});
         });
     };
 
@@ -45,7 +44,7 @@ export default class Projects extends Component {
                 <Grid container spacing={24}>
                     <Grid item lg={7}>
                         {/* <Paper elevation={4}> */}
-                        <CreateProject gmeClient={this.props.gmeClient} projects={this.state.projects} />
+                        <CreateProject gmeClient={this.props.gmeClient} projects={this.state.projects}/>
                         {/* </Paper> */}
                     </Grid>
                     <Grid item lg={5}>
@@ -53,14 +52,10 @@ export default class Projects extends Component {
                         <Typography type="title">
                                 CURRENT PROJECTS
                         </Typography>
-                        <ProjectList gmeClient={this.props.gmeClient} projects={this.state.projects} />
+                        <ProjectList gmeClient={this.props.gmeClient} projects={this.state.projects}/>
                         {/* </Paper> */}
                     </Grid>
                 </Grid>
             </div>);
     }
 }
-
-Projects.propTypes = {
-    gmeClient: PropTypes.object,
-};

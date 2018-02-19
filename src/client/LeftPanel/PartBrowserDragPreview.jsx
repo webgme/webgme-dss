@@ -6,7 +6,7 @@ import {DragLayer} from 'react-dnd';
 import {Samy} from 'react-samy-svg';
 import {connect} from 'react-redux';
 import {DRAG_TYPES} from '../CONSTANTS';
-import SVGCACHE from '../../svgcache';
+import SVGCACHE from '../../svgcache.json';
 
 const mapStateToProps = state => ({
     scale: state.scale,
@@ -32,13 +32,18 @@ class PartBrowserDragPreview extends Component {
         currentOffset: PropTypes.shape({
             x: PropTypes.number.isRequired,
             y: PropTypes.number.isRequired,
-        }),
+        }).isRequired,
         initialOffset: PropTypes.shape({
             x: PropTypes.number.isRequired,
             y: PropTypes.number.isRequired,
-        }),
+        }).isRequired,
         isDragging: PropTypes.bool.isRequired,
         scale: PropTypes.number.isRequired,
+    };
+
+    static defaultProps = {
+        item: null,
+        itemType: null,
     };
 
     render() {
@@ -51,9 +56,10 @@ class PartBrowserDragPreview extends Component {
             return null;
         }
 
-        const {x, y} = {x: currentOffset.x - initialOffset.x, y: currentOffset.y - initialOffset.y},
-            transform = `translate(${x}px, ${y}px)`,
-            {base, bbox} = SVGCACHE[item.nodeData.modelicaUri];
+        const {x, y} = {x: currentOffset.x - initialOffset.x, y: currentOffset.y - initialOffset.y};
+        const transform = `translate(${x}px, ${y}px)`;
+        const {base, bbox} = SVGCACHE[item.nodeData.modelicaUri];
+
         return (
             <Samy
                 svgXML={base}

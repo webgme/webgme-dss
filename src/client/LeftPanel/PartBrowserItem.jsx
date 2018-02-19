@@ -7,7 +7,7 @@ import {getEmptyImage} from 'react-dnd-html5-backend';
 import {Samy, SvgProxy} from 'react-samy-svg';
 
 import {DRAG_TYPES} from '../CONSTANTS';
-import SVGCACHE from './../../svgcache';
+import SVGCACHE from './../../svgcache.json';
 
 // / End of DragLayer..
 const partBrowserItemSource = {
@@ -18,8 +18,8 @@ const partBrowserItemSource = {
             // Specifics
             nodeData: props.nodeData,
             offset: {
-                y: SVGCACHE[props.nodeData.modelicaUri].bbox.height * props.scale / 2,
-                x: SVGCACHE[props.nodeData.modelicaUri].bbox.width * props.scale / 2,
+                y: SVGCACHE[props.nodeData.modelicaUri].bbox.height * (props.scale / 2),
+                x: SVGCACHE[props.nodeData.modelicaUri].bbox.width * (props.scale / 2),
             },
         };
     },
@@ -40,12 +40,14 @@ class PartBrowserItem extends Component {
             name: PropTypes.string,
             modelicaUri: PropTypes.string,
             iconUrl: PropTypes.string,
-        }),
-        scale: PropTypes.number.isRequired,
-
+        }).isRequired,
         connectDragSource: PropTypes.func.isRequired,
         connectDragPreview: PropTypes.func.isRequired,
-        isDragging: PropTypes.bool.isRequired,
+        listView: PropTypes.bool,
+    };
+
+    static defaultProps = {
+        listView: false,
     };
 
     componentDidMount() {
@@ -62,39 +64,43 @@ class PartBrowserItem extends Component {
     render() {
         const {nodeData, connectDragSource, listView} = this.props;
 
-        return connectDragSource(<div style={{
-            display: 'inline-flex',
-            width: '100%',
-            opacity: 0.99,
-            paddingTop: listView ? 10 : 0,
-            cursor: 'pointer',
-        }}
-        >
-            <div>
-                <Samy
-                    svgXML={SVGCACHE[nodeData.modelicaUri].base}
-                    style={{
-                        height: 26,
-                        width: 40,
-                        verticalAlign: 'middle',
-                    }}
-                >
-                    <SvgProxy selector="text" display="none" />
-                    <SvgProxy selector="*" stroke-width="0.75mm" />
-                </Samy>
-            </div>
-            {listView ? null :
-            <div style={{
+        const content = (
+            <div
+                style={{
+                    display: 'inline-flex',
+                    width: '100%',
+                    opacity: 0.99,
+                    paddingTop: listView ? 10 : 0,
+                    cursor: 'pointer',
+                }}
+            >
+                <div>
+                    <Samy
+                        svgXML={SVGCACHE[nodeData.modelicaUri].base}
+                        style={{
+                            height: 26,
+                            width: 40,
+                            verticalAlign: 'middle',
+                        }}
+                    >
+                        <SvgProxy selector="text" display="none"/>
+                        <SvgProxy selector="*" stroke-width="0.75mm"/>
+                    </Samy>
+                </div>
+
+                <div style={{
                     paddingTop: 5,
                     overflowX: 'hidden',
                     textOverflow: 'ellipsis',
                     fontSize: 13,
+                    display: listView ? 'none' : undefined,
                 }}
                 >
                     {nodeData.name}
                 </div>
-            }
-                                 </div>);
+            </div>);
+
+        return connectDragSource(content);
     }
 }
 

@@ -6,7 +6,10 @@
   "rules": {
     "indent": [
       "error",
-      4
+      4,
+      {
+        "SwitchCase": 1
+      }
     ],
     "react/jsx-indent-props": [
       "error",
@@ -34,7 +37,29 @@
     "react/forbid-prop-types": [
       "error",
       {
-        "forbid": ["any"]
+        "forbid": [
+          "any",
+          "array"
+        ]
+      }
+    ],
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": [
+          "_id"
+        ]
+      }
+    ],
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": [
+          "Link"
+        ],
+        "specialLink": [
+          "to"
+        ]
       }
     ]
   }

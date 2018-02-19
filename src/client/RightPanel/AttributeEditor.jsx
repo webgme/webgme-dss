@@ -13,7 +13,7 @@ import {GithubPicker} from 'react-color';
 import {Samy} from 'react-samy-svg';
 
 import Territory from '../gme/BaseComponents/Territory';
-import SVGCACHE from '../../svgcache';
+import SVGCACHE from '../../svgcache.json';
 
 export const AttributeTypes = {
     string: 'string',
@@ -27,9 +27,14 @@ export class AttributeItem extends Component {
     static propTypes = {
         onChange: PropTypes.func,
         onFullChange: PropTypes.func,
-        value: PropTypes.any.isRequired,
-        values: PropTypes.array,
+        value: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+            PropTypes.bool,
+        ]).isRequired,
+        values: PropTypes.arrayOf(PropTypes.string),
         options: PropTypes.object,
+        style: PropTypes.object,
         fullWidth: PropTypes.bool,
         name: PropTypes.string.isRequired,
         description: PropTypes.string,
@@ -37,12 +42,23 @@ export class AttributeItem extends Component {
         type: PropTypes.string.isRequired,
     };
 
+    static defaultProps = {
+        onChange: () => {
+        },
+        onFullChange: () => {
+        },
+        values: null,
+        description: null,
+        unit: null,
+        options: {},
+        style: null,
+        fullWidth: false,
+    }
+
     state = {
         value: this.props.value,
         picking: false,
     };
-
-    options = {};
 
     componentWillReceiveProps(nextProps) {
         this.setState({value: nextProps.value, picking: false});
@@ -69,15 +85,15 @@ export class AttributeItem extends Component {
         const {type} = this.props;
 
         switch (type) {
-        case AttributeTypes.boolean:
-            return event.target.checked;
-        case AttributeTypes.string:
-        case AttributeTypes.asset:
-            return event.target.value;
-        case AttributeTypes.number:
-            return Number(event.target.value);
-        default:
-            return null;
+            case AttributeTypes.boolean:
+                return event.target.checked;
+            case AttributeTypes.string:
+            case AttributeTypes.asset:
+                return event.target.value;
+            case AttributeTypes.number:
+                return Number(event.target.value);
+            default:
+                return null;
         }
     };
 
@@ -89,44 +105,44 @@ export class AttributeItem extends Component {
         const newValue = this.eventToAttrValue(event);
 
         switch (type) {
-        case AttributeTypes.boolean:
-            if (typeof onChange === 'function') {
-                onChange(newValue);
-            }
-
-            if (typeof onFullChange === 'function') {
-                onFullChange(newValue);
-            }
-
-            this.setState({value: newValue});
-            break;
-        case AttributeTypes.string:
-        case AttributeTypes.asset:
-            if (newValue !== value) {
+            case AttributeTypes.boolean:
                 if (typeof onChange === 'function') {
                     onChange(newValue);
                 }
 
-                if (values && values.length > 0 && typeof onFullChange === 'function') {
+                if (typeof onFullChange === 'function') {
                     onFullChange(newValue);
-                }
-            }
-            this.setState({value: newValue});
-            break;
-        case AttributeTypes.number:
-            if (newValue !== value) {
-                if (typeof onChange === 'function') {
-                    onChange(newValue);
                 }
 
-                if (values && values.length > 0 && typeof onFullChange === 'function') {
-                    onFullChange(newValue);
+                this.setState({value: newValue});
+                break;
+            case AttributeTypes.string:
+            case AttributeTypes.asset:
+                if (newValue !== value) {
+                    if (typeof onChange === 'function') {
+                        onChange(newValue);
+                    }
+
+                    if (values && values.length > 0 && typeof onFullChange === 'function') {
+                        onFullChange(newValue);
+                    }
                 }
-            }
-            this.setState({value: newValue});
-            break;
-        default:
-            return null;
+                this.setState({value: newValue});
+                break;
+            case AttributeTypes.number:
+                if (newValue !== value) {
+                    if (typeof onChange === 'function') {
+                        onChange(newValue);
+                    }
+
+                    if (values && values.length > 0 && typeof onFullChange === 'function') {
+                        onFullChange(newValue);
+                    }
+                }
+                this.setState({value: newValue});
+                break;
+            default:
+                break;
         }
     };
 
@@ -144,7 +160,9 @@ export class AttributeItem extends Component {
     };
 
     onFocus = () => {
-        if (this.props.type === AttributeTypes.color) { this.setState({picking: true}); }
+        if (this.props.type === AttributeTypes.color) {
+            this.setState({picking: true});
+        }
     };
 
     onBlur = (event) => {
@@ -168,68 +186,70 @@ export class AttributeItem extends Component {
     };
 
     getContent = () => {
-        let self = this,
-            {readOnly} = this.options,
-            {type, values} = this.props,
-            {value, picking} = this.state;
+        const self = this;
+        const {readOnly} = this.options;
+        const {type, values} = this.props;
+        const {value, picking} = this.state;
 
         if (values && values.length > 0) {
             // enum case
-            return (<Select disabled={readOnly} native value={value} onChange={this.onChange}>
-                {values.map(option => (<option key={option}>{option}</option>))}
-                    </Select>);
+            return (
+                <Select disabled={readOnly} native value={value} onChange={this.onChange}>
+                    {values.map(option => (<option key={option}>{option}</option>))}
+                </Select>);
         }
 
         switch (type) {
-        case AttributeTypes.boolean:
-            return (<FormControlLabel
-                disabled={readOnly}
-                control={<Switch checked={value} onChange={this.onChange} />}
-            />);
-        case AttributeTypes.string:
-            return (<Input
-                disabled={readOnly}
-                value={value}
-                onChange={this.onChange}
-                onKeyPress={this.onKeyPress}
-                onBlur={this.onBlur}
-            />);
-        case AttributeTypes.number:
-            return (<Input
-                disabled={readOnly}
-                type="number"
-                value={value}
-                onChange={this.onChange}
-                onKeyPress={this.onKeyPress}
-                onBlur={this.onBlur}
-            />);
-        case AttributeTypes.color:
-            const content = [];
-            content.push(<Input
-                key="input"
-                value={this.state.value}
-                endAdornment={
-                    <InputAdornment position="end">
-                        <IconButton onClick={() => {
-                            self.setState({picking: !picking});
-                        }}
-                        >
-                            {picking ? <InvertColorsOff /> :
-                                <InvertColors nativeColor={value} />}
-                        </IconButton>
-                    </InputAdornment>
-                }
-            />);
-            if (picking) {
-                content.push(<GithubPicker
-                    key="picker"
-                    color={this.state.value}
-                    onChange={self.onColorChange}
+            case AttributeTypes.boolean:
+                return (<FormControlLabel
+                    disabled={readOnly}
+                    control={<Switch checked={value} onChange={this.onChange}/>}
                 />);
-            }
-            return content;
-        default:
-            return null;
+            case AttributeTypes.string:
+                return (<Input
+                    disabled={readOnly}
+                    value={value}
+                    onChange={this.onChange}
+                    onKeyPress={this.onKeyPress}
+                    onBlur={this.onBlur}
+                />);
+            case AttributeTypes.number:
+                return (<Input
+                    disabled={readOnly}
+                    type="number"
+                    value={value}
+                    onChange={this.onChange}
+                    onKeyPress={this.onKeyPress}
+                    onBlur={this.onBlur}
+                />);
+            case AttributeTypes.color:
+                const content = [];
+                content.push(<Input
+                    key="input"
+                    value={this.state.value}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <IconButton onClick={() => {
+                                self.setState({picking: !picking});
+                            }}
+                            >
+                                {picking ? <InvertColorsOff/> : <InvertColors nativeColor={value}/>}
+                            </IconButton>
+                        </InputAdornment>
+                    }
+                />);
+
+                if (picking) {
+                    content.push(<GithubPicker
+                        key="picker"
+                        color={this.state.value}
+                        onChange={self.onColorChange}
+                    />);
+                }
+
+                return content;
+            default:
+                return null;
         }
     };
 
@@ -237,11 +257,12 @@ export class AttributeItem extends Component {
         this.processProps();
         const content = this.getContent();
 
-        return (<FormControl style={this.props.style || {}} fullWidth={this.props.fullWidth} onBlur={this.onBlur} onFocus={this.onFocus}>
+        return (<FormControl style={this.props.style || {}} fullWidth={this.props.fullWidth} onBlur={this.onBlur}
+                             onFocus={this.onFocus}>
             <FormLabel>{this.props.unit ? `${this.props.name} [${this.props.unit}]` : this.props.name}</FormLabel>
             {content}
             <FormHelperText>{this.props.description}</FormHelperText>
-                </FormControl>);
+        </FormControl>);
     }
 }
 
@@ -267,7 +288,9 @@ export default class AttributeEditor extends Component {
         let node = gmeClient.getNode(selection[0]),
             attributeItems = [];
 
-        if (node === null) { return null; }
+        if (node === null) {
+            return null;
+        }
         for (const key in attributes) {
             attributeItems.push(<svg
                 style={{
@@ -276,8 +299,8 @@ export default class AttributeEditor extends Component {
                     left: attributes[key].bbox.x * scale,
                 }}
                 viewBox={`${attributes[key].bbox.x * scale} ${attributes[key].bbox.y * scale
-                } ${(attributes[key].bbox.x + attributes[key].bbox.width) * scale
-                } ${(attributes[key].bbox.y + attributes[key].bbox.height) * scale}`}
+                    } ${(attributes[key].bbox.x + attributes[key].bbox.width) * scale
+                    } ${(attributes[key].bbox.y + attributes[key].bbox.height) * scale}`}
             >
                 <text
                     x={(attributes[key].parameters.x || 0) * scale}
@@ -291,7 +314,7 @@ export default class AttributeEditor extends Component {
                 node.getAttribute(key) +
                 attributes[key].text.substring(attributes[key].position)}
                 </text>
-                                </svg>);
+            </svg>);
         }
 
         return attributeItems;
@@ -313,10 +336,12 @@ export default class AttributeEditor extends Component {
         const {selection, gmeClient} = this.props;
         let {loadedNodes, attributes, modelicaUri} = this.state;
 
-        console.log('handleEvents');
+        //console.log('handleEvents');
 
         selection.forEach((nodeId) => {
-            if (loads.indexOf(nodeId) !== -1 || updates.indexOf(nodeId) !== -1) { loadedNodes.push(nodeId); }
+            if (loads.indexOf(nodeId) !== -1 || updates.indexOf(nodeId) !== -1) {
+                loadedNodes.push(nodeId);
+            }
             if (unloads.indexOf(nodeId) !== -1) {
                 loadedNodes.splice(loadedNodes.indexOf(nodeId), 1);
             }
@@ -382,37 +407,34 @@ export default class AttributeEditor extends Component {
     }
 
     render() {
-        const {selection, gmeClient} = this.props,
-            {
-                territory, attributes, modelicaUri, scale,
-            } = this.state,
-            {bbox, base} = SVGCACHE[modelicaUri];
-        let attributeItems,
-            self = this;
+        const {selection, gmeClient, options} = this.props;
+        const {
+            territory, attributes, modelicaUri, scale,
+        } = this.state;
 
-        console.log(modelicaUri);
+        const {bbox, base} = SVGCACHE[modelicaUri];
 
-        attributeItems = attributes
+        const attributeItems = attributes
             .filter(attr => !attr.readonly)
             .map((attribute) => {
-                let onChangeFn = (newValue) => {
-                        self.somethingChanges(attribute.name, newValue);
-                    },
-                    options,
-                    type;
+                const onChangeFn = (newValue) => {
+                    this.somethingChanges(attribute.name, newValue);
+                };
+
+                let type = AttributeTypes.string;
 
                 switch (attribute.type) {
-                case 'string':
-                case 'boolean':
-                case 'asset':
-                    type = attribute.type;
-                    break;
-                case 'integer':
-                case 'float':
-                    type = AttributeTypes.number;
-                    break;
-                default:
-                    type = AttributeTypes.string;
+                    case 'string':
+                    case 'boolean':
+                    case 'asset':
+                        type = attribute.type;
+                        break;
+                    case 'integer':
+                    case 'float':
+                        type = AttributeTypes.number;
+                        break;
+                    default:
+                        type = AttributeTypes.string;
                 }
 
                 return (<AttributeItem
@@ -440,8 +462,9 @@ export default class AttributeEditor extends Component {
                     onlyActualEvents
                 />
                 <div style={{textAlign: 'center', width: '100%'}}>
-                    <CardHeader title="Parameters" />
-                    <a href={`http://doc.modelica.org/om/${modelicaUri}.html`} target="_blank" style={{textDecoration: 'none'}}>
+                    <CardHeader title="Parameters"/>
+                    <a href={`http://doc.modelica.org/om/${modelicaUri}.html`} target="_blank"
+                       style={{textDecoration: 'none'}}>
                         <Typography style={{fontSize: 10, color: 'rgba(0, 0, 0, 0.54)'}}>
                             {modelicaUri.substr('Modelica.'.length)}
                         </Typography>

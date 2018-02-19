@@ -46,14 +46,20 @@ export default class SingleConnectedNode extends Component {
         gmeClient.updateTerritory(this.uiId, this.territory);
     }
 
-    componentWillReceiveProps(nextProps, nextContent) {
-        const {gmeClient, activeNode} = this.props,
-            nextNode = nextProps.activeNode;
+    componentWillReceiveProps(nextProps) {
+        const {gmeClient, activeNode} = this.props;
+        const nextNode = nextProps.activeNode;
 
         if (nextNode !== activeNode) {
             this.territory = {[nextNode]: {children: 0}};
             gmeClient.updateTerritory(this.uiId, this.territory);
         }
+    }
+
+    componentWillUnmount() {
+        const {gmeClient} = this.props;
+
+        gmeClient.removeUI(this.uiId);
     }
 
     /**
@@ -87,11 +93,7 @@ export default class SingleConnectedNode extends Component {
 
     }
 
-    componentWillUnmount() {
-        const {gmeClient} = this.props;
 
-        gmeClient.removeUI(this.uiId);
-    }
 }
 
 SingleConnectedNode.propTypes = {

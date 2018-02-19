@@ -42,8 +42,10 @@ const mapDispatchToProps = dispatch => ({
 class CreateProject extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
-        projects: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).iRequired,
+        projects: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
         classes: PropTypes.object.isRequired,
+        history: PropTypes.arrayOf(PropTypes.string).isRequired,
+        setSystemWaiting: PropTypes.func.isRequired,
     };
 
     state = {
@@ -59,7 +61,7 @@ class CreateProject extends Component {
     };
 
     onCreateNewProject = (data) => {
-        const {setSystemWaiting, gmeClient, history} = this.props;
+        const {gmeClient, history} = this.props;
 
         this.setState({showDialog: false});
         if (!data) {
@@ -67,7 +69,7 @@ class CreateProject extends Component {
             return;
         }
 
-        console.log('create data:', data);
+        //console.log('create data:', data);
 
         const path = [
             window.location.origin,
@@ -75,7 +77,7 @@ class CreateProject extends Component {
             'createProject',
         ].join('/');
 
-        setSystemWaiting(true);
+        this.props.setSystemWaiting(true);
 
         superagent.post(path)
             .send({
@@ -87,7 +89,7 @@ class CreateProject extends Component {
                     // TODO: we need to show these errors
                     console.error(err);
                 } else {
-                    console.log(result);
+                    // console.log(result);
                     const [owner, name] = result.body.projectId.split('+');
                     history.push(`/p/${owner}/${name}`);
                 }
@@ -101,31 +103,37 @@ class CreateProject extends Component {
             const {infoUrl} = seedInfo;
             const buttons = [];
             if (projects) {
-                buttons.push(<Button
-                    key="createBtn"
-                    dense
-                    color="primary"
-                    onClick={() => {
-                        this.onCreateNewClick(seedInfo.createData);
-                    }}
-                >
-                    Create
-                             </Button>);
-
-                if (infoUrl) {
-                    buttons.push(<Button
-                        key="infoBtn"
+                const createBtn = (
+                    <Button
+                        key="createBtn"
                         dense
                         color="primary"
-                        component={Link}
-                        to={infoUrl}
-                        target="_blank"
+                        onClick={() => {
+                            this.onCreateNewClick(seedInfo.createData);
+                        }}
                     >
-                        Learn More
-                                 </Button>);
+                        Create
+                    </Button>);
+
+                buttons.push(createBtn);
+
+                if (infoUrl) {
+                    const infoBtn = (
+                        <Button
+                            key="infoBtn"
+                            dense
+                            color="primary"
+                            component={Link}
+                            to={infoUrl}
+                            target="_blank"
+                        >
+                            Learn More
+                        </Button>);
+
+                    buttons.push(infoBtn);
                 }
             } else {
-                buttons.push(<CircularProgress key="progress" className={classes.progress} />);
+                buttons.push(<CircularProgress key="progress" className={classes.progress}/>);
             }
 
             return (
@@ -166,9 +174,7 @@ class CreateProject extends Component {
                         onCancel={this.onCreateNewProject}
                         defaultName={createData.defaultName}
                         takenNames={projects
-                            .filter(pInfo =>
-                                pInfo.owner === 'guest', // FIXME: We need to get user info
-                            )
+                            .filter(pInfo => pInfo.owner === 'guest') // FIXME: We need to get user info
                             .map(pInfo => pInfo.name)
                         }
                         domains={createData.domains}

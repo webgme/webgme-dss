@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {ZLEVELS} from '../gme/utils/zLevels';
+import ZLEVELS from '../gme/utils/zLevels';
 
 export default class CanvasItemPort extends Component {
     static propTypes = {

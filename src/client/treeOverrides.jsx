@@ -19,10 +19,10 @@ export class TreeContainer extends decorators.Container {
         const {style, node} = this.props;
 
         if (node.isRoot) {
-            return <div />;
+            return <div/>;
         }
 
-        return <decorators.Toggle style={style.toggle} />;
+        return <decorators.Toggle style={style.toggle}/>;
     }
 }
 
@@ -33,11 +33,11 @@ export function getTreeDecorators(LeafItem, leafProps) {
 
     decorators.Header = (props) => {
         if (props.node.isRoot) {
-            return <div />;
+            return <div/>;
         } else if (props.node.isFolder) {
             return defaultHeader(props);
         }
 
-        return <LeafItem nodeData={props.node} {...leafProps} />;
+        return <LeafItem nodeData={props.node} {...leafProps}/>;
     };
 }

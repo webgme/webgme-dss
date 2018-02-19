@@ -12,4 +12,6 @@ export default function (gmeClient, name) {
             return metaNodes[i];
         }
     }
+
+    return undefined;
 }

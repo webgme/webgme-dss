@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import IconButton from 'material-ui/IconButton';
 import ZoomIn from 'material-ui-icons/ZoomIn';
@@ -6,7 +7,7 @@ import ZoomOut from 'material-ui-icons/ZoomOut';
 import Tooltip from 'material-ui/Tooltip';
 import {setScale} from '../actions';
 
-const scales = [0.2, 0.3, 0.4, 0.6, 0.8, 1, 1.2, 1.5, 2, 3, 5];
+const SCALES = [0.2, 0.3, 0.4, 0.6, 0.8, 1, 1.2, 1.5, 2, 3, 5];
 
 const mapStateToProps = state => ({
     scale: state.scale,
@@ -19,44 +20,56 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Zoom extends Component {
+    static propTypes = {
+        scale: PropTypes.number.isRequired,
+        setScale: PropTypes.number.isRequired,
+    };
     zoomIn = () => {
-        const {setScale, scale} = this.props,
-            scaleIndex = scales.indexOf(scale);
-        if (scaleIndex < scales.length - 1) { setScale(scales[scaleIndex + 1]); }
+        const {scale} = this.props;
+        const scaleIndex = SCALES.indexOf(scale);
+
+        if (scaleIndex < SCALES.length - 1) {
+            this.props.setScale(SCALES[scaleIndex + 1]);
+        }
     };
 
     zoomOut = () => {
-        const {setScale, scale} = this.props,
-            scaleIndex = scales.indexOf(scale);
-        if (scaleIndex > 0) { setScale(scales[scaleIndex - 1]); }
+        const {scale} = this.props;
+        const scaleIndex = SCALES.indexOf(scale);
+
+        if (scaleIndex > 0) {
+            this.props.setScale(SCALES[scaleIndex - 1]);
+        }
     };
 
     render() {
-        const {scale} = this.props,
-            scaleIndex = scales.indexOf(scale);
+        const {scale} = this.props;
+        const scaleIndex = SCALES.indexOf(scale);
 
         return [
-            (<Tooltip
-                id="Zoom-in-tooltip"
-                title={scaleIndex === scales.length - 1 ? '' : `Increase scale to ${
-                    scales[scaleIndex + 1]}.`}
-            >
-                <IconButton
-                    onClick={this.zoomIn}
-                    disabled={scaleIndex === scales.length}
-                    style={{marginLeft: '50px', marginRight: '-10px'}}
+            (
+                <Tooltip
+                    id="Zoom-in-tooltip"
+                    title={scaleIndex === SCALES.length - 1 ? '' : `Increase scale to ${
+                        SCALES[scaleIndex + 1]}.`}
                 >
-                    <ZoomIn />
-                </IconButton>
-             </Tooltip>),
-            (<Tooltip
-                id="Zoom-in-tooltip"
-                title={scaleIndex === 0 ? '' : `Decrease scale to ${scales[scaleIndex - 1]}.`}
-            >
-                <IconButton onClick={this.zoomOut} disabled={scaleIndex === 0}>
-                    <ZoomOut />
-                </IconButton>
-             </Tooltip>),
+                    <IconButton
+                        onClick={this.zoomIn}
+                        disabled={scaleIndex === SCALES.length}
+                        style={{marginLeft: '50px', marginRight: '-10px'}}
+                    >
+                        <ZoomIn/>
+                    </IconButton>
+                </Tooltip>),
+            (
+                <Tooltip
+                    id="Zoom-in-tooltip"
+                    title={scaleIndex === 0 ? '' : `Decrease scale to ${SCALES[scaleIndex - 1]}.`}
+                >
+                    <IconButton onClick={this.zoomOut} disabled={scaleIndex === 0}>
+                        <ZoomOut/>
+                    </IconButton>
+                </Tooltip>),
         ];
     }
 }

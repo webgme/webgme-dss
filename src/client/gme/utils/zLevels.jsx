@@ -1,4 +1,4 @@
-export const ZLEVELS = {
+const ZLEVELS = {
     canvas: 1,
     canvasNote: 2, // 3-4 is reserved for future improvements
     connection: 5,
@@ -8,3 +8,5 @@ export const ZLEVELS = {
     action: 12, // 13-14 is reserved
     port: 15,
 };
+
+export default ZLEVELS;

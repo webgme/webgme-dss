@@ -81,28 +81,28 @@ const systemWaiting = (state = false, action) => {
 
 const plotData = (state = {nodeId: null, variables: [], simRes: {}}, action) => {
     switch (action.type) {
-    case 'ADD_PLOT_VARIABLE':
-        return update(state, {
-            variables: {$push: [action.variable]},
-        });
-    case 'REMOVE_PLOT_VARIABLE':
-        return update(state, {
-            variables: {$splice: [[state.variables.indexOf(action.variable), 1]]},
-        });
-    case 'CLEAR_PLOT_VARIABLES':
-        return update(state, {
-            variables: {$set: []},
-        });
-    case 'SET_PLOT_NODE':
-        return update(state, {
-            nodeId: {$set: action.nodeId},
-        });
-    case 'SET_SIM_RES_DATA':
-        return update(state, {
-            simRes: {$set: action.simRes},
-        });
-    default:
-        return state;
+        case 'ADD_PLOT_VARIABLE':
+            return update(state, {
+                variables: {$push: [action.variable]},
+            });
+        case 'REMOVE_PLOT_VARIABLE':
+            return update(state, {
+                variables: {$splice: [[state.variables.indexOf(action.variable), 1]]},
+            });
+        case 'CLEAR_PLOT_VARIABLES':
+            return update(state, {
+                variables: {$set: []},
+            });
+        case 'SET_PLOT_NODE':
+            return update(state, {
+                nodeId: {$set: action.nodeId},
+            });
+        case 'SET_SIM_RES_DATA':
+            return update(state, {
+                simRes: {$set: action.simRes},
+            });
+        default:
+            return state;
     }
 };
 

@@ -21,8 +21,7 @@ const styles = {
 
 class ProjectList extends Component {
     static propTypes = {
-        gmeClient: PropTypes.object.isRequired,
-        projects: PropTypes.array,
+        projects: PropTypes.arrayOf(PropTypes.object).isRequired,
         classes: PropTypes.object.isRequired,
     };
 
@@ -35,55 +34,56 @@ class ProjectList extends Component {
                 marginTop: 30,
             }}
             >
-                <LinearProgress />
-                <br />
-                <LinearProgress color="secondary" />
-                <br />
-                <LinearProgress />
+                <LinearProgress/>
+                <br/>
+                <LinearProgress color="secondary"/>
+                <br/>
+                <LinearProgress/>
             </div>);
 
         if (projects) {
-            content = (<List>
-                {projects
-                    .map((project) => {
-                        let domains;
-                        if (project.info.kind && project.info.kind.startsWith('DSS:')) {
-                            domains = project.info.kind.substring('DSS:'.length)
-                                .split(':')
-                                .sort()
-                                .reverse()
-                                .map(domainUri => (
-                                    <Tooltip
-                                        key={domainUri}
-                                        id={domainUri}
-                                        placement="top-start"
-                                        title={domainUri.substring('Modelica.'.length)}
-                                    >
-                                        <img
-                                            alt={domainUri}
-                                            src={`/assets/DecoratorSVG/${domainUri}.mini.png`}
-                                            className={classes.domainBadge}
-                                        />
-                                    </Tooltip>));
-                        }
+            content = (
+                <List>
+                    {projects
+                        .map((project) => {
+                            let domains;
+                            if (project.info.kind && project.info.kind.startsWith('DSS:')) {
+                                domains = project.info.kind.substring('DSS:'.length)
+                                    .split(':')
+                                    .sort()
+                                    .reverse()
+                                    .map(domainUri => (
+                                        <Tooltip
+                                            key={domainUri}
+                                            id={domainUri}
+                                            placement="top-start"
+                                            title={domainUri.substring('Modelica.'.length)}
+                                        >
+                                            <img
+                                                alt={domainUri}
+                                                src={`/assets/DecoratorSVG/${domainUri}.mini.png`}
+                                                className={classes.domainBadge}
+                                            />
+                                        </Tooltip>));
+                            }
 
-                        return (
-                            <Link
-                                key={project._id}
-                                to={`/p/${project.owner}/${project.name}`}
-                                style={{textDecoration: 'none'}}
-                            >
-                                <ListItem button>
-                                    <ListItemText primary={project.name} />
-                                    <ListItemSecondaryAction className={classes.domainBadgeContainer}>
-                                        {domains}
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                            </Link>
-                        );
-                    })
-                }
-                       </List>);
+                            return (
+                                <Link
+                                    key={project._id}
+                                    to={`/p/${project.owner}/${project.name}`}
+                                    style={{textDecoration: 'none'}}
+                                >
+                                    <ListItem button>
+                                        <ListItemText primary={project.name}/>
+                                        <ListItemSecondaryAction className={classes.domainBadgeContainer}>
+                                            {domains}
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                </Link>
+                            );
+                        })
+                    }
+                </List>);
         }
 
         return content;

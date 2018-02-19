@@ -61,7 +61,7 @@ export default class App extends Component {
         const {initialConnect, waiting} = this.state;
         let content = (
             <header className="App-header">
-                <img src={logo} className="App-logo-loading" alt="logo" />
+                <img src={logo} className="App-logo-loading" alt="logo"/>
                 <h1 className="App-title">Connecting to WebGME</h1>
             </header>);
 
@@ -74,7 +74,7 @@ export default class App extends Component {
                         render={() => (
                             <div>
                                 <header className="App-header">
-                                    <img src={logo} className="App-logo" alt="logo" />
+                                    <img src={logo} className="App-logo" alt="logo"/>
                                     <h1 className="App-title">Welcome to WebGME-DSS</h1>
                                     <p style={{
                                         color: 'lightgrey',
@@ -88,10 +88,10 @@ export default class App extends Component {
                                     </p>
                                 </header>
                                 <Toolbar disableGutters style={{backgroundColor: '#222'}}>
-                                    <Typography style={{flex: 1}} />
-                                    <User useWebGMEColors />
+                                    <Typography style={{flex: 1}}/>
+                                    <User useWebGMEColors/>
                                 </Toolbar>
-                                <Projects gmeClient={window.gmeClient} />
+                                <Projects gmeClient={window.gmeClient}/>
                             </div>
                         )}
                     />
@@ -113,7 +113,7 @@ export default class App extends Component {
                     <Router>
                         <MuiThemeProvider theme={theme}>
                             {content}
-                            <ModalSpinner visible={waiting} />
+                            <ModalSpinner visible={waiting}/>
                         </MuiThemeProvider>
                     </Router>
                 </div>

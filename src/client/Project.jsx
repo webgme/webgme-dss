@@ -59,6 +59,9 @@ class Project extends Component {
         setSystemWaiting: PropTypes.func.isRequired,
         setActiveNode: PropTypes.func.isRequired,
         modelingView: PropTypes.bool.isRequired,
+        toggleLeftDrawer: PropTypes.func.isRequired,
+        toggleRightDrawer: PropTypes.func.isRequired,
+        toggleModelingView: PropTypes.func.isRequired,
     };
 
     state = {
@@ -110,18 +113,14 @@ class Project extends Component {
     }
 
     render() {
-        let content;
         const {
-            gmeClient,
-            projectId,
-            activeNode,
-            modelingView,
-            toggleLeftDrawer,
-            toggleRightDrawer,
-            toggleModelingView,
+            gmeClient, projectId, activeNode, modelingView,
         } = this.props;
+
         const {scale} = this.state;
         const [owner, name] = projectId.split('+');
+
+        let content;
 
         if (typeof activeNode !== 'string') {
             content = (
@@ -154,10 +153,10 @@ class Project extends Component {
                         value={modelingView ? 0 : 1}
                         onChange={(event, value) => {
                             if (value === 1) {
-                                toggleLeftDrawer(true);
-                                toggleRightDrawer(false);
+                                this.props.toggleLeftDrawer(true);
+                                this.props.toggleRightDrawer(false);
                             }
-                            toggleModelingView(value === 0);
+                            this.props.toggleModelingView(value === 0);
                         }}
                         showLabels
                         style={{

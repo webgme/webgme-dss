@@ -41,8 +41,6 @@ class PartBrowser extends SingleConnectedNode {
 
     constructor(props) {
         super(props);
-        console.count('PartBrowser:constructor');
-
         const {scale} = this.props;
 
         this.tree = {};
@@ -50,7 +48,7 @@ class PartBrowser extends SingleConnectedNode {
         this.decorators = getTreeDecorators(PartBrowserItem, {scale});
     }
 
-    componentWillUpdate(nextProps, nextState, nextContext) {
+    componentWillUpdate(nextProps, nextState) {
         // TODO: Revise this check when/if incremental updates to validChildren will be done.
         const {validChildren} = nextState;
         if (validChildren !== this.state.validChildren) {
@@ -96,8 +94,8 @@ class PartBrowser extends SingleConnectedNode {
     updateValidChildren(validChildrenMap) {
         const {gmeClient} = this.props;
         const validChildren = Object.keys(validChildrenMap).map((id) => {
-            const metaNode = gmeClient.getNode(id),
-                modelicaUri = metaNode.getAttribute('ModelicaURI');
+            const metaNode = gmeClient.getNode(id);
+            const modelicaUri = metaNode.getAttribute('ModelicaURI');
 
             return {
                 id: metaNode.getId(),
@@ -120,15 +118,15 @@ class PartBrowser extends SingleConnectedNode {
     }
 
     onNodeUpdate(nodeObj) {
-        const newValidChildrenMap = nodeObj.getValidChildrenTypesDetailed(),
-            currentValidChildrenMap = this.state.validChildren,
-            [newIds, prevIds] = [newValidChildrenMap, currentValidChildrenMap].map(Object.keys);
+        const newValidChildrenMap = nodeObj.getValidChildrenTypesDetailed();
+        const currentValidChildrenMap = this.state.validChildren;
+        const [newIds, prevIds] = [newValidChildrenMap, currentValidChildrenMap].map(Object.keys);
 
         if (newIds.length !== prevIds.length) {
             this.updateValidChildren(newValidChildrenMap);
         } else {
             for (let i = 0; i < newValidChildrenMap.length; i += 1) {
-                if (currentValidChildrenMap.hasOwnProperty(newValidChildrenMap[i]) === false) {
+                if (typeof currentValidChildrenMap[newValidChildrenMap[i]] !== 'string') {
                     this.updateValidChildren(newValidChildrenMap);
                     break;
                 }
@@ -144,7 +142,7 @@ class PartBrowser extends SingleConnectedNode {
         }
     }
 
-    onNodeUnload(nodeId) {
+    onNodeUnload() {
         this.setState({validChildren: []});
     }
 
@@ -171,7 +169,7 @@ class PartBrowser extends SingleConnectedNode {
             if (treeNode.isRoot) {
                 return (
                     <ExpansionPanel key={treeNode.path} defaultExpanded>
-                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                             <Typography type="subheading">{treeNode.name}</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>
@@ -189,7 +187,7 @@ class PartBrowser extends SingleConnectedNode {
             );
         }
         return (
-            <PartBrowserItem key={treeNode.id} nodeData={treeNode} scale={scale} />
+            <PartBrowserItem key={treeNode.id} nodeData={treeNode} scale={scale}/>
         );
     };
 

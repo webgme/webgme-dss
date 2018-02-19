@@ -19,7 +19,7 @@ class OTConsole extends Component {
         gmeClient: PropTypes.object.isRequired,
         attributeName: PropTypes.string.isRequired,
 
-        onTest: PropTypes.func,
+        resultNode: PropTypes.object.isRequired,
     };
 
     constructor(props) {
@@ -39,17 +39,23 @@ class OTConsole extends Component {
         watcherId: null,
     };
 
+    componentWillUnmount() {
+        const {project, docId, watcherId} = this.state;
+        if (project && docId) {
+            project.unwatchDocument({docId, watcherId});
+        }
+    }
+
     onTerritoryUpdate = (hash, loads, updates/* , unloads */) => {
-        const {
-            resultNode, gmeClient, attributeName, onTest,
-        } = this.props;
+        const {resultNode, gmeClient, attributeName} = this.props;
+
         const {
             delta, attributeValue, document, project,
         } = this.state;
 
-        let nodeObj,
-            newState = {},
-            haveUpdated = false;
+        const newState = {};
+        let nodeObj;
+        let haveUpdated = false;
 
         if (loads.indexOf(resultNode) !== -1) {
             // initializing
@@ -64,10 +70,6 @@ class OTConsole extends Component {
                     attrValue: newState.attributeValue,
                 }, this.atOperation, this.atSelection)
                     .then((initData) => {
-                        if (onTest) {
-                            onTest(initData);
-                        }
-
                         this.setState({
                             docId: initData.docId,
                             document: initData.document,
@@ -101,41 +103,35 @@ class OTConsole extends Component {
     };
 
     // TODO we need to transform this into operations if we want to support
-    atSelection = (selection) => {
+    atSelection = () => {
     };
-
-    componentWillUnmount() {
-        const {project, docId, watcherId} = this.state;
-        if (project && docId) {
-            project.unwatchDocument({docId, watcherId});
-        }
-    }
 
     render() {
         const {gmeClient, resultNode} = this.props;
         const {document} = this.state;
 
-        return (<div style={{backgroundColor: '#002b36', height: '100%', width: '100%'}}>
-            {resultNode ? <Territory
-                gmeClient={gmeClient}
-                onlyActualEvents
-                onUpdate={this.onTerritoryUpdate}
-                territory={{[resultNode]: {children: 0}}}
-            /> : <div />}
-            <ReactQuill
-                style={{
-                    backgroundColor: '#002b36',
-                    color: '#586e75',
-                    fontSize: 12,
-                    marginLeft: 300, // FIXME: These should not be here
-                    height: 300,
-                    fontFamily: 'monospace',
-                }}
-                theme={null}
-                value={document}
-                readOnly
-            />
-                </div>);
+        return (
+            <div style={{backgroundColor: '#002b36', height: '100%', width: '100%'}}>
+                {resultNode ? <Territory
+                    gmeClient={gmeClient}
+                    onlyActualEvents
+                    onUpdate={this.onTerritoryUpdate}
+                    territory={{[resultNode]: {children: 0}}}
+                /> : <div/>}
+                <ReactQuill
+                    style={{
+                        backgroundColor: '#002b36',
+                        color: '#586e75',
+                        fontSize: 12,
+                        marginLeft: 300, // FIXME: These should not be here
+                        height: 300,
+                        fontFamily: 'monospace',
+                    }}
+                    theme={null}
+                    value={document}
+                    readOnly
+                />
+            </div>);
     }
 }
 

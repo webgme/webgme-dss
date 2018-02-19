@@ -19,8 +19,8 @@ import History from 'material-ui-icons/History';
 import {withStyles} from 'material-ui/styles';
 import green from 'material-ui/colors/green';
 
-import SystemSimulatorMetadata from '../../plugins/SystemSimulator/metadata';
-import ModelCheckMetadata from '../../plugins/ModelCheck/metadata';
+import SystemSimulatorMetadata from '../../plugins/SystemSimulator/metadata.json';
+import ModelCheckMetadata from '../../plugins/ModelCheck/metadata.json';
 import getMetaNodeByName from '../gme/utils/getMetaNodeByName';
 
 import {removePlotVariable, toggleLeftDrawer, toggleModelingView, setResultNode, toggleRightDrawer} from '../actions';
@@ -66,10 +66,17 @@ const mapDispatchToProps = dispatch => ({
 class LeftDrawer extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
-
         open: PropTypes.bool.isRequired,
-
         classes: PropTypes.object.isRequired,
+        activeNode: PropTypes.string.isRequired,
+        modelingView: PropTypes.bool.isRequired,
+        variables: PropTypes.arrayOf(PropTypes.string).isRequired,
+        removePlotVariable: PropTypes.func.isRequired,
+        toggleModelingView: PropTypes.func.isRequired,
+        setResultNode: PropTypes.func.isRequired,
+        toggleRightDrawer: PropTypes.func.isRequired,
+        show: PropTypes.func.isRequired,
+        hide: PropTypes.func.isRequired,
     };
 
     state = {
@@ -81,8 +88,7 @@ class LeftDrawer extends Component {
     };
 
     onUpdateDomains = (data) => {
-        const {gmeClient} = this.props,
-            {rest} = gmeClient.gmeConfig;
+        const {gmeClient} = this.props;
 
         this.setState({showDomainSelector: false});
 
@@ -95,7 +101,7 @@ class LeftDrawer extends Component {
 
         const path = [
             window.location.origin,
-            rest.components.DomainManager.mount,
+            gmeClient.gmeConfig.components.DomainManager.mount,
             'updateProject',
         ].join('/');
 
@@ -116,10 +122,58 @@ class LeftDrawer extends Component {
             });
     };
 
+    getCheckResultContent = () => {
+        const {checkResult} = this.state;
+
+        if (checkResult.success === true) {
+            return (<NotifyDialog
+                title="Model check success"
+                text="The model has no issues and can be simulated as such."
+                onOK={
+                    () => {
+                        this.setState({checkResult: null});
+                    }}
+            />);
+        }
+        return (<PluginResultDialog
+            onOK={
+                () => {
+                    this.setState({checkResult: null});
+                }
+            }
+            result={checkResult}
+            title="Model check findings"
+        />);
+    };
+
+    runModelCheck = (config) => {
+        const {gmeClient, activeNode} = this.props;
+
+        this.setState({showChecker: false});
+
+        if (!config) {
+            // Cancelled
+            return;
+        }
+
+        const pluginId = ModelCheckMetadata.id;
+        const context = gmeClient.getCurrentPluginContext(pluginId, activeNode);
+        // TODO: Remove when engine is bumped
+        context.managerConfig.activeNode = activeNode;
+
+        gmeClient.runServerPlugin(pluginId, context, (err, result) => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log('model check finished');
+                this.setState({checkResult: result});
+            }
+        });
+    };
+
     runSimulator = (config) => {
-        const {
-            gmeClient, activeNode, toggleModelingView, show, setResultNode, toggleRightDrawer,
-        } = this.props;
+        const {gmeClient, activeNode} = this.props;
+
         const pluginId = SystemSimulatorMetadata.id;
         this.setState({showSimulator: false});
         if (!config) {
@@ -177,13 +231,13 @@ class LeftDrawer extends Component {
                 context.pluginConfig = config;
                 gmeClient.removeUI(uiId);
 
-                toggleModelingView(false);
-                show();
-                setResultNode(resId);
-                toggleRightDrawer(false);
-                gmeClient.runServerPlugin(pluginId, context, (err, result) => {
-                    if (err) {
-                        console.error(err);
+                this.props.toggleModelingView(false);
+                this.props.show();
+                this.props.setResultNode(resId);
+                this.props.toggleRightDrawer(false);
+                gmeClient.runServerPlugin(pluginId, context, (err2, result) => {
+                    if (err2) {
+                        console.error(err2);
                     } else if (result.success) {
                         // downloadBlobArtifact(result.artifacts[0]);
                     } else {
@@ -194,59 +248,9 @@ class LeftDrawer extends Component {
         }
     };
 
-    runModelCheck = (config) => {
-        const {gmeClient, activeNode} = this.props,
-            self = this;
-
-        self.setState({showChecker: false});
-
-        if (!config) {
-            // Cancelled
-            return;
-        }
-
-        const pluginId = ModelCheckMetadata.id;
-        const context = gmeClient.getCurrentPluginContext(pluginId, activeNode);
-        // TODO: Remove when engine is bumped
-        context.managerConfig.activeNode = activeNode;
-
-        gmeClient.runServerPlugin(pluginId, context, (err, result) => {
-            if (err) {
-                console.error(err);
-            } else {
-                console.log('model check finished');
-                self.setState({checkResult: result});
-            }
-        });
-    };
-
-    getCheckResultContent = () => {
-        const {checkResult} = this.state;
-
-        if (checkResult.success === true) {
-            return (<NotifyDialog
-                title="Model check success"
-                text="The model has no issues and can be simulated as such."
-                onOK={
-                    () => {
-                        this.setState({checkResult: null});
-                    }}
-            />);
-        }
-        return (<PluginResultDialog
-            onOK={
-                () => {
-                    this.setState({checkResult: null});
-                }
-            }
-            result={checkResult}
-            title="Model check findings"
-        />);
-    };
-
     render() {
         const {
-            classes, gmeClient, open, modelingView, variables, removePlotVariable, hide, show,
+            classes, gmeClient, open, modelingView, variables,
         } = this.props;
         let actionButtons;
 
@@ -254,27 +258,29 @@ class LeftDrawer extends Component {
             actionButtons = [
                 {
                     id: 'showChecker',
-                    iconClass: <CheckCircle style={{color: green[500]}} />,
+                    iconClass: <CheckCircle style={{color: green[500]}}/>,
                 },
                 {
                     id: 'showSimulator',
-                    iconClass: <PlayCircleOutline color="primary" />,
+                    iconClass: <PlayCircleOutline color="primary"/>,
                 },
                 {
                     id: 'showDomainSelector',
-                    iconClass: <AddCircle color="secondary" />,
+                    iconClass: <AddCircle color="secondary"/>,
                 },
                 {
                     id: 'showHistory',
-                    iconClass: <History color="primary" />,
+                    iconClass: <History color="primary"/>,
                 },
             ];
-        } else {
+        } else if (!open) {
             actionButtons = variables.map(variable => ({
                 id: variable,
-                iconClass: <Timeline style={{color: colorHash(variable).rgb}} />,
+                iconClass: <Timeline style={{color: colorHash(variable).rgb}}/>,
                 color: colorHash(variable).rgb,
             }));
+        } else {
+            actionButtons = [];
         }
 
         return (
@@ -286,10 +292,10 @@ class LeftDrawer extends Component {
                     classes={{paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose)}}
                 >
                     <span>
-                        <IconButton onClick={open ? hide : show}>
-                            {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                        <IconButton onClick={open ? this.props.hide : this.props.show}>
+                            {open ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                         </IconButton>
-                        {modelingView ?
+                        {open ?
                             actionButtons.map(desc => (
                                 <IconButton
                                     key={desc.id}
@@ -300,11 +306,11 @@ class LeftDrawer extends Component {
                                     {desc.iconClass}
                                 </IconButton>
                             )) :
-                            open ? [] : actionButtons.map(desc => (
+                            actionButtons.map(desc => (
                                 <IconButton
                                     key={desc.id}
                                     onClick={() => {
-                                        removePlotVariable(desc.id);
+                                        this.props.removePlotVariable(desc.id);
                                     }}
                                 >
                                     {desc.iconClass}
@@ -312,9 +318,10 @@ class LeftDrawer extends Component {
                             ))
                         }
                     </span>
-                    <Divider />
-                    {modelingView ? <PartBrowser gmeClient={gmeClient} minimized={!open} /> :
-                    <ResultList gmeClient={gmeClient} minimized={!open} />}
+                    <Divider/>
+                    {modelingView ?
+                        <PartBrowser gmeClient={gmeClient} minimized={!open}/> :
+                        <ResultList gmeClient={gmeClient} minimized={!open}/>}
                 </Drawer>
 
                 {this.state.showSimulator ?

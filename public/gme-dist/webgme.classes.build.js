@@ -196,6 +196,8 @@
                     return {type: 'boolean'};
                 } else if (attrName.indexOf('enum') !== -1) {
                     return {type: 'string', enum: names, unit: 'Meatballs'};
+                } else if (cnt % 3 === 0) {
+                    return {type: 'string', readonly: true};
                 } else {
                     return {type: 'string'};
                 }

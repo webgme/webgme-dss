@@ -8,6 +8,7 @@ import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import {withStyles} from 'material-ui/styles';
 
 import AttributeEditor from './AttributeEditor';
+import AttributeEditorIcon from './AttributeEditorIcon';
 import {toggleRightDrawer} from '../actions';
 import {sideDrawer as styles} from '../classes';
 
@@ -50,7 +51,9 @@ class RightDrawer extends Component {
                     <IconButton onClick={this.props.hide}>
                         <ChevronLeftIcon/>
                     </IconButton>
-                    <AttributeEditor selection={selection} gmeClient={gmeClient} fullWidthWidgets/>
+                    <AttributeEditor selection={selection} gmeClient={gmeClient} fullWidthWidgets hideReadOnly>
+                        <AttributeEditorIcon gmeClient={gmeClient} nodeId={null}/>
+                    </AttributeEditor>
                 </Drawer>
             </div>
         );

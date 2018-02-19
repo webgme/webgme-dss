@@ -19,8 +19,12 @@ class OTConsole extends Component {
         gmeClient: PropTypes.object.isRequired,
         attributeName: PropTypes.string.isRequired,
 
-        resultNode: PropTypes.object.isRequired,
+        resultNode: PropTypes.string,
     };
+
+    static defaultProps = {
+        resultNode: null,
+    }
 
     constructor(props) {
         super(props);

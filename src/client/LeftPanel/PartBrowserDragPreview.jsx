@@ -32,11 +32,11 @@ class PartBrowserDragPreview extends Component {
         currentOffset: PropTypes.shape({
             x: PropTypes.number.isRequired,
             y: PropTypes.number.isRequired,
-        }).isRequired,
+        }),
         initialOffset: PropTypes.shape({
             x: PropTypes.number.isRequired,
             y: PropTypes.number.isRequired,
-        }).isRequired,
+        }),
         isDragging: PropTypes.bool.isRequired,
         scale: PropTypes.number.isRequired,
     };
@@ -44,6 +44,8 @@ class PartBrowserDragPreview extends Component {
     static defaultProps = {
         item: null,
         itemType: null,
+        currentOffset: null,
+        initialOffset: null,
     };
 
     render() {

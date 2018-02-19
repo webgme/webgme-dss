@@ -54,7 +54,7 @@ class Project extends Component {
             selectProject: PropTypes.func.isRequired,
         }).isRequired,
         projectId: PropTypes.string.isRequired,
-        activeNode: PropTypes.string.isRequired,
+        activeNode: PropTypes.string,
 
         setSystemWaiting: PropTypes.func.isRequired,
         setActiveNode: PropTypes.func.isRequired,
@@ -62,6 +62,10 @@ class Project extends Component {
         toggleLeftDrawer: PropTypes.func.isRequired,
         toggleRightDrawer: PropTypes.func.isRequired,
         toggleModelingView: PropTypes.func.isRequired,
+    };
+
+    static defaultProps = {
+        activeNode: null,
     };
 
     state = {

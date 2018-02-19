@@ -27,9 +27,10 @@ export default class AttributeItem extends Component {
             PropTypes.bool,
         ]).isRequired,
         values: PropTypes.arrayOf(PropTypes.string),
-        options: PropTypes.object,
+        readonly: PropTypes.bool,
         style: PropTypes.object,
         fullWidth: PropTypes.bool,
+        noTriggerOnBlur: PropTypes.bool,
         name: PropTypes.string.isRequired,
         description: PropTypes.string,
         unit: PropTypes.string,
@@ -44,9 +45,10 @@ export default class AttributeItem extends Component {
         values: null,
         description: null,
         unit: null,
-        options: {},
         style: null,
         fullWidth: false,
+        readonly: false,
+        noTriggerOnBlur: false,
     }
 
     state = {
@@ -132,9 +134,10 @@ export default class AttributeItem extends Component {
 
     onBlur = (event) => {
         const newValue = this.eventToAttrValue(event);
+        const {type, value, noTriggerOnBlur} = this.props;
 
-        if (this.props.type !== AttributeTypes.color) {
-            if (!this.options.onlyEnter && newValue !== this.props.value) {
+        if (type !== AttributeTypes.color) {
+            if (!noTriggerOnBlur && newValue !== value) {
                 this.props.onFullChange(newValue);
             }
 
@@ -143,14 +146,13 @@ export default class AttributeItem extends Component {
     };
 
     getContent = () => {
-        const {readOnly} = this.options;
-        const {type, values} = this.props;
+        const {type, values, readonly} = this.props;
         const {value, picking} = this.state;
 
         if (values && values.length > 0) {
             // enum case
             return (
-                <Select disabled={readOnly} native value={value} onChange={this.onChange}>
+                <Select disabled={readonly} native value={value} onChange={this.onChange}>
                     {values.map(option => (<option key={option}>{option}</option>))}
                 </Select>);
         }
@@ -160,13 +162,13 @@ export default class AttributeItem extends Component {
         switch (type) {
             case AttributeTypes.boolean:
                 content = (<FormControlLabel
-                    disabled={readOnly}
+                    disabled={readonly}
                     control={<Switch checked={value} onChange={this.onChange}/>}
                 />);
                 break;
             case AttributeTypes.string:
                 content = (<Input
-                    disabled={readOnly}
+                    disabled={readonly}
                     value={value}
                     onChange={this.onChange}
                     onKeyPress={this.onKeyPress}
@@ -175,7 +177,7 @@ export default class AttributeItem extends Component {
                 break;
             case AttributeTypes.number:
                 content = (<Input
-                    disabled={readOnly}
+                    disabled={readonly}
                     type="number"
                     value={value}
                     onChange={this.onChange}
@@ -232,15 +234,7 @@ export default class AttributeItem extends Component {
         }
     };
 
-    processProps = () => {
-        this.options = this.props.options || {};
-        if (typeof this.options.readOnly !== 'boolean') {
-            this.options.readOnly = false;
-        }
-    };
-
     render() {
-        this.processProps();
         const content = this.getContent();
 
         return (

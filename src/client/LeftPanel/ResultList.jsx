@@ -41,12 +41,13 @@ class ResultList extends Component {
         setPlotNode: PropTypes.func.isRequired,
         setSimResData: PropTypes.func.isRequired,
         setResultNode: PropTypes.func.isRequired,
-        resultNode: PropTypes.string.isRequired,
+        resultNode: PropTypes.string,
         plotModel: PropTypes.string,
     };
 
     static defaultProps = {
         plotModel: null,
+        resultNode: null,
     };
 
     constructor(props) {

@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Card, {CardHeader, CardContent} from 'material-ui/Card';
-import Typography from 'material-ui/Typography';
-import {Samy} from 'react-samy-svg';
 
 import Territory from '../gme/BaseComponents/Territory';
 import AttributeItem from './AttributeItem';
-import SVGCACHE from '../../svgcache.json';
 
 export const AttributeTypes = {
     string: 'string',
@@ -20,21 +17,23 @@ export default class AttributeEditor extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
         selection: PropTypes.arrayOf(PropTypes.string).isRequired,
+
+        children: PropTypes.arrayOf(PropTypes.object),
+
         fullWidthWidgets: PropTypes.bool,
-        options: PropTypes.object,
+        hideReadOnly: PropTypes.bool,
     };
 
     static defaultProps = {
         fullWidthWidgets: false,
-        options: {},
+        hideReadOnly: false,
+        children: [],
     }
 
     state = {
         loadedNodes: [],
         territory: {},
         attributes: [],
-        modelicaUri: 'Default',
-        scale: 0.4,
     };
 
 
@@ -48,7 +47,7 @@ export default class AttributeEditor extends Component {
 
         // TODO clearing the loadedNodes should not be necessary, where are the unload events???
         if (selection[0] !== this.props.selection[0]) {
-            this.setState({loadedNodes: [], territory, modelicaUri: 'Default'});
+            this.setState({loadedNodes: [], territory});
         }
     }
 
@@ -63,47 +62,10 @@ export default class AttributeEditor extends Component {
         this.setState({territory});
     }
 
-    getSvgAttributeParts = () => {
-        const {gmeClient, selection} = this.props;
-        const {modelicaUri, scale} = this.state;
-        const svgAttrs = SVGCACHE[modelicaUri].attributes;
-
-        const node = gmeClient.getNode(selection[0]);
-
-        if (node === null) {
-            return null;
-        }
-
-        return Object.keys(svgAttrs).map(attrDesc => (
-            <svg
-                style={{
-                    position: 'absolute',
-                    top: attrDesc.bbox.y * scale,
-                    left: attrDesc.bbox.x * scale,
-                }}
-                viewBox={`${attrDesc.bbox.x * scale} ${attrDesc.bbox.y * scale}
-                ${(attrDesc.bbox.x + attrDesc.bbox.width) * scale}
-                ${(attrDesc.bbox.y + attrDesc.bbox.height) * scale}`}
-            >
-                <text
-                    x={(attrDesc.parameters.x || 0) * scale}
-                    y={(attrDesc.parameters.y || 0) * scale}
-                    alignmentBaseline={attrDesc.parameters['alignment-baseline'] || 'middle'}
-                    fill={attrDesc.parameters.fill || 'rgb(0,0,255)'}
-                    fontFamily={attrDesc.parameters['font-family'] || 'Veranda'}
-                    fontSize={Number(attrDesc.parameters['font-size'] || '18') * scale}
-                    textAnchor={attrDesc.parameters['text-anchor'] || 'middle'}
-                >{attrDesc.text.substring(0, attrDesc.position) +
-                node.getAttribute(attrDesc.name) +
-                attrDesc.text.substring(attrDesc.position)}
-                </text>
-            </svg>));
-    };
-
     handleEvents = (hash, loads, updates, unloads) => {
         // TODO update to handle multiple objects as well
         const {selection, gmeClient} = this.props;
-        let {attributes, modelicaUri} = this.state;
+        let {attributes} = this.state;
         const {loadedNodes} = this.state;
 
         // console.log('handleEvents');
@@ -120,9 +82,6 @@ export default class AttributeEditor extends Component {
         if (loadedNodes.length > 0) {
             const nodeObj = gmeClient.getNode(loadedNodes[0]);
             const attributeNames = nodeObj.getValidAttributeNames();
-            const metaNode = gmeClient.getNode(nodeObj.getMetaTypeId());
-
-            modelicaUri = metaNode.getAttribute('ModelicaURI') || 'Default';
 
             attributes = attributeNames
                 .map((id) => {
@@ -139,10 +98,9 @@ export default class AttributeEditor extends Component {
                 });
         } else {
             attributes = [];
-            modelicaUri = 'Default';
         }
 
-        this.setState({loadedNodes, attributes, modelicaUri});
+        this.setState({loadedNodes, attributes});
     };
 
     somethingChanges = (what, how) => {
@@ -163,15 +121,13 @@ export default class AttributeEditor extends Component {
     };
 
     render() {
-        const {selection, gmeClient, options} = this.props;
+        const {selection, gmeClient, hideReadOnly} = this.props;
         const {
-            territory, attributes, modelicaUri, scale,
+            territory, attributes, loadedNodes,
         } = this.state;
 
-        const {bbox, base} = SVGCACHE[modelicaUri];
-
         const attributeItems = attributes
-            .filter(attr => !attr.readonly)
+            .filter(attr => !hideReadOnly || !attr.readonly)
             .map((attribute) => {
                 const onChangeFn = (newValue) => {
                     this.somethingChanges(attribute.name, newValue);
@@ -203,10 +159,17 @@ export default class AttributeEditor extends Component {
                         values={attribute.enum}
                         description={attribute.description}
                         unit={attribute.unit}
-                        options={options}
+                        readonly={attribute.readonly}
                         onFullChange={onChangeFn}
                     />);
             });
+
+        const icon = loadedNodes.length > 0 ?
+            React.Children.map(this.props.children, (child) => {
+                const nodeId = selection[0]; // This assumes only one node.
+                return React.cloneElement(child, {nodeId});
+            })
+            : null;
 
         return (
             <Card>
@@ -219,32 +182,7 @@ export default class AttributeEditor extends Component {
                 />
                 <div style={{textAlign: 'center', width: '100%'}}>
                     <CardHeader title="Parameters"/>
-                    <a
-                        href={`http://doc.modelica.org/om/${modelicaUri}.html`}
-                        target="_blank"
-                        style={{textDecoration: 'none'}}
-                    >
-                        <Typography style={{fontSize: 10, color: 'rgba(0, 0, 0, 0.54)'}}>
-                            {modelicaUri.substr('Modelica.'.length)}
-                        </Typography>
-                        <div style={{
-                            height: bbox.height * scale,
-                            width: bbox.width * scale,
-                            position: 'relative',
-                            display: 'inline-flex',
-                        }}
-                        >
-
-                            {modelicaUri !== 'Default' ? (<Samy
-                                svgXML={base}
-                                style={{
-                                    height: bbox.height * scale,
-                                    width: bbox.width * scale,
-                                }}
-                            />) : null}
-                            {modelicaUri !== 'Default' ? this.getSvgAttributeParts() : null}
-                        </div>
-                    </a>
+                    {icon}
                 </div>
                 <CardContent>
                     {attributeItems}

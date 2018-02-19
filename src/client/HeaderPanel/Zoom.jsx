@@ -22,8 +22,9 @@ const mapDispatchToProps = dispatch => ({
 class Zoom extends Component {
     static propTypes = {
         scale: PropTypes.number.isRequired,
-        setScale: PropTypes.number.isRequired,
+        setScale: PropTypes.func.isRequired,
     };
+
     zoomIn = () => {
         const {scale} = this.props;
         const scaleIndex = SCALES.indexOf(scale);
@@ -49,6 +50,7 @@ class Zoom extends Component {
         return [
             (
                 <Tooltip
+                    key="Zoom-in-tooltip"
                     id="Zoom-in-tooltip"
                     title={scaleIndex === SCALES.length - 1 ? '' : `Increase scale to ${
                         SCALES[scaleIndex + 1]}.`}
@@ -63,7 +65,8 @@ class Zoom extends Component {
                 </Tooltip>),
             (
                 <Tooltip
-                    id="Zoom-in-tooltip"
+                    key="Zoom-out-tooltip"
+                    id="Zoom-out-tooltip"
                     title={scaleIndex === 0 ? '' : `Decrease scale to ${SCALES[scaleIndex - 1]}.`}
                 >
                     <IconButton onClick={this.zoomOut} disabled={scaleIndex === 0}>

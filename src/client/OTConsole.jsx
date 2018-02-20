@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 
 import ReactQuill from 'react-quill';
 import Delta from 'quill-delta';
@@ -7,12 +6,6 @@ import PropTypes from 'prop-types';
 
 import './Console.css';
 import Territory from './gme/BaseComponents/Territory';
-
-const mapStateToProps = state => ({
-    resultNode: state.resultNode,
-});
-
-const mapDispatchToProps = () => ({});
 
 class OTConsole extends Component {
     static propTypes = {
@@ -101,12 +94,10 @@ class OTConsole extends Component {
         }
     };
 
-    // TODO we should be able to have different color for the latest change
     atOperation = (operation) => {
         this.setState({document: operation.apply(this.state.document)});
     };
 
-    // TODO we need to transform this into operations if we want to support
     atSelection = () => {
     };
 
@@ -132,11 +123,11 @@ class OTConsole extends Component {
                         fontFamily: 'monospace',
                     }}
                     theme={null}
-                    value={document}
+                    value={(document || '').replace(/\n/g, '<br>')}
                     readOnly
                 />
             </div>);
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OTConsole);
+export default OTConsole;

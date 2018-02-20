@@ -3727,7 +3727,7 @@
                                 setTimeout(() => {
                                     callback({
                                         docId: 'someId',
-                                        document: 'Simulation is running..',
+                                        document: 'Generated model ..\nSimulated model!\nFinished',
                                         watcherId: 'someId'
                                     })
                                 }, 50);

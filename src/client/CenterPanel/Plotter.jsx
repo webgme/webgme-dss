@@ -1,17 +1,16 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import colorHash from '../gme/utils/colorHash';
+import PropTypes from 'prop-types';
 
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
 
-const mapStateToProps = state => ({
-    variables: state.plotData.variables,
-    simRes: state.plotData.simRes,
-});
-
-const mapDispatchToProps = dispatch => ({});
+import colorHash from '../gme/utils/colorHash';
 
 class Plotter extends Component {
+    static propTypes = {
+        variables: PropTypes.arrayOf(PropTypes.string).isRequired,
+        simRes: PropTypes.object.isRequired,
+    };
+
     render() {
         let data = [];
         const {variables, simRes} = this.props;
@@ -36,11 +35,11 @@ class Plotter extends Component {
         return (
             <div>
                 <LineChart width={600} height={270} data={data} style={{left: '25%', marginTop: 15, marginBottom: 15}}>
-                    <XAxis dataKey="time" />
-                    <YAxis />
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <Tooltip />
-                    <Legend layout="vertical" align="left" verticalAlign="middle" />
+                    <XAxis dataKey="time"/>
+                    <YAxis/>
+                    <CartesianGrid strokeDasharray="3 3"/>
+                    <Tooltip/>
+                    <Legend layout="vertical" align="left" verticalAlign="middle"/>
                     {data[0] ?
                         Object.keys(data[0])
                             .filter(varName => varName !== 'time' || variables.length === 0)
@@ -49,7 +48,15 @@ class Plotter extends Component {
                                 if (varName === 'time') {
                                     name = 'Time is the master...';
                                 }
-                                return <Line dot={false} name={name} key={varName} type="monotone" dataKey={varName} stroke={colorHash(varName).rgb} />;
+
+                                return (<Line
+                                    dot={false}
+                                    name={name}
+                                    key={varName}
+                                    type="monotone"
+                                    dataKey={varName}
+                                    stroke={colorHash(varName).rgb}
+                                />);
                             })
                         : null}
                 </LineChart>
@@ -58,4 +65,4 @@ class Plotter extends Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Plotter);
+export default Plotter;

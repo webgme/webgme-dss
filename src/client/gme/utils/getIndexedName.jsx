@@ -14,7 +14,7 @@ function getIndexedName(name, currentNames) {
             }
             return parseInt(indexStr, 10);
         })
-        .filter(index => isNaN(index) === false);
+        .filter(index => Number.isNaN(index) === false);
 
     if (indices.length === 0) {
         return name;

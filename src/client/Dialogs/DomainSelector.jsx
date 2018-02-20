@@ -84,7 +84,7 @@ export default class DomainSelector extends Component {
         let form = null;
         let nameInput = null;
 
-        if (defaultName === 'string') {
+        if (typeof defaultName === 'string') {
             nameInput = (<AttributeItem
                 value={this.name}
                 onChange={(newValue) => {

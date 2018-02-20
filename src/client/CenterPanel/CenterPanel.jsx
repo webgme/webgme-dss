@@ -12,7 +12,8 @@ import {centerPanel as style} from '../styles';
 const mapStateToProps = state => ({
     modelingView: state.modelingView,
     activeNode: state.activeNode,
-    plotNode: state.plotData.nodeId,
+    resultNode: state.resultNode,
+    plotData: state.plotData,
 });
 
 const mapDispatchToProps = (/* dispatch */) => ({});
@@ -20,6 +21,13 @@ const mapDispatchToProps = (/* dispatch */) => ({});
 class CenterPanel extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
+        modelingView: PropTypes.bool.isRequired,
+        plotData: PropTypes.object.isRequired,
+        resultNode: PropTypes.string,
+    };
+
+    static defaultProps = {
+        resultNode: null,
     };
 
     state = {
@@ -31,7 +39,10 @@ class CenterPanel extends Component {
     };
 
     render() {
-        const {gmeClient, modelingView, plotNode} = this.props;
+        const {
+            gmeClient, modelingView, plotData, resultNode,
+        } = this.props;
+
         const {scrollPos} = this.state;
 
         const flexStyle = JSON.parse(JSON.stringify(style));
@@ -40,44 +51,50 @@ class CenterPanel extends Component {
             flexStyle.backgroundColor = 'rgb(192, 192, 192)';
         }
 
-        return (
-            <div
-                onScroll={this.onScroll}
-                style={flexStyle}
-            >
-                {modelingView ? <Canvas gmeClient={gmeClient} scrollPos={scrollPos} /> :
+        let content;
+
+        if (modelingView) {
+            content = (<Canvas gmeClient={gmeClient} scrollPos={scrollPos}/>);
+        } else {
+            content = (
                 <div style={{
-                        position: 'fixed',
-                        left: 50,
-                        top: 50,
-                        width: '100%',
-                        height: '100%',
-                    }}
-                    >
-                        <Paper
+                    position: 'fixed',
+                    left: 50,
+                    top: 50,
+                    width: '100%',
+                    height: '100%',
+                }}
+                >
+                    <Paper
                         elevation={0}
                         style={{
-                                overflow: 'auto',
-                                width: '100%',
-                            }}
+                            overflow: 'auto',
+                            width: '100%',
+                        }}
                     >
-                        {plotNode ? <Plotter /> : <OTConsole gmeClient={gmeClient} attributeName="stdout" />}
+                        {plotData.nodeId ?
+                            <Plotter variables={plotData.variables} simRes={plotData.simRes}/> :
+                            <OTConsole gmeClient={gmeClient} resultNode={resultNode} attributeName="stdout"/>}
                     </Paper>
-                        <Paper
+                    <Paper
                         elevation={0}
                         style={{
-                                top: 351,
-                                left: 50,
-                                bottom: 0,
-                                right: 0,
-                                overflow: 'auto',
-                                position: 'inherit',
-                            }}
+                            top: 351,
+                            left: 50,
+                            bottom: 0,
+                            right: 0,
+                            overflow: 'auto',
+                            position: 'inherit',
+                        }}
                     >
-                        <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos} />
+                        <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>
                     </Paper>
-                    </div>
-                }
+                </div>);
+        }
+
+        return (
+            <div onScroll={this.onScroll} style={flexStyle}>
+                {content}
             </div>
         );
     }

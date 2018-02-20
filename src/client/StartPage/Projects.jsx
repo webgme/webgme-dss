@@ -42,12 +42,12 @@ export default class Projects extends Component {
         return (
             <div style={{flexGrow: 1, margin: 20}}>
                 <Grid container spacing={24}>
-                    <Grid item lg={7}>
+                    <Grid item lg={7} md={5} xs={12}>
                         {/* <Paper elevation={4}> */}
                         <CreateProject gmeClient={this.props.gmeClient} projects={this.state.projects}/>
                         {/* </Paper> */}
                     </Grid>
-                    <Grid item lg={5}>
+                    <Grid item lg={5} md={7} xs={12}>
                         {/* <Paper elevation={4}> */}
                         <Typography variant="title">
                                 CURRENT PROJECTS

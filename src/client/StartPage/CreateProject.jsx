@@ -141,7 +141,7 @@ class CreateProject extends Component {
             }
 
             return (
-                <Grid item lg={6} key={seedInfo.title}>
+                <Grid item lg={6} md={12} sm={6} xs={12} key={seedInfo.title}>
                     <Card>
                         <CardMedia
                             className={classes.media}

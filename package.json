@@ -26,6 +26,7 @@
     "recharts": "^1.0.0-beta.10",
     "redux": "^3.7.2",
     "superagent": "^3.8.2",
+    "webgme-docker-worker-manager": "^0.1.3",
     "webgme-engine": "^2.19.5",
     "webgme-user-management-page": "^0.3.5"
   },

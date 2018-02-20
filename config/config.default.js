@@ -1,9 +1,9 @@
-/*eslint-env node*/
+/* eslint-env node */
 /**
  * @author pmeijer / https://github.com/pmeijer
  */
-let config = require('./config.webgme'),
-    path = require('path');
+const config = require('./config.webgme');
+const path = require('path');
 
 config.client.appDir = './build';
 config.mongo.uri = 'mongodb://127.0.0.1:27017/multi';

@@ -35,6 +35,7 @@ export default class AttributeItem extends Component {
         description: PropTypes.string,
         unit: PropTypes.string,
         type: PropTypes.string.isRequired,
+        invalidChars: PropTypes.object,
     };
 
     static defaultProps = {
@@ -49,6 +50,7 @@ export default class AttributeItem extends Component {
         fullWidth: false,
         readonly: false,
         noTriggerOnBlur: false,
+        invalidChars: null,
     }
 
     state = {
@@ -219,12 +221,17 @@ export default class AttributeItem extends Component {
     };
 
     eventToAttrValue = (event) => {
-        const {type} = this.props;
+        const {type, invalidChars} = this.props;
 
         switch (type) {
             case AttributeTypes.boolean:
                 return event.target.checked;
             case AttributeTypes.string:
+                if (invalidChars instanceof RegExp) {
+                    return event.target.value.replace(invalidChars, '');
+                }
+
+                return event.target.value;
             case AttributeTypes.asset:
                 return event.target.value;
             case AttributeTypes.number:

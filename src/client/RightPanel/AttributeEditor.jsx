@@ -161,6 +161,7 @@ export default class AttributeEditor extends Component {
                         unit={attribute.unit}
                         readonly={attribute.readonly}
                         onFullChange={onChangeFn}
+                        invalidChars={attribute.name === 'name' ? /[^\w]/gi : null} // This is Modelica specific
                     />);
             });
 

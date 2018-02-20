@@ -38,32 +38,29 @@ export default class DomainSelector extends Component {
     };
 
     state = {
-        selected: {},
+        selected: (() => {
+            const {domains} = this.props;
+            const selected = {};
+
+            if (domains) {
+                seedInfo.domains.forEach((domain) => {
+                    selected[domain] = domains.includes(domain);
+                });
+            }
+
+            return selected;
+        })(),
+        name: typeof this.props.defaultName === 'string' ?
+            getIndexedName(this.props.defaultName, this.props.takenNames) : '',
     };
 
-    componentWillMount() {
-        const {domains, defaultName, takenNames} = this.props;
-        const selected = {};
-
-        if (typeof defaultName === 'string') {
-            this.name = getIndexedName(defaultName, takenNames);
-        }
-
-        if (domains) {
-            seedInfo.domains.forEach((domain) => {
-                selected[domain] = domains.includes(domain);
-            });
-            this.setState({selected});
-        }
-    }
-
     onOKClick = () => {
-        // TODO: Populate these correctly
         const {onOK} = this.props;
+        const {selected, name} = this.state;
+
         onOK({
-            name: this.name,
-            domains: Object.keys(this.state.selected)
-                .filter(domain => this.state.selected[domain]),
+            name,
+            domains: Object.keys(selected).filter(domain => selected[domain]),
         });
     };
 
@@ -79,20 +76,21 @@ export default class DomainSelector extends Component {
         const {
             defaultName, showDomainSelection, title, onCancel,
         } = this.props;
-        const {selected} = this.state;
+
+        const {selected, name} = this.state;
 
         let form = null;
         let nameInput = null;
 
         if (typeof defaultName === 'string') {
             nameInput = (<AttributeItem
-                value={this.name}
+                value={name}
                 onChange={(newValue) => {
-                    // FIXME: Should name really be a field of the instance?
-                    this.name = newValue.trim();
+                    this.setState({name: newValue});
                 }}
                 name="Name"
                 type="string"
+                invalidChars={/[^\w]/gi}
             />);
         }
 

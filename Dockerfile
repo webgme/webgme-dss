@@ -27,14 +27,14 @@ ENV NODE_ENV dockerworker
 
 # Installing OpenModelica https://openmodelica.org/download/download-linux
 
-RUN for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
+RUN for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt jessie release"; done | tee /etc/apt/sources.list.d/openmodelica.list
 
 # You will also need to import the GPG key used to sign the releases:
-RUN wget -q http://build.openmodelica.org/apt/openmodelica.asc -O- | sudo apt-key add -
+RUN wget -q http://build.openmodelica.org/apt/openmodelica.asc -O- | apt-key add -
 
 # Then update and install OpenModelica
-RUN sudo apt update
-RUN sudo apt --assume-yes install openmodelica
+RUN apt-get update
+RUN apt-get --assume-yes install openmodelica
 
 # Installs optional Modelica libraries (most have not been tested with OpenModelica)
 # RUN sudo apt --assume-yes install omlib-.*

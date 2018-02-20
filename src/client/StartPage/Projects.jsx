@@ -26,7 +26,7 @@ export default class Projects extends Component {
     getProjects = () => {
         this.props.gmeClient.getProjects({info: true, rights: true}, (err, projects) => {
             if (err) {
-                console.error(err);
+                console.error('Todo: Display error!', err);
                 return;
             }
 
@@ -49,7 +49,7 @@ export default class Projects extends Component {
                     </Grid>
                     <Grid item lg={5}>
                         {/* <Paper elevation={4}> */}
-                        <Typography type="title">
+                        <Typography variant="title">
                                 CURRENT PROJECTS
                         </Typography>
                         <ProjectList gmeClient={this.props.gmeClient} projects={this.state.projects}/>

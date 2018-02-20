@@ -18,7 +18,7 @@ export default class AttributeEditor extends Component {
         gmeClient: PropTypes.object.isRequired,
         selection: PropTypes.arrayOf(PropTypes.string).isRequired,
 
-        children: PropTypes.arrayOf(PropTypes.object),
+        children: PropTypes.object,
 
         fullWidthWidgets: PropTypes.bool,
         hideReadOnly: PropTypes.bool,
@@ -27,7 +27,7 @@ export default class AttributeEditor extends Component {
     static defaultProps = {
         fullWidthWidgets: false,
         hideReadOnly: false,
-        children: [],
+        children: null,
     }
 
     state = {
@@ -164,7 +164,7 @@ export default class AttributeEditor extends Component {
                     />);
             });
 
-        const icon = loadedNodes.length > 0 ?
+        const icon = (loadedNodes.length > 0 && this.props.children) ?
             React.Children.map(this.props.children, (child) => {
                 const nodeId = selection[0]; // This assumes only one node.
                 return React.cloneElement(child, {nodeId});

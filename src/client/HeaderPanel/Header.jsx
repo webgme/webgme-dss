@@ -35,7 +35,7 @@ class Header extends Component {
                     <Link to="/" style={{textDecoration: 'none'}}>
                         <img src={logo} alt="logo" style={{height: 40, marginLeft: -15, marginRight: 30}}/>
                     </Link>
-                    <Typography type="title" color="inherit" noWrap>
+                    <Typography variant="title" color="inherit" noWrap>
                         {projectName}
                     </Typography>
                     <Zoom/>

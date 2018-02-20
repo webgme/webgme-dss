@@ -110,7 +110,7 @@ class CreateProject extends Component {
                 const createBtn = (
                     <Button
                         key="createBtn"
-                        dense
+                        size="small"
                         color="primary"
                         onClick={() => {
                             this.onCreateNewClick(seedInfo.createData);
@@ -125,7 +125,7 @@ class CreateProject extends Component {
                     const infoBtn = (
                         <Button
                             key="infoBtn"
-                            dense
+                            size="small"
                             color="primary"
                             component={Link}
                             to={infoUrl}
@@ -149,7 +149,7 @@ class CreateProject extends Component {
                             title={seedInfo.title}
                         />
                         <CardContent className={classes.cardContent}>
-                            <Typography type="headline" component="h2">
+                            <Typography variant="headline">
                                 {seedInfo.title}
                             </Typography>
                             <Typography component="p">

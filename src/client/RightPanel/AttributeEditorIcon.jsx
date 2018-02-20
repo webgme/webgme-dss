@@ -28,6 +28,7 @@ export default class AttributeEditorIcon extends Component {
 
             return (
                 <svg
+                    key={attrName}
                     style={{
                         position: 'absolute',
                         top: attrDesc.bbox.y * SCALE,

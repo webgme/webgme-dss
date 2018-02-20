@@ -170,7 +170,7 @@ class PartBrowser extends SingleConnectedNode {
                 return (
                     <ExpansionPanel key={treeNode.path} defaultExpanded>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                            <Typography type="subheading">{treeNode.name}</Typography>
+                            <Typography variant="subheading">{treeNode.name}</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>
                             <Treebeard

@@ -43,7 +43,7 @@ class RightDrawer extends Component {
         return (
             <div>
                 <Drawer
-                    type="persistent"
+                    variant="persistent"
                     anchor="right"
                     open={open && selection.length > 0}
                     classes={{paper: classes.drawerPaper}}

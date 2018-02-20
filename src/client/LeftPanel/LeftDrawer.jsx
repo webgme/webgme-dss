@@ -286,7 +286,7 @@ class LeftDrawer extends Component {
         return (
             <div>
                 <Drawer
-                    type="permanent"
+                    variant="permanent"
                     anchor="left"
                     open={open}
                     classes={{paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose)}}

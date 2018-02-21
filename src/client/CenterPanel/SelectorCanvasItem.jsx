@@ -5,8 +5,8 @@ import {connect} from 'react-redux';
 import {Samy} from 'react-samy-svg';
 
 import Territory from '../gme/BaseComponents/Territory';
-import BasicConnection from './BasicConnection';
-import SVGCACHE from './../../svgcache';
+import BasicConnection from './Canvas/BasicConnection';
+import SVG_CACHE from '../../svgcache.json';
 import colorHash from '../gme/utils/colorHash';
 
 const mapStateToProps = state => ({
@@ -262,7 +262,7 @@ class SelectorCanvasItem extends Component {
     getAttributeItems = () => {
         const {gmeClient, activeNode, scale} = this.props,
             {modelicaUri} = this.state,
-            {attributes} = SVGCACHE[modelicaUri];
+            {attributes} = SVG_CACHE[modelicaUri];
         let node = gmeClient.getNode(activeNode),
             attributeItems = [];
 
@@ -311,7 +311,7 @@ class SelectorCanvasItem extends Component {
                 childrenName2Id,
                 justRemovedIds,
             } = this.state,
-            {ports, bbox, base} = SVGCACHE[modelicaUri];
+            {ports, bbox, base} = SVG_CACHE[modelicaUri];
         let portComponents = [],
             keys,
             events = [];

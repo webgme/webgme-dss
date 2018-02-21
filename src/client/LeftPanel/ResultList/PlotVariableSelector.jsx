@@ -4,11 +4,11 @@ import update from 'immutability-helper';
 import {connect} from 'react-redux';
 
 import {Treebeard} from 'react-treebeard';
-import {treeBeardTheme, getTreeDecorators} from '../treeOverrides';
-import getObjectSorter from '../gme/utils/getObjectSorter';
-import SimulationResultItem from './SimulationResultItem';
+import {treeBeardTheme, getTreeDecorators} from '../../treeOverrides';
+import getObjectSorter from '../../gme/utils/getObjectSorter';
+import PlotVariableSelectorItem from './PlotVariableSelectorItem';
 
-import {addPlotVariable, removePlotVariable} from '../actions';
+import {addPlotVariable, removePlotVariable} from '../../actions';
 
 const mapStateToProps = state => ({
     selectedVariables: state.plotData.variables,
@@ -24,7 +24,7 @@ const mapDispatchToProps = dispatch => ({
     },
 });
 
-class SimulationResultSelector extends Component {
+class PlotVariableSelector extends Component {
     static propTypes = {
         simRes: PropTypes.shape({
             variables: PropTypes.object,
@@ -34,7 +34,7 @@ class SimulationResultSelector extends Component {
     constructor(props) {
         super(props);
 
-        this.decorators = getTreeDecorators(connect(mapStateToProps, mapDispatchToProps)(SimulationResultItem), {});
+        this.decorators = getTreeDecorators(connect(mapStateToProps, mapDispatchToProps)(PlotVariableSelectorItem), {});
         this.treeNodes = this.getTreeNodes();
     }
 
@@ -128,4 +128,4 @@ class SimulationResultSelector extends Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SimulationResultSelector);
+export default connect(mapStateToProps, mapDispatchToProps)(PlotVariableSelector);

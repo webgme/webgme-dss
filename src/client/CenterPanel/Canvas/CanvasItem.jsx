@@ -10,13 +10,13 @@ import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui-icons/Delete';
 import ModeEdit from 'material-ui-icons/ModeEdit';
 
-import {DRAG_TYPES} from '../CONSTANTS';
+import {DRAG_TYPES} from '../../CONSTANTS';
 import CanvasItemPort from './CanvasItemPort';
-import Territory from '../gme/BaseComponents/Territory';
+import Territory from '../../gme/BaseComponents/Territory';
 import BasicConnection from './BasicConnection';
-import SVGCACHE from './../../svgcache.json';
-import {toggleRightDrawer, setActiveSelection} from '../actions';
-import ZLEVELS from '../gme/utils/zLevels';
+import SVGCACHE from '../../../svgcache.json';
+import {toggleRightDrawer, setActiveSelection} from '../../actions';
+import ZLEVELS from '../../gme/utils/zLevels';
 
 const canvasItemSource = {
     beginDrag(props) {

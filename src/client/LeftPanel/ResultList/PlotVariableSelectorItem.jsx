@@ -7,7 +7,7 @@ import {
 } from 'material-ui/Form';
 
 
-export default class LeafNode extends Component {
+export default class PlotVariableSelectorItem extends Component {
     static propTypes = {
         nodeData: PropTypes.shape({
             name: PropTypes.string,

@@ -10,15 +10,16 @@ import ExpansionPanel, {ExpansionPanelDetails, ExpansionPanelSummary} from 'mate
 import Typography from 'material-ui/Typography';
 import {LinearProgress, CircularProgress} from 'material-ui/Progress';
 
-import SimulationResultSelector from './SimulationResultSelector';
+import PlotVariableSelector from './PlotVariableSelector';
 
-import Territory from '../gme/BaseComponents/Territory';
-import getMetaNodeByName from '../gme/utils/getMetaNodeByName';
-import {setPlotNode, setSimResData, setResultNode} from '../actions';
+import Territory from '../../gme/BaseComponents/Territory';
+import getMetaNodeByName from '../../gme/utils/getMetaNodeByName';
+import {setPlotNode, setSimResData, setResultNode} from '../../actions';
 
 const mapStateToProps = state => ({
-    plotModel: state.plotData.nodeId,
+    plotNode: state.plotData.nodeId,
     resultNode: state.resultNode,
+    simRes: state.plotData.simRes,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -42,12 +43,14 @@ class ResultList extends Component {
         setSimResData: PropTypes.func.isRequired,
         setResultNode: PropTypes.func.isRequired,
         resultNode: PropTypes.string,
-        plotModel: PropTypes.string,
+        plotNode: PropTypes.string,
+        simRes: PropTypes.object,
     };
 
     static defaultProps = {
-        plotModel: null,
+        plotNode: null,
         resultNode: null,
+        simRes: null,
     };
 
     constructor(props) {
@@ -75,12 +78,13 @@ class ResultList extends Component {
     switchPlotNode = (resId) => {
         const {results} = this.state;
 
-        if (!resId || !results[resId] || results[resId].isRunning || !results[resId].simRes) {
+        if (resId === null || results[resId].isRunning) {
+            // TODO: isRunning check only need for mock
             this.props.setPlotNode(null);
-            this.props.setSimResData({});
+            this.props.setSimResData(null);
         } else {
             this.props.setPlotNode(results[resId].modelId);
-            this.props.setSimResData(JSON.parse(results[resId].simRes));
+            this.props.setSimResData(results[resId].simRes ? JSON.parse(results[resId].simRes) : null);
         }
     };
 
@@ -104,7 +108,8 @@ class ResultList extends Component {
                 };
 
                 if (nodeId === resultNode && isRunning === false) {
-                    this.switchPlotNode(modelId);
+                    //FIXME
+                    setTimeout(() => this.switchPlotNode(nodeId));
                 }
             }
         });
@@ -123,7 +128,8 @@ class ResultList extends Component {
                 };
 
                 if (nodeId === resultNode && isRunning === false) {
-                    this.switchPlotNode(modelId);
+                    //FIXME
+                    setTimeout(() => this.switchPlotNode(nodeId));
                 }
             }
         });
@@ -153,7 +159,9 @@ class ResultList extends Component {
     };
 
     render() {
-        const {minimized, plotModel, gmeClient} = this.props;
+        const {
+            minimized, gmeClient, simRes,
+        } = this.props;
         const {territory, results, expandedResId} = this.state;
 
         return (
@@ -167,7 +175,7 @@ class ResultList extends Component {
 
                 {Object.keys(results).map((resId) => {
                     const resInfo = results[resId];
-                    const hasResults = resInfo.modelId === plotModel;
+                    const hasResults = simRes !== null;
                     const isExpanded = resId === expandedResId;
                     const failed = resInfo.isRunning === false && !resInfo.simRes;
 
@@ -176,7 +184,7 @@ class ResultList extends Component {
                         <CheckIcon style={{color: 'lightgreen'}}/>;
 
                     if (failed) {
-                        statusIcon = <ErrorIcon style={{color: 'red'}}/>;
+                        statusIcon = <ErrorIcon style={{color: 'lightred'}}/>;
                     }
 
                     return (
@@ -202,7 +210,7 @@ class ResultList extends Component {
                             <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>
                                 {(() => {
                                     if (hasResults) {
-                                        return <SimulationResultSelector gmeClient={gmeClient} nodeId={resId}/>;
+                                        return <PlotVariableSelector gmeClient={gmeClient} nodeId={resId}/>;
                                     } else if (failed) {
                                         return <div>simulation failed</div>;
                                     }

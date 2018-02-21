@@ -2,23 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {DropTarget} from 'react-dnd';
-import {Link} from 'react-router-dom';
-import Card, {CardActions, CardContent} from 'material-ui/Card';
-import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
 
-import SVGCACHE from './../../svgcache.json';
+import SVGCACHE from '../../../svgcache.json';
 
-import SingleConnectedNode from '../gme/BaseComponents/SingleConnectedNode';
-import {DRAG_TYPES} from '../CONSTANTS';
+import SingleConnectedNode from '../../gme/BaseComponents/SingleConnectedNode';
+import {DRAG_TYPES} from '../../CONSTANTS';
 import CanvasItem from './CanvasItem';
-import ConnectionManager from '../gme/BaseComponents/ConnectionManager';
-import BasicConnectingComponent from '../gme/BaseComponents/BasicConnectingComponent';
-import BasicEventManager from '../gme/BaseComponents/BasicEventManager';
-import {toggleRightDrawer, setActiveSelection} from '../actions';
-import getIndexedName from '../gme/utils/getIndexedName';
+import ConnectionManager from '../../gme/BaseComponents/ConnectionManager';
+import BasicConnectingComponent from '../../gme/BaseComponents/BasicConnectingComponent';
+import BasicEventManager from '../../gme/BaseComponents/BasicEventManager';
+import {toggleRightDrawer, setActiveSelection} from '../../actions';
+import getIndexedName from '../../gme/utils/getIndexedName';
 
-import ZLEVELS from '../gme/utils/zLevels';
+import ZLEVELS from '../../gme/utils/zLevels';
+import CanvasInfoCard from './CanvasInfoCard';
 
 // TODO we anly take loaded children into account
 function getChildrenNames(gmeClient, nodeId) {
@@ -223,7 +220,7 @@ class Canvas extends SingleConnectedNode {
                     backgroundColor: dragMode === 'create' ? 'lightgreen' : undefined,
                     width: '100%',
                     height: '100%',
-                    overflow: 'scroll',
+                    overflow: 'auto',
                     zIndex: ZLEVELS.canvas,
                     position: 'absolute',
                 }}
@@ -233,58 +230,15 @@ class Canvas extends SingleConnectedNode {
                 onMouseMove={this.onMouseMove}
             >
                 <BasicConnectingComponent connectionManager={this.cm}/>
-                {/* <div style={{ */}
-                {/* position: 'sticky', */}
-                {/* top: '5%', */}
-                {/* left: '5%', */}
-                {/* right: '95%', */}
-                {/* bottom: '95%', */}
-                {/* fontSize: '24px', */}
-                {/* opacity: 0.3, */}
-                {/* zIndex: 2 */}
-                {/* }}>{`Node ${nodeInfo.name} open`}</div> */}
-                {childrenItems.length > 0 ?
-                    childrenItems :
-                    <div style={{
-                        position: 'absolute',
-                        maxWidth: 600,
-                        left: 'calc(50% - 300px)',
-                        top: '20%',
-                    }}
-                    >
-                        <Card>
-                            <CardContent>
-                                <Typography style={{marginBottom: 20}} variant="headline" component="h2">
-                                    This is your canvas
-                                </Typography>
-                                <Typography component="p">
-                                    Use the left menu to add components to your system. Locate which components you
-                                    need and drag and drop them onto this Canvas. Based on their interfaces you can wire
-                                    components together by clicking the port icons. <br/><br/>
-                                    To set the parameter simply double-click it and the parameter editor will show up.
-                                    From there you can click the inlined icon and it will take you to the official
-                                    Modelica® Standard Library documentation.
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button
-                                    size="small"
-                                    color="primary"
-                                    component={Link}
-                                    to="http://doc.modelica.org/om/Modelica.html"
-                                    target="_blank"
-                                >
-                                    Learn More About Modelica
-                                </Button>
-                            </CardActions>
-                        </Card>
-                    </div>
-                }
+                {childrenItems.length > 0 ? childrenItems : CanvasInfoCard()}
             </div>);
 
         return connectDropTarget(content);
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-    DropTarget(DRAG_TYPES.GME_NODE, canvasTarget, collect)(Canvas));
+export default connect(mapStateToProps, mapDispatchToProps)(DropTarget(
+    DRAG_TYPES.GME_NODE,
+    canvasTarget,
+    collect,
+)(Canvas));

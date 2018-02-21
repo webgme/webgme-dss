@@ -168,7 +168,8 @@ class Project extends Component {
                             bottom: 0,
                             left: 'calc(50% - 100px)',
                             width: 200,
-                            opacity: 0.9,
+                            backgroundColor: 'transparent',
+                            // opacity: 0.9,
                         }}
                     >
                         <BottomNavigationAction label="Modeling" icon={<EditMode/>} style={{opacity: 0.9}}/>

@@ -79,7 +79,7 @@ const systemWaiting = (state = false, action) => {
 //     }
 // };
 
-const plotData = (state = {nodeId: null, variables: [], simRes: {}}, action) => {
+const plotData = (state = {nodeId: null, variables: [], simRes: null}, action) => {
     switch (action.type) {
         case 'ADD_PLOT_VARIABLE':
             return update(state, {

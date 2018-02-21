@@ -7,10 +7,9 @@ export const appHeader = {
 export const centerPanel = {
     top: LAYOUT_SIZES.HEADER_HEIGHT,
     left: LAYOUT_SIZES.SIDE_PANEL_WIDTH_MINIMIZED,
-    width: '100%',
-    height: '100vh',
+    width: `calc(100% - ${LAYOUT_SIZES.SIDE_PANEL_WIDTH_MINIMIZED}px)`,
+    height: `calc(100% - ${LAYOUT_SIZES.HEADER_HEIGHT}px)`,
     position: 'fixed',
-    overflow: 'auto',
 };
 
 /*

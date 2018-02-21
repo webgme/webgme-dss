@@ -50,7 +50,7 @@ function initialize(middlewareOpts) {
         fs.readFile(path.join(DIST_DIR, 'index.html'), 'utf8', function(err, indexTemplate) {
             if (err) {
                 logger.error(err);
-                res.send(404);
+                res.sendStatus(404);
             } else {
                 res.contentType('text/html');
                 res.send(indexTemplate);

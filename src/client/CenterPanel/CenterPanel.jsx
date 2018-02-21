@@ -1,13 +1,16 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import Paper from 'material-ui/Paper';
+
+import Grid from 'material-ui/Grid';
 
 import Canvas from './Canvas';
 import Plotter from './Plotter';
 import SelectorCanvas from './SelectorCanvas';
 import OTConsole from '../OTConsole';
-import {centerPanel as style} from '../styles';
+import ResultsInfoCard from './ResultsInfoCard';
+import {centerPanel as STYLE} from '../styles';
+
 
 const mapStateToProps = state => ({
     modelingView: state.modelingView,
@@ -44,56 +47,30 @@ class CenterPanel extends Component {
         } = this.props;
 
         const {scrollPos} = this.state;
-
-        const flexStyle = JSON.parse(JSON.stringify(style));
-
-        if (!modelingView) {
-            flexStyle.backgroundColor = 'rgb(192, 192, 192)';
-        }
-
         let content;
 
         if (modelingView) {
             content = (<Canvas gmeClient={gmeClient} scrollPos={scrollPos}/>);
-        } else {
+        } else if (plotData.simRes) {
+            content = [
+                <Plotter variables={plotData.variables} simRes={plotData.simRes}/>,
+                <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>];
+        } else if (resultNode) {
             content = (
-                <div style={{
-                    position: 'fixed',
-                    left: 50,
-                    top: 50,
-                    width: '100%',
-                    height: '100%',
-                }}
-                >
-                    <Paper
-                        elevation={0}
-                        style={{
-                            overflow: 'auto',
-                            width: '100%',
-                        }}
-                    >
-                        {plotData.nodeId ?
-                            <Plotter variables={plotData.variables} simRes={plotData.simRes}/> :
-                            <OTConsole gmeClient={gmeClient} resultNode={resultNode} attributeName="stdout"/>}
-                    </Paper>
-                    <Paper
-                        elevation={0}
-                        style={{
-                            top: 351,
-                            left: 50,
-                            bottom: 0,
-                            right: 0,
-                            overflow: 'auto',
-                            position: 'inherit',
-                        }}
-                    >
+                <Grid container spacing={0} style={{height: '100%'}}>
+                    <Grid item xs={6}>
                         <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>
-                    </Paper>
-                </div>);
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OTConsole gmeClient={gmeClient} resultNode={resultNode} attributeName="stdout"/>
+                    </Grid>
+                </Grid>);
+        } else {
+            content = ResultsInfoCard();
         }
 
         return (
-            <div onScroll={this.onScroll} style={flexStyle}>
+            <div onScroll={this.onScroll} style={STYLE}>
                 {content}
             </div>
         );

@@ -37,10 +37,9 @@ class SelectorCanvas extends SingleConnectedNode {
     }
 
     populateChildren(nodeObj) {
-        let childrenIds = nodeObj.getChildrenIds(),
-            newChildren;
+        const childrenIds = nodeObj.getChildrenIds();
+        const newChildren = childrenIds.map(id => ({id}));
 
-        newChildren = childrenIds.map(id => ({id}));
         this.setState({
             children: newChildren,
             nodeInfo: {
@@ -58,33 +57,34 @@ class SelectorCanvas extends SingleConnectedNode {
     }
 
     render() {
-        const {activeNode, gmeClient} = this.props,
-            {children} = this.state,
-            self = this;
-
-        console.log(activeNode);
+        const {activeNode, gmeClient} = this.props;
+        const {children} = this.state;
 
         const childrenItems = children.map(child => (<SelectorCanvasItem
             key={child.id}
             gmeClient={gmeClient}
             activeNode={child.id}
             contextNode={activeNode}
-            eventManager={self.em}
+            eventManager={this.em}
         />));
-        return (<div
-            ref={(canvas) => {
-                if (canvas) { self.offset = {x: canvas.offsetParent.offsetLeft, y: canvas.offsetParent.offsetTop}; }
-            }}
-            style={{
-                width: '100%',
-                height: '100%',
-                overflow: 'auto',
-                zIndex: 1,
-                position: 'relative',
-            }}
-        >
-            {childrenItems}
-                </div>);
+
+        return (
+            <div
+                ref={(canvas) => {
+                    if (canvas) {
+                        this.offset = {x: canvas.offsetParent.offsetLeft, y: canvas.offsetParent.offsetTop};
+                    }
+                }}
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    overflow: 'auto',
+                    zIndex: 1,
+                    position: 'relative',
+                }}
+            >
+                {childrenItems}
+            </div>);
     }
 }
 

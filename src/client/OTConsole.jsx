@@ -116,10 +116,8 @@ class OTConsole extends Component {
                 <ReactQuill
                     style={{
                         backgroundColor: '#002b36',
-                        color: '#586e75',
+                        color: '#a5cfda',
                         fontSize: 12,
-                        marginLeft: 300, // FIXME: These should not be here
-                        height: 300,
                         fontFamily: 'monospace',
                     }}
                     theme={null}

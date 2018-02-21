@@ -109,7 +109,35 @@
                     ]
                 }
             ,
-            ConformityChecker: {}
+            ConformityChecker: {},
+            ModelicaDiff: {
+                "success": true,
+                "messages": [
+                    {
+                        "commitHash": "#b53d877c826bc82782612c86683f71d5f665fdf8",
+                        "activeNode": {
+                            "name": "Modelica",
+                            "id": ""
+                        },
+                        "message": "{\"model\":{\"Resistor\":[\"Component have been introduced to the model.\"],\"ElectricalConnection\":[\"Component have been introduced to the model.\"],\"ConstantVoltage\":[\"Onscreen position changed {x: 1396 -> 1477 , y: 122 -> 73}.\"],\"Ground\":[\"Onscreen position changed {x: 927 -> 687 , y: 531 -> 574}.\"]},\"domain\":null,\"simulation\":[\"Simulation result \\\"Result_1519234740136\\\" has been created.\"]}",
+                        "severity": "info"
+                    }
+                ],
+                "artifacts": [],
+                "pluginName": "ModelicaDiff",
+                "startTime": "2018-02-21T19:59:43.937Z",
+                "finishTime": "2018-02-21T19:59:44.778Z",
+                "error": null,
+                "projectId": "guest+ElectricalAnalog",
+                "pluginId": "ModelicaDiff",
+                "commits": [
+                    {
+                        "commitHash": "#b53d877c826bc82782612c86683f71d5f665fdf8",
+                        "branchName": "master",
+                        "status": "SYNCED"
+                    }
+                ]
+            }
         },
         inTransaction = false;
 
@@ -3780,7 +3808,7 @@
             runServerPlugin: (pluginId, context, callback) => {
                 setTimeout(() => {
                     callback(null, pluginResults[pluginId]);
-                }, 200);
+                }, 1000);
             },
             getProjectInfo: () => genProject(projects[0]),
             addUI: (uiId, eventHandler) => {
@@ -3869,16 +3897,48 @@
                 });
             },
             getHistory: (projectId, start, number, callback) => {
-                setTimeout(callback, 1000, null, [
+                setTimeout(callback, 100, null, [
                     {
-                        message: 'setRegistry(/Z/3,position,{"x":121,"y":285})',
-                        parents: ['#f706dea48e61817715421cadc415358e3c941c39'],
-                        root: '#585b66c39337f25630d8d1f51bf4b6936888ae74',
-                        time: 1517866285147,
-                        type: 'commit',
-                        updater: ['guest'],
-                        __v: '1.2.0',
-                        _id: '#3ff0ed256f3b02610e6a34042821598244e50b40'
+                        "_id": "#b53d877c826bc82782612c86683f71d5f665fdf8",
+                        "root": "#a8b2a0874fdff33c310ab1448b47ae225bed6051",
+                        "parents": [
+                            "#8a1bcd819c1cb95ac4da9a8f8da727d227dd6921"
+                        ],
+                        "updater": [
+                            "guest"
+                        ],
+                        "time": 1519234752675,
+                        "message": "[Plugin] System Simulator (v0.1.0) updated the model. - Attached simulation results at /8/v",
+                        "type": "commit",
+                        "__v": "1.2.0"
+                    },
+                    {
+                        "_id": "#8a1bcd819c1cb95ac4da9a8f8da727d227dd6921",
+                        "root": "#a0453b1c7ccd9e997a39db09580df3aab064bf35",
+                        "parents": [
+                            "#4575587abd5d6f1de45c88ae7a606a74078ffeef"
+                        ],
+                        "updater": [
+                            "guest"
+                        ],
+                        "time": 1519234740158,
+                        "message": "[\ncreateNode(/8,/5,/8/v)\ncopyNode(/Z, /8/v, undefined)\nCreated simulation results",
+                        "type": "commit",
+                        "__v": "1.2.0"
+                    },
+                    {
+                        "_id": "#4575587abd5d6f1de45c88ae7a606a74078ffeef",
+                        "root": "#b618c3f2ad082acb7b0aefc8e9b63465226dd4fb",
+                        "parents": [
+                            "#54b8ef8176780a55c30c2f5a03f2dc83bb72ad36"
+                        ],
+                        "updater": [
+                            "guest"
+                        ],
+                        "time": 1519234726001,
+                        "message": "setRegistry(/Z/F,position,{\"x\":1477,\"y\":73})",
+                        "type": "commit",
+                        "__v": "1.2.0"
                     }]
                 );
             },

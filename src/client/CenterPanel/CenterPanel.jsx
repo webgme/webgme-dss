@@ -9,7 +9,7 @@ import Plotter from './Plotter';
 import SelectorCanvas from './SelectorCanvas';
 import OTConsole from '../OTConsole';
 import ResultsInfoCard from './ResultsInfoCard';
-import {centerPanel as STYLE} from '../styles';
+import {centerPanel as getStyle} from '../styles';
 
 
 const mapStateToProps = state => ({
@@ -17,6 +17,7 @@ const mapStateToProps = state => ({
     activeNode: state.activeNode,
     resultNode: state.resultNode,
     plotData: state.plotData,
+    leftDrawer: state.leftDrawer,
 });
 
 const mapDispatchToProps = (/* dispatch */) => ({});
@@ -27,6 +28,7 @@ class CenterPanel extends Component {
         modelingView: PropTypes.bool.isRequired,
         plotData: PropTypes.object.isRequired,
         resultNode: PropTypes.string,
+        leftDrawer: PropTypes.bool.isRequired,
     };
 
     static defaultProps = {
@@ -43,7 +45,11 @@ class CenterPanel extends Component {
 
     render() {
         const {
-            gmeClient, modelingView, plotData, resultNode,
+            gmeClient,
+            modelingView,
+            plotData,
+            resultNode,
+            leftDrawer,
         } = this.props;
 
         const {scrollPos} = this.state;
@@ -70,7 +76,7 @@ class CenterPanel extends Component {
         }
 
         return (
-            <div onScroll={this.onScroll} style={STYLE}>
+            <div onScroll={this.onScroll} style={getStyle(leftDrawer)}>
                 {content}
             </div>
         );

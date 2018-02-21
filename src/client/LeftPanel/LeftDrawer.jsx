@@ -259,18 +259,30 @@ class LeftDrawer extends Component {
                 {
                     id: 'showChecker',
                     iconClass: <CheckCircle style={{color: green[500]}}/>,
+                    onClick: () => {
+                        this.setState({showChecker: true});
+                    },
                 },
                 {
                     id: 'showSimulator',
                     iconClass: <PlayCircleOutline color="primary"/>,
+                    onClick: () => {
+                        this.setState({showSimulator: true});
+                    },
                 },
                 {
                     id: 'showDomainSelector',
                     iconClass: <AddCircle color="secondary"/>,
+                    onClick: () => {
+                        this.setState({showDomainSelector: true});
+                    },
                 },
                 {
                     id: 'showHistory',
                     iconClass: <History color="primary"/>,
+                    onClick: () => {
+                        this.setState({showHistory: true});
+                    },
                 },
             ];
         } else if (!open) {
@@ -278,6 +290,9 @@ class LeftDrawer extends Component {
                 id: variable,
                 iconClass: <Timeline style={{color: colorHash(variable).rgb}}/>,
                 color: colorHash(variable).rgb,
+                onClick: () => {
+                    this.props.removePlotVariable(variable);
+                },
             }));
         } else {
             actionButtons = [];
@@ -295,28 +310,14 @@ class LeftDrawer extends Component {
                         <IconButton onClick={open ? this.props.hide : this.props.show}>
                             {open ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                         </IconButton>
-                        {open ?
-                            actionButtons.map(desc => (
-                                <IconButton
-                                    key={desc.id}
-                                    onClick={() => {
-                                        this.setState({[desc.id]: true});
-                                    }}
-                                >
-                                    {desc.iconClass}
-                                </IconButton>
-                            )) :
-                            actionButtons.map(desc => (
-                                <IconButton
-                                    key={desc.id}
-                                    onClick={() => {
-                                        this.props.removePlotVariable(desc.id);
-                                    }}
-                                >
-                                    {desc.iconClass}
-                                </IconButton>
-                            ))
-                        }
+                        {actionButtons.map(desc => (
+                            <IconButton
+                                key={desc.id}
+                                onClick={desc.onClick}
+                            >
+                                {desc.iconClass}
+                            </IconButton>
+                        ))}
                     </span>
                     <Divider/>
                     {modelingView ?

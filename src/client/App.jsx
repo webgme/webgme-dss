@@ -10,11 +10,9 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
-import User from './HeaderPanel/User';
 // Own modules
 import reducers from './reducers';
+import User from './HeaderPanel/User';
 
 import logo from './logo.svg';
 import './App.css';

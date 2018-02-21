@@ -60,7 +60,7 @@ class ProjectList extends Component {
                                         <Tooltip
                                             key={domainUri}
                                             id={domainUri}
-                                            placement="top-start"
+                                            placement="left"
                                             title={domainUri.substring('Modelica.'.length)}
                                         >
                                             <img

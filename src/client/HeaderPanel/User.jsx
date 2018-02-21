@@ -1,23 +1,26 @@
+/* globals window */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import superagent from 'superagent';
-import IconButton from 'material-ui/IconButton';
-import Tooltip from 'material-ui/Tooltip';
-import Cancel from 'material-ui-icons/Cancel';
+import Button from 'material-ui/IconButton';
+import Menu, {MenuItem} from 'material-ui/Menu';
 import AccountCircle from 'material-ui-icons/AccountCircle';
-import Typography from 'material-ui/Typography';
 
 export default class User extends Component {
     static propTypes = {
-        useWebGMEColors: PropTypes.bool,
+        color: PropTypes.string,
     };
 
     static defaultProps = {
-        useWebGMEColors: false,
-    };
+        color: undefined,
+    }
 
     state = {
+        anchorEl: null,
         userInfo: null,
+        // userInfo: {
+        //     _id: 'guest',
+        // },
     };
 
     componentDidMount() {
@@ -30,39 +33,59 @@ export default class User extends Component {
                 } else {
                     userInfo = res.body;
                 }
+
                 this.setState({userInfo});
             });
     }
 
+    openMenu = (event) => {
+        this.setState({anchorEl: event.currentTarget});
+    };
+
+    closeMenu = () => {
+        this.setState({anchorEl: null});
+    };
+
+    goToProfile = () => {
+        const tempAnchor = window.document.createElement('a');
+        tempAnchor.target = '_self';
+        tempAnchor.href = '/profile/home';
+        window.document.body.appendChild(tempAnchor);
+        tempAnchor.click();
+    };
+
+    logout = () => {
+        const tempAnchor = window.document.createElement('a');
+        tempAnchor.target = '_self';
+        tempAnchor.href = '/logout';
+        window.document.body.appendChild(tempAnchor);
+        tempAnchor.click();
+        window.parent.postMessage('logout', '*');
+    };
+
     render() {
-        const {userInfo} = this.state;
-        const {useWebGMEColors} = this.props;
-        let accountStyle = {};
-        let nameStyle = {};
-        let logoutStyle = {};
+        const {userInfo, anchorEl} = this.state;
+        const {color} = this.props;
 
         if (userInfo === null) {
             return null;
         }
 
-        if (useWebGMEColors) {
-            nameStyle = {color: '#70AD47'};
-            accountStyle = {color: '#00B0F0'};
-            logoutStyle = {color: '#FF0000'};
-        }
-        // console.log(userInfo);
-        return [<Typography type="subheading" style={nameStyle}>{userInfo._id}</Typography>,
-            (
-                <Tooltip title="Profile">
-                    <IconButton>
-                        <a href="/profile/home"><AccountCircle style={accountStyle}/></a>
-                    </IconButton>
-                </Tooltip>),
-            (
-                <Tooltip title="Log out">
-                    <IconButton>
-                        <a href="/logout"><Cancel style={logoutStyle}/></a>
-                    </IconButton>
-                </Tooltip>)];
+        return (
+            <div>
+                <Button size="small" onClick={this.openMenu} style={{width: '100%', color}}>
+                    <AccountCircle/>
+                    <span style={{marginLeft: 5, fontSize: 16}}> {userInfo._id}</span>
+                </Button>
+                <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={this.closeMenu}
+                >
+                    <MenuItem onClick={this.goToProfile}>Profile Page</MenuItem>
+                    <MenuItem onClick={this.logout}>Logout</MenuItem>
+                </Menu>
+            </div>);
     }
 }

@@ -87,10 +87,14 @@ export default class App extends Component {
                                         planned simulation backed-end support from the OpenModelica compiler...
                                     </p>
                                 </header>
-                                <Toolbar disableGutters style={{backgroundColor: '#222'}}>
-                                    <Typography style={{flex: 1}}/>
-                                    <User useWebGMEColors/>
-                                </Toolbar>
+                                <div style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 20,
+                                }}
+                                >
+                                    <User color="lightgrey"/>
+                                </div>
                                 <Projects gmeClient={window.gmeClient}/>
                             </div>
                         )}

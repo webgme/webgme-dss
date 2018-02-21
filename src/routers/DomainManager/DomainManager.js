@@ -1,22 +1,20 @@
-/*globals define*/
-/*jshint node:true*/
+/* globals requireJS */
 
 /**
  * This router handles creation of new projects and additions/removals of domains in
  * existing ones.
  */
 
-'use strict';
-
 // http://expressjs.com/en/guide/routing.html
-const express = require('express'),
-    Q = require('q'),
-    router = express.Router(),
-    CONSTANTS = requireJS('common/Constants'),
-    SEED_INFO = require('../../seeds/Modelica/metadata.json');
+const express = require('express');
+const Q = require('q');
+
+const router = express.Router();
+const CONSTANTS = requireJS('common/Constants');
+const SEED_INFO = require('../../seeds/Modelica/metadata.json');
 
 function getDomainTagName(previousVersion) {
-    return 'Domain_' + SEED_INFO.version + '_' + (previousVersion + 1);
+    return `Domain_${SEED_INFO.version}'_'${previousVersion + 1}`;
 }
 
 /**
@@ -44,15 +42,15 @@ function initialize(middlewareOpts) {
     function getNewJWToken(userId) {
         if (middlewareOpts.gmeConfig.authentication.enable === true) {
             return middlewareOpts.gmeAuth.generateJWTokenForAuthenticatedUser(userId);
-        } else {
-            return Q();
         }
+
+        return Q();
     }
 
     logger.debug('initializing ...');
 
     // Ensure authenticated can be used only after this rule.
-    router.use('*', function (req, res, next) {
+    router.use('*', (req, res, next) => {
         // TODO: set all headers, check rate limit, etc.
 
         // This header ensures that any failures with authentication won't redirect.
@@ -63,17 +61,17 @@ function initialize(middlewareOpts) {
     // Use ensureAuthenticated if the routes require authentication. (Can be set explicitly for each route.)
     router.use('*', ensureAuthenticated);
 
-    router.get('/seedInfo', function (req, res/*, next*/) {
+    router.get('/seedInfo', (req, res) => {
         res.json(SEED_INFO);
     });
 
 
-    router.post('/createProject', function (req, res, next) {
+    router.post('/createProject', (req, res, next) => {
         const userId = getUserId(req);
-        let webgmeToken = null,
-            returnData = {
-                projectId: null
-            };
+        let webgmeToken = null;
+        const returnData = {
+            projectId: null,
+        };
 
         /*
         * body  {
@@ -84,45 +82,45 @@ function initialize(middlewareOpts) {
         logger.debug('createProject', req.body);
 
         getNewJWToken(userId)
-            .then(token => {
+            .then((token) => {
                 req.body.domains.forEach((domain) => {
                     if (!SEED_INFO.domains.includes(domain)) {
-                        throw new Error('Selected domain [' + domain + '] not available in seed!');
+                        throw new Error(`Selected domain [${domain}] not available in seed!`);
                     }
                 });
 
-                let seedProjectParameters = {
+                const seedProjectParameters = {
                     command: CONSTANTS.SERVER_WORKER_REQUESTS.SEED_PROJECT,
                     webgmeToken: token,
                     type: 'file',
                     seedName: 'Modelica',
                     projectName: req.body.projectName,
                     branchName: 'master',
-                    kind: 'DSS:' + req.body.domains.join(':')
+                    kind: `DSS:${req.body.domains.join(':')}`,
                 };
 
                 webgmeToken = token;
                 logger.debug('Seeding', seedProjectParameters);
                 return Q.ninvoke(swm, 'request', seedProjectParameters);
             })
-            .then(result => {
-                let pluginParameters = {
+            .then((result) => {
+                const pluginParameters = {
                     command: CONSTANTS.SERVER_WORKER_REQUESTS.EXECUTE_PLUGIN,
-                    webgmeToken: webgmeToken,
+                    webgmeToken,
                     name: 'DomainSelector',
                     context: {
                         managerConfig: {
                             project: result.projectId,
                             activeNode: '',
                             commitHash: result.commitHash,
-                            branchName: 'master'
+                            branchName: 'master',
                         },
                         pluginConfig: {
                             domains: req.body.domains.join(':'),
                             tagName: getDomainTagName(0),
-                            baseHash: result.commitHash
-                        }
-                    }
+                            baseHash: result.commitHash,
+                        },
+                    },
                 };
 
                 returnData.projectId = result.projectId;
@@ -130,23 +128,23 @@ function initialize(middlewareOpts) {
                 logger.debug('Selecting domains', pluginParameters);
                 return Q.ninvoke(swm, 'request', pluginParameters);
             })
-            .then(result => {
+            .then((result) => {
                 logger.debug('plugin result', result);
 
                 res.json(returnData);
             })
-            .catch(err => {
+            .catch((err) => {
                 logger.error(err);
                 next(err);
             });
     });
 
-    router.post('/updateProject', function (req, res, next) {
+    router.post('/updateProject', (req, res, next) => {
         const userId = getUserId(req);
-        let webgmeToken = null,
-            latestVersion = 0,
-            baseHash,
-            returnData;
+        let webgmeToken = null;
+        let latestVersion = 0;
+        let baseHash;
+        let returnData;
 
         /*
         * body  {
@@ -158,10 +156,10 @@ function initialize(middlewareOpts) {
         logger.debug('updateProject', req.body);
 
         getNewJWToken(userId)
-            .then(token => {
+            .then((token) => {
                 req.body.domains.forEach((domain) => {
                     if (!SEED_INFO.domains.includes(domain)) {
-                        throw new Error('Selected domain [' + domain + '] not available in seed!');
+                        throw new Error(`Selected domain [${domain}] not available in seed!`);
                     }
                 });
 
@@ -169,73 +167,72 @@ function initialize(middlewareOpts) {
 
                 return safeStorage.getTags({
                     projectId: req.body.projectId,
-                    username: userId
+                    username: userId,
                 });
             })
-            .then(tags => {
-                for (let tag in tags) {
-                    // tag = "Domain_1_2"
-                    if (tag.startsWith('Domain_') === false) {
-                        continue;
-                    }
+            .then((tags) => {
+                Object.keys(tags)
+                    .forEach((tag) => {
+                        // tag = "Domain_1_2"
+                        if (tag.startsWith('Domain_')) {
+                            const version = parseInt(tag.split('_')[2], 10);
 
-                    let version = parseInt(tag.split('_')[2], 10);
-
-                    if (version > latestVersion) {
-                        latestVersion = version;
-                        // TODO: With multiple branches the baseHash should be a tag in its history.
-                        baseHash = tags[tag];
-                    }
-                }
+                            if (version > latestVersion) {
+                                latestVersion = version;
+                                // TODO: With multiple branches the baseHash should be a tag in its history.
+                                baseHash = tags[tag];
+                            }
+                        }
+                    });
 
                 if (latestVersion === 0) {
                     throw new Error('No Domain tags existed! Cannot update domains for this project.');
                 }
 
-                let updateProjectParameters = {
+                const updateProjectParameters = {
                     command: CONSTANTS.SERVER_WORKER_REQUESTS.UPDATE_PROJECT_FROM_FILE,
-                    webgmeToken: webgmeToken,
+                    webgmeToken,
                     seedName: 'Modelica',
                     projectId: req.body.projectId,
-                    commitHash: baseHash
+                    commitHash: baseHash,
                 };
 
                 return Q.ninvoke(swm, 'request', updateProjectParameters);
             })
-            .then(result => {
-                let pluginParameters = {
+            .then((result) => {
+                const pluginParameters = {
                     command: CONSTANTS.SERVER_WORKER_REQUESTS.EXECUTE_PLUGIN,
-                    webgmeToken: webgmeToken,
+                    webgmeToken,
                     name: 'DomainSelector',
                     context: {
                         managerConfig: {
-                            project:  req.body.projectId,
+                            project: req.body.projectId,
                             activeNode: '',
                             commitHash: result.hash,
-                            branchName: 'master'
+                            branchName: 'master',
                         },
                         pluginConfig: {
                             domains: req.body.domains.join(':'),
                             tagName: getDomainTagName(latestVersion),
-                            baseHash: baseHash
-                        }
-                    }
+                            baseHash,
+                        },
+                    },
                 };
 
                 returnData = result;
                 logger.debug('update result', result);
                 return Q.ninvoke(swm, 'request', pluginParameters);
             })
-            .then(result => {
+            .then((result) => {
                 logger.debug('plugin result', result);
                 return gmeAuth.metadataStorage.updateProjectInfo(req.body.projectId, {
-                    kind: 'DSS:' + req.body.domains.join(':')
+                    kind: `DSS:${req.body.domains.join(':')}`,
                 });
             })
             .then(() => {
                 res.json(returnData);
             })
-            .catch(err => {
+            .catch((err) => {
                 logger.error(err);
                 next(err);
             });
@@ -260,8 +257,8 @@ function stop(callback) {
 
 
 module.exports = {
-    initialize: initialize,
-    router: router,
-    start: start,
-    stop: stop
+    initialize,
+    router,
+    start,
+    stop,
 };

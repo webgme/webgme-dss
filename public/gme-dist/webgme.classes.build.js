@@ -3777,6 +3777,9 @@
             selectProject: (projectId, branchName, callback) => {
                 setTimeout(callback, 100);
             },
+            selectBranch: (branchName, dummy, callback) => {
+                setTimeout(callback, 100);
+            },
             closeProject: (callback) => {
                 setTimeout(callback, 100);
             },
@@ -3944,8 +3947,133 @@
             },
             copyNode: (nodeId, parentId) => {
                 return '/3/' + cnt;
+            },
+            addEventListener: (event, handler) => {
+                let currentStatus;
+                if (event === 'BRANCH_STATUS_CHANGED') {
+                    setInterval(() => {
+                        let status = 'SYNC';
+                        const now = Date.now();
+
+                        if (now % 7 === 0) {
+                            status = 'AHEAD_SYNC';
+                        } else if (now % 15 === 0) {
+                            status = 'AHEAD_NOT_SYNC';
+                        }
+
+                        if (status !== currentStatus) {
+                            currentStatus = status;
+                            handler(null, {status});
+                        }
+                    }, 2000);
+                }
+            },
+            CONSTANTS: {
+                STORAGE: STORAGE_CONSTANTS,
+                //CORE: CORE_CONSTANTS,
+
+                BRANCH_STATUS: STORAGE_CONSTANTS.BRANCH_STATUS,
+
+                UNCAUGHT_EXCEPTION: 'UNCAUGHT_EXCEPTION',
+
+                // Events
+                NETWORK_STATUS_CHANGED: STORAGE_CONSTANTS.NETWORK_STATUS_CHANGED,
+                BRANCH_STATUS_CHANGED: 'BRANCH_STATUS_CHANGED',
+
+                BRANCH_CLOSED: 'BRANCH_CLOSED',
+                BRANCH_OPENED: 'BRANCH_OPENED',
+                PROJECT_CLOSED: 'PROJECT_CLOSED',
+                PROJECT_OPENED: 'PROJECT_OPENED',
+
+                BRANCH_CHANGED: 'BRANCH_CHANGED',
+
+                NEW_COMMIT_STATE: 'NEW_COMMIT_STATE',
+
+                UNDO_AVAILABLE: 'UNDO_AVAILABLE',
+                REDO_AVAILABLE: 'REDO_AVAILABLE',
+
+                // general notification event
+                NOTIFICATION: 'NOTIFICATION',
+                CONNECTED_USERS_CHANGED: 'CONNECTED_USERS_CHANGED',
+
+                // Constraint Checking
+                META_RULES_RESULT: 'META_RULES_RESULT',
+                CONSTRAINT_RESULT: 'CONSTRAINT_RESULT'
             }
         };
+    };
+
+    const STORAGE_CONSTANTS = {
+        //Version
+        VERSION: '1.2.0',
+            // Database related
+            MONGO_ID: '_id',
+            COMMIT_TYPE: 'commit',
+            OVERLAY_SHARD_TYPE: 'shard',
+            PROJECT_INFO_KEYS: ['createdAt', 'creator', 'viewedAt', 'viewer', 'modifiedAt', 'modifier', 'kind'],
+            EMPTY_PROJECT_DATA: 'empty',
+            PROJECT_ID_SEP: '+',
+            PROJECT_DISPLAYED_NAME_SEP: '/',
+
+            // Socket IO
+            DATABASE_ROOM: 'database',
+            ROOM_DIVIDER: '%',
+
+            NETWORK_STATUS_CHANGED: 'NETWORK_STATUS_CHANGED',
+
+            CONNECTED: 'CONNECTED',
+            DISCONNECTED: 'DISCONNECTED',
+            RECONNECTED: 'RECONNECTED',
+            INCOMPATIBLE_CONNECTION: 'INCOMPATIBLE_CONNECTION',
+            CONNECTION_ERROR: 'CONNECTION_ERROR',
+
+            JWT_ABOUT_TO_EXPIRE: 'JWT_ABOUT_TO_EXPIRE',
+            JWT_EXPIRED: 'JWT_EXPIRED',
+
+            RECONNECTING: 'RECONNECTING', // Internal storage state where the websocket connection has been established,
+            // but work is still be done to join branch and document rooms correctly.
+
+            // Branch commit status - this is the status returned after setting the hash of a branch
+            SYNCED: 'SYNCED', // The commitData was inserted in the database and the branchHash updated.
+            FORKED: 'FORKED', // The commitData was inserted in the database, but the branchHash NOT updated.
+            CANCELED: 'CANCELED', // The commitData was never inserted to the database.
+            MERGED: 'MERGED', // The commit was initially forked, but successfully merged.
+
+            BRANCH_STATUS: {
+            SYNC: 'SYNC',
+                AHEAD_SYNC: 'AHEAD_SYNC',
+                AHEAD_NOT_SYNC: 'AHEAD_NOT_SYNC',
+                PULLING: 'PULLING',
+                MERGING: 'MERGING',
+                ERROR: 'ERROR'
+        },
+
+        // Events
+
+        PROJECT_DELETED: 'PROJECT_DELETED',
+            PROJECT_CREATED: 'PROJECT_CREATED',
+
+            BRANCH_DELETED: 'BRANCH_DELETED',
+            BRANCH_CREATED: 'BRANCH_CREATED',
+            BRANCH_HASH_UPDATED: 'BRANCH_HASH_UPDATED',
+            TAG_DELETED: 'TAG_DELETED',
+            TAG_CREATED: 'TAG_CREATED',
+            COMMIT: 'COMMIT',
+
+            BRANCH_UPDATED: 'BRANCH_UPDATED',
+
+            BRANCH_JOINED: 'BRANCH_JOINED',
+            BRANCH_LEFT: 'BRANCH_LEFT',
+
+            NOTIFICATION: 'NOTIFICATION',
+
+            DOCUMENT_OPERATION: 'DOCUMENT_OPERATION',
+            DOCUMENT_SELECTION: 'DOCUMENT_SELECTION',
+            // Types of notifications
+            BRANCH_ROOM_SOCKETS: 'BRANCH_ROOM_SOCKETS',
+            PLUGIN_NOTIFICATION: 'PLUGIN_NOTIFICATION',
+            ADD_ON_NOTIFICATION: 'ADD_ON_NOTIFICATION',
+            CLIENT_STATE_NOTIFICATION: 'CLIENT_STATE_NOTIFICATION'
     };
 
     (function (funcName, baseObj) {

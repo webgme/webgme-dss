@@ -20,6 +20,7 @@ import ChromeReaderMode from 'material-ui-icons/ChromeReaderMode';
 
 import PlotVariableSelector from './PlotVariableSelector';
 import RenameInput from './RenameInput';
+import ConfirmDialog from '../../Dialogs/ConfirmDialog';
 
 
 import Territory from '../../gme/BaseComponents/Territory';
@@ -178,8 +179,15 @@ class ResultList extends Component {
         alert('Would download entirepacke?' + entirePackage);
     };
 
-    deleteResult = (resId) => {
+    onDeleteConfirmed = (doDelete) => {
+        const {gmeClient} = this.props;
+        const {expandedResId} = this.state;
 
+        if (doDelete && expandedResId) {
+            gmeClient.deleteNode(expandedResId, 'Result was removed ' + expandedResId);
+        }
+
+        this.setState({showConfirmDelete: false});
     };
 
     switchPlotNode = (resId) => {
@@ -201,7 +209,7 @@ class ResultList extends Component {
         } = this.props;
 
         const {
-            territory, results, expandedResId, editResultName,
+            territory, results, expandedResId, editResultName, showConfirmDelete,
         } = this.state;
 
         return (
@@ -233,7 +241,7 @@ class ResultList extends Component {
                             toolTip: 'Delete result',
                             iconClass: <Delete color="primary"/>,
                             onClick: () => {
-                                this.deleteResult();
+                                this.setState({showConfirmDelete: true});
                             },
                         },
                     ];
@@ -349,6 +357,15 @@ class ResultList extends Component {
                             </ExpansionPanelDetails>
                         </ExpansionPanel>);
                 })}
+
+                {showConfirmDelete ?
+                    <ConfirmDialog
+                        title="Delete Result"
+                        message="Do you want to delete the result? If the simulation is running it will be aborted.."
+                        onClose={this.onDeleteConfirmed}
+                    /> :
+                    null
+                }
             </div>);
     }
 }

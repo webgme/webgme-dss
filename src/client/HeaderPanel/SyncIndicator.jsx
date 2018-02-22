@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 
 import logo from '../logo.svg';
 
-const MIN_SPIN_TIME = 2000;
+const MIN_SPIN_TIME = 800;
 
 class SyncIndicator extends Component {
     static propTypes = {
@@ -92,7 +92,7 @@ class SyncIndicator extends Component {
                         height: 40,
                         marginLeft: -15,
                         marginRight: 30,
-                        animation: showInSync ? undefined : 'logo-spin infinite 2s linear',
+                        animation: showInSync ? undefined : 'logo-spin infinite 0.8s linear',
                     }}
                 />
             </Link>

@@ -9,8 +9,18 @@ import CheckIcon from 'material-ui-icons/Check';
 import ExpansionPanel, {ExpansionPanelDetails, ExpansionPanelSummary} from 'material-ui/ExpansionPanel';
 import Typography from 'material-ui/Typography';
 import {LinearProgress, CircularProgress} from 'material-ui/Progress';
+import IconButton from 'material-ui/IconButton';
+import Tooltip from 'material-ui/Tooltip';
+
+import ModeEdit from 'material-ui-icons/ModeEdit';
+import FileDownload from 'material-ui-icons/FileDownload';
+import Delete from 'material-ui-icons/Delete';
+import Description from 'material-ui-icons/Description';
+import ChromeReaderMode from 'material-ui-icons/ChromeReaderMode';
 
 import PlotVariableSelector from './PlotVariableSelector';
+import RenameInput from './RenameInput';
+
 
 import Territory from '../../gme/BaseComponents/Territory';
 import getMetaNodeByName from '../../gme/utils/getMetaNodeByName';
@@ -73,39 +83,32 @@ class ResultList extends Component {
         expandedResId: null,
         territory: null,
         results: {},
-    };
-
-    switchPlotNode = (resId) => {
-        const {results} = this.state;
-
-        if (resId === null || results[resId].isRunning) {
-            // TODO: isRunning check only need for mock
-            this.props.setPlotNode(null);
-            this.props.setSimResData(null);
-        } else {
-            this.props.setPlotNode(results[resId].modelId);
-            this.props.setSimResData(results[resId].simRes ? JSON.parse(results[resId].simRes) : null);
-        }
+        editResultName: false,
+        showConfirmDelete: false,
     };
 
     handleEvents = (hash, loads, updates, unloads) => {
         const {gmeClient, resultNode} = this.props;
         const {containerId} = this.state;
         const updateDesc = {};
+        const attrNames = ['name', 'simRes', 'simPackage', 'csvFile', 'timestamp'];
 
         loads.forEach((nodeId) => {
             if (nodeId !== containerId) {
                 const nodeObj = gmeClient.getNode(nodeId);
                 const modelId = nodeObj.getChildrenIds()[0]; // FIXME: This is assuming one and only one model
                 const isRunning = !nodeObj.getAttribute('stdout');
+
                 updateDesc[nodeId] = {
                     $set: {
-                        name: nodeObj.getAttribute('name'),
                         isRunning,
                         modelId,
-                        simRes: nodeObj.getAttribute('simRes'),
                     },
                 };
+
+                attrNames.forEach((attrName) => {
+                    updateDesc[nodeId].$set[attrName] = nodeObj.getAttribute(attrName);
+                });
 
                 if (nodeId === resultNode && isRunning === false) {
                     //FIXME
@@ -121,11 +124,13 @@ class ResultList extends Component {
                 const isRunning = !nodeObj.getAttribute('stdout');
 
                 updateDesc[nodeId] = {
-                    name: {$set: nodeObj.getAttribute('name')},
                     isRunning: {$set: isRunning},
                     modelId: {$set: modelId},
-                    simRes: {$set: nodeObj.getAttribute('simRes')},
                 };
+
+                attrNames.forEach((attrName) => {
+                    updateDesc[nodeId][attrName] = {$set: nodeObj.getAttribute(attrName)};
+                });
 
                 if (nodeId === resultNode && isRunning === false) {
                     //FIXME
@@ -158,11 +163,46 @@ class ResultList extends Component {
         }
     };
 
+    updateResultTitle = (resId, canceled, newName) => {
+        const {gmeClient} = this.props;
+        const {results} = this.state;
+        console.log('newName for ', resId, canceled, newName);
+        if (results[resId] && canceled === false && results[resId].name !== newName) {
+            gmeClient.setAttribute(resId, 'name', newName);
+        }
+
+        this.setState({editResultName: false});
+    };
+
+    downloadArtifact = (entirePackage) => {
+        alert('Would download entirepacke?' + entirePackage);
+    };
+
+    deleteResult = (resId) => {
+
+    };
+
+    switchPlotNode = (resId) => {
+        const {results} = this.state;
+
+        if (resId === null || results[resId].isRunning) {
+            // TODO: isRunning check only need for mock
+            this.props.setPlotNode(null);
+            this.props.setSimResData(null);
+        } else {
+            this.props.setPlotNode(results[resId].modelId);
+            this.props.setSimResData(results[resId].simRes ? JSON.parse(results[resId].simRes) : null);
+        }
+    };
+
     render() {
         const {
             minimized, gmeClient, simRes,
         } = this.props;
-        const {territory, results, expandedResId} = this.state;
+
+        const {
+            territory, results, expandedResId, editResultName,
+        } = this.state;
 
         return (
             <div style={{display: minimized ? 'none' : undefined}}>
@@ -179,12 +219,67 @@ class ResultList extends Component {
                     const isExpanded = resId === expandedResId;
                     const failed = resInfo.isRunning === false && !resInfo.simRes;
 
-                    let statusIcon = resInfo.isRunning ?
-                        <CircularProgress size={24}/> :
-                        <CheckIcon style={{color: 'lightgreen'}}/>;
+                    const actionButtons = [
+                        {
+                            id: 'modeEdit',
+                            toolTip: 'Rename result',
+                            iconClass: <ModeEdit color="primary"/>,
+                            onClick: () => {
+                                this.setState({editResultName: true});
+                            },
+                        },
+                        {
+                            id: 'delete',
+                            toolTip: 'Delete result',
+                            iconClass: <Delete color="primary"/>,
+                            onClick: () => {
+                                this.deleteResult();
+                            },
+                        },
+                    ];
 
-                    if (failed) {
-                        statusIcon = <ErrorIcon style={{color: 'lightred'}}/>;
+                    let statusIcon;
+
+                    if (resInfo.isRunning) {
+                        statusIcon = <CircularProgress size={24}/>;
+                    } else if (failed) {
+                        statusIcon = <ErrorIcon style={{color: 'pink'}}/>;
+                        actionButtons.push({
+                            id: 'viewConsole',
+                            toolTip: 'View console output',
+                            iconClass: <ChromeReaderMode color="primary"/>,
+                            onClick: () => {
+                                this.downloadArtifact(false);
+                            },
+                        });
+                    } else {
+                        statusIcon = <CheckIcon style={{color: 'lightgreen'}}/>;
+                        actionButtons.push({
+                            id: 'viewConsole',
+                            toolTip: 'View console output',
+                            iconClass: <ChromeReaderMode color="primary"/>,
+                            onClick: () => {
+                                this.showConsole(false);
+                            },
+                        });
+
+                        actionButtons.push({
+                            id: 'downloadCSV',
+                            toolTip: 'Download CSV result file',
+                            iconClass: <Description color="primary"/>,
+                            onClick: () => {
+                                this.downloadArtifact(false);
+                            },
+                        });
+
+                        actionButtons.push({
+                            id: 'downloadPackage',
+                            toolTip: 'Download simulation package',
+                            iconClass: <FileDownload color="primary"/>,
+                            onClick: () => {
+                                this.downloadArtifact(true);
+                            },
+                        });
                     }
 
                     return (
@@ -197,23 +292,53 @@ class ResultList extends Component {
                                 <div style={{marginRight: 6, marginLeft: -18}}>
                                     {statusIcon}
                                 </div>
-                                <Typography
-                                    type="subheading"
-                                    style={{
-                                        textOverflow: 'ellipsis',
-                                        maxWidth: 160,
-                                        overflow: 'hidden',
-                                    }}
-                                >{resInfo.name}
-                                </Typography>
+                                {editResultName && expandedResId === resId && results[expandedResId] ?
+                                    (
+                                        <RenameInput
+                                            initialValue={results[expandedResId].name}
+                                            onDone={(canceled, newValue) => {
+                                                this.updateResultTitle(resId, canceled, newValue);
+                                            }}
+                                        />) :
+                                    (
+                                        <Typography
+                                            type="subheading"
+                                            style={{
+                                                textOverflow: 'ellipsis',
+                                                maxWidth: 160,
+                                                overflow: 'hidden',
+                                            }}
+                                        >{resInfo.name}
+                                        </Typography>)
+                                }
+
                             </ExpansionPanelSummary>
+
                             <ExpansionPanelDetails style={{display: 'block', padding: 0, paddingBottom: 10}}>
+                                <span>
+                                    {actionButtons.map(desc => (
+                                        <Tooltip
+                                            key={desc.id}
+                                            id={desc.id}
+                                            title={desc.toolTip}
+                                            placement="top"
+                                        >
+                                            <IconButton
+                                                key={desc.id}
+                                                onClick={desc.onClick}
+                                            >
+                                                {desc.iconClass}
+                                            </IconButton>
+                                        </Tooltip>
+                                    ))}
+                                </span>
                                 {(() => {
                                     if (hasResults) {
                                         return <PlotVariableSelector gmeClient={gmeClient} nodeId={resId}/>;
                                     } else if (failed) {
-                                        return <div>simulation failed</div>;
+                                        return null;
                                     }
+
                                     return (
                                         <div>
                                             <LinearProgress/>

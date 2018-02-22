@@ -21,6 +21,7 @@ import ChromeReaderMode from 'material-ui-icons/ChromeReaderMode';
 import PlotVariableSelector from './PlotVariableSelector';
 import RenameInput from './RenameInput';
 import ConfirmDialog from '../../Dialogs/ConfirmDialog';
+import ConsoleDialog from '../../Dialogs/ConsoleDialog';
 
 
 import Territory from '../../gme/BaseComponents/Territory';
@@ -86,6 +87,7 @@ class ResultList extends Component {
         results: {},
         editResultName: false,
         showConfirmDelete: false,
+        showConsoleDialog: false,
     };
 
     handleEvents = (hash, loads, updates, unloads) => {
@@ -157,8 +159,8 @@ class ResultList extends Component {
 
         if (expanded) {
             this.props.setResultNode(resId);
-            this.setState({expandedResId: resId});
             this.switchPlotNode(resId);
+            this.setState({expandedResId: resId});
         } else {
             this.setState({expandedResId: null});
         }
@@ -167,7 +169,7 @@ class ResultList extends Component {
     updateResultTitle = (resId, canceled, newName) => {
         const {gmeClient} = this.props;
         const {results} = this.state;
-        console.log('newName for ', resId, canceled, newName);
+
         if (results[resId] && canceled === false && results[resId].name !== newName) {
             gmeClient.setAttribute(resId, 'name', newName);
         }
@@ -176,7 +178,17 @@ class ResultList extends Component {
     };
 
     downloadArtifact = (entirePackage) => {
-        alert('Would download entirepacke?' + entirePackage);
+        const {results, expandedResId} = this.state;
+
+        if (expandedResId && results[expandedResId]) {
+            if (entirePackage && results[expandedResId].simPackage) {
+
+            }
+
+            if (!entirePackage && results[expandedResId].csvFile) {
+
+            }
+        }
     };
 
     onDeleteConfirmed = (doDelete) => {
@@ -184,7 +196,7 @@ class ResultList extends Component {
         const {expandedResId} = this.state;
 
         if (doDelete && expandedResId) {
-            gmeClient.deleteNode(expandedResId, 'Result was removed ' + expandedResId);
+            gmeClient.deleteNode(expandedResId, `Result was removed ${expandedResId}`);
         }
 
         this.setState({showConfirmDelete: false});
@@ -193,8 +205,7 @@ class ResultList extends Component {
     switchPlotNode = (resId) => {
         const {results} = this.state;
 
-        if (resId === null || results[resId].isRunning) {
-            // TODO: isRunning check only need for mock
+        if (resId === null) {
             this.props.setPlotNode(null);
             this.props.setSimResData(null);
         } else {
@@ -209,7 +220,12 @@ class ResultList extends Component {
         } = this.props;
 
         const {
-            territory, results, expandedResId, editResultName, showConfirmDelete,
+            territory,
+            results,
+            expandedResId,
+            editResultName,
+            showConfirmDelete,
+            showConsoleDialog,
         } = this.state;
 
         return (
@@ -244,6 +260,14 @@ class ResultList extends Component {
                                 this.setState({showConfirmDelete: true});
                             },
                         },
+                        {
+                            id: 'viewConsole',
+                            toolTip: 'View console output',
+                            iconClass: <ChromeReaderMode color="primary"/>,
+                            onClick: () => {
+                                this.setState({showConsoleDialog: true});
+                            },
+                        },
                     ];
 
                     let statusIcon;
@@ -252,25 +276,8 @@ class ResultList extends Component {
                         statusIcon = <CircularProgress size={24}/>;
                     } else if (failed) {
                         statusIcon = <ErrorIcon style={{color: 'pink'}}/>;
-                        actionButtons.push({
-                            id: 'viewConsole',
-                            toolTip: 'View console output',
-                            iconClass: <ChromeReaderMode color="primary"/>,
-                            onClick: () => {
-                                this.downloadArtifact(false);
-                            },
-                        });
                     } else {
                         statusIcon = <CheckIcon style={{color: 'lightgreen'}}/>;
-                        actionButtons.push({
-                            id: 'viewConsole',
-                            toolTip: 'View console output',
-                            iconClass: <ChromeReaderMode color="primary"/>,
-                            onClick: () => {
-                                this.showConsole(false);
-                            },
-                        });
-
                         actionButtons.push({
                             id: 'downloadCSV',
                             toolTip: 'Download CSV result file',
@@ -363,8 +370,16 @@ class ResultList extends Component {
                         title="Delete Result"
                         message="Do you want to delete the result? If the simulation is running it will be aborted.."
                         onClose={this.onDeleteConfirmed}
-                    /> :
-                    null
+                    /> : null
+                }
+                {showConsoleDialog && expandedResId ?
+                    <ConsoleDialog
+                        gmeClient={gmeClient}
+                        attributeName="stdout"
+                        title="Simulation ouput"
+                        nodeId={expandedResId}
+                        onClose={() => this.setState({showConsoleDialog: false})}
+                    /> : null
                 }
             </div>);
     }

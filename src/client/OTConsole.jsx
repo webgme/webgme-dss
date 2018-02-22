@@ -11,12 +11,11 @@ class OTConsole extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
         attributeName: PropTypes.string.isRequired,
-
-        resultNode: PropTypes.string,
+        nodeId: PropTypes.string,
     };
 
     static defaultProps = {
-        resultNode: null,
+        nodeId: null,
     }
 
     constructor(props) {
@@ -44,7 +43,7 @@ class OTConsole extends Component {
     }
 
     onTerritoryUpdate = (hash, loads, updates/* , unloads */) => {
-        const {resultNode, gmeClient, attributeName} = this.props;
+        const {nodeId, gmeClient, attributeName} = this.props;
 
         const {
             delta, attributeValue, document, project,
@@ -54,15 +53,15 @@ class OTConsole extends Component {
         let nodeObj;
         let haveUpdated = false;
 
-        if (loads.indexOf(resultNode) !== -1) {
+        if (loads.indexOf(nodeId) !== -1) {
             // initializing
-            nodeObj = gmeClient.getNode(resultNode);
+            nodeObj = gmeClient.getNode(nodeId);
             newState.attributeValue = nodeObj.getAttribute(attributeName);
             newState.delta = delta.insert(newState.attributeValue);
             if (document === null) {
                 project.watchDocument({
                     branchName: 'master',
-                    nodeId: resultNode,
+                    nodeId,
                     attrName: attributeName,
                     attrValue: newState.attributeValue,
                 }, this.atOperation, this.atSelection)
@@ -78,8 +77,8 @@ class OTConsole extends Component {
             }
 
             haveUpdated = true;
-        } else if (updates.indexOf(resultNode) !== -1) {
-            nodeObj = gmeClient.getNode(resultNode);
+        } else if (updates.indexOf(nodeId) !== -1) {
+            nodeObj = gmeClient.getNode(nodeId);
             newState.attributeValue = nodeObj.getAttribute(attributeName);
 
             if (newState.attributeValue !== attributeValue) {
@@ -102,16 +101,22 @@ class OTConsole extends Component {
     };
 
     render() {
-        const {gmeClient, resultNode} = this.props;
+        const {gmeClient, nodeId} = this.props;
         const {document} = this.state;
 
         return (
-            <div style={{backgroundColor: '#002b36', height: '100%', width: '100%'}}>
-                {resultNode ? <Territory
+            <div style={{
+                backgroundColor: '#002b36',
+                height: '100%',
+                width: '100%',
+                padding: 10,
+            }}
+            >
+                {nodeId ? <Territory
                     gmeClient={gmeClient}
                     onlyActualEvents
                     onUpdate={this.onTerritoryUpdate}
-                    territory={{[resultNode]: {children: 0}}}
+                    territory={{[nodeId]: {children: 0}}}
                 /> : <div/>}
                 <ReactQuill
                     style={{

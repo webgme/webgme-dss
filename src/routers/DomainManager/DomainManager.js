@@ -14,7 +14,7 @@ const CONSTANTS = requireJS('common/Constants');
 const SEED_INFO = require('../../seeds/Modelica/metadata.json');
 
 function getDomainTagName(previousVersion) {
-    return `Domain_${SEED_INFO.version}'_'${previousVersion + 1}`;
+    return `Domain_${SEED_INFO.version}_${previousVersion + 1}`;
 }
 
 /**

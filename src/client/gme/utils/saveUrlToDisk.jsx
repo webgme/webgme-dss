@@ -1,3 +1,5 @@
+/* globals window, document */
+
 export default function saveUrlToDisk(fileURL, fileName) {
     // for non-IE
     if (!window.ActiveXObject) {
@@ -28,6 +30,6 @@ export function downloadBlobArtifact(hash) {
     const blobClient = new window.GME.classes.BlobClient();
     return blobClient.getMetadata(hash)
         .then((metadata) => {
-            saveUrlToDisk(blobClient.getDownloadURL(hash, metadata.name));
+            saveUrlToDisk(blobClient.getDownloadURL(hash), metadata.name);
         });
 }

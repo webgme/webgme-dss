@@ -18,6 +18,7 @@ import Delete from 'material-ui-icons/Delete';
 import Description from 'material-ui-icons/Description';
 import ChromeReaderMode from 'material-ui-icons/ChromeReaderMode';
 
+import {downloadBlobArtifact} from '../../gme/utils/saveUrlToDisk';
 import PlotVariableSelector from './PlotVariableSelector';
 import RenameInput from './RenameInput';
 import ConfirmDialog from '../../Dialogs/ConfirmDialog';
@@ -182,11 +183,11 @@ class ResultList extends Component {
 
         if (expandedResId && results[expandedResId]) {
             if (entirePackage && results[expandedResId].simPackage) {
-
+                downloadBlobArtifact(results[expandedResId].simPackage);
             }
 
             if (!entirePackage && results[expandedResId].csvFile) {
-
+                downloadBlobArtifact(results[expandedResId].csvFile);
             }
         }
     };

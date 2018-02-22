@@ -66,9 +66,11 @@ class CenterPanel extends Component {
         if (modelingView) {
             content = (<Canvas gmeClient={gmeClient} scrollPos={scrollPos}/>);
         } else if (plotData.simRes) {
-            content = [
-                <Plotter variables={plotData.variables} simRes={plotData.simRes}/>,
-                <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>];
+            content = (
+                <div>
+                    <Plotter variables={plotData.variables} simRes={plotData.simRes}/>
+                    <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>
+                </div>);
         } else if (resultNode) {
             content = (
                 <Grid container spacing={0} style={{height: '100%'}}>

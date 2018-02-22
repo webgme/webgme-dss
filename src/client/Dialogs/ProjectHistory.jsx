@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+
+import Q from 'q';
+
 import Dialog, {
     DialogActions,
     DialogContent,
@@ -66,20 +69,82 @@ class ProjectHistory extends Component {
         }
     };
 
+    revertToCommit = (revertCommit) => {
+        const {gmeClient} = this.props;
+
+        if (this.reverting) {
+            return;
+        }
+
+        this.reverting = true;
+        const project = gmeClient.getProjectObject();
+        const {activeCommit} = this.state;
+
+        let tags;
+
+        // FIXME: This idea with tagging domains might not that good of an idea after all..
+        project.setBranchHash('master', revertCommit._id, activeCommit)
+            .then((result) => {
+                if (result.status !== gmeClient.CONSTANTS.STORAGE.SYNCED) {
+                    throw new Error('Could not synchronize reverting of commit');
+                }
+
+                // The branch moved backwards - now make sure we clean up all obsolete domain tags
+                return project.getTags();
+            })
+            .then((tags_) => {
+                tags = tags_;
+
+                const tagHashes = Object.keys(tags)
+                    .filter(tagName => tagName.startsWith('Domain_'))
+                    .map(tagName => tags[tagName]);
+
+                return Q.all(tagHashes.map(tagHash => project.getHistory(tagHash, 1).then(commits => commits[0])));
+            })
+            .then((tagCommits) => {
+                const tagsToRemove = tagCommits
+                    .filter(tagCommit => tagCommit.time > revertCommit.time)
+                    .map((tagCommit) => {
+                        for (const tagName in tags) {
+                            if (tags[tagName] === tagCommit._id) {
+                                return tagName;
+                            }
+                        }
+
+                        return null;
+                    });
+
+                function removeTagsThrottle() {
+                    const tagName = tagsToRemove.pop();
+                    if (tagName) {
+                        return project.deleteTag(tagName).then(removeTagsThrottle);
+                    }
+
+                    return null;
+                }
+
+                return removeTagsThrottle();
+            })
+            .then(() => {
+                this.props.onOK();
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }
+
     render() {
         const {gmeClient, batchSize} = this.props;
         const {
             commits,
-            activeCommit,
             showDiff,
             diffWithRoot,
+            activeCommit,
         } = this.state;
-
-        const project = gmeClient.getProjectObject();
 
         const items = commits.map((commit) => {
             const when = new Date(parseInt(commit.time, 10));
-            const current = commit._id === this.state.activeCommit;
+            const current = commit._id === activeCommit;
 
             return (
                 <Grid
@@ -112,8 +177,7 @@ class ProjectHistory extends Component {
                         </Tooltip>
                         <Tooltip id="revert-tooltip" title="Revert back to this">
                             <IconButton onClick={() => {
-                                // FIXE how to handle error... I guess modal popup warning???
-                                project.setBranchHash('master', commit._id, activeCommit, this.props.onOK);
+                                this.revertToCommit(commit);
                             }}
                             >
                                 <PlayArrow/>

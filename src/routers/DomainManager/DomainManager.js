@@ -39,6 +39,10 @@ function initialize(middlewareOpts) {
         gmeAuth = middlewareOpts.gmeAuth,
         getUserId = middlewareOpts.getUserId;
 
+    let ongoingUpdates = {
+
+    };
+
     function getNewJWToken(userId) {
         if (middlewareOpts.gmeConfig.authentication.enable === true) {
             return middlewareOpts.gmeAuth.generateJWTokenForAuthenticatedUser(userId);
@@ -157,6 +161,16 @@ function initialize(middlewareOpts) {
 
         getNewJWToken(userId)
             .then((token) => {
+                if (typeof req.body.projectId !== 'string' && !(req.body.domains instanceof Array)) {
+                    throw new Error(`Invalid body in post request: ${JSON.stringify(req.body)}`);
+                }
+
+                if (ongoingUpdates[req.body.projectId]) {
+                    throw new Error('Already updating domains for project');
+                }
+
+                ongoingUpdates[req.body.projectId] = true;
+
                 req.body.domains.forEach((domain) => {
                     if (!SEED_INFO.domains.includes(domain)) {
                         throw new Error(`Selected domain [${domain}] not available in seed!`);
@@ -179,7 +193,6 @@ function initialize(middlewareOpts) {
 
                             if (version > latestVersion) {
                                 latestVersion = version;
-                                // TODO: With multiple branches the baseHash should be a tag in its history.
                                 baseHash = tags[tag];
                             }
                         }
@@ -230,9 +243,11 @@ function initialize(middlewareOpts) {
                 });
             })
             .then(() => {
+                delete ongoingUpdates[req.body.projectId];
                 res.json(returnData);
             })
             .catch((err) => {
+                delete ongoingUpdates[req.body.projectId];
                 logger.error(err);
                 next(err);
             });

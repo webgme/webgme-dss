@@ -38,7 +38,7 @@ class CenterPanel extends Component {
     state = {
         scrollPos: {
             x: 0,
-            y: 0
+            y: 0,
         },
     };
 
@@ -46,8 +46,8 @@ class CenterPanel extends Component {
         this.setState({
             scrollPos: {
                 x: event.target.scrollLeft,
-                y: event.target.scrollTop
-            }
+                y: event.target.scrollTop,
+            },
         });
     };
 
@@ -76,7 +76,7 @@ class CenterPanel extends Component {
                         <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>
                     </Grid>
                     <Grid item xs={6}>
-                        <OTConsole gmeClient={gmeClient} resultNode={resultNode} attributeName="stdout"/>
+                        <OTConsole gmeClient={gmeClient} nodeId={resultNode} attributeName="stdout"/>
                     </Grid>
                 </Grid>);
         } else {

@@ -36,11 +36,19 @@ class CenterPanel extends Component {
     };
 
     state = {
-        scrollPos: {x: 0, y: 0},
+        scrollPos: {
+            x: 0,
+            y: 0
+        },
     };
 
     onScroll = (event) => {
-        this.setState({scrollPos: {x: event.target.scrollLeft, y: event.target.scrollTop}});
+        this.setState({
+            scrollPos: {
+                x: event.target.scrollLeft,
+                y: event.target.scrollTop
+            }
+        });
     };
 
     render() {

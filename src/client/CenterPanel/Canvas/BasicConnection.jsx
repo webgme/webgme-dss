@@ -4,10 +4,14 @@ import Z_LEVELS from '../../gme/utils/zLevels';
 
 export default class BasicConnection extends Component {
     static propTypes = {
-        path: PropTypes.array.isRequired,
+        path: PropTypes.arrayOf(PropTypes.string).isRequired,
         onClick: PropTypes.func,
         hasWrapper: PropTypes.bool.isRequired,
         dashed: PropTypes.bool.isRequired,
+    };
+
+    static defaultProps = {
+        onClick: null,
     };
 
     onClick = (event) => {
@@ -18,11 +22,11 @@ export default class BasicConnection extends Component {
     };
 
     getBoundingBox = () => {
-        let {path} = this.props,
-            minX,
-            maxX,
-            minY,
-            maxY;
+        const {path} = this.props;
+        let minX;
+        let maxX;
+        let minY;
+        let maxY;
 
         if (path.length === 0) {
             return null;
@@ -60,12 +64,15 @@ export default class BasicConnection extends Component {
 
     render() {
         const {path, hasWrapper, dashed} = this.props;
-        let box = this.getBoundingBox(),
-            sections = [],
-            i,
-            style = hasWrapper ? {} : {
-                position: 'absolute', top: box.y, left: box.x, zIndex: Z_LEVELS.connection,
-            };
+        const box = this.getBoundingBox();
+        const sections = [];
+        let i;
+        const style = hasWrapper ? {} : {
+            position: 'absolute',
+            top: box.y,
+            left: box.x,
+            zIndex: Z_LEVELS.connection,
+        };
 
         if (box === null) {
             return null;

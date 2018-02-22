@@ -19,8 +19,8 @@ import CanvasInfoCard from './CanvasInfoCard';
 
 // TODO we anly take loaded children into account
 function getChildrenNames(gmeClient, nodeId) {
-    const container = gmeClient.getNode(nodeId),
-        childrenIds = container.getChildrenIds();
+    const container = gmeClient.getNode(nodeId);
+    const childrenIds = container.getChildrenIds();
     const names = [];
 
     childrenIds.forEach((childId) => {
@@ -37,9 +37,9 @@ const canvasTarget = {
     drop(props, monitor, canvas) {
         const dragItem = monitor.getItem();
         if (dragItem.move) {
-            let offset = monitor.getDifferenceFromInitialOffset(),
-                node = props.gmeClient.getNode(dragItem.gmeId),
-                position = node.getRegistry('position');
+            const offset = monitor.getDifferenceFromInitialOffset();
+            const node = props.gmeClient.getNode(dragItem.gmeId);
+            const position = node.getRegistry('position');
 
             position.x += offset.x / props.scale;
             position.y += offset.y / props.scale;
@@ -49,14 +49,13 @@ const canvasTarget = {
 
             props.gmeClient.setRegistry(dragItem.gmeId, 'position', position);
         } else if (dragItem.create) {
-            const dragOffset = monitor.getClientOffset(),
-                metaNode = props.gmeClient.getNode(dragItem.gmeId);
-
-            let position = {
-                    x: (dragOffset.x - canvas.offset.x + canvas.props.scrollPos.x) / props.scale,
-                    y: (dragOffset.y - canvas.offset.y + canvas.props.scrollPos.y) / props.scale,
-                },
-                name = metaNode.getAttribute('ShortName') || metaNode.getAttribute('name');
+            const dragOffset = monitor.getClientOffset();
+            const metaNode = props.gmeClient.getNode(dragItem.gmeId);
+            const position = {
+                x: ((dragOffset.x - canvas.offset.x) + canvas.props.scrollPos.x) / props.scale,
+                y: ((dragOffset.y - canvas.offset.y) + canvas.props.scrollPos.y) / props.scale,
+            };
+            let name = metaNode.getAttribute('ShortName') || metaNode.getAttribute('name');
 
             name = getIndexedName(name, getChildrenNames(props.gmeClient, props.activeNode));
 
@@ -99,9 +98,9 @@ const canvasTarget = {
     },
 };
 
-function collect(connect, monitor) {
+function collect(connector, monitor) {
     return {
-        connectDropTarget: connect.dropTarget(),
+        connectDropTarget: connector.dropTarget(),
         isOver: monitor.isOver(),
     };
 }
@@ -143,7 +142,10 @@ class Canvas extends SingleConnectedNode {
     cm = null;
     em = null;
 
-    offset = {x: 0, y: 0};
+    offset = {
+        x: 0,
+        y: 0,
+    };
 
     constructor(props) {
         super(props);
@@ -152,10 +154,9 @@ class Canvas extends SingleConnectedNode {
     }
 
     populateChildren(nodeObj) {
-        let childrenIds = nodeObj.getChildrenIds(),
-            newChildren;
+        const childrenIds = nodeObj.getChildrenIds();
+        const newChildren = childrenIds.map(id => ({id}));
 
-        newChildren = childrenIds.map(id => ({id}));
         this.setState({
             children: newChildren,
             nodeInfo: {
@@ -213,7 +214,12 @@ class Canvas extends SingleConnectedNode {
             <div
                 ref={(canvas) => {
                     if (canvas) {
-                        this.offset = {x: canvas.offsetParent.offsetLeft, y: canvas.offsetParent.offsetTop};
+                        const {offsetLeft, offsetTop} = canvas.offsetParent;
+
+                        this.offset = {
+                            x: offsetLeft,
+                            y: offsetTop,
+                        };
                     }
                 }}
                 style={{
@@ -224,6 +230,7 @@ class Canvas extends SingleConnectedNode {
                     zIndex: ZLEVELS.canvas,
                     position: 'absolute',
                 }}
+                role="presentation"
                 onClick={this.onMouseClick}
                 onContextMenu={this.onMouseClick}
                 onMouseLeave={this.onMouseLeave}

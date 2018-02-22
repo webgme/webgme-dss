@@ -15,27 +15,27 @@ export default class CanvasItemPort extends Component {
         validTypes: PropTypes.object.isRequired,
     };
 
+    static defaultProps = {
+        position: {
+            x: 0,
+            y: 0,
+        },
+        dimensions: {
+            x: 20,
+            y: 20,
+        },
+    };
+
     state = {
         freeze: false,
         mouseOver: false,
     };
 
-    createConnection = (source, type) => {
-        let {gmeClient, activeNode, contextNode} = this.props,
-            connectionId;
-
-        gmeClient.startTransaction('creating a connection');
-        connectionId = gmeClient.createNode({baseId: type, parentId: contextNode});
-        gmeClient.setPointer(connectionId, 'src', source);
-        gmeClient.setPointer(connectionId, 'dst', activeNode);
-        gmeClient.completeTransaction('connection created');
-    };
-
     onClick = (event) => {
-        let self = this,
-            {
-                connectionManager, activeNode, absolutePosition, dimensions, validTypes,
-            } = this.props;
+        const self = this;
+        const {
+            connectionManager, activeNode, absolutePosition, dimensions, validTypes,
+        } = this.props;
 
         event.stopPropagation();
         event.preventDefault();
@@ -65,18 +65,26 @@ export default class CanvasItemPort extends Component {
         this.setState({mouseOver: false});
     };
 
-    render() {
-        let {
-                hidden, position, dimensions, validTypes, connectionManager,
-            } = this.props,
-            {freeze, mouseOver} = this.state,
-            left,
-            top,
-            width,
-            height,
-            border;
+    createConnection = (source, type) => {
+        const {gmeClient, activeNode, contextNode} = this.props;
 
+        gmeClient.startTransaction('creating a connection');
+        const connectionId = gmeClient.createNode({
+            baseId: type,
+            parentId: contextNode,
+        });
+        gmeClient.setPointer(connectionId, 'src', source);
+        gmeClient.setPointer(connectionId, 'dst', activeNode);
+        gmeClient.completeTransaction('connection created');
+    };
+
+    render() {
+        const {
+            hidden, position, dimensions, validTypes, connectionManager,
+        } = this.props;
+        const {freeze, mouseOver} = this.state;
         let background;
+
         if (freeze) {
             background = 'lightblue';
         } else {
@@ -91,37 +99,37 @@ export default class CanvasItemPort extends Component {
                 }
 
                 background = 'lightgreen';
-            } else {
+            } else if (validTypes.src === undefined) {
                 // It's NOT connecting - is it a valid source?
-                if (validTypes.src === undefined) {
-                    return null;
-                } else if (mouseOver) {
-                    background = 'lightgreen';
-                }
+                return null;
+            } else if (mouseOver) {
+                background = 'lightgreen';
             }
         }
 
-        left = mouseOver ? `${position ? position.x - 5 : 0}px` : `${position ? position.x : 0}px`;
-        top = mouseOver ? `${position ? position.y - 5 : 0}px` : `${position ? position.y : 0}px`;
-        width = mouseOver ? `${dimensions ? dimensions.x + 8 : 13}px` : `${dimensions ? dimensions.x : 5}px`;
-        height = mouseOver ? `${dimensions ? dimensions.y + 8 : 13}px` : `${dimensions ? dimensions.y : 5}px`;
-        border = mouseOver ? '2px solid #000000' : '1px solid #000000';
+        const left = mouseOver ? `${position ? position.x - 5 : 0}px` : `${position ? position.x : 0}px`;
+        const top = mouseOver ? `${position ? position.y - 5 : 0}px` : `${position ? position.y : 0}px`;
+        const width = mouseOver ? `${dimensions ? dimensions.x + 8 : 13}px` : `${dimensions ? dimensions.x : 5}px`;
+        const height = mouseOver ? `${dimensions ? dimensions.y + 8 : 13}px` : `${dimensions ? dimensions.y : 5}px`;
+        const border = mouseOver ? '2px solid #000000' : '1px solid #000000';
 
-        return (<div
-            style={{
-                position: 'absolute',
-                backgroundColor: background,
-                opacity: 0.5,
-                left,
-                top,
-                width,
-                height,
-                border: background ? border : null,
-                zIndex: ZLEVELS.port,
-            }}
-            onMouseEnter={this.onMouseEnter}
-            onMouseLeave={this.onMouseLeave}
-            onClick={this.onClick}
-        />);
+        return (
+            <div
+                role="presentation"
+                style={{
+                    position: 'absolute',
+                    backgroundColor: background,
+                    opacity: 0.5,
+                    left,
+                    top,
+                    width,
+                    height,
+                    border: background ? border : null,
+                    zIndex: ZLEVELS.port,
+                }}
+                onMouseEnter={this.onMouseEnter}
+                onMouseLeave={this.onMouseLeave}
+                onClick={this.onClick}
+            />);
     }
 }

@@ -29,7 +29,10 @@ class SelectorCanvas extends SingleConnectedNode {
 
     em = null;
 
-    offset = {x: 0, y: 0};
+    offset = {
+        x: 0,
+        y: 0
+    };
 
     constructor(props) {
         super(props);
@@ -72,7 +75,11 @@ class SelectorCanvas extends SingleConnectedNode {
             <div
                 ref={(canvas) => {
                     if (canvas) {
-                        this.offset = {x: canvas.offsetParent.offsetLeft, y: canvas.offsetParent.offsetTop};
+                        const {offsetLeft, offsetTop} = canvas.offsetParent;
+                        this.offset = {
+                            x: offsetLeft,
+                            y: offsetTop
+                        };
                     }
                 }}
                 style={{

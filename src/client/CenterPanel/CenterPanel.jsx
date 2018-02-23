@@ -74,7 +74,14 @@ class CenterPanel extends Component {
         } else if (resultNode) {
             content = (
                 <Grid container spacing={0} style={{height: '100%'}}>
-                    <Grid item xs={6}>
+                    <Grid
+                        item
+                        xs={6}
+                        style={{
+                            position: 'relative',
+                            overflow: 'auto',
+                        }}
+                    >
                         <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>
                     </Grid>
                     <Grid item xs={6}>

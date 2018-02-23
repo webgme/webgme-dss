@@ -23,7 +23,6 @@ class SelectorCanvasItem extends Component {
         activeNode: PropTypes.string.isRequired, // This is not the same as the state.activeNode..
         scale: PropTypes.number.isRequired,
         eventManager: PropTypes.object.isRequired,
-        connectDragSource: PropTypes.func.isRequired,
         isDragging: PropTypes.func.isRequired,
         variables: PropTypes.arrayOf(PropTypes.string).isRequired,
     };
@@ -358,7 +357,7 @@ class SelectorCanvasItem extends Component {
                     left: position.x * scale,
                     height: bbox.height * scale,
                     width: bbox.width * scale,
-                    zIndex: 10,
+                    zIndex: ZLEVELS.item,
                 }}
                 role="presentation"
             >

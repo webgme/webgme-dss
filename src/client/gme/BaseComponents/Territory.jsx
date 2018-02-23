@@ -9,7 +9,11 @@ export default class Territory extends Component {
         onlyActualEvents: PropTypes.bool.isRequired,
     };
 
-    uiId = null;
+    static defaultProps = {
+        territory: null,
+        onUpdate: null,
+    };
+
 
     componentDidMount() {
         const {
@@ -17,27 +21,27 @@ export default class Territory extends Component {
         } = this.props;
 
         this.uiId = gmeClient.addUI(null, (events) => {
-            let load = [],
-                update = [],
-                unload = [],
-                hash;
+            const load = [];
+            const update = [];
+            const unload = [];
+            const hash = gmeClient.getActiveRootHash();
 
             events.forEach((event) => {
                 switch (event.etype) {
-                case 'load':
-                    load.push(event.eid);
-                    break;
-                case 'update':
-                    update.push(event.eid);
-                    break;
-                case 'unload':
-                    unload.push(event.eid);
-                    break;
-                default:
+                    case 'load':
+                        load.push(event.eid);
+                        break;
+                    case 'update':
+                        update.push(event.eid);
+                        break;
+                    case 'unload':
+                        unload.push(event.eid);
+                        break;
+                    default:
                     // technical event, do not care
                 }
             });
-            hash = gmeClient.getNode('').getId();
+
             if (onUpdate && (!onlyActualEvents || load.length > 0 || update.length > 0 || unload.length > 0)) {
                 onUpdate(hash, load, update, unload);
             }
@@ -49,8 +53,8 @@ export default class Territory extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {gmeClient} = nextProps,
-            {territory} = this.props;
+        const {gmeClient} = nextProps;
+        const {territory} = this.props;
 
         if (JSON.stringify(territory) !== JSON.stringify(nextProps.territory)) {
             gmeClient.updateTerritory(this.uiId, nextProps.territory || {});
@@ -62,6 +66,8 @@ export default class Territory extends Component {
 
         gmeClient.removeUI(this.uiId);
     }
+
+    uiId = null;
 
     render() {
         return null;

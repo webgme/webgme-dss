@@ -6,6 +6,8 @@ import SingleConnectedNode from '../gme/BaseComponents/SingleConnectedNode';
 import SelectorCanvasItem from './SelectorCanvasItem';
 import BasicEventManager from '../gme/BaseComponents/BasicEventManager';
 
+import ZLEVELS from '../gme/utils/zLevels';
+
 const mapStateToProps = state => ({
     activeNode: state.plotData.nodeId,
     scale: state.scale,
@@ -86,7 +88,7 @@ class SelectorCanvas extends SingleConnectedNode {
                     width: '100%',
                     height: '100%',
                     overflow: 'auto',
-                    zIndex: 1,
+                    zIndex: ZLEVELS.canvas,
                     position: 'absolute',
                 }}
             >

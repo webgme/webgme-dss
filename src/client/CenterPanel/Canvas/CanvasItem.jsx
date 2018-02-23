@@ -81,18 +81,10 @@ class CanvasItem extends Component {
         },
         territory: (() => {
             const {activeNode} = this.props;
-            const territory = {};
-
-            territory[activeNode] = {children: 0};
-
-            return territory;
+            return {[activeNode]: {children: 0}};
         })(),
         justRemovedIds: [],
     };
-
-    componentDidMount() {
-        this.initializeTerritory();
-    }
 
     onMouseEnter = () => {
         this.setState({showActions: true});
@@ -223,15 +215,6 @@ class CanvasItem extends Component {
         return items;
     };
 
-    initializeTerritory = () => {
-        const {activeNode} = this.props;
-        const territory = {};
-
-        territory[activeNode] = {children: 0};
-
-        this.setState({territory});
-    };
-
     territoryUpdates = (hash, loads, updates, unloads) => {
         const {activeNode, gmeClient, eventManager} = this.props;
         const {endPoints} = this.state;
@@ -303,6 +286,7 @@ class CanvasItem extends Component {
             } else {
                 newEndpoints = endPoints;
             }
+
             territory[activeNode] = {children: 0};
         } else {
             newEndpoints = endPoints;
@@ -324,6 +308,7 @@ class CanvasItem extends Component {
                     });
                 }
             });
+
             territory[activeNode] = {children: 1};
         }
 

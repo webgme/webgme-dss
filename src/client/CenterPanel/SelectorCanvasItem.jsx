@@ -40,18 +40,10 @@ class SelectorCanvasItem extends Component {
         },
         territory: (() => {
             const {activeNode} = this.props;
-            const territory = {};
-
-            territory[activeNode] = {children: 0};
-
-            return territory;
+            return {[activeNode]: {children: 0}};
         })(),
         justRemovedIds: [],
     };
-
-    componentDidMount() {
-        this.initializeTerritory();
-    }
 
     getChildInfo = (childNode) => {
         const {gmeClient} = this.props;
@@ -147,15 +139,6 @@ class SelectorCanvasItem extends Component {
                 />
             );
         });
-    };
-
-    initializeTerritory = () => {
-        const {activeNode} = this.props;
-        const territory = {};
-
-        territory[activeNode] = {children: 0};
-
-        this.setState({territory});
     };
 
     territoryUpdates = (hash, loads, updates, unloads) => {

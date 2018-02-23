@@ -17,7 +17,7 @@ const activeSelection = (state = [], action) => {
     return state;
 };
 
-const leftDrawer = (state = true, action) => {
+const leftDrawer = (state = false, action) => {
     if (action.type === 'SHOW_LEFT_DRAWER') {
         return true;
     } else if (action.type === 'HIDE_LEFT_DRAWER') {
@@ -45,7 +45,7 @@ const scale = (state = 0.6, action) => {
     return state;
 };
 
-const modelingView = (state = false, action) => {
+const modelingView = (state = true, action) => {
     if (action.type === 'MODELING_VIEW') {
         return true;
     } else if (action.type === 'SIMULATION_VIEW') {

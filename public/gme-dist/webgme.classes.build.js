@@ -3790,6 +3790,7 @@
             getActiveProjectId: () => `${projects[0].owner}+${projects[0].name}`,
             getActiveBranchName: () => 'master',
             getActiveCommitHash: () => '#d0c1f2de661b3b8c16a1b693ec9e39af847d267d',
+            getActiveRootHash: () => '#d0c1f2de661b3b8c16a1b693ec9e39af847d267d',
             getCurrentPluginContext: (pluginId, activeNodeId, activeSelectionIds) => {
                 return {
                     managerConfig: {

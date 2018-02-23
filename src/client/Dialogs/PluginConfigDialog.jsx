@@ -79,6 +79,8 @@ export default class PluginConfigDialog extends Component {
             }
 
             return (<AttributeItem
+                fullWidth
+                style={{marginBottom: 30}}
                 key={name}
                 value={configItems[name]}
                 name={displayName}

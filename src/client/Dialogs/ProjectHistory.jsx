@@ -31,7 +31,7 @@ class ProjectHistory extends Component {
     };
 
     static defaultProps = {
-        batchSize: 10,
+        batchSize: 200,
     };
 
     state = {
@@ -39,6 +39,8 @@ class ProjectHistory extends Component {
         activeCommit: this.props.gmeClient.getActiveCommitHash(),
         showDiff: false,
         diffWithRoot: null,
+        detailed: false,
+        noMore: false,
     };
 
     componentDidMount() {
@@ -60,12 +62,15 @@ class ProjectHistory extends Component {
             showDiff: false,
             diffWithRoot: null,
         });
-    }
+    };
 
     newHistoryItems = (err, items) => {
         // console.log(JSON.stringify(items, null, 2));
         if (!err) {
-            this.setState({commits: this.state.commits.concat(items)});
+            this.setState({
+                commits: this.state.commits.concat(items),
+                noMore: items.length < this.props.batchSize,
+            });
         }
     };
 
@@ -99,15 +104,19 @@ class ProjectHistory extends Component {
                     .filter(tagName => tagName.startsWith('Domain_'))
                     .map(tagName => tags[tagName]);
 
-                return Q.all(tagHashes.map(tagHash => project.getHistory(tagHash, 1).then(commits => commits[0])));
+                return Q.all(tagHashes.map(tagHash => project.getHistory(tagHash, 1)
+                    .then(commits => commits[0])));
             })
             .then((tagCommits) => {
                 const tagsToRemove = tagCommits
                     .filter(tagCommit => tagCommit.time > revertCommit.time)
                     .map((tagCommit) => {
-                        for (const tagName in tags) {
-                            if (tags[tagName] === tagCommit._id) {
-                                return tagName;
+                        const tagNames = Object.keys(tags);
+                        let i;
+
+                        for (i = 0; i < tagNames.length; i += 1) {
+                            if (tags[tagNames[i]] === tagCommit._id) {
+                                return tagNames[i];
                             }
                         }
 
@@ -117,7 +126,8 @@ class ProjectHistory extends Component {
                 function removeTagsThrottle() {
                     const tagName = tagsToRemove.pop();
                     if (tagName) {
-                        return project.deleteTag(tagName).then(removeTagsThrottle);
+                        return project.deleteTag(tagName)
+                            .then(removeTagsThrottle);
                     }
 
                     return null;
@@ -128,10 +138,10 @@ class ProjectHistory extends Component {
             .then(() => {
                 this.props.onOK();
             })
-            .catch((err) => {
-                console.error(err);
+            .catch((/* err */) => {
+                // console.error(err);
             });
-    }
+    };
 
     render() {
         const {gmeClient, batchSize} = this.props;
@@ -140,51 +150,75 @@ class ProjectHistory extends Component {
             showDiff,
             diffWithRoot,
             activeCommit,
+            detailed,
+            noMore,
         } = this.state;
-
-        const items = commits.map((commit) => {
+        const items = [];
+        commits.forEach((commit) => {
             const when = new Date(parseInt(commit.time, 10));
             const current = commit._id === activeCommit;
+            const saveMsg = commit.message.indexOf('save:') === 0;
+            let color = 'lightblue';
+            if (current) {
+                color = 'red';
+            }
+            if (saveMsg) {
+                color = 'blue';
+            }
 
-            return (
-                <Grid
-                    key={commit._id}
-                    container
-                    wrap="wrap"
-                    style={{
-                        border: '2px solid #000000',
-                        color: current ? 'red' : 'blue',
-                        margin: '2px',
-                        marginLeft: '-6px',
-                    }}
-                    alignItems="center"
-                    color={current ? 'primary' : 'secondary'}
-                >
-                    <Grid item xs={4} sm={2} style={{cursor: 'help'}}>
-                        <Tooltip id="time-tooltip" title={moment(when).local().format('dddd, MMMM Do YYYY, h:mm:ss a')}>
-                            <Grid item><Badge content={moment(when).fromNow()}>{commit.updater[0]}</Badge></Grid>
-                        </Tooltip>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>{commit.message}</Grid>
-                    <Grid item xs={5} sm={3} zeroMinWidth>
-                        <Tooltip id="read-only-view-tooltip" title="Check what is different in this version">
-                            <IconButton onClick={() => {
-                                this.showDiff(commit.root);
-                            }}
+            if (detailed || current || saveMsg) {
+                items.push((
+                    <Grid
+                        key={commit._id}
+                        container
+                        wrap="wrap"
+                        style={{
+                            border: '2px solid #000000',
+                            color,
+                            margin: '2px',
+                            marginLeft: '-6px',
+                            minWidth: '400px',
+                        }}
+                        alignItems="center"
+                        color={current ? 'primary' : 'secondary'}
+                    >
+                        <Grid item xs={4} sm={2} style={{cursor: 'help'}}>
+                            <Tooltip
+                                id="time-tooltip"
+                                title={moment(when)
+                                    .local()
+                                    .format('dddd, MMMM Do YYYY, h:mm:ss a')}
                             >
-                                <Visibility/>
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip id="revert-tooltip" title="Revert back to this">
-                            <IconButton onClick={() => {
-                                this.revertToCommit(commit);
-                            }}
-                            >
-                                <PlayArrow/>
-                            </IconButton>
-                        </Tooltip>
-                    </Grid>
-                </Grid>);
+                                <Grid item>
+                                    <Badge
+                                        content={moment(when)
+                                            .fromNow()}
+                                    >{commit.updater[0]}
+                                    </Badge>
+                                </Grid>
+                            </Tooltip>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>{saveMsg ? commit.message.substr(6) : commit.message}</Grid>
+                        <Grid item xs={5} sm={3} zeroMinWidth>
+                            <Tooltip id="read-only-view-tooltip" title="Check what is different in this version">
+                                <IconButton onClick={() => {
+                                    this.showDiff(commit.root);
+                                }}
+                                >
+                                    <Visibility/>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip id="revert-tooltip" title="Revert back to this">
+                                <IconButton onClick={() => {
+                                    this.revertToCommit(commit);
+                                }}
+                                >
+                                    <PlayArrow/>
+                                </IconButton>
+                            </Tooltip>
+                        </Grid>
+                    </Grid>));
+            }
         });
 
         return (
@@ -197,6 +231,13 @@ class ProjectHistory extends Component {
                 </DialogContent>
                 <DialogActions>
                     <Button
+                        onClick={() => {
+                            this.setState({detailed: !detailed});
+                        }}
+                    >{detailed ? 'Hide details' : 'Show details'}
+                    </Button>
+                    <Button
+                        disabled={noMore}
                         onClick={() => {
                             const lastCommit = commits.length === 0 ? gmeClient.getActiveCommitHash() :
                                 commits[commits.length - 1].parents[0];

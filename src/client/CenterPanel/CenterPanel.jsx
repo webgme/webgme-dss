@@ -67,9 +67,19 @@ class CenterPanel extends Component {
             content = (<Canvas gmeClient={gmeClient} scrollPos={scrollPos}/>);
         } else if (plotData.simRes) {
             content = (
-                <div>
+                <div style={{
+                    height: '100%',
+                    width: '100%',
+                }}
+                >
                     <Plotter variables={plotData.variables} simRes={plotData.simRes}/>
-                    <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>
+                    <div style={{
+                        width: '100%',
+                        height: 'calc(100% - 270px)',
+                        position: 'absolute',
+                    }}
+                    ><SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>
+                    </div>
                 </div>);
         } else if (resultNode) {
             content = (

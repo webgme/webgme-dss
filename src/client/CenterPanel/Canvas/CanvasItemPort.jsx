@@ -130,6 +130,8 @@ export default class CanvasItemPort extends Component {
                 onMouseEnter={this.onMouseEnter}
                 onMouseLeave={this.onMouseLeave}
                 onClick={this.onClick}
+                onKeyPress={() => {
+                }}
             />);
     }
 }

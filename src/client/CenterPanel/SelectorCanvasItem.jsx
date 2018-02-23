@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+
 import {Samy} from 'react-samy-svg';
 
 import Territory from '../gme/BaseComponents/Territory';
 import BasicConnection from './Canvas/BasicConnection';
-import SVG_CACHE from '../../svgcache.json';
+import SVGCACHE from '../../svgcache.json';
+import ZLEVELS from '../gme/utils/zLevels';
 import colorHash from '../gme/utils/colorHash';
 
 const mapStateToProps = state => ({
@@ -19,16 +21,16 @@ class SelectorCanvasItem extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
         activeNode: PropTypes.string.isRequired, // This is not the same as the state.activeNode..
-        eventManager: PropTypes.object.isRequired,
-
-        variables: PropTypes.arrayOf(PropTypes.string).isRequired,
         scale: PropTypes.number.isRequired,
+        eventManager: PropTypes.object.isRequired,
+        connectDragSource: PropTypes.func.isRequired,
+        isDragging: PropTypes.func.isRequired,
+        variables: PropTypes.arrayOf(PropTypes.string).isRequired,
     };
 
     // TODO we need to gather the children info (new base class maybe)
     state = {
         position: null,
-        showActions: false,
         modelicaUri: 'Default',
         childrenName2Id: {},
         childInfo: {},
@@ -37,7 +39,14 @@ class SelectorCanvasItem extends Component {
             src: {id: null},
             dst: {id: null},
         },
-        territory: null,
+        territory: (() => {
+            const {activeNode} = this.props;
+            const territory = {};
+
+            territory[activeNode] = {children: 0};
+
+            return territory;
+        })(),
         justRemovedIds: [],
     };
 
@@ -45,18 +54,68 @@ class SelectorCanvasItem extends Component {
         this.initializeTerritory();
     }
 
-    onClick = (/* targetId */) => {
-        // TODO right now we will not control the selection from the canvas
-        /*
-        let {selectedIds} = this.state;
+    getChildInfo = (childNode) => {
+        const {gmeClient} = this.props;
+        const metaNodes = gmeClient.getAllMetaNodes(true);
+        const info = {
+            name: childNode.getAttribute('name'),
+            validConnection: {},
+        };
+        const paths = Object.keys(metaNodes);
 
-        if (selectedIds.indexOf(targetId) !== -1) {
-            selectedIds.splice(selectedIds.indexOf(targetId), 1);
-        } else {
-            selectedIds.push(targetId);
+        paths.forEach((path) => {
+            if (childNode.isValidTargetOf(path, 'src')) {
+                info.validConnection.src = path;
+            }
+            if (childNode.isValidTargetOf(path, 'dst')) {
+                info.validConnection.dst = path;
+            }
+        });
+
+        return info;
+    };
+
+    getAttributeItems = () => {
+        const {gmeClient, activeNode, scale} = this.props;
+        const {modelicaUri} = this.state;
+        const {attributes} = SVGCACHE[modelicaUri];
+        const node = gmeClient.getNode(activeNode);
+        const attributeItems = [];
+        const names = Object.keys(attributes);
+
+        if (node === null) {
+            return null;
         }
-        this.setState({selectedIds: selectedIds});
-        */
+        names.forEach((key) => {
+            attributeItems.push((
+                <svg
+                    key={key}
+                    style={{
+                        position: 'absolute',
+                        top: /* position.y + */attributes[key].bbox.y * scale,
+                        left: /* position.x + */attributes[key].bbox.x * scale,
+                    }}
+                    viewBox={`${attributes[key].bbox.x * scale} ${attributes[key].bbox.y * scale}
+                    ${attributes[key].bbox.width * scale}
+                    ${attributes[key].bbox.height * scale}`}
+                >
+                    <text
+                        x={(attributes[key].parameters.x || 0) * scale}
+                        y={(attributes[key].parameters.y || 0) * scale}
+                        alignmentBaseline={attributes[key].parameters['alignment-baseline'] || 'middle'}
+                        fill={attributes[key].parameters.fill || 'rgb(0,0,255)'}
+                        fontFamily={attributes[key].parameters['font-family'] || 'Veranda'}
+                        fontSize={Number(attributes[key].parameters['font-size'] || '18') * scale}
+                        textAnchor={attributes[key].parameters['text-anchor'] || 'middle'}
+                    >
+                        {attributes[key].text.substring(0, attributes[key].position) +
+                        node.getAttribute(key) +
+                        attributes[key].text.substring(attributes[key].position)}
+                    </text>
+                </svg>));
+        });
+
+        return attributeItems;
     };
 
     getSelectionItems = (nodeId, opacity) => {
@@ -91,68 +150,6 @@ class SelectorCanvasItem extends Component {
         });
     };
 
-    getChildInfo = (childNode) => {
-        const {gmeClient} = this.props;
-        const metaNodes = gmeClient.getAllMetaNodes(true);
-        const info = {
-            name: childNode.getAttribute('name'),
-            validConnection: {},
-        };
-        const paths = Object.keys(metaNodes);
-        paths.forEach((path) => {
-            if (childNode.isValidTargetOf(path, 'src')) {
-                info.validConnection.src = path;
-            }
-            if (childNode.isValidTargetOf(path, 'dst')) {
-                info.validConnection.dst = path;
-            }
-        });
-
-        return info;
-    };
-
-    getAttributeItems = () => {
-        const {gmeClient, activeNode, scale} = this.props;
-        const {modelicaUri} = this.state;
-        const {attributes} = SVG_CACHE[modelicaUri];
-        const node = gmeClient.getNode(activeNode);
-        const attributeItems = [];
-
-        if (node === null) {
-            return null;
-        }
-        const keys = Object.keys(attributes);
-        keys.forEach((key) => {
-            attributeItems.push((
-                <svg
-                    key={key}
-                    style={{
-                        position: 'absolute',
-                        top: attributes[key].bbox.y * scale,
-                        left: attributes[key].bbox.x * scale,
-                    }}
-                    viewBox={`${attributes[key].bbox.x * scale} ${attributes[key].bbox.y * scale}
-                ${(attributes[key].bbox.x + attributes[key].bbox.width) * scale}
-                ${(attributes[key].bbox.y + attributes[key].bbox.height) * scale}`}
-                >
-                    <text
-                        x={(attributes[key].parameters.x || 0) * scale}
-                        y={(attributes[key].parameters.y || 0) * scale}
-                        alignmentBaseline={attributes[key].parameters['alignment-baseline'] || 'middle'}
-                        fill={attributes[key].parameters.fill || 'rgb(0,0,255)'}
-                        fontFamily={attributes[key].parameters['font-family'] || 'Veranda'}
-                        fontSize={Number(attributes[key].parameters['font-size'] || '18') * scale}
-                        textAnchor={attributes[key].parameters['text-anchor'] || 'middle'}
-                    >{attributes[key].text.substring(0, attributes[key].position) +
-                    node.getAttribute(key) +
-                    attributes[key].text.substring(attributes[key].position)}
-                    </text>
-                </svg>));
-        });
-
-        return attributeItems;
-    };
-
     initializeTerritory = () => {
         const {activeNode} = this.props;
         const territory = {};
@@ -178,7 +175,6 @@ class SelectorCanvasItem extends Component {
 
             this.setState({
                 position: null,
-                showActions: false,
                 modelicaUri: 'Default',
                 childrenName2Id: {},
                 childInfo: {},
@@ -199,10 +195,10 @@ class SelectorCanvasItem extends Component {
         const isConnection = validPointers.indexOf('src') !== -1 && validPointers.indexOf('dst') !== -1;
         let newEndpoints = null;
         let modelicaUri = 'Default';
-        const childrenPaths = nodeObj.getChildrenIds();
+        const territory = {};
         let newChildrenName2Id = {};
+        const childrenPaths = nodeObj.getChildrenIds();
         let newChildInfo = {};
-        const territory = [];
 
         if (isConnection) {
             newEndpoints = {
@@ -245,13 +241,13 @@ class SelectorCanvasItem extends Component {
                     newChildrenName2Id[childNode.getAttribute('name')] = childPath;
                     newChildInfo[childPath] = this.getChildInfo(childNode);
                 } else if (unloads.indexOf(childPath) !== -1) {
-                    Object.keys(newChildrenName2Id)
-                        .forEach((name) => {
-                            if (newChildrenName2Id[name] === childPath) {
-                                delete newChildrenName2Id[name];
-                                delete newChildInfo[childPath];
-                            }
-                        });
+                    const names = Object.keys(newChildrenName2Id);
+                    names.forEach((name) => {
+                        if (newChildrenName2Id[name] === childPath) {
+                            delete newChildrenName2Id[name];
+                            delete newChildInfo[childPath];
+                        }
+                    });
                 }
             });
             territory[activeNode] = {children: 1};
@@ -285,7 +281,6 @@ class SelectorCanvasItem extends Component {
 
     dstEvent = (id, event) => {
         const {position} = this.state.endPoints.dst;
-
         if (id !== this.state.endPoints.dst.id) {
             return;
         }
@@ -297,36 +292,9 @@ class SelectorCanvasItem extends Component {
         }
     };
 
-    deleteNode = () => {
-        const {gmeClient, activeNode} = this.props;
-
-        gmeClient.deleteNode(activeNode);
-    };
-
-    isSelected = (myId) => {
-        // return this.state.selectedIds.indexOf(myId) !== -1;
-        const {gmeClient, variables, activeNode} = this.props;
-        const node = gmeClient.getNode(myId);
-        const hostNode = gmeClient.getNode(activeNode);
-        let variablePrefix;
-
-        if (myId === activeNode) {
-            variablePrefix = `${hostNode.getAttribute('name')}.`;
-        } else {
-            variablePrefix = `${hostNode.getAttribute('name')}.${node.getAttribute('name')}.`;
-        }
-
-        for (let i = 0; i < variables.length; i += 1) {
-            if (variables[i].startsWith(variablePrefix)) {
-                return true;
-            }
-        }
-
-        return false;
-    };
-
     boxRender = () => {
         const {
+            isDragging,
             scale,
             eventManager,
             activeNode,
@@ -337,9 +305,9 @@ class SelectorCanvasItem extends Component {
             childrenName2Id,
             justRemovedIds,
         } = this.state;
-        const {ports, bbox, base} = SVG_CACHE[modelicaUri];
-        const portComponents = [];
+        const {ports, bbox, base} = SVGCACHE[modelicaUri];
         const events = [];
+        const portComponents = [];
 
         justRemovedIds.forEach((removedId) => {
             events.push({
@@ -347,11 +315,10 @@ class SelectorCanvasItem extends Component {
                 position: null,
             });
         });
-        const keys = Object.keys(ports);
 
-        keys.forEach((key) => {
-            const id = childrenName2Id[key];
-            const port = ports[key];
+        Object.keys(ports).forEach((name) => {
+            const id = childrenName2Id[name];
+            const port = ports[name];
             if (id) {
                 portComponents.push((
                     <div
@@ -364,21 +331,15 @@ class SelectorCanvasItem extends Component {
                             width: (scale * port.width) + 4,
                             height: (scale * port.height) + 4,
                         }}
-                        onClick={(event) => {
-                            event.stopPropagation();
-                            event.preventDefault();
-                            this.onClick(id);
-                        }}
                     >
                         {this.getSelectionItems(id, 1)}
                     </div>
                 ));
-
                 events.push({
-                    id,
+                    id: childrenName2Id[name],
                     position: {
-                        x: (position.x * scale) + (scale * (port.x + (port.width / 2))),
-                        y: (position.y * scale) + (scale * (port.y + (port.height / 2))),
+                        x: (position.x * scale) + (scale * (ports[name].x + (ports[name].width / 2))),
+                        y: (position.y * scale) + (scale * (ports[name].y + (ports[name].height / 2))),
                     },
                 });
             }
@@ -388,10 +349,10 @@ class SelectorCanvasItem extends Component {
             eventManager.fire(event.id, {position: event.position});
         });
 
-        return (
+        const content = (
             <div
-                role="presentation"
                 style={{
+                    opacity: isDragging ? 0.3 : 0.99,
                     position: 'absolute',
                     top: position.y * scale,
                     left: position.x * scale,
@@ -399,11 +360,7 @@ class SelectorCanvasItem extends Component {
                     width: bbox.width * scale,
                     zIndex: 10,
                 }}
-                onClick={(event) => {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    this.onClick(activeNode);
-                }}
+                role="presentation"
             >
                 {this.getSelectionItems(activeNode)}
                 {portComponents}
@@ -416,25 +373,52 @@ class SelectorCanvasItem extends Component {
                 />
                 {this.getAttributeItems()}
             </div>);
+
+        return content;
     };
 
     connectionRender = () => {
-        const {endPoints, showActions} = this.state;
+        const {endPoints} = this.state;
         const {activeNode} = this.props;
         let points;
+        let midpoint;
 
         if (endPoints.src.position && endPoints.dst.position) {
-            points = [endPoints.src.position, {
+            midpoint = {
                 x: endPoints.src.position.x,
                 y: endPoints.dst.position.y,
-            }, endPoints.dst.position];
+            };
 
-            return (<BasicConnection
-                key={activeNode}
-                path={points}
-                dashed={showActions}
-                hasWrapper={false}
-            />);
+            points = [endPoints.src.position, JSON.parse(JSON.stringify(midpoint)), endPoints.dst.position];
+
+            // check if one section of the connection is too short
+            if (Math.abs(endPoints.src.position.x - endPoints.dst.position.x) < 40 &&
+                Math.abs(endPoints.src.position.y - endPoints.dst.position.y) > 40) {
+                midpoint.y = (endPoints.src.position.y + endPoints.dst.position.y) * 0.5;
+                midpoint.x = endPoints.dst.position.x;
+            } else if (Math.abs(endPoints.src.position.x - endPoints.dst.position.x) > 40 &&
+                Math.abs(endPoints.src.position.y - endPoints.dst.position.y) < 40) {
+                midpoint.x = (endPoints.src.position.x + endPoints.dst.position.x) * 0.5;
+                midpoint.y = endPoints.src.position.y;
+            }
+
+            return [(
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: midpoint.y - 20,
+                        left: midpoint.x - 20,
+                        height: 40,
+                        width: 40,
+                        zIndex: ZLEVELS.connectionItem,
+                    }}
+                />),
+                (<BasicConnection
+                    key={activeNode}
+                    path={points}
+                    dashed={false}
+                    hasWrapper={false}
+                />)];
         }
 
         return null;

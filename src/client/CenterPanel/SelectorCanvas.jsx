@@ -31,7 +31,7 @@ class SelectorCanvas extends SingleConnectedNode {
 
     offset = {
         x: 0,
-        y: 0
+        y: 0,
     };
 
     constructor(props) {
@@ -78,7 +78,7 @@ class SelectorCanvas extends SingleConnectedNode {
                         const {offsetLeft, offsetTop} = canvas.offsetParent;
                         this.offset = {
                             x: offsetLeft,
-                            y: offsetTop
+                            y: offsetTop,
                         };
                     }
                 }}
@@ -87,7 +87,7 @@ class SelectorCanvas extends SingleConnectedNode {
                     height: '100%',
                     overflow: 'auto',
                     zIndex: 1,
-                    position: 'relative',
+                    position: 'absolute',
                 }}
             >
                 {childrenItems}

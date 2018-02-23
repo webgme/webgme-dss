@@ -79,7 +79,14 @@ class CanvasItem extends Component {
             src: {id: null},
             dst: {id: null},
         },
-        territory: null,
+        territory: (() => {
+            const {activeNode} = this.props;
+            const territory = {};
+
+            territory[activeNode] = {children: 0};
+
+            return territory;
+        })(),
         justRemovedIds: [],
     };
 
@@ -466,6 +473,8 @@ class CanvasItem extends Component {
                     event.stopPropagation();
                     event.preventDefault();
                     activateAttributeDrawer(activeNode);
+                }}
+                onKeyPress={() => {
                 }}
             >
                 {portComponents}

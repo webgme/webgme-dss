@@ -95,7 +95,7 @@ class ResultList extends Component {
         const {gmeClient, resultNode} = this.props;
         const {containerId} = this.state;
         const updateDesc = {};
-        const attrNames = ['name', 'simRes', 'simPackage', 'csvFile', 'timestamp'];
+        const attrNames = ['name', 'simRes', 'simPackage', 'csvFile', 'timeStamp'];
 
         loads.forEach((nodeId) => {
             if (nodeId !== containerId) {
@@ -229,6 +229,19 @@ class ResultList extends Component {
             showConsoleDialog,
         } = this.state;
 
+        const resultIds = Object.keys(results).sort((a, b) => {
+            const tA = results[a].timeStamp || 0;
+            const tB = results[b].timeStamp || 0;
+
+            if (tA > tB) {
+                return -1;
+            } else if (tB > tA) {
+                return 1;
+            }
+
+            return 0;
+        });
+
         return (
             <div style={{display: minimized ? 'none' : undefined}}>
                 <Territory
@@ -238,7 +251,7 @@ class ResultList extends Component {
                     onlyActualEvents
                 />
 
-                {Object.keys(results).map((resId) => {
+                {resultIds.map((resId) => {
                     const resInfo = results[resId];
                     const hasResults = simRes !== null;
                     const isExpanded = resId === expandedResId;

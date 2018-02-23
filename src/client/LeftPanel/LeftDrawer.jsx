@@ -22,6 +22,7 @@ import green from 'material-ui/colors/green';
 import SystemSimulatorMetadata from '../../plugins/SystemSimulator/metadata.json';
 import ModelCheckMetadata from '../../plugins/ModelCheck/metadata.json';
 import getMetaNodeByName from '../gme/utils/getMetaNodeByName';
+import {downloadBlobArtifact} from '../gme/utils/saveUrlToDisk';
 
 import {removePlotVariable, toggleLeftDrawer, toggleModelingView, setResultNode, toggleRightDrawer} from '../actions';
 
@@ -189,8 +190,7 @@ class LeftDrawer extends Component {
                 if (err) {
                     console.error(err);
                 } else if (result.success) {
-                    // FIXME: this download does not work well with zipped file..
-                    // downloadBlobArtifact(result.artifacts[0]);
+                    downloadBlobArtifact(result.artifacts[0]);
                 } else {
                     console.error(result);
                 }
@@ -212,7 +212,8 @@ class LeftDrawer extends Component {
                 baseId: simResMeta.getId(),
             }, {
                 attributes: {
-                    name: `Result_${Date.now()}`, // TODO: This should be a better Name
+                    name: config.executionName,
+                    timeStamp: Date.now(),
                 },
             });
 
@@ -233,7 +234,6 @@ class LeftDrawer extends Component {
 
                 this.props.toggleModelingView(false);
                 this.props.show();
-                this.props.setResultNode(resId);
                 this.props.toggleRightDrawer(false);
                 gmeClient.runServerPlugin(pluginId, context, (err2, result) => {
                     if (err2) {

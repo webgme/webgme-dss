@@ -1,4 +1,4 @@
-/*globals define*/
+/* eslint-disable */
 /*jshint node:true, browser:true*/
 
 /**
@@ -7,18 +7,29 @@
  * properties and methods visit %host%/docs/source/PluginBase.html.
  */
 
-define([
-    'plugin/PluginConfig',
-    'text!./metadata.json',
-    'plugin/PluginBase',
-    'q'
-], function (PluginConfig,
-             pluginMetadata,
-             PluginBase,
-             Q) {
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'plugin/PluginConfig',
+            '!text/.metadata.json',
+            'plugin/PluginBase',
+            'q',
+        ], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory(
+            require('webgme-engine/src/plugin/PluginConfig'),
+            require('./metadata.json'),
+            require('webgme-engine/src/plugin/PluginBase'),
+            require('q'),
+        );
+    }
+}(function (PluginConfig,
+            pluginMetadata,
+            PluginBase,
+            Q) {
     'use strict';
 
-    pluginMetadata = JSON.parse(pluginMetadata);
+    pluginMetadata = typeof pluginMetadata === 'string' ? JSON.parse(pluginMetadata) : pluginMetadata;
 
     /**
      * Initializes a new instance of ModelCheck.
@@ -98,4 +109,4 @@ define([
     };
 
     return ModelCheck;
-});
+}));

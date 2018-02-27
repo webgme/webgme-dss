@@ -21,8 +21,10 @@ import green from 'material-ui/colors/green';
 
 import SystemSimulatorMetadata from '../../plugins/SystemSimulator/metadata.json';
 import ModelCheckMetadata from '../../plugins/ModelCheck/metadata.json';
+import ModelCheckPlugin from '../../plugins/ModelCheck/ModelCheck';
 import getMetaNodeByName from '../gme/utils/getMetaNodeByName';
 import {downloadBlobArtifact} from '../gme/utils/saveUrlToDisk';
+
 
 import {removePlotVariable, toggleLeftDrawer, toggleModelingView, setResultNode, toggleRightDrawer} from '../actions';
 
@@ -150,6 +152,8 @@ class LeftDrawer extends Component {
     runModelCheck = (config) => {
         const {gmeClient, activeNode} = this.props;
 
+        console.log(ModelCheckPlugin);
+
         this.setState({showChecker: false});
 
         if (!config) {
@@ -162,7 +166,7 @@ class LeftDrawer extends Component {
         // TODO: Remove when engine is bumped
         context.managerConfig.activeNode = activeNode;
 
-        gmeClient.runServerPlugin(pluginId, context, (err, result) => {
+        gmeClient.runBrowserPlugin(ModelCheckPlugin, context, (err, result) => {
             if (err) {
                 console.error(err);
             } else {

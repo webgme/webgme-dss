@@ -157,7 +157,7 @@ class ResultList extends Component {
         updateDesc.$unset = unloads.filter(nodeId => nodeId !== containerId);
 
         if (unloads.includes(resultNode)) {
-            setResultNode(null);
+            this.props.setResultNode(null);
             this.switchPlotNode(null);
         }
 

@@ -113,6 +113,11 @@ class SelectorCanvasItem extends Component {
         const {gmeClient, variables, activeNode} = this.props;
         const node = gmeClient.getNode(nodeId);
         const hostNode = gmeClient.getNode(activeNode);
+
+        if (!(node && hostNode)) {
+            return [];
+        }
+
         let variablePrefix;
 
         if (nodeId === activeNode) {

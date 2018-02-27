@@ -32,12 +32,13 @@ export function getTreeDecorators(LeafItem, leafProps) {
     decorators.Container = TreeContainer;
 
     decorators.Header = (props) => {
+        /* eslint-disable */
         if (props.node.isRoot) {
             return <div/>;
         } else if (props.node.isFolder) {
             return defaultHeader(props);
         }
-
+        /* eslint-enable */
         return <LeafItem nodeData={props.node} {...leafProps}/>;
     };
 }

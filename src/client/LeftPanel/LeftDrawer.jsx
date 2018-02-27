@@ -76,7 +76,7 @@ class LeftDrawer extends Component {
         variables: PropTypes.arrayOf(PropTypes.string).isRequired,
         removePlotVariable: PropTypes.func.isRequired,
         toggleModelingView: PropTypes.func.isRequired,
-        setResultNode: PropTypes.func.isRequired,
+        // setResultNode: PropTypes.func.isRequired,
         toggleRightDrawer: PropTypes.func.isRequired,
         show: PropTypes.func.isRequired,
         hide: PropTypes.func.isRequired,

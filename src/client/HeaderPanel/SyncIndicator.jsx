@@ -81,7 +81,7 @@ class SyncIndicator extends Component {
 
     render() {
         const {showInSync} = this.state;
-        //const inSync = status === this.STATUS.SYNC;
+        // const inSync = status === this.STATUS.SYNC;
 
         return (
             <Link to="/" style={{textDecoration: 'none'}}>

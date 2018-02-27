@@ -51,6 +51,7 @@ class PlotVariableSelector extends Component {
             // this.state.cursor.active = false;
         }
 
+        /* eslint-disable */
         node.active = true;
         if (node.children) {
             node.toggled = toggled;
@@ -58,7 +59,7 @@ class PlotVariableSelector extends Component {
                 node.children[0].toggled = true;
             }
         }
-
+        /* eslint-enable */
         this.setState({cursor: node});
     };
 

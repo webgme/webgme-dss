@@ -232,6 +232,7 @@ class Canvas extends SingleConnectedNode {
                 }}
                 role="presentation"
                 onClick={this.onMouseClick}
+                onKeyDown={() => {}}
                 onContextMenu={this.onMouseClick}
                 onMouseLeave={this.onMouseLeave}
                 onMouseMove={this.onMouseMove}

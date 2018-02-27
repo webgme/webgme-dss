@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import Dialog, {
@@ -8,26 +8,28 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
 
-export default class NotifyDialog extends Component {
-    static propTypes = {
-        title: PropTypes.string,
-        text: PropTypes.string.isRequired,
-        onOK: PropTypes.func.isRequired,
-    };
-
-    render() {
-        const {text, onOK, title} = this.props;
-
-        return (
-            <Dialog open>
-                <DialogTitle>{title || 'Notification'}</DialogTitle>
-                <DialogContent style={{display: 'flex'}}>
-                    {text}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onOK} color="primary">OK</Button>
-                </DialogActions>
-            </Dialog>
-        );
-    }
+function NotifyDialog(props) {
+    return (
+        <Dialog open>
+            <DialogTitle>{props.title}</DialogTitle>
+            <DialogContent style={{display: 'flex'}}>
+                {props.text}
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={props.onOK} color="primary">OK</Button>
+            </DialogActions>
+        </Dialog>
+    );
 }
+
+NotifyDialog.propTypes = {
+    title: PropTypes.string,
+    text: PropTypes.string.isRequired,
+    onOK: PropTypes.func.isRequired,
+};
+
+NotifyDialog.defaultProps = {
+    title: 'Notification',
+};
+
+export default NotifyDialog;

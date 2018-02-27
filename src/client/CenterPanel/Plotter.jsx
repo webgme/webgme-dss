@@ -5,7 +5,9 @@ import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'rec
 
 import colorHash from '../gme/utils/colorHash';
 
+/* eslint-disable */
 class Plotter extends Component {
+    /* eslint-enable */
     static propTypes = {
         variables: PropTypes.arrayOf(PropTypes.string).isRequired,
         simRes: PropTypes.object.isRequired,
@@ -34,11 +36,16 @@ class Plotter extends Component {
 
         return (
             <div>
-                <LineChart width={600} height={270} data={data} style={{
-                    left: '20%',
-                    marginTop: 15,
-                    marginBottom: 15
-                }}>
+                <LineChart
+                    width={600}
+                    height={270}
+                    data={data}
+                    style={{
+                        left: '20%',
+                        marginTop: 15,
+                        marginBottom: 15,
+                    }}
+                >
                     <XAxis dataKey="time"/>
                     <YAxis/>
                     <CartesianGrid strokeDasharray="3 3"/>

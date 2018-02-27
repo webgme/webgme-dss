@@ -23,7 +23,9 @@ const mapDispatchToProps = dispatch => ({
     },
 });
 
+/* eslint-disable */
 class RightDrawer extends Component {
+    /* eslint-enable */
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
 

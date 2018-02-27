@@ -1,3 +1,4 @@
+/* eslint-disable */
 /*
 	Color Hash
 	By Roland Rytz

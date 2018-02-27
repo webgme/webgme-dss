@@ -19,10 +19,10 @@ export default function saveUrlToDisk(fileURL, fileName) {
         save.click();
     } else if (!!window.ActiveXObject && document.execCommand) {
         // for IE
-        const _window = window.open(fileURL, '_self');
-        _window.document.close();
-        _window.document.execCommand('SaveAs', true, fileName || fileURL);
-        _window.close();
+        const windowIE = window.open(fileURL, '_self');
+        windowIE.document.close();
+        windowIE.document.execCommand('SaveAs', true, fileName || fileURL);
+        windowIE.close();
     }
 }
 

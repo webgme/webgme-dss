@@ -56,12 +56,12 @@ class ResultList extends Component {
         setSimResData: PropTypes.func.isRequired,
         setResultNode: PropTypes.func.isRequired,
         resultNode: PropTypes.string,
-        plotNode: PropTypes.string,
+        // plotNode: PropTypes.string,
         simRes: PropTypes.object,
     };
 
     static defaultProps = {
-        plotNode: null,
+        // plotNode: null,
         resultNode: null,
         simRes: null,
     };
@@ -91,6 +91,17 @@ class ResultList extends Component {
         showConsoleDialog: false,
     };
 
+    onDeleteConfirmed = (doDelete) => {
+        const {gmeClient} = this.props;
+        const {expandedResId} = this.state;
+
+        if (doDelete && expandedResId) {
+            gmeClient.deleteNode(expandedResId, `Result was removed ${expandedResId}`);
+        }
+
+        this.setState({showConfirmDelete: false});
+    };
+
     handleEvents = (hash, loads, updates, unloads) => {
         const {gmeClient, resultNode} = this.props;
         const {containerId} = this.state;
@@ -115,7 +126,7 @@ class ResultList extends Component {
                 });
 
                 if (nodeId === resultNode && isRunning === false) {
-                    //FIXME
+                    // FIXME
                     setTimeout(() => this.switchPlotNode(nodeId));
                 }
             }
@@ -137,7 +148,7 @@ class ResultList extends Component {
                 });
 
                 if (nodeId === resultNode && isRunning === false) {
-                    //FIXME
+                    // FIXME
                     setTimeout(() => this.switchPlotNode(nodeId));
                 }
             }
@@ -190,17 +201,6 @@ class ResultList extends Component {
                 downloadBlobArtifact(results[expandedResId].csvFile);
             }
         }
-    };
-
-    onDeleteConfirmed = (doDelete) => {
-        const {gmeClient} = this.props;
-        const {expandedResId} = this.state;
-
-        if (doDelete && expandedResId) {
-            gmeClient.deleteNode(expandedResId, `Result was removed ${expandedResId}`);
-        }
-
-        this.setState({showConfirmDelete: false});
     };
 
     switchPlotNode = (resId) => {

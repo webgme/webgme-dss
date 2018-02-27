@@ -151,6 +151,7 @@ class PartBrowser extends SingleConnectedNode {
             this.state.cursor.active = false;
         }
 
+        /* eslint-disable */
         node.active = true;
         if (node.children) {
             node.toggled = toggled;
@@ -158,6 +159,7 @@ class PartBrowser extends SingleConnectedNode {
                 node.children[0].toggled = true;
             }
         }
+        /* eslint-enable */
 
         this.setState({cursor: node});
     };

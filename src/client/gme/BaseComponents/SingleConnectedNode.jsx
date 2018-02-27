@@ -7,6 +7,11 @@ import PropTypes from 'prop-types';
  * (not any children or other custom territories).
  */
 export default class SingleConnectedNode extends Component {
+    static propTypes = {
+        gmeClient: PropTypes.object.isRequired,
+        activeNode: PropTypes.string.isRequired,
+    };
+
     constructor(props) {
         super(props);
         const {activeNode} = this.props || {};
@@ -67,7 +72,7 @@ export default class SingleConnectedNode extends Component {
      * @param {GMENode} nodeObj
      */
     onNodeLoad(nodeObj) {
-        console.warn('onNodeLoad is not overwritten', nodeObj);
+        console.warn('onNodeLoad is not overwritten', this.activeNode, nodeObj);
     }
 
     /**
@@ -75,7 +80,7 @@ export default class SingleConnectedNode extends Component {
      * @param {GMENode} nodeObj
      */
     onNodeUpdate(nodeObj) {
-        console.warn('onNodeUpdate is not overwritten', nodeObj);
+        console.warn('onNodeUpdate is not overwritten', this.activeNode, nodeObj);
     }
 
     /**
@@ -83,20 +88,13 @@ export default class SingleConnectedNode extends Component {
      * @param {string} nodeId
      */
     onNodeUnload(nodeId) {
-        console.warn('onNodeUnload is not overwritten', nodeId);
+        console.warn('onNodeUnload is not overwritten', this.activeNode, nodeId);
     }
 
     /**
      * Called whenever the client switches state and does not load, update or unload the node.
      */
     onStateChanged() {
-
+        console.log('onStateChanged is not overwritten', this.activeNode);
     }
-
-
 }
-
-SingleConnectedNode.propTypes = {
-    gmeClient: PropTypes.object.isRequired,
-    activeNode: PropTypes.string.isRequired,
-};

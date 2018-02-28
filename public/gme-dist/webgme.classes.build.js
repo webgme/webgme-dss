@@ -3903,7 +3903,7 @@
             getHistory: (projectId, start, number, callback) => {
                 setTimeout(callback, 100, null, [
                     {
-                        "_id": "#b53d877c826bc82782612c86683f71d5f665fdf8",
+                        "_id": "#d0c1f2de661b3b8c16a1b693ec9e39af847d267d",
                         "root": "#a8b2a0874fdff33c310ab1448b47ae225bed6051",
                         "parents": [
                             "#8a1bcd819c1cb95ac4da9a8f8da727d227dd6921"
@@ -3917,7 +3917,7 @@
                         "__v": "1.2.0"
                     },
                     {
-                        "_id": "#8a1bcd819c1cb95ac4da9a8f8da727d227dd6921",
+                        "_id": "#8a3bcd819c1cb95ac4da9a8f8da727d227dd6921",
                         "root": "#a0453b1c7ccd9e997a39db09580df3aab064bf35",
                         "parents": [
                             "#4575587abd5d6f1de45c88ae7a606a74078ffeef"
@@ -3927,6 +3927,20 @@
                         ],
                         "time": 1519234740158,
                         "message": "[\ncreateNode(/8,/5,/8/v)\ncopyNode(/Z, /8/v, undefined)\nCreated simulation results",
+                        "type": "commit",
+                        "__v": "1.2.0"
+                    },
+                    {
+                        "_id": "#8a1bce819c1cb95ac4da9a8f8da727d227dd6921",
+                        "root": "#a0453b1c7ccd9e997a39db09580df3aab064bf35",
+                        "parents": [
+                            "#4575587abd5d6f1de45c88ae7a606a74078ffeef"
+                        ],
+                        "updater": [
+                            "guest"
+                        ],
+                        "time": 1519234740158,
+                        "message": "save: Created simulation results",
                         "type": "commit",
                         "__v": "1.2.0"
                     },
@@ -3941,6 +3955,20 @@
                         ],
                         "time": 1519234726001,
                         "message": "setRegistry(/Z/F,position,{\"x\":1477,\"y\":73})",
+                        "type": "commit",
+                        "__v": "1.2.0"
+                    },
+                    {
+                        "_id": "#8a1bce829c1cb95ac4da9a8f8da727d227dd6921",
+                        "root": "#a0453b1c7ccd9e997a39db09580df3aab064bf35",
+                        "parents": [
+                            "#4575587abd5d6f1de45c88ae7a606a74078ffeef"
+                        ],
+                        "updater": [
+                            "guest"
+                        ],
+                        "time": 1519234740158,
+                        "message": "save: First savepoint",
                         "type": "commit",
                         "__v": "1.2.0"
                     }]

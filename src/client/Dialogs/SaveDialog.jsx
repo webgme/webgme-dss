@@ -41,7 +41,7 @@ export default class SaveDialog extends React.Component {
                     aria-labelledby="save-dialog-title"
                     aria-describedby="save-dialog-description"
                 >
-                    <DialogTitle id="save-dialog-title">Save model</DialogTitle>
+                    <DialogTitle id="save-dialog-title">Create Savepoint</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="save-dialog-description">
                             Describe the content of the given changes of your model.

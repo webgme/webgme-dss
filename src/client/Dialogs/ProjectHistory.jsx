@@ -17,7 +17,12 @@ import Visibility from 'material-ui-icons/Visibility';
 import PlayArrow from 'material-ui-icons/PlayArrow';
 import Grid from 'material-ui/Grid';
 import Tooltip from 'material-ui/Tooltip';
+import Paper from 'material-ui/Paper';
+import getUserIconSource from '../gme/utils/getUserIconSource';
+
 import DiffViewer from './DiffViewer';
+
+const SAVE_PREFIX = 'save: ';
 
 const mapStateToProps = (/* state */) => ({});
 
@@ -138,8 +143,8 @@ class ProjectHistory extends Component {
             .then(() => {
                 this.props.onOK();
             })
-            .catch((/* err */) => {
-                // console.error(err);
+            .catch((err) => {
+                console.error(err);
             });
     };
 
@@ -154,78 +159,101 @@ class ProjectHistory extends Component {
             noMore,
         } = this.state;
         const items = [];
+
         commits.forEach((commit) => {
             const when = new Date(parseInt(commit.time, 10));
             const current = commit._id === activeCommit;
-            const saveMsg = commit.message.indexOf('save:') === 0;
-            let color = 'lightblue';
-            if (current) {
-                color = 'red';
-            }
-            if (saveMsg) {
-                color = 'blue';
-            }
+            const saveMsg = commit.message.startsWith(SAVE_PREFIX);
+            const regularCommit = !(current || saveMsg);
 
             if (detailed || current || saveMsg) {
                 items.push((
-                    <Grid
-                        key={commit._id}
-                        container
-                        wrap="wrap"
-                        style={{
-                            border: '2px solid #000000',
-                            color,
-                            margin: '2px',
-                            marginLeft: '-6px',
-                            minWidth: '400px',
-                        }}
-                        alignItems="center"
-                        color={current ? 'primary' : 'secondary'}
+                    <Paper
+                        style={{width: '100%', marginBottom: 4, backgroundColor: current ? 'aliceblue' : undefined}}
+                        elevation={regularCommit ? 0 : 2}
                     >
-                        <Grid item xs={4} sm={2} style={{cursor: 'help'}}>
-                            <Tooltip
-                                id="time-tooltip"
-                                title={moment(when)
-                                    .local()
-                                    .format('dddd, MMMM Do YYYY, h:mm:ss a')}
+                        <Grid
+                            key={commit._id}
+                            container
+                            wrap="wrap"
+                            spacing={0}
+                            style={{
+                                color: regularCommit ? 'grey' : 'black',
+                                minWidth: '400px',
+                                minHeight: '50px',
+                            }}
+                            alignItems="center"
+                        >
+                            <Grid item xs={2} style={{cursor: 'help'}}>
+                                <Tooltip
+                                    id="time-tooltip"
+                                    title={moment(when)
+                                        .local()
+                                        .format('dddd, MMMM Do YYYY, h:mm:ss a')}
+                                >
+                                    <Grid item>
+                                        <Badge
+                                            content={moment(when)
+                                                .fromNow()}
+                                        >
+                                            <img
+                                                style={{
+                                                    width: 18,
+                                                    height: 18,
+                                                    marginLeft: 6,
+                                                    marginRight: 4,
+                                                    opacity: regularCommit ? 0.6 : 1,
+                                                }}
+                                                src={getUserIconSource(commit.updater[0])}
+                                                alt={commit.updater[0]}
+                                            />
+
+                                            {commit.updater[0]}
+                                        </Badge>
+                                    </Grid>
+                                </Tooltip>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={8}
+                                style={{fontSize: regularCommit ? 12 : 16}}
                             >
-                                <Grid item>
-                                    <Badge
-                                        content={moment(when)
-                                            .fromNow()}
-                                    >{commit.updater[0]}
-                                    </Badge>
-                                </Grid>
-                            </Tooltip>
+                                {saveMsg ? commit.message.substr(SAVE_PREFIX.length) : commit.message}
+                            </Grid>
+                            <Grid item xs={2} zeroMinWidth>
+                                <Tooltip id="revert-tooltip" title="Revert back to this">
+                                    <IconButton
+                                        style={{height: 22, width: 30, visibility: current ? 'hidden' : undefined}}
+                                        onClick={() => {
+                                            this.revertToCommit(commit);
+                                        }}
+                                    >
+                                        <PlayArrow/>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip id="read-only-view-tooltip" title="Check what is different in this version">
+                                    <IconButton
+                                        style={{height: 22, width: 30, visibility: current ? 'hidden' : undefined}}
+                                        onClick={() => {
+                                            this.showDiff(commit.root);
+                                        }}
+                                    >
+                                        <Visibility/>
+                                    </IconButton>
+                                </Tooltip>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6}>{saveMsg ? commit.message.substr(6) : commit.message}</Grid>
-                        <Grid item xs={5} sm={3} zeroMinWidth>
-                            <Tooltip id="read-only-view-tooltip" title="Check what is different in this version">
-                                <IconButton onClick={() => {
-                                    this.showDiff(commit.root);
-                                }}
-                                >
-                                    <Visibility/>
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip id="revert-tooltip" title="Revert back to this">
-                                <IconButton onClick={() => {
-                                    this.revertToCommit(commit);
-                                }}
-                                >
-                                    <PlayArrow/>
-                                </IconButton>
-                            </Tooltip>
-                        </Grid>
-                    </Grid>));
+                    </Paper>));
             }
         });
 
         return (
             <Dialog open>
-                <DialogTitle>Project History</DialogTitle>
+                <DialogTitle>
+                    Project History
+                </DialogTitle>
                 <DialogContent>
-                    <Grid container style={{paddingTop: '24px'}} spacing={16}>
+                    <Grid container style={{paddingTop: '12px'}} spacing={16}>
                         {items}
                     </Grid>
                 </DialogContent>

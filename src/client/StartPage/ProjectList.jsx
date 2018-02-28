@@ -7,6 +7,8 @@ import {LinearProgress} from 'material-ui/Progress';
 import Tooltip from 'material-ui/Tooltip';
 import List, {ListItem, ListItemText, ListItemSecondaryAction} from 'material-ui/List';
 
+import getObjectSorter from '../gme/utils/getObjectSorter';
+
 const styles = {
     domainBadge: {
         width: 24,
@@ -49,6 +51,7 @@ class ProjectList extends Component {
             content = (
                 <List>
                     {projects
+                        .sort(getObjectSorter(['info', 'modifiedAt'], false, true))
                         .map((project) => {
                             let domains;
                             if (project.info.kind && project.info.kind.startsWith('DSS:')) {

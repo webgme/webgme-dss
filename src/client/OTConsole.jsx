@@ -107,9 +107,10 @@ class OTConsole extends Component {
         return (
             <div style={{
                 backgroundColor: '#002b36',
-                height: '100%',
-                width: '100%',
+                height: 'calc(100% - 20px)',
+                width: 'calc(100% - 20px)',
                 padding: 10,
+                overflow: 'auto',
             }}
             >
                 {nodeId ? <Territory

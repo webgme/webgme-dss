@@ -5,7 +5,6 @@ import Grid from 'material-ui/Grid';
 // import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 
-import {nameSort} from '../gme/utils/getObjectSorter';
 import ProjectList from './ProjectList';
 import CreateProject from './CreateProject';
 
@@ -31,8 +30,6 @@ export default class Projects extends Component {
             }
 
             const dssProjects = projects.filter(pInfo => pInfo.info.kind && pInfo.info.kind.startsWith('DSS:'));
-
-            dssProjects.sort(nameSort);
 
             this.setState({projects: dssProjects});
         });

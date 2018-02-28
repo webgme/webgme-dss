@@ -1,9 +1,17 @@
-function getObjectSorter(key, ignoreCase, reverse) {
+function getObjectSorter(keyOrKeys, ignoreCase, reverse) {
     const multiplier = reverse ? -1 : 1;
+    const keys = typeof keyOrKeys === 'string' ? [keyOrKeys] : keyOrKeys;
+
     return (a, b) => {
         let res = 0;
-        let aVal = a[key];
-        let bVal = b[key];
+
+        let aVal = a;
+        let bVal = b;
+
+        keys.forEach((key) => {
+            aVal = aVal[key];
+            bVal = bVal[key];
+        });
 
         if (ignoreCase) {
             aVal = aVal.toLowerCase();

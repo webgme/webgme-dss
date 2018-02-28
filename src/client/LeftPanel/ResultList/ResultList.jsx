@@ -261,7 +261,7 @@ class ResultList extends Component {
                         {
                             id: 'modeEdit',
                             toolTip: 'Rename result',
-                            iconClass: <ModeEdit color="primary"/>,
+                            iconClass: <ModeEdit style={{color: 'rgba(0, 0, 0, 0.54)', fontSize: 18}}/>,
                             onClick: () => {
                                 this.setState({editResultName: true});
                             },
@@ -269,7 +269,7 @@ class ResultList extends Component {
                         {
                             id: 'delete',
                             toolTip: 'Delete result',
-                            iconClass: <Delete color="primary"/>,
+                            iconClass: <Delete style={{color: 'rgba(0, 0, 0, 0.54)', fontSize: 18}}/>,
                             onClick: () => {
                                 this.setState({showConfirmDelete: true});
                             },
@@ -277,7 +277,7 @@ class ResultList extends Component {
                         {
                             id: 'viewConsole',
                             toolTip: 'View console output',
-                            iconClass: <ChromeReaderMode color="primary"/>,
+                            iconClass: <ChromeReaderMode style={{color: 'rgba(0, 0, 0, 0.54)', fontSize: 18}}/>,
                             onClick: () => {
                                 this.setState({showConsoleDialog: true});
                             },
@@ -287,15 +287,15 @@ class ResultList extends Component {
                     let statusIcon;
 
                     if (resInfo.isRunning) {
-                        statusIcon = <CircularProgress size={24}/>;
+                        statusIcon = <CircularProgress size={18}/>;
                     } else if (failed) {
-                        statusIcon = <ErrorIcon style={{color: 'pink'}}/>;
+                        statusIcon = <ErrorIcon style={{color: 'pink', width: 18, height: 18}}/>;
                     } else {
-                        statusIcon = <CheckIcon style={{color: 'lightgreen'}}/>;
+                        statusIcon = <CheckIcon style={{color: 'lightgreen', width: 18, height: 18}}/>;
                         actionButtons.push({
                             id: 'downloadCSV',
                             toolTip: 'Download CSV result file',
-                            iconClass: <Description color="primary"/>,
+                            iconClass: <Description style={{color: 'rgba(0, 0, 0, 0.54)', fontSize: 18}}/>,
                             onClick: () => {
                                 this.downloadArtifact(false);
                             },
@@ -304,7 +304,7 @@ class ResultList extends Component {
                         actionButtons.push({
                             id: 'downloadPackage',
                             toolTip: 'Download simulation package',
-                            iconClass: <FileDownload color="primary"/>,
+                            iconClass: <FileDownload style={{color: 'rgba(0, 0, 0, 0.54)', fontSize: 18}}/>,
                             onClick: () => {
                                 this.downloadArtifact(true);
                             },

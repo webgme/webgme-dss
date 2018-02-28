@@ -94,7 +94,13 @@ class CenterPanel extends Component {
                     >
                         <SelectorCanvas gmeClient={gmeClient} scrollPos={scrollPos}/>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid
+                        item
+                        xs={6}
+                        style={{
+
+                        }}
+                    >
                         <OTConsole gmeClient={gmeClient} nodeId={resultNode} attributeName="stdout"/>
                     </Grid>
                 </Grid>);

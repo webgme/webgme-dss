@@ -74,8 +74,9 @@ define([
             modelNode = self.activeNode,
             simPackageArtie = this.blobClient.createArtifact('SimPackage');
 
+        const initialGuid = self.core.getGuid(modelNode);
         let modelName = self.core.getAttribute(modelNode, 'name');
-        let resultNode = self.core.getParent(modelNode);
+        let resultNodeId = self.core.getPath(self.core.getParent(modelNode));
         let simOutputDir;
 
         function generateDirectory(modelName) {
@@ -215,7 +216,7 @@ define([
 
             return self.project.watchDocument({
                 branchName: self.branchName,
-                nodeId: self.core.getPath(resultNode),
+                nodeId: resultNodeId,
                 attrName: 'stdout',
                 attrValue: outputDoc
             }, atOperation, () => {
@@ -275,27 +276,38 @@ define([
                         });
                 })
                 .then(function (res) {
-                    if (success) {
-                        self.core.setAttribute(resultNode, 'simRes', res.resJson);
-                    }
+                    return self.fastForward()
+                        .then(function () {
+                            if (!self.activeNode || self.core.getGuid(self.activeNode) !== initialGuid) {
+                                self.createMessage(self.rootNode, 'Result node was deleted - simulation was aborted');
+                                success = false;
+                                return null;
+                            }
 
-                    Object.keys(res).forEach((blobName) => {
-                        if (blobName !== 'resJson' && res[blobName]) {
-                            self.core.setAttribute(resultNode, blobName, res[blobName]);
-                        }
-                    });
+                            const resultNode = self.core.getParent(self.activeNode);
+
+                            if (success) {
+                                self.core.setAttribute(resultNode, 'simRes', res.resJson);
+                            }
+
+                            Object.keys(res).forEach((blobName) => {
+                                if (blobName !== 'resJson' && res[blobName]) {
+                                    self.core.setAttribute(resultNode, blobName, res[blobName]);
+                                }
+                            });
 
 
-                    self.core.setAttribute(resultNode, 'stdout', outputDoc);
+                            self.core.setAttribute(resultNode, 'stdout', outputDoc);
 
-                    logger.debug('Will save results to model..');
+                            logger.debug('Will save results to model..');
 
-                    //TODO: Fast-forward
-                    return self.save('Attached simulation results at ' + self.core.getPath(resultNode));
+                            return self.save('Attached simulation results at ' + resultNodeId);
+                        })
+
                 })
                 .then(function (commitResult) {
-                    if (commitResult.status !== STORAGE_CONSTANTS.SYNCED) {
-                        self.createMessage(modelNode, 'Commit did not update branch.' +
+                    if (commitResult && commitResult.status !== STORAGE_CONSTANTS.SYNCED) {
+                        self.createMessage(self.activeNode, 'Commit did not update branch.' +
                             'status: ' + commitResult.status);
                         throw new Error('Did not update branch.');
                     }

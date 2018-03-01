@@ -7,19 +7,13 @@ import Dialog, {
     DialogContent,
     DialogTitle,
 } from 'material-ui/Dialog';
-import {
-    FormLabel,
-    FormControl,
-    FormGroup,
-    FormControlLabel,
-    FormHelperText,
-} from 'material-ui/Form';
+
 import Button from 'material-ui/Button';
-import Checkbox from 'material-ui/Checkbox';
 import seedInfo from '../../seeds/Modelica/metadata.json';
 
 import getIndexedName from '../gme/utils/getIndexedName';
 import AttributeItem from '../RightPanel/AttributeItem';
+import CheckboxList from '../gme/CheckboxList';
 
 export default class DomainSelector extends Component {
     static propTypes = {
@@ -64,7 +58,7 @@ export default class DomainSelector extends Component {
         });
     };
 
-    handleCheckChange = domainName => (event, checked) => {
+    handleCheckChange = (domainName, event, checked) => {
         this.setState({
             selected: update(this.state.selected, {
                 [domainName]: {$set: checked},
@@ -96,24 +90,15 @@ export default class DomainSelector extends Component {
 
         if (showDomainSelection) {
             form = (
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">Select Domains</FormLabel>
-                    <FormGroup>
-                        {seedInfo.domains.map(domain => (
-                            <FormControlLabel
-                                key={domain}
-                                control={
-                                    <Checkbox
-                                        checked={selected[domain]}
-                                        onChange={this.handleCheckChange(domain)}
-                                        value={domain}
-                                    />
-                                }
-                                label={domain}
-                            />))}
-                    </FormGroup>
-                    <FormHelperText>You&#39;ll need at least one</FormHelperText>
-                </FormControl>);
+                <CheckboxList
+                    title="Select Domains"
+                    helperText="You&#39;ll need at least one"
+                    onCheckedChange={this.handleCheckChange}
+                    items={seedInfo.domains.map(domainName => ({
+                        id: domainName,
+                        isChecked: selected[domainName],
+                    }))}
+                />);
         }
 
         return (

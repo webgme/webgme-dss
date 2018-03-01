@@ -7,10 +7,17 @@ export default class PortalWindow extends React.PureComponent {
     static propTypes = {
         children: PropTypes.object.isRequired,
         onClose: PropTypes.func,
+        windowFeatures: PropTypes.object,
     };
 
     static defaultProps = {
         onClose: () => {},
+        windowFeatures: {
+            width: 800,
+            height: 600,
+            left: 200,
+            top: 200,
+        },
     }
 
     constructor(props) {
@@ -22,8 +29,12 @@ export default class PortalWindow extends React.PureComponent {
     componentDidMount() {
         // STEP 3: open a new browser window and store a reference to it
 
-        // TODO: These dimensions should be properties
-        this.externalWindow = window.open('', '', 'width=800,height=400,left=200,top=200');
+        const {windowFeatures} = this.props;
+
+        // 'width=800,height=400,left=200,top=200'
+        const wfStr = Object.keys(windowFeatures).map(key => `${key}=${windowFeatures[key]}`).join(',');
+
+        this.externalWindow = window.open('', '', wfStr);
 
         this.externalWindow.onbeforeunload = () => {
             this.props.onClose();

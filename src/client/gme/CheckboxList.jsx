@@ -17,6 +17,7 @@ export default class CheckboxList extends React.PureComponent {
             id: PropTypes.string.isRequired,
             isChecked: PropTypes.bool,
             label: PropTypes.string,
+            cbStyle: PropTypes.object,
         })).isRequired,
         onCheckedChange: PropTypes.func.isRequired, // item.id, event, checked
         title: PropTypes.string,
@@ -40,6 +41,7 @@ export default class CheckboxList extends React.PureComponent {
                             key={item.id}
                             control={
                                 <Checkbox
+                                    style={item.cbStyle || {}}
                                     checked={!!item.isChecked}
                                     onChange={(event, checked) => {
                                         this.props.onCheckedChange(item.id, event, checked);
@@ -47,7 +49,7 @@ export default class CheckboxList extends React.PureComponent {
                                     value={item.id}
                                 />
                             }
-                            label={item.label || item.id}
+                            label={typeof item.label === 'string' ? item.label : item.id}
                         />))}
                 </FormGroup>
                 <FormHelperText>{helperText}</FormHelperText>

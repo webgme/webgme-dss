@@ -4,9 +4,12 @@ import update from 'immutability-helper';
 
 import IconButton from 'material-ui/IconButton';
 import OpenInNew from 'material-ui-icons/OpenInNew';
+import AddCircle from 'material-ui-icons/AddCircle';
 
 import PortalWindow from '../gme/PortalWindow';
 import Plotter from './Plotter';
+import CheckboxList from '../gme/CheckboxList';
+import colorHash from '../gme/utils/colorHash';
 
 /* eslint-disable */
 class PlotManager extends Component {
@@ -74,7 +77,7 @@ class PlotManager extends Component {
         const {plotWindows} = this.state;
         let id;
 
-        for (let i = 1; i <= Object.keys(plotWindows).length; i += 1) {
+        for (let i = 1; i <= Object.keys(plotWindows).length + 1; i += 1) {
             if (!plotWindows[i]) {
                 id = i.toString();
                 break;
@@ -103,7 +106,7 @@ class PlotManager extends Component {
 
         const newState = {
             plotWindows: update(plotWindows, {
-                $unset: id,
+                $unset: [id],
             }),
         };
 
@@ -112,18 +115,46 @@ class PlotManager extends Component {
         }
 
         this.setState(newState);
-    };
+    }
+
+    plotVariableCheckChange = windowId => (varName, event, checked) => {
+        const {plotWindows} = this.state;
+
+        let varAddOrRemove;
+
+        if (checked) {
+            varAddOrRemove = {
+                $push: [varName],
+            };
+        } else {
+            varAddOrRemove = {
+                $splice: [[plotWindows[windowId].variables.indexOf(varName), 1]],
+            };
+        }
+
+        this.setState({
+            latestWindowId: windowId,
+            plotWindows: update(plotWindows, {
+                [windowId]: {
+                    variables: varAddOrRemove,
+                },
+            }),
+        });
+    }
 
     render() {
         const {variables, simRes} = this.props;
         const {docked, plotWindows} = this.state;
+
+        // FIXME: Problem mutating there? It's only sorting though...
+        variables.sort();
 
         const toggleDockedBtn = (
             <IconButton
                 style={{
                     position: 'absolute',
                     top: 0,
-                    right: 0,
+                    right: 5,
                 }}
                 onClick={this.toggleDocked}
             >
@@ -142,17 +173,55 @@ class PlotManager extends Component {
                 </div>);
         }
 
-        const portals = Object.keys(plotWindows).map((windowId) => {
+        const windowIds = Object.keys(plotWindows).sort();
+
+        const portals = windowIds.map(windowId => (
+            <PortalWindow
+                key={windowId}
+                onClose={() => this.removePlotWindow(windowId)}
+                windowFeatures={{
+                    height: 400,
+                    width: 800,
+                }}
+            >
+                <title>{`Plot window ${windowId}`}</title>
+                <h1>{`Plot window ${windowId}`}:</h1>
+                <Plotter variables={plotWindows[windowId].variables} simRes={simRes}/>
+            </PortalWindow>
+        ));
+
+        const selectors = windowIds.map((windowId) => {
+            const checkBoxes = variables.map(varName => ({
+                id: varName,
+                isChecked: plotWindows[windowId].variables.includes(varName),
+                cbStyle: {
+                    color: colorHash(varName).rgb,
+                    height: 36,
+                },
+            }));
+
             return (
-                <PortalWindow
+                <CheckboxList
                     key={windowId}
-                    onClose={() => this.removePlotWindow(windowId)}
-                >
-                    <h1>{windowId}:</h1>
-                    <Plotter variables={plotWindows[windowId].variables} simRes={simRes}/>
-                </PortalWindow>
+                    title={`Plot window ${windowId}:`}
+                    items={checkBoxes}
+                    onCheckedChange={this.plotVariableCheckChange(windowId)}
+                />
             );
         });
+
+        const addWindowBtn = (
+            <IconButton
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                }}
+                onClick={this.addPlotWindow}
+            >
+                <AddCircle/>
+            </IconButton>
+        );
 
         return (
             <div style={{
@@ -160,6 +229,18 @@ class PlotManager extends Component {
             }}
             >
                 {toggleDockedBtn}
+                {addWindowBtn}
+                <div style={{
+                    display: 'inline-flex',
+                    paddingLeft: 50,
+                    paddingTop: 20,
+                    height: 'calc(100% - 20px)',
+                    width: 'calc(100% - 50px)',
+                    overflow: 'auto',
+                }}
+                >
+                    {selectors}
+                </div>
                 {portals}
             </div>
         );

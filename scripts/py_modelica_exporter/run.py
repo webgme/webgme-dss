@@ -361,7 +361,7 @@ COMPONENTS = ELECTRICAL_ANALOG + TRANSLATIONAL_MECHANICS + ROTATIONAL_MECHANICS 
 
 #COMPONENTS = ['Modelica.Mechanics.Rotational.Components.Gearbox']
 result = []
-COMPONENTS = DOMAINS
+COMPONENTS = ELECTRICAL_ANALOG
 component_exporter = ComponentExporter([], export_icons=True)
 
 for modelica_uri in COMPONENTS:

@@ -20,3 +20,11 @@ This requires that mongodb is running and the webgme server can access it.
     - `npm mock`
 - View app in browser
     - [localhost:3000](http://localhost:3000)
+    
+
+### Creating the Modelica Seed
+ 1. Follow the instructions in /scripts/py_modelica_exporter/README.md to generate `components.json`
+ 2. From `src/common/` run `node preprocessComponents.js` (it consumes `components.json` from step one)
+    - If the PortMapping does not exist - the `ModelicaBaseSeed` and `metadata.json` need to be updated
+ 3. Create a project from the ModelicaBaseSeed name it e.g. `SeedProject`
+ 4. From root of repo run: `node node_modules\webgme-engine\src\bin\run_plugin.js SeedCreator SeedProject`

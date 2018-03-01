@@ -1,6 +1,4 @@
-/* eslint-disable */
-
-describe.only('SystemSimulator', function () {
+describe('SystemSimulator', function () {
     let testFixture = require('../../globals'),
         gmeConfig = testFixture.getGmeConfig(),
         expect = testFixture.expect,

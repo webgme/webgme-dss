@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "MSL_version": "3.2.2",
   "domains": [
     "Modelica.Electrical.Analog",
     "Modelica.Mechanics.Translational",

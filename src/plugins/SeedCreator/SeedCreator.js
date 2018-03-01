@@ -1,5 +1,5 @@
-/*globals define*/
-/*eslint-env node, browser*/
+/* globals define */
+/* eslint-disable*/
 
 /**
  * This plugin reads the output from py_modelica exporter and imports the

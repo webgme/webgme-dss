@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import Grid from 'material-ui/Grid';
 
 import Canvas from './Canvas';
-import Plotter from './Plotter';
+import PlotManager from './PlotManager';
 import SelectorCanvas from './SelectorCanvas';
 import OTConsole from '../OTConsole';
 import ResultsInfoCard from './ResultsInfoCard';
@@ -72,7 +72,7 @@ class CenterPanel extends Component {
                     width: '100%',
                 }}
                 >
-                    <Plotter variables={plotData.variables} simRes={plotData.simRes}/>
+                    <PlotManager variables={plotData.variables} simRes={plotData.simRes}/>
                     <div style={{
                         width: '100%',
                         height: 'calc(100% - 270px)',
@@ -97,9 +97,6 @@ class CenterPanel extends Component {
                     <Grid
                         item
                         xs={6}
-                        style={{
-
-                        }}
                     >
                         <OTConsole gmeClient={gmeClient} nodeId={resultNode} attributeName="stdout"/>
                     </Grid>

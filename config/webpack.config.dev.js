@@ -102,7 +102,7 @@ module.exports = {
   module: {
     strictExportPresence: true,
     rules: [
-        { parser: { amd: false } }, // This is need to load webgme plugins
+        { parser: { amd: false } }, // This is needed to load webgme plugins
       // TODO: Disable require.ensure as it's not a standard language feature.
       // We are waiting for https://github.com/facebookincubator/create-react-app/issues/2176.
       // { parser: { requireEnsure: false } },
@@ -117,7 +117,7 @@ module.exports = {
             options: {
               formatter: eslintFormatter,
               eslintPath: require.resolve('eslint'),
-              
+              emitWarning: true,
             },
             loader: require.resolve('eslint-loader'),
           },

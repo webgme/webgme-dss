@@ -1,5 +1,14 @@
 # WebGME-DSS
 
+## Deploying
+For a full deployment you'll need nodejs, mongodb and docker.
+
+ 1. clone this repo `git clone https://github.com/webgme/webgme-dss.git`
+ 2. build the docker worker image `docker build -t webgme-om-worker .`
+ 3. build the front-end (`npm install`) `npm run build`
+ 4. before starting server make sure to use `config/config.dockerworker.js` via the env. var `NODE_ENV=dockerworker` (alternatively create a config on top of it)
+
+
 ## Developers
 
 The front-end app can run both with webgme as backend and with a mock. Note that both these can run at the same time.

@@ -38,5 +38,10 @@ scripts/py_modelica_exporter/modelica.json
 
 # Temporary
 package-lock.json
+
 /src/common/comp_flat.json
 /src/common/comp_stats.json
+
+# Vagrant
+deployment/.vagrant
+deployment/*.log

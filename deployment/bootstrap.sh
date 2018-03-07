@@ -59,7 +59,7 @@ sudo docker build -t webgme-om-worker .
 npm install --no-bin-links
 npm run build
 # Add an admin user
-node ./node_modules/webgme-engine/src/bin/usermanagement.page useradd -c -s admin admin@mail.com admin
+NODE_ENV=deployment node ./node_modules/webgme-engine/src/bin/usermanager useradd -c -s admin admin@mail.com admin
 
 # Take us home!
 cd ..

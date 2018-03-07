@@ -15,7 +15,7 @@ StandardOutput=syslog
 # Output to syslog
 StandardError=syslog
 SyslogIdentifier=webgme-dss
-Environment=NODE_ENV=dockerworker
+Environment=NODE_ENV=deployment
 
 [Install]
 WantedBy=multi-user.target

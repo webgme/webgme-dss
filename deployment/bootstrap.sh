@@ -2,9 +2,11 @@
 # Install Nodejs (via nvm)
 sudo apt-get update
 sudo apt-get install build-essential libssl-dev -y
-curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh -o install_nvm.sh
-bash install_nvm.sh
-source ./.profile
+curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 nvm ls-remote
 nvm install 8.9.4
 node -v
@@ -36,8 +38,8 @@ npm run build
 # Setup systemd services
 sudo cp ./deployment/mongod.service /lib/systemd/system/mongod.service
 sudo systemctl daemon-reload
-systemctl start mongod
+sudo systemctl start mongod
 
 sudo cp ./deployment/webgme.service /lib/systemd/system/webgme.service
 sudo systemctl daemon-reload
-systemctl start webgme
+sudo systemctl start webgme

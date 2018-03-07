@@ -1,7 +1,7 @@
 [Unit]
 Description=WebGME-DSS
 Documentation=https://webgme.org
-Requires=mongodb.service
+Requires=mongod.service
 
 [Service]
 # Path to your webgme application

@@ -90,7 +90,7 @@ export default class PluginConfigDialog extends Component {
                     this.onChange(name, newValue);
                 }}
                 description={description}
-                options={{readOnly}}
+                readonly={readOnly}
             />);
         });
 

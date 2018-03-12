@@ -129,13 +129,12 @@ define([
             }
 
             return Q.all([
-                blobClient.putFile('README.text', 'On windows run:\n\r %OPENMODELICAHOME%\\bin\\omc.exe simulate.mos' +
-                    '\n\rOn linux/macOs run:\n\r omc simulate.mos\n\r\n\rIn both cases from the extracted directory.'),
+                blobClient.putFile('README.txt', self.getReadMe()),
                 blobClient.putFile('simulate.mos', mosScript),
             ])
                 .then((hashes) => {
                     return Q.all([
-                        simPackageArtie.addMetadataHash('README.text', hashes[0]),
+                        simPackageArtie.addMetadataHash('README.txt', hashes[0]),
                         simPackageArtie.addMetadataHash('simulate.mos', hashes[1])
                     ]);
                 })
@@ -425,5 +424,8 @@ define([
             .then(() => result);
     };
 
+    SystemSimulator.prototype.getReadMe = function () {
+        return 'Usage:\n \r\n1) Make sure to have an installation of openmodelica on your machine (dowload tab https://openmodelica.org/)\n \r\n2) Open a cmd or terminal in this directory\n \r\n3) To open model from the editor and run the simulation:\r\n\n    windows:\r\n\n        > %OPENMODELICAHOME%\\bin\\omedit.exe Canvas.mo\r\n\n    linux/macOS\r\n\n        $ omedit Canvas.mo\n\r\n4) To run simulation and generate csv file:\r\n\n    windows:\n\r\n        > %OPENMODELICAHOME%\\bin\\omc.exe simulate.mos\r\n\n    linux/macOS\r\n\n        $ omc simulate.mos\n';
+    }
     return SystemSimulator;
 });

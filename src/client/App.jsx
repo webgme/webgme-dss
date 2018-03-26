@@ -2,13 +2,11 @@
 /* eslint-env browser */
 /* global window */
 import React, {Component} from 'react';
-
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
-
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
+import superagent from 'superagent';
 
 // Own modules
 import reducers from './reducers';
@@ -41,14 +39,22 @@ export default class App extends Component {
 
         window.onGMEInit = () => {
             window.gmeClient = new window.GME.classes.Client(window.GME.gmeConfig);
-            window.gmeClient.connectToDatabase((err) => {
-                if (err) {
-                    console.error(err);
-                    return;
-                }
+            superagent.get('/api/user')
+                .end((err) => {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
 
-                this.setState({initialConnect: true});
-            });
+                    window.gmeClient.connectToDatabase((connErr) => {
+                        if (connErr) {
+                            console.error(connErr);
+                            return;
+                        }
+
+                        this.setState({initialConnect: true});
+                    });
+                });
         };
     }
 

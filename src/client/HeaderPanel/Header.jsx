@@ -65,7 +65,7 @@ class Header extends Component {
                     </Tooltip>
                     <Zoom/>
                     <Typography style={{flex: 1}}/>
-                    <User/>
+                    <User gmeClient={gmeClient}/>
                 </Toolbar>
                 {saving ?
                     <SaveDialog

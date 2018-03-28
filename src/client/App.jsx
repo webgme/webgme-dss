@@ -99,7 +99,7 @@ export default class App extends Component {
                                     right: 20,
                                 }}
                                 >
-                                    <User color="lightgrey"/>
+                                    <User color="lightgrey" gmeClient={window.gmeClient}/>
                                 </div>
                                 <Projects gmeClient={window.gmeClient}/>
                             </div>

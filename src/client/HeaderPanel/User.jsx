@@ -9,6 +9,7 @@ import AccountCircle from 'material-ui-icons/AccountCircle';
 export default class User extends Component {
     static propTypes = {
         color: PropTypes.string,
+        gmeClient: PropTypes.object.isRequired,
     };
 
     static defaultProps = {
@@ -55,12 +56,16 @@ export default class User extends Component {
     };
 
     logout = () => {
+        const {gmeClient} = this.props;
         const tempAnchor = window.document.createElement('a');
         tempAnchor.target = '_self';
         tempAnchor.href = '/logout';
         window.document.body.appendChild(tempAnchor);
-        tempAnchor.click();
+        window.document.cookie = `${gmeClient.gmeConfig.authentication.jwt.cookieId}\
+=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
         window.parent.postMessage('logout', '*');
+
+        tempAnchor.click();
     };
 
     render() {

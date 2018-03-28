@@ -73,7 +73,7 @@ export default class App extends Component {
 
         if (initialConnect) {
             content = (
-                <div>
+                <div style={{backgroundColor: 'white'}}>
                     <Route
                         exact
                         path="/"

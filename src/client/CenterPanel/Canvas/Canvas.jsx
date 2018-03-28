@@ -223,7 +223,7 @@ class Canvas extends SingleConnectedNode {
                     }
                 }}
                 style={{
-                    backgroundColor: dragMode === 'create' ? 'lightgreen' : undefined,
+                    backgroundColor: dragMode === 'create' ? 'lightgreen' : 'white',
                     width: '100%',
                     height: '100%',
                     overflow: 'auto',

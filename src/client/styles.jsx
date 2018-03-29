@@ -12,6 +12,7 @@ export function centerPanel(leftDrawerOpen) {
         width: `calc(100% - ${leftMargin}px)`,
         height: `calc(100% - ${LAYOUT_SIZES.HEADER_HEIGHT}px)`,
         position: 'fixed',
+        backgroundColor: 'white',
     };
 }
 

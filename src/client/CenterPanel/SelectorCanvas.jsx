@@ -90,7 +90,6 @@ class SelectorCanvas extends SingleConnectedNode {
                     overflow: 'auto',
                     zIndex: ZLEVELS.canvas,
                     position: 'absolute',
-                    backroundColor: 'white',
                 }}
             >
                 {childrenItems}

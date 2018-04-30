@@ -14,7 +14,7 @@ import {appHeader as style} from '../styles';
 
 import SyncIndicator from './SyncIndicator';
 import Zoom from './Zoom';
-import User from './User';
+import User from '../containers/HeaderPanel/User';
 import SaveDialog from '../Dialogs/SaveDialog';
 
 const mapStateToProps = state => ({

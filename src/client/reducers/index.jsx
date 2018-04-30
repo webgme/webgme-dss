@@ -61,23 +61,6 @@ const systemWaiting = (state = false, action) => {
     }
     return state;
 };
-// const initialUserState = {hasFetched: false, isFetching: false, user: {}};
-// const currentUser = (state = initialUserState, action) => {
-//     switch (action.type) {
-//         case 'USER_RECEIVED':
-//             return update(state, {
-//                 hasFetched: {$set: true},
-//                 isFetching: {$set: false},
-//                 user: {$set: action.user}
-//             });
-//         case 'USER_REQUESTED':
-//             return update(state, {
-//                 isFetching: {$set: true}
-//             });
-//         default:
-//             return state;
-//     }
-// };
 
 const plotData = (state = {nodeId: null, variables: [], simRes: null}, action) => {
     switch (action.type) {
@@ -114,6 +97,21 @@ const resultNode = (state = null, action) => {
     return state;
 };
 
+const users = (state = {currentUser: null, idToDisplayName: null}, action) => {
+    switch (action.type) {
+        case 'SET_CURRENT_USER':
+            return update(state, {
+                currentUser: {$set: action.currentUser},
+            });
+        case 'SET_ID_TO_DISPLAY_NAME_MAP':
+            return update(state, {
+                idToDisplayName: {$set: action.idToDisplayName},
+            });
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
     activeNode,
     activeSelection,
@@ -124,4 +122,6 @@ export default combineReducers({
     plotData,
     resultNode,
     systemWaiting,
+    users,
 });
+

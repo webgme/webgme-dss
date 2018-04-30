@@ -79,3 +79,13 @@ export const setSystemWaiting = systemWaiting => ({
     type: 'SET_SYSTEM_WAITING',
     systemWaiting,
 });
+
+export const setCurrentUser = currentUser => ({
+    type: 'SET_CURRENT_USER',
+    currentUser,
+});
+
+export const setIdToDisplayName = idToDisplayName => ({
+    type: 'SET_ID_TO_DISPLAY_NAME_MAP',
+    idToDisplayName,
+});

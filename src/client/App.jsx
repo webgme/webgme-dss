@@ -10,13 +10,15 @@ import superagent from 'superagent';
 
 // Own modules
 import reducers from './reducers';
-import User from './HeaderPanel/User';
+import User from './containers/HeaderPanel/User';
 
 import logo from './logo.svg';
 import './App.css';
 import Projects from './StartPage/Projects';
 import Project from './Project';
 import ModalSpinner from './gme/BaseComponents/ModalSpinner';
+
+import {setCurrentUser, setIdToDisplayName} from './actions';
 
 const theme = createMuiTheme({
     palette: {
@@ -40,20 +42,38 @@ export default class App extends Component {
         window.onGMEInit = () => {
             window.gmeClient = new window.GME.classes.Client(window.GME.gmeConfig);
             superagent.get('/api/user')
-                .end((err) => {
+                .end((err, userRes) => {
                     if (err) {
                         console.error(err);
                         return;
                     }
 
-                    window.gmeClient.connectToDatabase((connErr) => {
-                        if (connErr) {
-                            console.error(connErr);
-                            return;
-                        }
+                    superagent.get('/api/users')
+                        .query({displayName: true})
+                        .end((err, usersMapRes) => {
+                            if (err) {
+                                console.error(err);
+                                return;
+                            }
 
-                        this.setState({initialConnect: true});
-                    });
+                            window.gmeClient.connectToDatabase((connErr) => {
+                                if (connErr) {
+                                    console.error(connErr);
+                                    return;
+                                }
+
+                                store.dispatch(setCurrentUser(userRes.body));
+
+                                const idMap = {};
+                                usersMapRes.body.forEach((uData) => {
+                                    idMap[uData._id] = uData.displayName;
+                                });
+
+                                store.dispatch(setIdToDisplayName(idMap));
+
+                                this.setState({initialConnect: true});
+                            });
+                        });
                 });
         };
     }

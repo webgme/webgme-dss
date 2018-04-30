@@ -97,7 +97,7 @@ const resultNode = (state = null, action) => {
     return state;
 };
 
-const users = (state = {currentUser: null, idToDisplayName: null}, action) => {
+const users = (state = {currentUser: null, idToDisplayName: {}}, action) => {
     switch (action.type) {
         case 'SET_CURRENT_USER':
             return update(state, {
@@ -105,7 +105,7 @@ const users = (state = {currentUser: null, idToDisplayName: null}, action) => {
             });
         case 'SET_ID_TO_DISPLAY_NAME_MAP':
             return update(state, {
-                idToDisplayName: {$set: action.idToDisplayName},
+                userIdToDisplayName: {$set: action.userIdToDisplayName},
             });
         default:
             return state;

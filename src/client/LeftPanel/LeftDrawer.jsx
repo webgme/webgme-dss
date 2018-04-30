@@ -34,7 +34,7 @@ import PluginConfigDialog from '../Dialogs/PluginConfigDialog';
 import DomainSelector from '../Dialogs/DomainSelector';
 import NotifyDialog from '../Dialogs/NotifyDialog';
 import PluginResultDialog from '../Dialogs/PluginResultDialog';
-import ProjectHistory from '../Dialogs/ProjectHistory';
+import ProjectHistory from '../containers/Dialogs/ProjectHistory';
 import colorHash from '../gme/utils/colorHash';
 import {sideDrawer as styles} from '../classes';
 

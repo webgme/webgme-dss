@@ -85,7 +85,7 @@ export const setCurrentUser = currentUser => ({
     currentUser,
 });
 
-export const setIdToDisplayName = idToDisplayName => ({
+export const setIdToDisplayName = userIdToDisplayName => ({
     type: 'SET_ID_TO_DISPLAY_NAME_MAP',
-    idToDisplayName,
+    userIdToDisplayName,
 });

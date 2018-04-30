@@ -11,32 +11,29 @@ import Dialog, {
 import moment from 'moment';
 import Button from 'material-ui/Button';
 import Badge from 'material-ui/Badge';
-import {connect} from 'react-redux';
 import IconButton from 'material-ui/IconButton';
 import Visibility from 'material-ui-icons/Visibility';
 import PlayArrow from 'material-ui-icons/PlayArrow';
 import Grid from 'material-ui/Grid';
 import Tooltip from 'material-ui/Tooltip';
 import Paper from 'material-ui/Paper';
-import getUserIconSource from '../gme/utils/getUserIconSource';
+import getUserIconSource from '../../gme/utils/getUserIconSource';
 
-import DiffViewer from './DiffViewer';
+import DiffViewer from '../../Dialogs/DiffViewer';
 
 const SAVE_PREFIX = 'save: ';
 
-const mapStateToProps = (/* state */) => ({});
-
-const mapDispatchToProps = (/* dispatch */) => ({});
-
-class ProjectHistory extends Component {
+export default class ProjectHistory extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
         onOK: PropTypes.func.isRequired,
         batchSize: PropTypes.number,
+        userIdToDisplayName: PropTypes.object,
     };
 
     static defaultProps = {
         batchSize: 200,
+        userIdToDisplayName: {},
     };
 
     state = {
@@ -149,7 +146,7 @@ class ProjectHistory extends Component {
     };
 
     render() {
-        const {gmeClient, batchSize} = this.props;
+        const {gmeClient, batchSize, userIdToDisplayName} = this.props;
         const {
             commits,
             showDiff,
@@ -165,6 +162,8 @@ class ProjectHistory extends Component {
             const current = commit._id === activeCommit;
             const saveMsg = commit.message.startsWith(SAVE_PREFIX);
             const regularCommit = !(current || saveMsg);
+
+            const updaterName = userIdToDisplayName[commit.updater[0]] || commit.updater[0];
 
             if (detailed || current || saveMsg) {
                 items.push((
@@ -205,10 +204,10 @@ class ProjectHistory extends Component {
                                                     opacity: regularCommit ? 0.6 : 1,
                                                 }}
                                                 src={getUserIconSource(commit.updater[0])}
-                                                alt={commit.updater[0]}
+                                                alt={updaterName}
                                             />
 
-                                            {commit.updater[0]}
+                                            {updaterName}
                                         </Badge>
                                     </Grid>
                                 </Tooltip>
@@ -287,5 +286,3 @@ class ProjectHistory extends Component {
         );
     }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectHistory);

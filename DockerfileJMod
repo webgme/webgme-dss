@@ -1,18 +1,23 @@
 FROM michaelwetter/ubuntu-1604_jmodelica_trunk:latest
-
 # Note jmodlica python "env" is located at /usr/local/JModelica/bin/jm_python.sh
 
 MAINTAINER Patrik Meijer <patrik.meijer@vanderbilt.edu>
+
+# FIXME: docker-worker-manager should allow for a mapping between plugin-name and worker -> webgme-jm-worker.
+# docker build -f DockerfileJMod -t webgme-om-worker .
+
 ######################## NVM/NODE/NPM ########################
-ENV NODE_VERSION 8.9.4
-ENV NVM_DIR ${HOME}/.nvm
+USER root
 
 RUN apt-get update \
-    && apt-get install build-essential libssl-dev curl -y \
-    && curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash \
+    && apt-get install build-essential libssl-dev curl git-core -y
+
+ENV NODE_VERSION 8.9.4
+ENV NVM_DIR ${HOME}/.nvm
+USER developer
+RUN curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash \
     && . $NVM_DIR/nvm.sh \
     && nvm install $NODE_VERSION
-
 
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 

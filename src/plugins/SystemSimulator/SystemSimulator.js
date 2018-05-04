@@ -11,16 +11,25 @@ define([
     'text!./metadata.json',
     'plugin/PluginBase',
     'q',
+    'ejs',
     'webgme-ot',
     'common/storage/constants', // These will be needed to check that the commit did update the branch..
-    'webgme-dss/parseSimulationData'
+    'webgme-dss/parseSimulationData',
+    'text!./simulate.mos.ejs',
+    'text!./simulate.py.ejs',
+    'text!./readme.txt.ejs',
 ], function (PluginConfig,
              pluginMetadata,
              PluginBase,
              Q,
+             ejs,
              ot,
              STORAGE_CONSTANTS,
-             simDataHelpers) {
+             simDataHelpers,
+             SIMULATE_MOS_TEMPLATE,
+             SIMULATE_PY_TEMPLATE,
+             README_TEMPLATE,
+             ) {
     'use strict';
 
     let fs = require('fs-extra'),
@@ -74,6 +83,8 @@ define([
             modelNode = self.activeNode,
             simPackageArtie = this.blobClient.createArtifact('SimPackage');
 
+        config.simulationTool = this.gmeConfig.plugin.SystemSimulator.simulationTool;
+
         const initialGuid = self.core.getGuid(modelNode);
         let modelName = self.core.getAttribute(modelNode, 'name');
         let resultNodeId = self.core.getPath(self.core.getParent(modelNode));
@@ -115,27 +126,31 @@ define([
         }
 
         function generateFiles(moFileContent) {
-            let mosScript = [
-                'loadModel(Modelica); getErrorString();',
-                'loadFile("' + modelName + '.mo"); getErrorString();',
-                'simulate(' + modelName + ', startTime=0.0, stopTime=' + config.stopTime +
-                ', outputFormat="csv"); getErrorString();'
-            ].join('\n');
+            const scriptData = {
+                modelName: modelName,
+                stopTime: config.stopTime,
+            };
 
-            if (config.runSimulation) {
+            const mosScript = ejs.render(SIMULATE_MOS_TEMPLATE, scriptData);
+            const pyScript = ejs.render(SIMULATE_PY_TEMPLATE, scriptData);
+
+            if (config.simulationTool !== 'Only Code Generation') {
                 simOutputDir = generateDirectory(modelName);
                 fs.writeFileSync(path.join(simOutputDir, modelName + '.mo'), moFileContent);
                 fs.writeFileSync(path.join(simOutputDir, 'simulate.mos'), mosScript);
+                fs.writeFileSync(path.join(simOutputDir, 'simulate.py'), pyScript);
             }
 
             return Q.all([
-                blobClient.putFile('README.txt', self.getReadMe()),
+                blobClient.putFile('README.txt', ejs.render(README_TEMPLATE)),
                 blobClient.putFile('simulate.mos', mosScript),
+                blobClient.putFile('simulate.py', pyScript),
             ])
                 .then((hashes) => {
                     return Q.all([
                         simPackageArtie.addMetadataHash('README.txt', hashes[0]),
-                        simPackageArtie.addMetadataHash('simulate.mos', hashes[1])
+                        simPackageArtie.addMetadataHash('simulate.mos', hashes[1]),
+                        simPackageArtie.addMetadataHash('simulate.py', hashes[2]),
                     ]);
                 })
                 .then(() => {
@@ -155,6 +170,13 @@ define([
 
             if (os.platform().indexOf('win') === 0) {
                 command = '%OPENMODELICAHOME%\\bin\\omc.exe';
+            }
+
+            if (config.simulationTool === 'JModelica.org') {
+                command = '/usr/local/JModelica/bin/jm_python.sh';
+                args = [
+                    'simulate.py'
+                ];
             }
 
             logger.debug('Calling simulation script', command, args, options);
@@ -182,10 +204,17 @@ define([
                     });
                 } else {
                     try {
-                        deferred.resolve({
-                            resultFileName: generateInfoFile(path.join(simOutputDir, modelName)),
-                            csvFileName: path.join(simOutputDir, `${modelName}_res.csv`)
-                        });
+                        if (config.simulationTool === 'JModelica.org') {
+                            deferred.resolve({
+                                resultFileName: path.join(simOutputDir, `${modelName}_res.json`),
+                                csvFileName: path.join(simOutputDir, `${modelName}_res.csv`)
+                            });
+                        } else {
+                            deferred.resolve({
+                                resultFileName: generateInfoFile(path.join(simOutputDir, modelName)),
+                                csvFileName: path.join(simOutputDir, `${modelName}_res.csv`)
+                            });
+                        }
                     } catch (err) {
                         if (err.code === 'ENOENT') {
                             err = new Error('No simulation results were generated');
@@ -334,7 +363,7 @@ define([
             })
             .then(function (artifactHash) {
                 self.result.addArtifact(artifactHash);
-                if (config.runSimulation) {
+                if (config.simulationTool !== 'Only Code Generation') {
                     return simulateAndSaveResults();
                 } else {
                     return true;
@@ -424,8 +453,5 @@ define([
             .then(() => result);
     };
 
-    SystemSimulator.prototype.getReadMe = function () {
-        return 'Usage:\n \r\n1) Make sure to have an installation of openmodelica on your machine (dowload tab https://openmodelica.org/)\n \r\n2) Open a cmd or terminal in this directory\n \r\n3) To open model from the editor and run the simulation:\r\n\n    windows:\r\n\n        > %OPENMODELICAHOME%\\bin\\omedit.exe Canvas.mo\r\n\n    linux/macOS\r\n\n        $ omedit Canvas.mo\n\r\n4) To run simulation and generate csv file:\r\n\n    windows:\n\r\n        > %OPENMODELICAHOME%\\bin\\omc.exe simulate.mos\r\n\n    linux/macOS\r\n\n        $ omc simulate.mos\n';
-    }
     return SystemSimulator;
 });

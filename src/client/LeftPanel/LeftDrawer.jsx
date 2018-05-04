@@ -90,6 +90,18 @@ class LeftDrawer extends Component {
         checkResult: null,
     };
 
+    constructor(props) {
+        super(props);
+        const gmeConfig = this.props.gmeClient.gmeConfig;
+        this.SystemSimulatorMetadata = JSON.parse(JSON.stringify(SystemSimulatorMetadata));
+
+        this.SystemSimulatorMetadata.configStructure.forEach((configDesc) => {
+            if (gmeConfig.plugin.SystemSimulator && gmeConfig.plugin.SystemSimulator[configDesc.name] !== undefined) {
+                configDesc.value = gmeConfig.plugin.SystemSimulator[configDesc.name];
+            }
+        });
+    }
+
     onUpdateDomains = (data) => {
         const {gmeClient} = this.props;
 
@@ -179,14 +191,14 @@ class LeftDrawer extends Component {
     runSimulator = (config) => {
         const {gmeClient, activeNode} = this.props;
 
-        const pluginId = SystemSimulatorMetadata.id;
+        const pluginId = this.SystemSimulatorMetadata.id;
         this.setState({showSimulator: false});
         if (!config) {
             // Cancelled
             return;
         }
 
-        if (config.runSimulation === false) {
+        if (config.simulationTool === 'Only Code Generation') {
             const context = gmeClient.getCurrentPluginContext(pluginId, activeNode);
             context.pluginConfig = config;
 
@@ -331,7 +343,7 @@ class LeftDrawer extends Component {
 
                 {this.state.showSimulator ?
                     <PluginConfigDialog
-                        metadata={SystemSimulatorMetadata}
+                        metadata={this.SystemSimulatorMetadata}
                         onOK={this.runSimulator}
                     /> : null}
 

@@ -33,6 +33,7 @@ outputs
 scripts/py_modelica_exporter/Icons
 scripts/py_modelica_exporter/components.json
 scripts/py_modelica_exporter/modelica.json
+simres_example.json
 
 **/*.pyc
 

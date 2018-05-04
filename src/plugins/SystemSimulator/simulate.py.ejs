@@ -1,0 +1,21 @@
+# This script is for simulation using JModelica.org
+from pymodelica import compile_fmu
+from pyfmi import load_fmu
+
+print 'Loaded python packages from JModelica.'
+# Compile .mo file to fmu executable
+print 'Compiling Modelica model...'
+fmu_name = compile_fmu("<%-modelName%>", "<%-modelName%>.mo")
+print 'Compilation done!'
+
+# Load the compiled fmu
+print 'Loading in compiled model...'
+model = load_fmu(fmu_name)
+print 'Compiled model loaded!'
+
+# Simulate the model
+print 'Simulation model (this may take a while)...'
+res = model.simulate(final_time=<%-stopTime%>)
+
+# TODO: Handle the result
+print res

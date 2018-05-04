@@ -1,0 +1,4 @@
+// This file is for simulation with OpenModelica
+loadModel(Modelica); getErrorString();
+loadFile("<%-modelName%>.mo"); getErrorString();
+simulate(<%-modelName%>, startTime=0.0, stopTime=<%-stopTime%>, outputFormat="csv"); getErrorString();

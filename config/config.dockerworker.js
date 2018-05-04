@@ -17,6 +17,6 @@ config.server.workerManager.options = {
     // TODO: This option does not exist yet..
     plugins: ['SystemSimulator'],
 };
-
+config.server.port = 80;
 validateConfig(config);
 module.exports = config;

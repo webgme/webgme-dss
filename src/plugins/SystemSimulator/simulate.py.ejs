@@ -14,7 +14,7 @@ model = load_fmu(fmu_name)
 print 'Compiled model loaded!'
 
 # Simulate the model
-print 'Simulation model (this may take a while)...'
+print 'Simulating model (this may take a while)...'
 res = model.simulate(final_time=<%-stopTime%>)
 
 # TODO: Handle the result properly based on res-variable
@@ -23,4 +23,4 @@ with open('<%-modelName%>_res.json', 'w') as outfile:
     json.dump({}, outfile)
 
 with open('<%-modelName%>_res.csv', 'w') as outfile:
-    f.write('hello')
+    outfile.write('hello')

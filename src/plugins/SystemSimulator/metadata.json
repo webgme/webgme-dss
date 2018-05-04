@@ -22,7 +22,7 @@
         "JModelica.org",
         "OpenModelica"
       ],
-      "readOnly": true
+      "readOnly": false
     },
     {
       "name": "stopTime",

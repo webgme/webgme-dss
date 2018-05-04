@@ -98,6 +98,7 @@ class LeftDrawer extends Component {
         this.SystemSimulatorMetadata.configStructure.forEach((configDesc) => {
             if (gmeConfig.plugin.SystemSimulator && gmeConfig.plugin.SystemSimulator[configDesc.name] !== undefined) {
                 configDesc.value = gmeConfig.plugin.SystemSimulator[configDesc.name];
+                configDesc.readOnly = true;
             }
         });
     }

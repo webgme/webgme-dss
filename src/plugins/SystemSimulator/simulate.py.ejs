@@ -5,7 +5,7 @@ from pyfmi import load_fmu
 print 'Loaded python packages from JModelica.'
 # Compile .mo file to fmu executable
 print 'Compiling Modelica model...'
-fmu_name = compile_fmu("<%-modelName%>", "<%-modelName%>.mo")
+fmu_name = compile_fmu('<%-modelName%>', '<%-modelName%>.mo')
 print 'Compilation done!'
 
 # Load the compiled fmu
@@ -17,5 +17,10 @@ print 'Compiled model loaded!'
 print 'Simulation model (this may take a while)...'
 res = model.simulate(final_time=<%-stopTime%>)
 
-# TODO: Handle the result
-print res
+# TODO: Handle the result properly based on res-variable
+import json
+with open('<%-modelName%>_res.json', 'w') as outfile:
+    json.dump({}, outfile)
+
+with open('<%-modelName%>_res.csv', 'w') as outfile:
+    f.write('hello')

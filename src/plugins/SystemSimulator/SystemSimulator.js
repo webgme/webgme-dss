@@ -403,7 +403,6 @@ define([
 
         const simPackageFiles = [
             `${modelName}_res.csv`,
-            `${modelName}_init.xml`,
             `${modelName}.mo`,
             `simulate.mos`,
         ]

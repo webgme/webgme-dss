@@ -4,7 +4,7 @@ FROM michaelwetter/ubuntu-1604_jmodelica_trunk:latest
 MAINTAINER Patrik Meijer <patrik.meijer@vanderbilt.edu>
 
 # FIXME: docker-worker-manager should allow for a mapping between plugin-name and worker -> webgme-jm-worker.
-# docker build -f DockerfileJMod -t webgme-om-worker .
+# docker build -f DockerfileJMod -t webgme-dss-worker .
 
 ######################## NVM/NODE/NPM ########################
 USER root
@@ -12,9 +12,12 @@ USER root
 RUN apt-get update \
     && apt-get install build-essential libssl-dev curl git-core -y
 
+# The docker worker manager currently requires the cwd to be /usr/app
+RUN chown developer:developer /usr
+USER developer
 ENV NODE_VERSION 8.9.4
 ENV NVM_DIR ${HOME}/.nvm
-USER developer
+
 RUN curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash \
     && . $NVM_DIR/nvm.sh \
     && nvm install $NODE_VERSION
@@ -24,18 +27,16 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 RUN node -v
 
 ######################## WebGME API/Docker worker ###################
-RUN mkdir /${HOME}/app
+
+RUN mkdir /usr/app
 
 # copy app source
-COPY . /${HOME}/app/
+COPY --chown=developer . /usr/app/
 
-WORKDIR /${HOME}/app
+WORKDIR /usr/app
 
 # Install the node-modules.
 RUN npm install
 
 # Uncomment this line if webgme-docker-worker-manager is a node_module
-RUN cp /${HOME}/app/node_modules/webgme-docker-worker-manager/dockerworker.js /${HOME}/app/dockerworker.js
-
-# Make sure to set this correctly here
-ENV NODE_ENV dockerworker
+RUN cp /usr/app/node_modules/webgme-docker-worker-manager/dockerworker.js /usr/app/dockerworker.js

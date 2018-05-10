@@ -11,12 +11,12 @@ config.server.workerManager.path = 'webgme-docker-worker-manager';
 config.server.workerManager.options = {
     //dockerode: null, // https://github.com/apocas/dockerode#getting-started
     network: 'bridge',
-    image: 'webgme-om-worker',
+    image: 'webgme-dss-worker',
     maxRunningContainers: 4,
     keepContainersAtFailure: true,
     // TODO: This option does not exist yet..
     plugins: ['SystemSimulator'],
 };
-
+config.server.port = 80;
 validateConfig(config);
 module.exports = config;

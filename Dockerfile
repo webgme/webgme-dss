@@ -4,7 +4,7 @@
 #
 # 1. Copy this file to the root of your webgme repository (a clean copy, no node_modules, blobstorage etc.)
 # 2. Build the image
-#     $ docker build -t webgme-om-worker .
+#     $ docker build -t webgme-dss-worker .
 
 # https://github.com/nodejs/docker-node/blob/25f26146ac5b9f74add731b0b078e34411ae5831/8/Dockerfile
 FROM node:carbon

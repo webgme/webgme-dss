@@ -12,11 +12,16 @@
   "writeAccessRequired": true,
   "configStructure": [
     {
-      "name": "runSimulation",
-      "displayName": "Run simulation",
-      "description": "Set to true to simulation the model on the server, if false it will return the Modelica code.",
-      "value": false,
-      "valueType": "boolean",
+      "name": "simulationTool",
+      "displayName": "Simulation Tool",
+      "description": "Which tool will run the simulation or if only code-generation will be done.",
+      "value": "Only Code Generation",
+      "valueType": "string",
+      "valueItems": [
+        "Only Code Generation",
+        "JModelica.org",
+        "OpenModelica"
+      ],
       "readOnly": false
     },
     {

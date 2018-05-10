@@ -17,7 +17,28 @@ print 'Compiled model loaded!'
 print 'Simulating model (this may take a while)...'
 res = model.simulate(final_time=<%-stopTime%>)
 
-# TODO: Handle the result properly based on res-variable
+res_info = {
+    'info': {
+        'name': '<%-modelName%>',
+        'description': ''
+    },
+    'variables': {},
+    'timeSeries': {}
+}
+
+for v_name in res.result_data.name:
+    if res.result_data.is_variable(v_name):
+        # FIXME: res.result_data.description(v_name) throws exception..
+        # What is the correct way of getting description?
+        res_info['variables'][v_name] = {
+            'comment': '',
+            'kind': 'variable',
+            'type': '',
+            'unit': '',
+            'displayUnit': ''
+        }
+        res_info['timeSeries'][v_name] = res[v_name].tolist()
+
 import json
 with open('<%-modelName%>_res.json', 'w') as outfile:
     json.dump({}, outfile)

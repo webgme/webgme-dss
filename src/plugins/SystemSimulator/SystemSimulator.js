@@ -405,6 +405,7 @@ define([
             `${modelName}_res.csv`,
             `${modelName}.mo`,
             `simulate.mos`,
+            `simulate.py`,
         ]
 
         return fs.readdir(simOutputDir)

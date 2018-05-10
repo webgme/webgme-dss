@@ -26,6 +26,8 @@ res_info = {
     'timeSeries': {}
 }
 
+csv_lines = [[] for x in xrange(len(res['time']) + 1)]
+
 for v_name in res.result_data.name:
     if res.result_data.is_variable(v_name):
         # FIXME: res.result_data.description(v_name) throws exception..
@@ -39,9 +41,16 @@ for v_name in res.result_data.name:
         }
         res_info['timeSeries'][v_name] = res[v_name].tolist()
 
+        csv_lines[0].append(v_name)
+        cnt = 1
+        for t_val in res[v_name]:
+            csv_lines[cnt].append(repr(t_val))
+            cnt += 1
+
 import json
 with open('<%-modelName%>_res.json', 'w') as outfile:
     json.dump(res_info, outfile)
 
 with open('<%-modelName%>_res.csv', 'w') as outfile:
-    outfile.write('hello')
+    for csv_line in csv_lines:
+        outfile.write(','.join(csv_line) + '\n')

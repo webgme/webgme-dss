@@ -41,7 +41,7 @@ for v_name in res.result_data.name:
 
 import json
 with open('<%-modelName%>_res.json', 'w') as outfile:
-    json.dump({}, outfile)
+    json.dump(res_info, outfile)
 
 with open('<%-modelName%>_res.csv', 'w') as outfile:
     outfile.write('hello')

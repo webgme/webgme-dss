@@ -66,7 +66,8 @@ define([
             let componentData = {
                 URI: '',
                 name: '',
-                parameters: {}
+                parameters: {},
+                modifiers: ''
             };
 
             // 5) Extract the data we need from the components.
@@ -75,7 +76,11 @@ define([
 
             core.getAttributeNames(node).forEach(attrName => {
                 if (attrName !== 'name' && !core.getAttributeMeta(node, attrName).readonly) {
-                    componentData.parameters[attrName] = core.getAttribute(node, attrName);
+                    if (attrName === 'modifiers') {
+                        componentData.modifiers = core.getAttribute(node, attrName) || '';
+                    } else {
+                        componentData.parameters[attrName] = core.getAttribute(node, attrName);
+                    }
                 }
             });
             // 6) Push the data to the components array.
@@ -136,11 +141,17 @@ define([
                         params.map((p, idx) => {
                             moFile += `${p} = ${data.parameters[p]}, `;
                             if (idx === params.length -1) {
-                                moFile = moFile.slice(0, -2);
+                                if (data.modifiers) {
+                                    moFile += data.modifiers;
+                                } else {
+                                    moFile = moFile.slice(0, -2);
+                                }
                             }
                         });
 
                         moFile += ')';
+                    } else if (data.modifiers) {
+                        moFile += `(${data.modifiers})`;
                     }
 
                     moFile += ';';

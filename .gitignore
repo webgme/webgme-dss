@@ -37,9 +37,6 @@ simres_example.json
 
 **/*.pyc
 
-# Temporary
-package-lock.json
-
 /src/common/comp_flat.json
 /src/common/comp_stats.json
 

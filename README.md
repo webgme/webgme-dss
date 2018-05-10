@@ -49,7 +49,7 @@ It will print out the url (by default localhost:8888)
 For a full deployment you'll need nodejs, mongodb and docker.
 
  1. clone this repo `git clone https://github.com/webgme/webgme-dss.git`
- 2. build the docker worker image `docker build -t webgme-om-worker .`
+ 2. build the docker worker image `docker build -t webgme-dss-worker .` for OpenModelica or `docker build -f DockerfileJMod -t webgme-dss-worker .`
  3. build the front-end (`npm install`) `npm run build`
  4. before starting server make sure to use `config/config.dockerworker.js` via the env. var `NODE_ENV=dockerworker` (alternatively create a config on top of it)
 

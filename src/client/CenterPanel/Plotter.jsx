@@ -46,7 +46,7 @@ class Plotter extends Component {
                         marginBottom: 15,
                     }}
                 >
-                    <XAxis dataKey="time"/>
+                    <XAxis dataKey="time" scale="linear"/>
                     <YAxis/>
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip/>

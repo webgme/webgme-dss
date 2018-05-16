@@ -91,10 +91,12 @@ export default class App extends Component {
 
             switch (window.gmeClient.gmeConfig.plugin.SystemSimulator.simulationTool) {
                 case 'JModelica.org':
-                    result = ' runs JModelica.org on the backend.';
+                    result = ' runs JModelica.org on the backend. Make sure to read the license' +
+                        ' on their website before simulating any models.';
                     break;
                 case 'OpenModelica':
-                    result = ' runs OpenModelica on the backend.';
+                    result = ' runs OpenModelica on the backend. Make sure to read the license' +
+                        ' on their website before simulating any models.';
                     break;
                 default:
                     break;
@@ -134,7 +136,7 @@ export default class App extends Component {
                                     }}
                                     >WebGME Dynamic Systems Studio is a graphical editor for Modelica<sup>®</sup> with
                                         simulation support using <a style={{color: '#8e9def'}} href="https://jmodelica.org/">JModelica.org </a>
-                                        or <a style={{color: '#8e9def'}} href="https://openmodelica.org/">OpenModelica</a>. This current deployment
+                                        or <a style={{color: '#8e9def'}} href="https://openmodelica.org/">OpenModelica</a>. This deployment
                                         {this.getSimulationToolDesc()}
                                     </p>
                                 </header>

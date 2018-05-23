@@ -3,7 +3,6 @@ FROM michaelwetter/ubuntu-1604_jmodelica_trunk:latest
 
 MAINTAINER Patrik Meijer <patrik.meijer@vanderbilt.edu>
 
-# FIXME: docker-worker-manager should allow for a mapping between plugin-name and worker -> webgme-jm-worker.
 # docker build -f DockerfileJMod -t webgme-dss-worker .
 
 ######################## NVM/NODE/NPM ########################

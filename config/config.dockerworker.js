@@ -14,9 +14,14 @@ config.server.workerManager.options = {
     image: 'webgme-dss-worker',
     maxRunningContainers: 4,
     keepContainersAtFailure: true,
-    // TODO: This option does not exist yet..
-    plugins: ['SystemSimulator'],
+    pluginToImage: {
+        DomainSelector: null,
+        ModelCheck: null,
+        ModelicaCodeGenerator: null,
+        ModelicaDiff: null,
+        SeedCreator: null
+    },
 };
-config.server.port = 80;
+
 validateConfig(config);
 module.exports = config;

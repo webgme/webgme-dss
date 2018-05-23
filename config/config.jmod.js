@@ -7,5 +7,4 @@ let config = require('./config.dockerworker'),
 
 
 config.plugin.SystemSimulator.simulationTool = 'JModelica.org';
-config.server.port = 80;
 module.exports = config;

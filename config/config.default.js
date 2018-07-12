@@ -5,7 +5,7 @@
 const config = require('./config.webgme');
 const path = require('path');
 
-config.client.appDir = './build';
+config.client.appDir = './public';
 config.mongo.uri = 'mongodb://127.0.0.1:27017/multi';
 config.seedProjects.defaultProject = 'Modelica';
 config.plugin.allowServerExecution = true;

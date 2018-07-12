@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import superagent from 'superagent';
 
 // Own modules

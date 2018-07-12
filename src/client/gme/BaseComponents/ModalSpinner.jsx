@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'material-ui/Modal';
-import {LinearProgress} from 'material-ui/Progress';
+import Modal from '@material-ui/core/Modal';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 export default class ModalSpinner extends Component {
     static propTypes = {

@@ -3,20 +3,19 @@ import PropTypes from 'prop-types';
 
 import Q from 'q';
 
-import Dialog, {
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-} from 'material-ui/Dialog';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import moment from 'moment';
-import Button from 'material-ui/Button';
-import Badge from 'material-ui/Badge';
-import IconButton from 'material-ui/IconButton';
-import Visibility from 'material-ui-icons/Visibility';
-import PlayArrow from 'material-ui-icons/PlayArrow';
-import Grid from 'material-ui/Grid';
-import Tooltip from 'material-ui/Tooltip';
-import Paper from 'material-ui/Paper';
+import Button from '@material-ui/core/Button';
+import Badge from '@material-ui/core/Badge';
+import IconButton from '@material-ui/core/IconButton';
+import Visibility from '@material-ui/icons/Visibility';
+import PlayArrow from '@material-ui/icons/PlayArrow';
+import Grid from '@material-ui/core/Grid';
+import Tooltip from '@material-ui/core/Tooltip';
+import Paper from '@material-ui/core/Paper';
 import getUserIconSource from '../../gme/utils/getUserIconSource';
 
 import DiffViewer from '../../Dialogs/DiffViewer';

@@ -5,9 +5,9 @@ import {connect} from 'react-redux';
 import {DragSource} from 'react-dnd';
 import {Samy} from 'react-samy-svg';
 
-import IconButton from 'material-ui/IconButton';
-import DeleteIcon from 'material-ui-icons/Delete';
-import ModeEdit from 'material-ui-icons/ModeEdit';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ModeEdit from '@material-ui/icons/ModeEdit';
 
 import {DRAG_TYPES} from '../../CONSTANTS';
 import CanvasItemPort from './CanvasItemPort';

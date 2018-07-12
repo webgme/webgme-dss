@@ -2,10 +2,13 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
-import {withStyles} from 'material-ui/styles';
-import {LinearProgress} from 'material-ui/Progress';
-import Tooltip from 'material-ui/Tooltip';
-import List, {ListItem, ListItemText, ListItemSecondaryAction} from 'material-ui/List';
+import {withStyles} from '@material-ui/core/styles';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Tooltip from '@material-ui/core/Tooltip';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
 import getObjectSorter from '../gme/utils/getObjectSorter';
 

@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 
-import IconButton from 'material-ui/IconButton';
-import OpenInNew from 'material-ui-icons/OpenInNew';
-import AddCircle from 'material-ui-icons/AddCircle';
+import IconButton from '@material-ui/core/IconButton';
+import OpenInNew from '@material-ui/icons/OpenInNew';
+import AddCircle from '@material-ui/icons/AddCircle';
 
 import PortalWindow from '../gme/PortalWindow';
 import Plotter from './Plotter';

@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import IconButton from 'material-ui/IconButton';
-import ZoomIn from 'material-ui-icons/ZoomIn';
-import ZoomOut from 'material-ui-icons/ZoomOut';
-import Tooltip from 'material-ui/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import ZoomIn from '@material-ui/icons/ZoomIn';
+import ZoomOut from '@material-ui/icons/ZoomOut';
+import Tooltip from '@material-ui/core/Tooltip';
 import {setScale} from '../actions';
 
 const SCALES = [0.2, 0.3, 0.4, 0.6, 0.8, 1, 1.2, 1.5, 2, 3, 5];

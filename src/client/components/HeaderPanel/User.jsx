@@ -1,9 +1,10 @@
 /* globals window */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Button from 'material-ui/IconButton';
-import Menu, {MenuItem} from 'material-ui/Menu';
-import AccountCircle from 'material-ui-icons/AccountCircle';
+import Button from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 export default class User extends Component {
     static propTypes = {

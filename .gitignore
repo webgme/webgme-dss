@@ -44,7 +44,7 @@ simres_example.json
 deployment/.vagrant
 deployment/*.log
 
-public/app.build.js
-public/app.build.js.map
-public/app.build.css
-public/app.build.css.map
+public/**/*.js
+public/**/*.css
+public/**/*.svg
+public/**/*.map

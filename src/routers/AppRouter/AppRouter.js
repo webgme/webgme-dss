@@ -13,7 +13,7 @@ var fs = require('fs'),
     path = require('path'),
     express = require('express'),
     router = express.Router(),
-    DIST_DIR = path.join(__dirname, '..', '..', '..', 'build');
+    DIST_DIR = path.join(__dirname, '..', '..', '..', 'public');
 
 /**
  * Called when the server is created but before it starts to listening to incoming requests.

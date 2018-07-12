@@ -1,5 +1,4 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     devtool: 'source-map',
@@ -8,11 +7,8 @@ module.exports = {
         filename: 'app.build.js',
         path: path.join(__dirname, 'public'),
     },
-    plugins: [
-        new ExtractTextPlugin('app.build.css'),
-    ],
+    plugins: [],
     module: {
-
         rules: [
             { // This is needed to load the requirejs webgme plugins (it falls back to node-require).
                 parser: {
@@ -28,16 +24,16 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract({
-                    use: 'css-loader',
-                }),
+                use: [
+                    'style-loader',
+                    'css-loader',
+                ],
             },
             {
-                test: /\.svg/,
-                use: {
-                    loader: 'svg-url-loader',
-                    options: {}
-                }
+                test: /\.(ttf|eot|svg)(\?v=\d\.\d\.\d)?$/,
+                use: [
+                    'file-loader',
+                ],
             }
         ],
     },

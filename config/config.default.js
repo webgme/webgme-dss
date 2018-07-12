@@ -15,7 +15,7 @@ config.plugin.SystemSimulator = {
 
 // Listing:     /assets/decoratorSVGList.json
 // Example:     /assets/DecoratorSVG/Modelica.Electrical.Analog.Basic.Ground.svg
-config.visualization.svgDirs = [path.join(__dirname, '../public/assets/DecoratorSVG')];
+config.visualization.svgDirs = [path.join(__dirname, '../assets/DecoratorSVG')];
 
 config.authentication.enable = true;
 config.authentication.allowGuests = true;

@@ -10,7 +10,7 @@ config.mongo.uri = 'mongodb://127.0.0.1:27017/multi';
 config.seedProjects.defaultProject = 'Modelica';
 config.plugin.allowServerExecution = true;
 config.plugin.SystemSimulator = {
-    simulationTool: 'Only Code Generation',
+    simulationTool: 'OpenModelica',
 };
 
 // Listing:     /assets/decoratorSVGList.json

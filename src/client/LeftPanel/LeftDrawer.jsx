@@ -82,17 +82,9 @@ class LeftDrawer extends Component {
         hide: PropTypes.func.isRequired,
     };
 
-    state = {
-        showSimulator: false,
-        showChecker: false,
-        showDomainSelector: false,
-        showHistory: false,
-        checkResult: null,
-    };
-
     constructor(props) {
         super(props);
-        const gmeConfig = this.props.gmeClient.gmeConfig;
+        const {gmeConfig} = this.props.gmeClient;
         this.SystemSimulatorMetadata = JSON.parse(JSON.stringify(SystemSimulatorMetadata));
 
         this.SystemSimulatorMetadata.configStructure.forEach((configDesc) => {
@@ -103,6 +95,14 @@ class LeftDrawer extends Component {
         });
     }
 
+    state = {
+        showSimulator: false,
+        showChecker: false,
+        showDomainSelector: false,
+        showHistory: false,
+        checkResult: null,
+    };
+
     onUpdateDomains = (data) => {
         const {gmeClient} = this.props;
 
@@ -112,8 +112,6 @@ class LeftDrawer extends Component {
             // Cancelled
             return;
         }
-
-        console.log('update data:', data);
 
         const path = [
             window.location.origin,

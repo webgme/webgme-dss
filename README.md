@@ -19,11 +19,6 @@ Next install the node_modules (defined as dependencies in `package.json`).
 npm install
 ```
 
-You'll need to build the distribution files (will be put in /build) initially and after there's been changes to the source code.
-```
-npm run build
-```
-
 ##### Starting the application
 Start mongod locally at the default port (27017) by default the models will be put inside `multi` you can configure this
 in `./config/config.default.js` which is the [configuration for webgme](https://github.com/webgme/webgme-engine/blob/master/config/README.md).
@@ -50,31 +45,11 @@ For a full deployment you'll need nodejs, mongodb and docker.
 
  1. clone this repo `git clone https://github.com/webgme/webgme-dss.git`
  2. build the docker worker image `docker build -t webgme-dss-worker .` for OpenModelica or `docker build -f DockerfileJMod -t webgme-dss-worker .`
- 3. build the front-end (`npm install`) `npm run build`
+ 3. build the front-end (`npm install`) `npm run webpack`
  4. before starting server make sure to use `config/config.dockerworker.js` via the env. var `NODE_ENV=dockerworker` (alternatively create a config on top of it)
 
 
 ## Developers
-
-The front-end app can run both with webgme as backend and with a mock. Note that both these can run at the same time.
-
-### Building app and run with webgme
-This requires that mongodb is running and the webgme server can access it.
-
-- Build distribution (TODO: How to build quicker?)
-    - `npm run build`
-- Start server
-    - `npm start`
-- View app in browser
-    - [localhost:8888](http://localhost:8888)
-
-### Running app with mock webgme
-
-- Start build watcher
-    - `npm mock`
-- View app in browser
-    - [localhost:3000](http://localhost:3000)
-    
 
 ### Creating the Modelica Seed
  1. Follow the instructions in /scripts/py_modelica_exporter/README.md to generate `components.json`

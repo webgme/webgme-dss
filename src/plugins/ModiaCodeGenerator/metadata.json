@@ -1,0 +1,14 @@
+{
+  "id": "ModiaCodeGenerator",
+  "name": "Modia Code-Generator",
+  "version": "0.1.0",
+  "description": "Generate code for the https://github.com/ModiaSim/Modia.jl",
+  "icon": {
+    "class": "glyphicon glyphicon-cog",
+    "src": ""
+  },
+  "disableServerSideExecution": false,
+  "disableBrowserSideExecution": false,
+  "writeAccessRequired": false,
+  "configStructure": []
+}

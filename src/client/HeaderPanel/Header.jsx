@@ -16,9 +16,11 @@ import SyncIndicator from './SyncIndicator';
 import Zoom from './Zoom';
 import User from '../containers/HeaderPanel/User';
 import SaveDialog from '../Dialogs/SaveDialog';
+import ModiaDialog from '../Dialogs/ModiaDialog';
 
 const mapStateToProps = state => ({
     modelingView: state.modelingView,
+    activeNode: state.activeNode,
 });
 
 const mapDispatchToProps = (/* dispatch */) => ({});
@@ -28,22 +30,39 @@ class Header extends Component {
         gmeClient: PropTypes.object.isRequired,
         projectName: PropTypes.string.isRequired,
         modelingView: PropTypes.bool.isRequired,
+        activeNode: PropTypes.string.isRequired,
     };
 
-
     state = {
-        saving: false,
+        showSave: false,
+        showModia: false,
+    };
+
+    showModia = () => {
+
     };
 
     render() {
-        const {projectName, modelingView, gmeClient} = this.props;
-        const {saving} = this.state;
+        const {
+            projectName,
+            modelingView,
+            gmeClient,
+            activeNode,
+        } = this.props;
+        const {showSave, showModia} = this.state;
 
         return (
             <AppBar color={modelingView ? 'primary' : 'default'}>
                 <Toolbar style={style}>
                     <SyncIndicator gmeClient={gmeClient}/>
-                    <Typography variant="title" color="inherit" noWrap>
+                    <Typography
+                        variant="title"
+                        color="inherit"
+                        noWrap
+                        onClick={() => {
+                            this.setState({showModia: true});
+                        }}
+                    >
                         {projectName}
                     </Typography>
                     <Tooltip
@@ -58,7 +77,7 @@ class Header extends Component {
                         <IconButton>
                             <Save
                                 onClick={() => {
-                                    this.setState({saving: true});
+                                    this.setState({showSave: true});
                                 }}
                             />
                         </IconButton>
@@ -67,11 +86,20 @@ class Header extends Component {
                     <Typography style={{flex: 1}}/>
                     <User gmeClient={gmeClient}/>
                 </Toolbar>
-                {saving ?
+                {showSave ?
                     <SaveDialog
                         gmeClient={gmeClient}
                         onClose={() => {
-                            this.setState({saving: false});
+                            this.setState({showSave: false});
+                        }}
+                    />
+                    : null}
+                {showModia ?
+                    <ModiaDialog
+                        gmeClient={gmeClient}
+                        nodeId={activeNode}
+                        onClose={() => {
+                            this.setState({showModia: false});
                         }}
                     />
                     : null}

@@ -23,7 +23,6 @@ class SelectorCanvasItem extends Component {
         activeNode: PropTypes.string.isRequired, // This is not the same as the state.activeNode..
         scale: PropTypes.number.isRequired,
         eventManager: PropTypes.object.isRequired,
-        isDragging: PropTypes.func.isRequired,
         variables: PropTypes.arrayOf(PropTypes.string).isRequired,
     };
 
@@ -281,7 +280,6 @@ class SelectorCanvasItem extends Component {
 
     boxRender = () => {
         const {
-            isDragging,
             scale,
             eventManager,
             activeNode,
@@ -339,7 +337,7 @@ class SelectorCanvasItem extends Component {
         const content = (
             <div
                 style={{
-                    opacity: isDragging ? 0.3 : 0.99,
+                    opacity: 0.99,
                     position: 'absolute',
                     top: position.y * scale,
                     left: position.x * scale,
@@ -391,6 +389,7 @@ class SelectorCanvasItem extends Component {
 
             return [(
                 <div
+                    key={`${activeNode}-handler`}
                     style={{
                         position: 'absolute',
                         top: midpoint.y - 20,

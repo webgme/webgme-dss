@@ -52,6 +52,7 @@
     "fs-extra": "^5.0.0",
     "immutability-helper": "^2.6.4",
     "moment": "^2.20.1",
+    "mongodb": "^2.2.35",
     "prop-types": "^15.6.0",
     "q": "^1.5.1",
     "quill-delta": "^3.6.2",

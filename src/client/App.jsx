@@ -20,6 +20,28 @@ import ModalSpinner from './gme/BaseComponents/ModalSpinner';
 
 import {setCurrentUser, setIdToDisplayName} from './actions';
 
+function getSimulationToolDesc() {
+    let result = ' only supports code generation.';
+    if (typeof window.gmeClient !== 'undefined' &&
+        typeof window.gmeClient.gmeConfig.plugin !== 'undefined' &&
+        typeof window.gmeClient.gmeConfig.plugin.SystemSimulator !== 'undefined') {
+        switch (window.gmeClient.gmeConfig.plugin.SystemSimulator.simulationTool) {
+            case 'JModelica.org':
+                result = ' runs JModelica.org on the backend. Make sure to read the license' +
+                    ' on their website before simulating any models.';
+                break;
+            case 'OpenModelica':
+                result = ' runs OpenModelica on the backend. Make sure to read the license' +
+                    ' on their website before simulating any models.';
+                break;
+            default:
+                break;
+        }
+    }
+
+    return result;
+}
+
 const theme = createMuiTheme({
     palette: {
         type: 'light', // dark
@@ -50,9 +72,9 @@ export default class App extends Component {
 
                     superagent.get('/api/users')
                         .query({displayName: true})
-                        .end((err, usersMapRes) => {
-                            if (err) {
-                                console.error(err);
+                        .end((err2, usersMapRes) => {
+                            if (err2) {
+                                console.error(err2);
                                 return;
                             }
 
@@ -81,29 +103,6 @@ export default class App extends Component {
     stateChange = () => {
         const newState = store.getState();
         this.setState({waiting: newState.systemWaiting});
-    };
-
-    getSimulationToolDesc() {
-        let result = ' only supports code generation.';
-        if (typeof window.gmeClient !== 'undefined' &&
-            typeof window.gmeClient.gmeConfig.plugin !== 'undefined' &&
-            typeof window.gmeClient.gmeConfig.plugin.SystemSimulator !== 'undefined') {
-
-            switch (window.gmeClient.gmeConfig.plugin.SystemSimulator.simulationTool) {
-                case 'JModelica.org':
-                    result = ' runs JModelica.org on the backend. Make sure to read the license' +
-                        ' on their website before simulating any models.';
-                    break;
-                case 'OpenModelica':
-                    result = ' runs OpenModelica on the backend. Make sure to read the license' +
-                        ' on their website before simulating any models.';
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        return result;
     };
 
     render() {
@@ -135,9 +134,16 @@ export default class App extends Component {
                                         fontSize: 14,
                                     }}
                                     >WebGME Dynamic Systems Studio is a graphical editor for Modelica<sup>®</sup> with
-                                        simulation support using <a style={{color: '#8e9def'}} href="https://jmodelica.org/">JModelica.org </a>
-                                        or <a style={{color: '#8e9def'}} href="https://openmodelica.org/">OpenModelica</a>. This deployment
-                                        {this.getSimulationToolDesc()}
+                                        simulation support using
+                                        <a
+                                            style={{color: '#8e9def'}}
+                                            href="https://jmodelica.org/"
+                                        > JModelica.org
+                                        </a> or <a
+                                            style={{color: '#8e9def'}}
+                                            href="https://openmodelica.org/"
+                                        >OpenModelica
+                                        </a>. This deployment {getSimulationToolDesc()}
                                     </p>
                                 </header>
                                 <div style={{

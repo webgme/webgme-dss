@@ -64,7 +64,7 @@ class CanvasItem extends Component {
         activateAttributeDrawer: PropTypes.func.isRequired,
         selection: PropTypes.arrayOf(PropTypes.string).isRequired,
         connectDragSource: PropTypes.func.isRequired,
-        isDragging: PropTypes.func.isRequired,
+        isDragging: PropTypes.bool.isRequired,
     };
 
     // TODO we need to gather the children info (new base class maybe)
@@ -504,6 +504,7 @@ class CanvasItem extends Component {
 
             return [(
                 <div
+                    key={`${activeNode}-handler`}
                     style={{
                         position: 'absolute',
                         top: midpoint.y - 20,

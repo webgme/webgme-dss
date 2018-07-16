@@ -78,11 +78,12 @@ class SyncIndicator extends Component {
     }
 
     render() {
+        const {gmeClient} = this.props;
         const {showInSync} = this.state;
         // const inSync = status === this.STATUS.SYNC;
 
         return (
-            <Link to="/" style={{textDecoration: 'none'}}>
+            <Link to={`${gmeClient.mountedPath}/`} style={{textDecoration: 'none'}}>
                 <img
                     src="/img/webgme-icon.png"
                     alt="logo"

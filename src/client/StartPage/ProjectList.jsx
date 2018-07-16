@@ -28,6 +28,7 @@ class ProjectList extends Component {
     static propTypes = {
         projects: PropTypes.arrayOf(PropTypes.object),
         classes: PropTypes.object.isRequired,
+        gmeClient: PropTypes.object.isRequired,
     };
 
     static defaultProps = {
@@ -35,7 +36,7 @@ class ProjectList extends Component {
     };
 
     render() {
-        const {projects, classes} = this.props;
+        const {projects, classes, gmeClient} = this.props;
 
         let content = (
             <div style={{
@@ -71,7 +72,7 @@ class ProjectList extends Component {
                                         >
                                             <img
                                                 alt={domainUri}
-                                                src={`/assets/DecoratorSVG/${domainUri}.mini.png`}
+                                                src={`${gmeClient.mountedPath}/assets/DecoratorSVG/${domainUri}.mini.png`}
                                                 className={classes.domainBadge}
                                             />
                                         </Tooltip>));
@@ -80,7 +81,7 @@ class ProjectList extends Component {
                             return (
                                 <Link
                                     key={project._id}
-                                    to={`/p/${project.owner}/${project.name}`}
+                                    to={`${gmeClient.mountedPath}/p/${project.owner}/${project.name}`}
                                     style={{textDecoration: 'none'}}
                                 >
                                     <ListItem button>

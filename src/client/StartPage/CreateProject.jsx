@@ -99,13 +99,13 @@ class CreateProject extends Component {
                 } else {
                     // console.log(result);
                     const [owner, name] = result.body.projectId.split('+');
-                    history.push(`/p/${owner}/${name}`);
+                    history.push(`${gmeClient.mountedPath}/p/${owner}/${name}`);
                 }
             });
     };
 
     render() {
-        const {projects, classes} = this.props;
+        const {projects, classes, gmeClient} = this.props;
 
         const cards = TEMPLATE_PROJECTS.map((seedInfo) => {
             const {infoUrl} = seedInfo;
@@ -149,7 +149,7 @@ class CreateProject extends Component {
                     <Card>
                         <CardMedia
                             className={classes.media}
-                            image={seedInfo.imageUrl}
+                            image={`${gmeClient.mountedPath}/${seedInfo.imageUrl}`}
                             title={seedInfo.title}
                         />
                         <CardContent className={classes.cardContent}>

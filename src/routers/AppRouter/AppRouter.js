@@ -12,6 +12,7 @@
 var fs = require('fs'),
     path = require('path'),
     express = require('express'),
+    ejs = require('ejs'),
     router = express.Router(),
     DIST_DIR = path.join(__dirname, '..', '..', '..', 'public');
 
@@ -47,13 +48,15 @@ function initialize(middlewareOpts) {
     router.use('*', ensureAuthenticated);
 
     router.get('/:owner/:name', (req, res) => {
-        fs.readFile(path.join(DIST_DIR, 'index.html'), 'utf8', function(err, indexTemplate) {
+        fs.readFile(path.join(DIST_DIR, 'index.html'), 'utf8', (err, indexTemplate) => {
             if (err) {
                 logger.error(err);
                 res.sendStatus(404);
             } else {
                 res.contentType('text/html');
-                res.send(indexTemplate);
+                res.send(ejs.render(indexTemplate, {
+                    mountedPath: req.header('X-Proxy-Mounted-Path') || '',
+                }));
             }
         });
     });

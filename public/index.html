@@ -9,9 +9,9 @@
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="<%=mountedPath%>/manifest.json">
     <link rel="shortcut icon" href="<%=mountedPath%>/favicon.ico">
-    <script src="gme-dist/webgme.classes.build.js">
+    <script src="<%=mountedPath%>/gme-dist/webgme.classes.build.js">
     </script>
     <title>WebGME-DSS</title>
   </head>
@@ -20,7 +20,7 @@
       You need to enable JavaScript to run this app.
     </noscript>
     <div id="root"></div>
-    <script src="app.build.js">
+    <script src="<%=mountedPath%>/app.build.js">
     </script>
   </body>
 </html>

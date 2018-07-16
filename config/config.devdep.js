@@ -14,7 +14,7 @@
  * 2) The webgme-server runs inside a docker container
  * 3) JModelica.org is a docker-worker
  */
-let config = require('./config.jmod'),
+let config = require('./config.default'),
     path = require('path');
 
 config.blob.fsDir = '/dockershare/blob-local-storage';

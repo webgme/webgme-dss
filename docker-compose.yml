@@ -12,8 +12,6 @@ services:
     build: .
     depends_on:
       - mongo
-    networks:
-      - bridge
     environment:
       - NODE_ENV=devdep
       - MONGO_IP=mongo
@@ -28,12 +26,11 @@ services:
       - 27017:27017
     volumes:
       - $HOME/dockershare/db:/data/db
-  webgme-dss-worker:
-    build:
-      context: .
-      dockerfile: DockerfileJMod
-    command: ["cat", "/dev/null"] # A no-op command so the image is built.
-    networks:
-      - bridge
-    environment:
-      - NODE_ENV=devdep
+#  webgme-dss-worker:
+#    build:
+#      context: .
+#      dockerfile: DockerfileJMod
+#    command: ["cat", "/dev/null"] # A no-op command so the image is built.
+#    network_mode: bridge
+#    environment:
+#      - NODE_ENV=devdep

@@ -10,8 +10,8 @@
 FROM node:carbon
 MAINTAINER Patrik Meijer <patrik.meijer@vanderbilt.edu>
 
-RUN apt-get update \
-    && apt-get install -y git
+#RUN apt-get update \
+#    && apt-get install -y git
 
 RUN mkdir /usr/app
 

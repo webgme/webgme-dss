@@ -85,7 +85,7 @@ class SyncIndicator extends Component {
         return (
             <Link to={`${gmeClient.mountedPath}/`} style={{textDecoration: 'none'}}>
                 <img
-                    src="/img/webgme-icon.png"
+                    src={`${gmeClient.mountedPath}/img/webgme-icon.png`}
                     alt="logo"
                     style={{
                         height: 40,

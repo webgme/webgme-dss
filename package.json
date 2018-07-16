@@ -76,7 +76,7 @@
     "superagent": "^3.8.2",
     "url-loader": "0.6.2",
     "webgme-docker-worker-manager": "0.2.0",
-    "webgme-engine": "2.20.2",
+    "webgme-engine": "webgme/webgme-engine#mounted-path-dist-fix",
     "webgme-user-management-page": "0.4.1",
     "webpack": "3.11.0"
   },

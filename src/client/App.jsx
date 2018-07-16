@@ -60,17 +60,23 @@ export default class App extends Component {
 
     componentDidMount() {
         store.subscribe(this.stateChange);
+        const mountElm = document.getElementById('mounted-path');
+        let mountedPath = '';
+        if (mountElm && mountElm.getAttribute('content')) {
+            mountedPath = mountElm.getAttribute('content');
+        }
 
         window.onGMEInit = () => {
             window.gmeClient = new window.GME.classes.Client(window.GME.gmeConfig);
-            superagent.get('/api/user')
+            window.gmeClient.mountedPath = mountedPath;
+            superagent.get(mountedPath + '/api/user')
                 .end((err, userRes) => {
                     if (err) {
                         console.error(err);
                         return;
                     }
 
-                    superagent.get('/api/users')
+                    superagent.get(mountedPath + '/api/users')
                         .query({displayName: true})
                         .end((err2, usersMapRes) => {
                             if (err2) {
@@ -118,7 +124,7 @@ export default class App extends Component {
                 <div style={{backgroundColor: 'white'}}>
                     <Route
                         exact
-                        path="/"
+                        path={`${window.gmeClient.mountedPath}/`}
                         render={() => (
                             <div>
                                 <header className="App-header">
@@ -159,7 +165,7 @@ export default class App extends Component {
                         )}
                     />
                     <Route
-                        path="/p/:owner/:name"
+                        path={`${window.gmeClient.mountedPath}/p/:owner/:name`}
                         render={({match}) => (
                             <Project
                                 projectId={`${match.params.owner}+${match.params.name}`}

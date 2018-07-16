@@ -115,6 +115,7 @@ class LeftDrawer extends Component {
 
         const path = [
             window.location.origin,
+            gmeClient.gmeConfig.mountedPath,
             gmeClient.gmeConfig.rest.components.DomainManager.mount,
             'updateProject',
         ].join('/');

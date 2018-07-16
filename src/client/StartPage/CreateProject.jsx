@@ -80,6 +80,7 @@ class CreateProject extends Component {
 
         const path = [
             window.location.origin,
+            gmeClient.mountedPath,
             gmeClient.gmeConfig.rest.components.DomainManager.mount,
             'createProject',
         ].join('/');

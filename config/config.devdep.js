@@ -22,4 +22,7 @@ config.blob.fsDir = '/dockershare/blob-local-storage';
 config.mongo.uri = 'mongodb://' + process.env.MONGO_IP + ':27017/multi';
 
 config.server.port = 80;
+
+config.plugin.ModiaCodeGenerator.enable = true;
+
 module.exports = config;

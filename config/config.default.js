@@ -13,6 +13,10 @@ config.plugin.SystemSimulator = {
     simulationTool: 'Only Code Generation',
 };
 
+config.plugin.ModiaCodeGenerator = {
+    enable: false,
+};
+
 // Listing:     /assets/decoratorSVGList.json
 // Example:     /assets/DecoratorSVG/Modelica.Electrical.Analog.Basic.Ground.svg
 config.visualization.svgDirs = [path.join(__dirname, '../assets/DecoratorSVG')];

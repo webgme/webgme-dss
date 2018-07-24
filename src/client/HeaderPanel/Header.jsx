@@ -60,7 +60,10 @@ class Header extends Component {
                         color="inherit"
                         noWrap
                         onClick={() => {
-                            this.setState({showModia: true});
+                            if (gmeClient.gmeConfig.plugin.ModiaCodeGenerator &&
+                                gmeClient.gmeConfig.plugin.ModiaCodeGenerator.enable) {
+                                this.setState({showModia: true});
+                            }
                         }}
                     >
                         {projectName}

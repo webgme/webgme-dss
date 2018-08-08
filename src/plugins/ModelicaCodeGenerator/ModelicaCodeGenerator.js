@@ -7,16 +7,25 @@
  * properties and methods visit %host%/docs/source/PluginBase.html.
  */
 
-define([
-    'plugin/PluginConfig',
-    'text!./metadata.json',
-    'plugin/PluginBase'
-], function (PluginConfig,
-             pluginMetadata,
-             PluginBase) {
-    'use strict';
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        define([
+            'plugin/PluginConfig',
+            'text!./metadata.json',
+            'plugin/PluginBase',
+        ], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory(
+            require('webgme-engine/src/plugin/PluginConfig'),
+            require('./metadata.json'),
+            require('webgme-engine/src/plugin/PluginBase'),
+        );
+    }
+}(function (PluginConfig,
+            pluginMetadata,
+            PluginBase) {
 
-    pluginMetadata = JSON.parse(pluginMetadata);
+    pluginMetadata = typeof pluginMetadata === 'string' ? JSON.parse(pluginMetadata) : pluginMetadata;
 
     /**
      * Initializes a new instance of ModelicaCodeGenerator.
@@ -51,69 +60,10 @@ define([
      *
      * @param {function(string, plugin.PluginResult)} callback - the result callback
      */
-    ModelicaCodeGenerator.prototype.main = function (callback) {
-        let self = this,
-            activeNode = this.activeNode,
-            core = this.core,
-            logger = this.logger,
-            modelJson = {
-                name: '',
-                components: [],
-                connections: []
-            };
+    ModelicaCodeGenerator.prototype.main = function main(callback) {
+        const {logger} = this;
 
-        function atComponent(nodes, node) {
-            let componentData = {
-                URI: '',
-                name: '',
-                parameters: {},
-                modifiers: ''
-            };
-
-            // 5) Extract the data we need from the components.
-            componentData.URI = core.getAttribute(node, 'ModelicaURI');
-            componentData.name = core.getAttribute(node, 'name');
-
-            core.getAttributeNames(node).forEach(attrName => {
-                if (attrName !== 'name' && !core.getAttributeMeta(node, attrName).readonly) {
-                    if (attrName === 'modifiers') {
-                        componentData.modifiers = core.getAttribute(node, attrName) || '';
-                    } else {
-                        componentData.parameters[attrName] = core.getAttribute(node, attrName);
-                    }
-                }
-            });
-            // 6) Push the data to the components array.
-            modelJson.components.push(componentData);
-        }
-
-        function atConnection(nodes, node) {
-            let connData = {
-                src: '',
-                dst: ''
-            };
-
-            // 7) Extract the data we need from connections.
-            let srcPath = core.getPointerPath(node, 'src');
-            let dstPath = core.getPointerPath(node, 'dst');
-
-            // 8) Only if both src and dst exist will the connection be accounted for
-            if (srcPath && dstPath) {
-                modelJson.connections.push(connData); // (since connData is a referenced data-type we can push here and modify below)
-                let srcNode = nodes[srcPath];
-                let dstNode = nodes[dstPath];
-
-                // 9) Since the ports are contained in components we extract the parents in
-                //    order to get the full modelica path to the port-instance.
-                let srcParent = core.getParent(srcNode);
-                let dstParent = core.getParent(dstNode);
-
-                connData.src = core.getAttribute(srcParent, 'name') + '.' + core.getAttribute(srcNode, 'name');
-                connData.dst = core.getAttribute(dstParent, 'name') + '.' + core.getAttribute(dstNode, 'name');
-            }
-        }
-
-        function getMoFileContent() {
+        function getMoFileContent(modelJson) {
             // TODO: This string concatenation should be changed (it's from the MIC class demo)..
             let moFile = 'model ' + modelJson.name;
             // 11) Using the modelJson data that we built up we extract the data for the modelica
@@ -134,13 +84,13 @@ define([
                     return 0;
                 })
                 .forEach((data) => {
-                    let params = Object.keys(data.parameters);
+                    const params = Object.keys(data.parameters);
                     moFile += '\n  ' + data.URI + ' ' + data.name;
                     if (params.length > 0) {
                         moFile += '(';
                         params.map((p, idx) => {
                             moFile += `${p} = ${data.parameters[p]}, `;
-                            if (idx === params.length -1) {
+                            if (idx === params.length - 1) {
                                 if (data.modifiers) {
                                     moFile += data.modifiers;
                                 } else {
@@ -155,7 +105,7 @@ define([
                     }
 
                     moFile += ';';
-            });
+                });
 
             moFile += '\nequation';
 
@@ -185,57 +135,126 @@ define([
         }
 
         // 1) Retrieve an object will all nodes in the subtree of activeNode
-        this.loadNodeMap(activeNode)
-            .then(function (nodes) {
-                for (let path in nodes) {
-                    logger.debug(core.getAttribute(nodes[path], 'name'));
-                }
-
-                modelJson.name = core.getAttribute(activeNode, 'name');
-
-                // 2) Get all the children paths of the active node
-                //    (these are the immediated children)
-                let childrenPaths = core.getChildrenPaths(activeNode);
-                logger.debug('Paths', childrenPaths);
-                let childNode;
-
-                // 3) Iterate of the paths and retrieve the node using the node
-                //    map from 1)
-                for (let i = 0; i < childrenPaths.length; i += 1) {
-                    childNode = nodes[childrenPaths[i]];
-                    // 4) Check the meta-type of the child-node and take action based on type.
-                    if (self.isMetaTypeOf(childNode, self.META.ComponentBase)) {
-                        logger.debug('Component:', core.getAttribute(childNode, 'name'));
-                        atComponent(nodes, childNode);
-                    } else if (self.isMetaTypeOf(childNode, self.META.ConnectionBase)) {
-                        logger.debug('Connection:', core.getAttribute(childNode, 'name'));
-                        atConnection(nodes, childNode);
-                    }
-                }
-
+        this.loadNodeMap(this.activeNode)
+            .then((nodes) => {
+                const modelJson = this.extractModelData(nodes);
                 // 10) We turn the data-structure into a string (indentation 2) and log it
                 logger.debug('modelJson', JSON.stringify(modelJson, null, 2));
-
-                let moFile = getMoFileContent();
-                self.moFile = moFile;
+                const moFile = getMoFileContent(modelJson);
+                this.moFile = moFile;
 
                 logger.debug('moFile', moFile);
 
                 // 12) Add the modelic file content as a file on the blobstorage.
-                return self.blobClient.putFile(modelJson.name + '.mo', moFile);
+                return this.blobClient.putFile(`${modelJson.name}.mo`, moFile);
             })
-            .then(function (metadataHash) {
+            .then((metadataHash) => {
                 logger.debug(metadataHash);
                 // 13) Link the uploaded file (using the hash) from the plugin result.
-                self.result.addArtifact(metadataHash);
-                self.result.setSuccess(true);
-                callback(null, self.result);
+                this.result.addArtifact(metadataHash);
+                this.result.setSuccess(true);
+                callback(null, this.result);
             })
-            .catch(function (err) {
+            .catch((err) => {
                 logger.error(err.stack);
-                callback(err, self.result);
+                callback(err, this.result);
             });
     };
 
+    ModelicaCodeGenerator.prototype.extractModelData = function extractModelData(nodes) {
+        const {
+            core,
+            META,
+            activeNode,
+            logger,
+        } = this;
+
+        const modelJson = {
+            name: '',
+            components: [],
+            connections: [],
+        };
+
+        function atComponent(node) {
+            const componentData = {
+                URI: '',
+                name: '',
+                parameters: {},
+                modifiers: '',
+            };
+
+            // 5) Extract the data we need from the components.
+            componentData.URI = core.getAttribute(node, 'ModelicaURI');
+            componentData.name = core.getAttribute(node, 'name');
+
+            core.getAttributeNames(node).forEach((attrName) => {
+                if (attrName !== 'name' && !core.getAttributeMeta(node, attrName).readonly) {
+                    if (attrName === 'modifiers') {
+                        componentData.modifiers = core.getAttribute(node, attrName) || '';
+                    } else {
+                        componentData.parameters[attrName] = core.getAttribute(node, attrName);
+                    }
+                }
+            });
+            // 6) Push the data to the components array.
+            modelJson.components.push(componentData);
+        }
+
+        function atConnection(node) {
+            const connData = {
+                src: '',
+                dst: '',
+            };
+
+            // 7) Extract the data we need from connections.
+            const srcPath = core.getPointerPath(node, 'src');
+            const dstPath = core.getPointerPath(node, 'dst');
+
+            // 8) Only if both src and dst exist will the connection be accounted for
+            if (srcPath && dstPath) {
+                // (since connData is a referenced data-type we can push here and modify below)
+                modelJson.connections.push(connData);
+                const srcNode = nodes[srcPath];
+                const dstNode = nodes[dstPath];
+
+                // 9) Since the ports are contained in components we extract the parents in
+                //    order to get the full modelica path to the port-instance.
+                const srcParent = core.getParent(srcNode);
+                const dstParent = core.getParent(dstNode);
+
+                connData.src = core.getAttribute(srcParent, 'name') + '.' + core.getAttribute(srcNode, 'name');
+                connData.dst = core.getAttribute(dstParent, 'name') + '.' + core.getAttribute(dstNode, 'name');
+            }
+        }
+
+        for (let path in nodes) {
+            logger.debug(core.getAttribute(nodes[path], 'name'));
+        }
+
+        modelJson.name = core.getAttribute(activeNode, 'name');
+
+        // 2) Get all the children paths of the active node
+        //    (these are the immediated children)
+        const childrenPaths = core.getChildrenPaths(activeNode);
+        logger.debug('Paths', childrenPaths);
+        let childNode;
+
+        // 3) Iterate of the paths and retrieve the node using the node
+        //    map from 1)
+        for (let i = 0; i < childrenPaths.length; i += 1) {
+            childNode = nodes[childrenPaths[i]];
+            // 4) Check the meta-type of the child-node and take action based on type.
+            if (core.isTypeOf(childNode, META.ComponentBase)) {
+                logger.debug('Component:', core.getAttribute(childNode, 'name'));
+                atComponent(childNode);
+            } else if (core.isTypeOf(childNode, META.ConnectionBase)) {
+                logger.debug('Connection:', core.getAttribute(childNode, 'name'));
+                atConnection(childNode);
+            }
+        }
+
+        return modelJson;
+    };
+
     return ModelicaCodeGenerator;
-});
+}));

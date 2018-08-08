@@ -43,3 +43,8 @@ simres_example.json
 # Vagrant
 deployment/.vagrant
 deployment/*.log
+
+public/**/*.js
+public/**/*.css
+public/**/*.svg
+public/**/*.map

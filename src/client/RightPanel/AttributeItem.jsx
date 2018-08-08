@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Input, {InputAdornment} from 'material-ui/Input';
-import {FormControl, FormControlLabel, FormHelperText, FormLabel} from 'material-ui/Form';
-import InvertColors from 'material-ui-icons/InvertColors';
-import InvertColorsOff from 'material-ui-icons/InvertColorsOff';
-import IconButton from 'material-ui/IconButton';
-import Select from 'material-ui/Select';
-import Switch from 'material-ui/Switch';
+import Input, {InputAdornment} from '@material-ui/core/Input';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormLabel from '@material-ui/core/FormLabel';
+import InvertColors from '@material-ui/icons/InvertColors';
+import InvertColorsOff from '@material-ui/icons/InvertColorsOff';
+import IconButton from '@material-ui/core/IconButton';
+import Select from '@material-ui/core/Select';
+import Switch from '@material-ui/core/Switch';
 import {GithubPicker} from 'react-color';
 
 export const AttributeTypes = {

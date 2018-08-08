@@ -1,9 +1,10 @@
 /* globals window */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Button from 'material-ui/IconButton';
-import Menu, {MenuItem} from 'material-ui/Menu';
-import AccountCircle from 'material-ui-icons/AccountCircle';
+import Button from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 export default class User extends Component {
     static propTypes = {
@@ -29,9 +30,10 @@ export default class User extends Component {
     };
 
     goToProfile = () => {
+        const {gmeClient} = this.props;
         const tempAnchor = window.document.createElement('a');
         tempAnchor.target = '_self';
-        tempAnchor.href = '/profile/home';
+        tempAnchor.href = `${gmeClient.mountedPath}/profile/home`;
         window.document.body.appendChild(tempAnchor);
         tempAnchor.click();
     };
@@ -40,7 +42,7 @@ export default class User extends Component {
         const {gmeClient} = this.props;
         const tempAnchor = window.document.createElement('a');
         tempAnchor.target = '_self';
-        tempAnchor.href = '/logout';
+        tempAnchor.href = `${gmeClient.mountedPath}/logout`;
         window.document.body.appendChild(tempAnchor);
         window.document.cookie = `${gmeClient.gmeConfig.authentication.jwt.cookieId}\
 =; expires=Thu, 01 Jan 1970 00:00:00 GMT`;

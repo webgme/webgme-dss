@@ -6,11 +6,12 @@ import {connect} from 'react-redux';
 import {DragDropContext} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
-import {LinearProgress} from 'material-ui/Progress';
-import BottomNavigation, {BottomNavigationAction} from 'material-ui/BottomNavigation';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 
-import EditMode from 'material-ui-icons/Edit';
-import MultilineChart from 'material-ui-icons/MultilineChart';
+import EditMode from '@material-ui/icons/Edit';
+import MultilineChart from '@material-ui/icons/MultilineChart';
 
 // Own modules
 import {setActiveNode, setSystemWaiting, toggleModelingView, toggleLeftDrawer, toggleRightDrawer} from './actions';

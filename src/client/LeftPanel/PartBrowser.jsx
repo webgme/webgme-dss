@@ -3,10 +3,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import ExpansionPanel, {ExpansionPanelDetails, ExpansionPanelSummary} from 'material-ui/ExpansionPanel';
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
-import {withTheme} from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {withTheme} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import {Treebeard} from 'react-treebeard';
 
 import SingleConnectedNode from '../gme/BaseComponents/SingleConnectedNode';

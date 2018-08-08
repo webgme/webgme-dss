@@ -11,7 +11,7 @@
     if (typeof define === 'function' && define.amd) {
         define([
             'plugin/PluginConfig',
-            '!text/.metadata.json',
+            'text!./metadata.json',
             'plugin/PluginBase',
             'q',
         ], factory);

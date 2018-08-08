@@ -10,8 +10,8 @@
 FROM node:carbon
 MAINTAINER Patrik Meijer <patrik.meijer@vanderbilt.edu>
 
-RUN apt-get update \
-    && apt-get install -y git
+#RUN apt-get update \
+#    && apt-get install -y git
 
 RUN mkdir /usr/app
 
@@ -20,7 +20,7 @@ WORKDIR /usr/app
 # copy app source
 ADD . /usr/app/
 
-# Install node-modules
-RUN npm install
+# Install node-modules (fixme: we should not run as sudo)
+RUN npm install --unsafe-perm
 
 CMD ["npm", "start"]

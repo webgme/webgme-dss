@@ -3,20 +3,19 @@ import PropTypes from 'prop-types';
 
 import Q from 'q';
 
-import Dialog, {
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-} from 'material-ui/Dialog';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import moment from 'moment';
-import Button from 'material-ui/Button';
-import Badge from 'material-ui/Badge';
-import IconButton from 'material-ui/IconButton';
-import Visibility from 'material-ui-icons/Visibility';
-import PlayArrow from 'material-ui-icons/PlayArrow';
-import Grid from 'material-ui/Grid';
-import Tooltip from 'material-ui/Tooltip';
-import Paper from 'material-ui/Paper';
+import Button from '@material-ui/core/Button';
+import Badge from '@material-ui/core/Badge';
+import IconButton from '@material-ui/core/IconButton';
+import Visibility from '@material-ui/icons/Visibility';
+import PlayArrow from '@material-ui/icons/PlayArrow';
+import Grid from '@material-ui/core/Grid';
+import Tooltip from '@material-ui/core/Tooltip';
+import Paper from '@material-ui/core/Paper';
 import getUserIconSource from '../../gme/utils/getUserIconSource';
 
 import DiffViewer from '../../Dialogs/DiffViewer';
@@ -168,17 +167,17 @@ export default class ProjectHistory extends Component {
             if (detailed || current || saveMsg) {
                 items.push((
                     <Paper
+                        key={commit._id}
                         style={{width: '100%', marginBottom: 4, backgroundColor: current ? 'aliceblue' : undefined}}
                         elevation={regularCommit ? 0 : 2}
                     >
                         <Grid
-                            key={commit._id}
                             container
                             wrap="wrap"
                             spacing={0}
                             style={{
                                 color: regularCommit ? 'grey' : 'black',
-                                minWidth: '400px',
+                                minWidth: '800px',
                                 minHeight: '50px',
                             }}
                             alignItems="center"
@@ -190,36 +189,37 @@ export default class ProjectHistory extends Component {
                                         .local()
                                         .format('dddd, MMMM Do YYYY, h:mm:ss a')}
                                 >
-                                    <Grid item>
-                                        <Badge
-                                            content={moment(when)
-                                                .fromNow()}
-                                        >
-                                            <img
-                                                style={{
-                                                    width: 18,
-                                                    height: 18,
-                                                    marginLeft: 6,
-                                                    marginRight: 4,
-                                                    opacity: regularCommit ? 0.6 : 1,
-                                                }}
-                                                src={getUserIconSource(commit.updater[0])}
-                                                alt={updaterName}
-                                            />
-
-                                            {updaterName}
-                                        </Badge>
-                                    </Grid>
+                                    <Badge badgeContent="">
+                                        <img
+                                            style={{
+                                                width: 18,
+                                                height: 18,
+                                                marginLeft: 6,
+                                                marginRight: 4,
+                                                opacity: regularCommit ? 0.6 : 1,
+                                            }}
+                                            src={getUserIconSource(commit.updater[0])}
+                                            alt="i"
+                                        />
+                                        {updaterName}
+                                    </Badge>
                                 </Tooltip>
                             </Grid>
                             <Grid
                                 item
-                                xs={8}
-                                style={{fontSize: regularCommit ? 12 : 16}}
+                                xs={2}
+                                style={{fontSize: 14}}
+                            >
+                                {moment(when).fromNow()}
+                            </Grid>
+                            <Grid
+                                item
+                                xs={7}
+                                style={{fontSize: regularCommit ? 12 : 14}}
                             >
                                 {saveMsg ? commit.message.substr(SAVE_PREFIX.length) : commit.message}
                             </Grid>
-                            <Grid item xs={2} zeroMinWidth>
+                            <Grid item xs={1} zeroMinWidth>
                                 <Tooltip id="revert-tooltip" title="Revert back to this">
                                     <IconButton
                                         style={{height: 22, width: 30, visibility: current ? 'hidden' : undefined}}
@@ -247,7 +247,7 @@ export default class ProjectHistory extends Component {
         });
 
         return (
-            <Dialog open>
+            <Dialog maxWidth="md" open>
                 <DialogTitle>
                     Project History
                 </DialogTitle>

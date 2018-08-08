@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import Drawer from 'material-ui/Drawer';
-import IconButton from 'material-ui/IconButton';
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
-import {withStyles} from 'material-ui/styles';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import {withStyles} from '@material-ui/core/styles';
 
 import AttributeEditor from './AttributeEditor';
 import AttributeEditorIcon from './AttributeEditorIcon';

@@ -3,20 +3,23 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import update from 'immutability-helper';
 
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
-import ErrorIcon from 'material-ui-icons/Error';
-import CheckIcon from 'material-ui-icons/Check';
-import ExpansionPanel, {ExpansionPanelDetails, ExpansionPanelSummary} from 'material-ui/ExpansionPanel';
-import Typography from 'material-ui/Typography';
-import {LinearProgress, CircularProgress} from 'material-ui/Progress';
-import IconButton from 'material-ui/IconButton';
-import Tooltip from 'material-ui/Tooltip';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ErrorIcon from '@material-ui/icons/Error';
+import CheckIcon from '@material-ui/icons/Check';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import ModeEdit from 'material-ui-icons/ModeEdit';
-import FileDownload from 'material-ui-icons/FileDownload';
-import Delete from 'material-ui-icons/Delete';
-import Description from 'material-ui-icons/Description';
-import ChromeReaderMode from 'material-ui-icons/ChromeReaderMode';
+import ModeEdit from '@material-ui/icons/ModeEdit';
+import FileDownload from '@material-ui/icons/FileDownload';
+import Delete from '@material-ui/icons/Delete';
+import Description from '@material-ui/icons/Description';
+import ChromeReaderMode from '@material-ui/icons/ChromeReaderMode';
 
 import {downloadBlobArtifact} from '../../gme/utils/saveUrlToDisk';
 import PlotVariableSelector from './PlotVariableSelector';

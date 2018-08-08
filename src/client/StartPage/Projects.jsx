@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import Grid from 'material-ui/Grid';
-// import Paper from 'material-ui/Paper';
-import Typography from 'material-ui/Typography';
+import Grid from '@material-ui/core/Grid';
+// import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 import ProjectList from './ProjectList';
 import CreateProject from './CreateProject';

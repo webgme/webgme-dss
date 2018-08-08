@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
-import logo from '../logo.svg';
-
 const MIN_SPIN_TIME = 800;
 
 class SyncIndicator extends Component {
@@ -80,13 +78,14 @@ class SyncIndicator extends Component {
     }
 
     render() {
+        const {gmeClient} = this.props;
         const {showInSync} = this.state;
         // const inSync = status === this.STATUS.SYNC;
 
         return (
-            <Link to="/" style={{textDecoration: 'none'}}>
+            <Link to={`${gmeClient.mountedPath}/`} style={{textDecoration: 'none'}}>
                 <img
-                    src={logo}
+                    src={`${gmeClient.mountedPath}/img/webgme-icon.png`}
                     alt="logo"
                     style={{
                         height: 40,

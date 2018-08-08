@@ -6,18 +6,18 @@ import {connect} from 'react-redux';
 
 import superagent from 'superagent';
 import classNames from 'classnames';
-import Drawer from 'material-ui/Drawer';
-import Divider from 'material-ui/Divider';
-import IconButton from 'material-ui/IconButton';
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
-import ChevronRightIcon from 'material-ui-icons/ChevronRight';
-import PlayCircleOutline from 'material-ui-icons/PlayCircleOutline';
-import CheckCircle from 'material-ui-icons/CheckCircle';
-import AddCircle from 'material-ui-icons/AddCircle';
-import Timeline from 'material-ui-icons/Timeline';
-import History from 'material-ui-icons/History';
-import {withStyles} from 'material-ui/styles';
-import green from 'material-ui/colors/green';
+import Drawer from '@material-ui/core/Drawer';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import PlayCircleOutline from '@material-ui/icons/PlayCircleOutline';
+import CheckCircle from '@material-ui/icons/CheckCircle';
+import AddCircle from '@material-ui/icons/AddCircle';
+import Timeline from '@material-ui/icons/Timeline';
+import History from '@material-ui/icons/History';
+import {withStyles} from '@material-ui/core/styles';
+import green from '@material-ui/core/colors/green';
 
 import SystemSimulatorMetadata from '../../plugins/SystemSimulator/metadata.json';
 import ModelCheckMetadata from '../../plugins/ModelCheck/metadata.json';
@@ -82,17 +82,9 @@ class LeftDrawer extends Component {
         hide: PropTypes.func.isRequired,
     };
 
-    state = {
-        showSimulator: false,
-        showChecker: false,
-        showDomainSelector: false,
-        showHistory: false,
-        checkResult: null,
-    };
-
     constructor(props) {
         super(props);
-        const gmeConfig = this.props.gmeClient.gmeConfig;
+        const {gmeConfig} = this.props.gmeClient;
         this.SystemSimulatorMetadata = JSON.parse(JSON.stringify(SystemSimulatorMetadata));
 
         this.SystemSimulatorMetadata.configStructure.forEach((configDesc) => {
@@ -102,6 +94,14 @@ class LeftDrawer extends Component {
             }
         });
     }
+
+    state = {
+        showSimulator: false,
+        showChecker: false,
+        showDomainSelector: false,
+        showHistory: false,
+        checkResult: null,
+    };
 
     onUpdateDomains = (data) => {
         const {gmeClient} = this.props;
@@ -113,10 +113,9 @@ class LeftDrawer extends Component {
             return;
         }
 
-        console.log('update data:', data);
-
         const path = [
             window.location.origin,
+            gmeClient.gmeConfig.mountedPath,
             gmeClient.gmeConfig.rest.components.DomainManager.mount,
             'updateProject',
         ].join('/');

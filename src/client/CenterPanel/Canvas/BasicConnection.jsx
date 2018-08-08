@@ -4,7 +4,7 @@ import Z_LEVELS from '../../gme/utils/zLevels';
 
 export default class BasicConnection extends Component {
     static propTypes = {
-        path: PropTypes.arrayOf(PropTypes.string).isRequired,
+        path: PropTypes.arrayOf(PropTypes.object).isRequired,
         onClick: PropTypes.func,
         hasWrapper: PropTypes.bool.isRequired,
         dashed: PropTypes.bool.isRequired,

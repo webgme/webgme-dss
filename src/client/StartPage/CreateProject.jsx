@@ -6,12 +6,15 @@ import superagent from 'superagent';
 
 import {connect} from 'react-redux';
 
-import {withStyles} from 'material-ui/styles';
-import Card, {CardActions, CardContent, CardMedia} from 'material-ui/Card';
-import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
-import {CircularProgress} from 'material-ui/Progress';
-import Grid from 'material-ui/Grid';
+import {withStyles} from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
 
 import {setSystemWaiting} from '../actions';
 import DomainSelector from '../Dialogs/DomainSelector';
@@ -77,6 +80,7 @@ class CreateProject extends Component {
 
         const path = [
             window.location.origin,
+            gmeClient.mountedPath,
             gmeClient.gmeConfig.rest.components.DomainManager.mount,
             'createProject',
         ].join('/');
@@ -95,13 +99,13 @@ class CreateProject extends Component {
                 } else {
                     // console.log(result);
                     const [owner, name] = result.body.projectId.split('+');
-                    history.push(`/p/${owner}/${name}`);
+                    history.push(`${gmeClient.mountedPath}/p/${owner}/${name}`);
                 }
             });
     };
 
     render() {
-        const {projects, classes} = this.props;
+        const {projects, classes, gmeClient} = this.props;
 
         const cards = TEMPLATE_PROJECTS.map((seedInfo) => {
             const {infoUrl} = seedInfo;
@@ -145,7 +149,7 @@ class CreateProject extends Component {
                     <Card>
                         <CardMedia
                             className={classes.media}
-                            image={seedInfo.imageUrl}
+                            image={`${gmeClient.mountedPath}/${seedInfo.imageUrl}`}
                             title={seedInfo.title}
                         />
                         <CardContent className={classes.cardContent}>

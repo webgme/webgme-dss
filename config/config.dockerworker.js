@@ -7,7 +7,6 @@ const validateConfig = require('webgme-engine/config/validator').validateConfig;
 
 config.server.workerManager.path = 'webgme-docker-worker-manager';
 
-// These are the default options - this section can be left out..
 config.server.workerManager.options = {
     //dockerode: null, // https://github.com/apocas/dockerode#getting-started
     network: 'bridge',
@@ -19,7 +18,7 @@ config.server.workerManager.options = {
         ModelCheck: null,
         ModelicaCodeGenerator: null,
         ModelicaDiff: null,
-        SeedCreator: null
+        SeedCreator: null,
     },
 };
 

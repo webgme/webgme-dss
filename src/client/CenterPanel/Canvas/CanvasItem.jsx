@@ -75,6 +75,7 @@ class CanvasItem extends Component {
         childrenName2Id: {},
         childInfo: {},
         isConnection: null,
+        color: 'black',
         endPoints: {
             src: {id: null},
             dst: {id: null},
@@ -252,6 +253,7 @@ class CanvasItem extends Component {
         const isConnection = validPointers.indexOf('src') !== -1 && validPointers.indexOf('dst') !== -1;
         let newEndpoints = null;
         let modelicaUri = 'Default';
+        let color = 'black';
         const territory = {};
         let newChildrenName2Id = {};
         const childrenPaths = nodeObj.getChildrenIds();
@@ -287,6 +289,7 @@ class CanvasItem extends Component {
                 newEndpoints = endPoints;
             }
 
+            color = nodeObj.getRegistry('color');
             territory[activeNode] = {children: 0};
         } else {
             newEndpoints = endPoints;
@@ -316,6 +319,7 @@ class CanvasItem extends Component {
             position: nodeObj.getRegistry('position'),
             modelicaUri,
             isConnection,
+            color,
             endPoints: newEndpoints,
             childrenName2Id: newChildrenName2Id,
             childInfo: newChildInfo,
@@ -478,7 +482,7 @@ class CanvasItem extends Component {
     };
 
     connectionRender = () => {
-        const {endPoints, showActions} = this.state;
+        const {endPoints, showActions, color} = this.state;
         const {activeNode} = this.props;
         let points;
         let midpoint;
@@ -521,6 +525,7 @@ class CanvasItem extends Component {
                     key={activeNode}
                     path={points}
                     dashed={showActions}
+                    color={color}
                     hasWrapper={false}
                 />)];
         }

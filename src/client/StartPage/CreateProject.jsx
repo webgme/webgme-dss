@@ -79,8 +79,7 @@ class CreateProject extends Component {
         // console.log('create data:', data);
 
         const path = [
-            window.location.origin,
-            gmeClient.mountedPath,
+            window.location.origin + gmeClient.mountedPath,
             gmeClient.gmeConfig.rest.components.DomainManager.mount,
             'createProject',
         ].join('/');

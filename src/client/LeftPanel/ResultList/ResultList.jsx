@@ -252,6 +252,7 @@ class ResultList extends Component {
                     territory={territory}
                     onUpdate={this.handleEvents}
                     onlyActualEvents
+                    reuseTerritory={false}
                 />
 
                 {resultIds.map((resId) => {

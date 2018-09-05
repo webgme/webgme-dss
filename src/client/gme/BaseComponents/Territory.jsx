@@ -4,23 +4,53 @@ import PropTypes from 'prop-types';
 export default class Territory extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
+        onUpdate: PropTypes.func.isRequired,
         territory: PropTypes.object,
-        onUpdate: PropTypes.func,
-        onlyActualEvents: PropTypes.bool.isRequired,
+
+        onlyActualEvents: PropTypes.bool,
+        reuseTerritory: PropTypes.bool,
     };
 
     static defaultProps = {
         territory: null,
-        onUpdate: null,
+        onlyActualEvents: true,
+        reuseTerritory: true,
     };
 
-
     componentDidMount() {
-        const {
-            gmeClient, territory, onUpdate, onlyActualEvents,
-        } = this.props;
+        const {gmeClient, territory} = this.props;
 
-        this.uiId = gmeClient.addUI(null, (events) => {
+        this.uiId = gmeClient.addUI(null, this.getEventHandler());
+
+        if (territory) {
+            gmeClient.updateTerritory(this.uiId, territory);
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const {gmeClient} = nextProps;
+        const {territory, reuseTerritory} = this.props;
+
+        if (JSON.stringify(territory) !== JSON.stringify(nextProps.territory)) {
+            if (!reuseTerritory) {
+                gmeClient.removeUI(this.uiId);
+                this.uiId = gmeClient.addUI(null, this.getEventHandler());
+            }
+
+            gmeClient.updateTerritory(this.uiId, nextProps.territory || {});
+        }
+    }
+
+    componentWillUnmount() {
+        const {gmeClient} = this.props;
+
+        gmeClient.removeUI(this.uiId);
+    }
+
+    getEventHandler() {
+        const {onUpdate, onlyActualEvents, gmeClient} = this.props;
+
+        return (events) => {
             const load = [];
             const update = [];
             const unload = [];
@@ -42,29 +72,10 @@ export default class Territory extends Component {
                 }
             });
 
-            if (onUpdate && (!onlyActualEvents || load.length > 0 || update.length > 0 || unload.length > 0)) {
+            if (!onlyActualEvents || load.length > 0 || update.length > 0 || unload.length > 0) {
                 onUpdate(hash, load, update, unload);
             }
-        });
-
-        if (territory) {
-            gmeClient.updateTerritory(this.uiId, territory);
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const {gmeClient} = nextProps;
-        const {territory} = this.props;
-
-        if (JSON.stringify(territory) !== JSON.stringify(nextProps.territory)) {
-            gmeClient.updateTerritory(this.uiId, nextProps.territory || {});
-        }
-    }
-
-    componentWillUnmount() {
-        const {gmeClient} = this.props;
-
-        gmeClient.removeUI(this.uiId);
+        };
     }
 
     uiId = null;

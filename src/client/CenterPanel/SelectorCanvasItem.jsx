@@ -33,6 +33,7 @@ class SelectorCanvasItem extends Component {
         childrenName2Id: {},
         childInfo: {},
         isConnection: null,
+        color: 'black',
         endPoints: {
             src: {id: null},
             dst: {id: null},
@@ -181,6 +182,7 @@ class SelectorCanvasItem extends Component {
         const isConnection = validPointers.indexOf('src') !== -1 && validPointers.indexOf('dst') !== -1;
         let newEndpoints = null;
         let modelicaUri = 'Default';
+        let color = 'black';
         const territory = {};
         let newChildrenName2Id = {};
         const childrenPaths = nodeObj.getChildrenIds();
@@ -199,6 +201,8 @@ class SelectorCanvasItem extends Component {
                     event: this.dstEvent,
                 },
             };
+
+            color = nodeObj.getRegistry('color');
 
             if (endPoints.src.id !== newEndpoints.src.id || endPoints.dst.id !== newEndpoints.dst.id) {
                 // subscription to events
@@ -243,6 +247,7 @@ class SelectorCanvasItem extends Component {
             position: nodeObj.getRegistry('position'),
             modelicaUri,
             isConnection,
+            color,
             endPoints: newEndpoints,
             childrenName2Id: newChildrenName2Id,
             childInfo: newChildInfo,
@@ -363,7 +368,7 @@ class SelectorCanvasItem extends Component {
     };
 
     connectionRender = () => {
-        const {endPoints} = this.state;
+        const {endPoints, color} = this.state;
         const {activeNode} = this.props;
         let points;
         let midpoint;
@@ -404,6 +409,7 @@ class SelectorCanvasItem extends Component {
                     path={points}
                     dashed={false}
                     hasWrapper={false}
+                    color={color}
                 />)];
         }
 

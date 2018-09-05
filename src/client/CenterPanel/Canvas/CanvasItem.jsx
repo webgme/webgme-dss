@@ -75,6 +75,7 @@ class CanvasItem extends Component {
         childrenName2Id: {},
         childInfo: {},
         isConnection: null,
+        color: 'black',
         endPoints: {
             src: {id: null},
             dst: {id: null},

@@ -1,5 +1,5 @@
 /*eslint-env node*/
-let config = require('./config.default'),
+let config = require('./config.jmod'),
     path = require('path');
 
 config.server.port = 8888;

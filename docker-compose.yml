@@ -8,29 +8,26 @@
 #  $ docker-compose stop
 version: '3'
 services:
-  webgme:
+  webgme-server:
     build: .
     depends_on:
       - mongo
     environment:
-      - NODE_ENV=devdep
+      - NODE_ENV=dockercompose
       - MONGO_IP=mongo
     volumes:
-      - $HOME/dockershare:/dockershare
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
-     # Change the LHS to map to other port on host
-     - 8889:80
+     - 8888:8888
   mongo:
     image: mongo:3.4.1
     ports:
       - 27017:27017
-    volumes:
-      - $HOME/dockershare/db:/data/db
-#  webgme-dss-worker:
-#    build:
-#      context: .
-#      dockerfile: DockerfileJMod
-#    command: ["cat", "/dev/null"] # A no-op command so the image is built.
-#    network_mode: bridge
-#    environment:
-#      - NODE_ENV=devdep
+  webgme-dss-worker:
+    build:
+      context: .
+      dockerfile: DockerfileJMod
+    command: ["cat", "/dev/null"] # A no-op command so the image is built.
+    environment:
+      - NODE_ENV=dockercompose
+      - WEBGME_IP=webgme-server

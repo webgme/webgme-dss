@@ -19,6 +19,11 @@ Next install the node_modules (defined as dependencies in `package.json`).
 npm install
 ```
 
+Secondly build the front-end application
+```
+npm run webpack
+```
+
 ##### Starting the application
 ###### Using docker-compose
 Create a directory shared with the docker containers (mongodb files are put here and generated blob files):
@@ -30,8 +35,6 @@ Build images and start containers (detached from shell, omit `-d`) :
 ```
 docker-compose up -d
 ```
-
-Currently the docker-compose does not run the simulation engines.
 
 ###### Running on host
 Start mongod locally at the default port (27017) by default the models will be put inside `multi` you can configure this

@@ -22,5 +22,6 @@ ADD . /usr/app/
 
 # Install node-modules (fixme: we should not run as sudo)
 RUN npm install --unsafe-perm
+RUN npm run webpack
 
 CMD ["npm", "start"]

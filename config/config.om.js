@@ -5,5 +5,5 @@
 const config = require('./config.dockerworker');
 
 
-config.plugin.SystemSimulator.simulationTool = 'JModelica.org';
+config.plugin.SystemSimulator.simulationTool = 'OpenModelica';
 module.exports = config;

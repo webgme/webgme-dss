@@ -51,8 +51,8 @@ export default class BasicConnectingComponent extends Component {
                         }}
                     >
                         <line
-                            strokeWidth="2"
-                            stroke="black"
+                            strokeWidth="3"
+                            stroke="orange"
                             strokeDasharray="5 5"
                             x1={startPos.x - (left - 5)}
                             y1={startPos.y - (top - 5)}

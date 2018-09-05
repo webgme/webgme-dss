@@ -8,10 +8,12 @@ export default class BasicConnection extends Component {
         onClick: PropTypes.func,
         hasWrapper: PropTypes.bool.isRequired,
         dashed: PropTypes.bool.isRequired,
+        color: PropTypes.string,
     };
 
     static defaultProps = {
         onClick: null,
+        color: 'black',
     };
 
     onClick = (event) => {
@@ -63,7 +65,7 @@ export default class BasicConnection extends Component {
     };
 
     render() {
-        const {path, hasWrapper, dashed} = this.props;
+        const {path, hasWrapper, dashed, color} = this.props;
         const box = this.getBoundingBox();
         const sections = [];
         let i;
@@ -86,9 +88,9 @@ export default class BasicConnection extends Component {
                     path[i].y} L${
                     path[i + 1].x} ${
                     path[i + 1].y}`}
-                strokeWidth={1}
+                strokeWidth={1.6}
                 strokeDasharray={dashed ? 5 : 0}
-                stroke="black"
+                stroke={color}
             />);
         }
 

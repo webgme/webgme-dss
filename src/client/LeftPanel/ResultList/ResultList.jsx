@@ -22,11 +22,11 @@ import Description from '@material-ui/icons/Description';
 import ChromeReaderMode from '@material-ui/icons/ChromeReaderMode';
 
 import Territory from 'webgme-react-components/src/components/Territory';
+import ConfirmDialog from 'webgme-react-components/src/components/ConfirmDialog';
 
 import {downloadBlobArtifact} from '../../gme/utils/saveUrlToDisk';
 import PlotVariableSelector from './PlotVariableSelector';
 import RenameInput from './RenameInput';
-import ConfirmDialog from '../../Dialogs/ConfirmDialog';
 import ConsoleDialog from '../../Dialogs/ConsoleDialog';
 
 import getMetaNodeByName from '../../gme/utils/getMetaNodeByName';

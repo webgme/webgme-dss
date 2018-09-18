@@ -12,10 +12,12 @@ class OTConsole extends Component {
         gmeClient: PropTypes.object.isRequired,
         attributeName: PropTypes.string.isRequired,
         nodeId: PropTypes.string,
+        branchName: PropTypes.string,
     };
 
     static defaultProps = {
         nodeId: null,
+        branchName: 'master',
     }
 
     constructor(props) {
@@ -43,7 +45,9 @@ class OTConsole extends Component {
     }
 
     onTerritoryUpdate = (hash, loads, updates/* , unloads */) => {
-        const {nodeId, gmeClient, attributeName} = this.props;
+        const {
+            branchName, nodeId, gmeClient, attributeName,
+        } = this.props;
 
         const {
             delta, attributeValue, document, project,
@@ -60,7 +64,7 @@ class OTConsole extends Component {
             newState.delta = delta.insert(newState.attributeValue);
             if (document === null) {
                 project.watchDocument({
-                    branchName: 'master',
+                    branchName,
                     nodeId,
                     attrName: attributeName,
                     attrValue: newState.attributeValue,

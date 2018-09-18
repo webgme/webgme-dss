@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import {DropTarget} from 'react-dnd';
 
 import SVGCACHE from '../../../svgcache.json';
@@ -11,7 +10,6 @@ import CanvasItem from './CanvasItem';
 import ConnectionManager from '../../gme/BaseComponents/ConnectionManager';
 import BasicConnectingComponent from '../../gme/BaseComponents/BasicConnectingComponent';
 import BasicEventManager from '../../gme/BaseComponents/BasicEventManager';
-import {toggleRightDrawer, setActiveSelection} from '../../actions';
 import getIndexedName from '../../gme/utils/getIndexedName';
 
 import ZLEVELS from '../../gme/utils/zLevels';
@@ -104,22 +102,6 @@ function collect(connector, monitor) {
         isOver: monitor.isOver(),
     };
 }
-
-const mapStateToProps = state => ({
-    activeNode: state.activeNode,
-    selection: state.activeSelection,
-    scale: state.scale,
-});
-
-const mapDispatchToProps = dispatch => ({
-    hide: () => {
-        dispatch(toggleRightDrawer(false));
-    },
-    clearSelection: () => {
-        dispatch(setActiveSelection([]));
-        dispatch(toggleRightDrawer(false));
-    },
-});
 
 class Canvas extends SingleConnectedNode {
     static propTypes = {
@@ -245,8 +227,4 @@ class Canvas extends SingleConnectedNode {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DropTarget(
-    DRAG_TYPES.GME_NODE,
-    canvasTarget,
-    collect,
-)(Canvas));
+export default (DropTarget(DRAG_TYPES.GME_NODE, canvasTarget, collect)(Canvas));

@@ -78,7 +78,8 @@
     "webgme-docker-worker-manager": "^0.3.1",
     "webgme-engine": "^2.21.3",
     "webgme-user-management-page": "^0.4.3",
-    "webpack": "3.11.0"
+    "webpack": "3.11.0",
+    "webgme-react-components": "https://git.isis.vanderbilt.edu/patrik85/react-components/-/archive/master/react-components-master.tar"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",

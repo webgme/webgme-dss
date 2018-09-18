@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import {withStyles} from '@material-ui/core/styles';
 
-import AttributeEditor from './AttributeEditor';
+import AttributeEditor from 'webgme-react-components/src/components/AttributeEditor';
 import AttributeEditorIcon from './AttributeEditorIcon';
 import {toggleRightDrawer} from '../actions';
 import {sideDrawer as styles} from '../classes';

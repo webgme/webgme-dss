@@ -12,12 +12,15 @@ module.exports = {
         rules: [
             { // This is needed to load the requirejs webgme plugins (it falls back to node-require).
                 parser: {
-                    amd: false
-                }
+                    amd: false,
+                },
             },
             {
                 test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
+                include: [
+                    path.resolve(__dirname, 'src'),
+                    path.resolve(__dirname, 'node_modules/webgme-react-components/src'),
+                ],
                 use: [
                     'babel-loader',
                 ],
@@ -34,7 +37,7 @@ module.exports = {
                 use: [
                     'file-loader',
                 ],
-            }
+            },
         ],
     },
     resolve: {

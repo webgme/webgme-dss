@@ -77,9 +77,9 @@
     "url-loader": "0.6.2",
     "webgme-docker-worker-manager": "^0.3.1",
     "webgme-engine": "^2.21.3",
+    "webgme-react-components": "https://git.isis.vanderbilt.edu/patrik85/react-components/-/archive/master/react-components-master.tar",
     "webgme-user-management-page": "^0.4.3",
-    "webpack": "3.11.0",
-    "webgme-react-components": "https://git.isis.vanderbilt.edu/patrik85/react-components/-/archive/master/react-components-master.tar"
+    "webpack": "3.11.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",

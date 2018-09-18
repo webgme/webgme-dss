@@ -8,9 +8,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
+import AttributeItem from 'webgme-react-components/src/components/AttributeItem';
+
 import seedInfo from '../../seeds/Modelica/metadata.json';
 import getIndexedName from '../gme/utils/getIndexedName';
-import AttributeItem from '../RightPanel/AttributeItem';
 import CheckboxList from '../gme/CheckboxList';
 
 export default class DomainSelector extends Component {

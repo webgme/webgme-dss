@@ -21,14 +21,14 @@ import Delete from '@material-ui/icons/Delete';
 import Description from '@material-ui/icons/Description';
 import ChromeReaderMode from '@material-ui/icons/ChromeReaderMode';
 
+import Territory from 'webgme-react-components/src/components/Territory';
+
 import {downloadBlobArtifact} from '../../gme/utils/saveUrlToDisk';
 import PlotVariableSelector from './PlotVariableSelector';
 import RenameInput from './RenameInput';
 import ConfirmDialog from '../../Dialogs/ConfirmDialog';
 import ConsoleDialog from '../../Dialogs/ConsoleDialog';
 
-
-import Territory from '../../gme/BaseComponents/Territory';
 import getMetaNodeByName from '../../gme/utils/getMetaNodeByName';
 import {setPlotNode, setSimResData, setResultNode} from '../../actions';
 

@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import User from '../../components/HeaderPanel/User';
+import UserProfileNavigator from 'webgme-react-components/src/components/UserProfileNavigator';
 
 const mapStateToProps = state => ({
     userInfo: state.users.currentUser,
@@ -8,4 +8,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (/* dispatch */) => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(User);
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfileNavigator);

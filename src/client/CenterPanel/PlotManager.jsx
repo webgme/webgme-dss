@@ -11,9 +11,7 @@ import Plotter from './Plotter';
 import CheckboxList from '../gme/CheckboxList';
 import colorHash from '../gme/utils/colorHash';
 
-/* eslint-disable */
 class PlotManager extends Component {
-    /* eslint-enable */
     static propTypes = {
         variables: PropTypes.arrayOf(PropTypes.string).isRequired,
         simRes: PropTypes.object.isRequired,

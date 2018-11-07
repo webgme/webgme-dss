@@ -12,20 +12,6 @@ import {setSystemWaiting} from '../actions';
 import DomainSelector from '../Dialogs/DomainSelector';
 import TEMPLATE_PROJECTS from './templateProjects.json';
 
-// http://www.publicdomainpictures.net
-
-const styles = theme => ({
-    cardContent: {
-        minHeight: 160,
-    },
-    media: {
-        height: 120,
-    },
-    progress: {
-        margin: `0 ${theme.spacing.unit * 2}px`,
-    },
-});
-
 const mapStateToProps = (/* state */) => ({});
 
 const mapDispatchToProps = dispatch => ({

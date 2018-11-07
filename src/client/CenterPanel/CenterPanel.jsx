@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
 
-import Canvas from './Canvas';
+import Canvas from '../containers/CenterPanel/Canvas/Canvas';
 import PlotManager from './PlotManager';
 import SelectorCanvas from './SelectorCanvas';
 import OTConsole from '../OTConsole';

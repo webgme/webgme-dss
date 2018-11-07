@@ -7,7 +7,7 @@ import {Samy} from 'react-samy-svg';
 
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ModeEdit from '@material-ui/icons/ModeEdit';
+import Edit from '@material-ui/icons/Edit';
 
 import {DRAG_TYPES} from '../../CONSTANTS';
 import CanvasItemPort from './CanvasItemPort';
@@ -201,7 +201,7 @@ class CanvasItem extends Component {
                         activateAttributeDrawer(activeNode);
                     }}
                 >
-                    <ModeEdit style={{
+                    <Edit style={{
                         height: '20px',
                         width: '20px',
                     }}

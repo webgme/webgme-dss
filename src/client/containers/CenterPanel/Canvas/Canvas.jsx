@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import ProjectHistory from '../../CenterPanel/Canvas/Canvas';
+import Canvas from '../../../CenterPanel/Canvas/Canvas';
 import {setActiveSelection, toggleRightDrawer} from '../../../actions';
 
 const mapStateToProps = state => ({
@@ -19,4 +19,4 @@ const mapDispatchToProps = dispatch => ({
     },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectHistory);
+export default connect(mapStateToProps, mapDispatchToProps)(Canvas);

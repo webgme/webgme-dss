@@ -15,8 +15,8 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import ModeEdit from '@material-ui/icons/ModeEdit';
-import FileDownload from '@material-ui/icons/FileDownload';
+import Edit from '@material-ui/icons/Edit';
+import CloudDownload from '@material-ui/icons/CloudDownload';
 import Delete from '@material-ui/icons/Delete';
 import Description from '@material-ui/icons/Description';
 import ChromeReaderMode from '@material-ui/icons/ChromeReaderMode';
@@ -265,7 +265,7 @@ class ResultList extends Component {
                         {
                             id: 'modeEdit',
                             toolTip: 'Rename result',
-                            iconClass: <ModeEdit style={{color: 'rgba(0, 0, 0, 0.54)', fontSize: 18}}/>,
+                            iconClass: <Edit style={{color: 'rgba(0, 0, 0, 0.54)', fontSize: 18}}/>,
                             onClick: () => {
                                 this.setState({editResultName: true});
                             },
@@ -308,7 +308,7 @@ class ResultList extends Component {
                         actionButtons.push({
                             id: 'downloadPackage',
                             toolTip: 'Download simulation package',
-                            iconClass: <FileDownload style={{color: 'rgba(0, 0, 0, 0.54)', fontSize: 18}}/>,
+                            iconClass: <CloudDownload style={{color: 'rgba(0, 0, 0, 0.54)', fontSize: 18}}/>,
                             onClick: () => {
                                 this.downloadArtifact(true);
                             },

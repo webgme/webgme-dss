@@ -5,7 +5,7 @@
     "start": "node server.js",
     "test": "node scripts/test.js --env=jsdom",
     "eslint": "eslint src/client/**/*.jsx --fix",
-    "webpack": "node ./node_modules/webpack/bin/webpack.js"
+    "webpack": "webpack"
   },
   "version": "0.1.0",
   "author": {

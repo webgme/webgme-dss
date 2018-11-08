@@ -19,7 +19,7 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 include: [
                     path.resolve(__dirname, 'src'),
-                    path.resolve(__dirname, 'node_modules/webgme-react-components/src'),
+                    /react-components/,
                 ],
                 use: [
                     'babel-loader',

@@ -54,7 +54,10 @@ class RightDrawer extends Component {
                         <ChevronLeftIcon/>
                     </IconButton>
                     <AttributeEditor selection={selection} gmeClient={gmeClient} fullWidthWidgets hideReadOnly>
-                        <AttributeEditorIcon gmeClient={gmeClient} nodeId={null}/>
+                        <AttributeEditorIcon
+                            gmeClient={gmeClient}
+                            nodeId={selection.length === 1 ? selection[0] : null}
+                        />
                     </AttributeEditor>
                 </Drawer>
             </div>

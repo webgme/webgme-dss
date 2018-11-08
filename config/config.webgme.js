@@ -10,30 +10,27 @@ config.plugin.basePaths.push(__dirname + '/../src/plugins');
 config.seedProjects.basePaths.push(__dirname + '/../src/seeds/Modelica');
 
 
-
-
-
 config.rest.components['AppRouter'] = {
-  src: __dirname + '/../src/routers/AppRouter/AppRouter.js',
-  mount: 'p',
-  options: {}
+    src: __dirname + '/../src/routers/AppRouter/AppRouter.js',
+    mount: 'p',
+    options: {}
 };
 config.rest.components['DomainManager'] = {
-  src: __dirname + '/../src/routers/DomainManager/DomainManager.js',
-  mount: 'DomainManager',
-  options: {}
+    src: __dirname + '/../src/routers/DomainManager/DomainManager.js',
+    mount: 'DomainManager',
+    options: {}
 };
 config.rest.components['ProjectRouter'] = {
-  src: __dirname + '/../src/routers/ProjectRouter/ProjectRouter.js',
-  mount: '',
-  options: {}
+    src: __dirname + '/../src/routers/ProjectRouter/ProjectRouter.js',
+    mount: '',
+    options: {}
 };
 
 // Visualizer descriptors
 
 // Add requirejs paths
 config.requirejsPaths = {
-  'webgme-dss': './src/common'
+    'webgme-dss': './src/common'
 };
 
 

@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {Samy} from 'react-samy-svg';
 
 import Territory from '../gme/BaseComponents/Territory';
-import BasicConnection from './Canvas/BasicConnection';
+import BasicConnection from 'webgme-react-components/src/components/BasicConnection/BasicConnection';
 import SVGCACHE from '../../svgcache.json';
 import ZLEVELS from '../gme/utils/zLevels';
 import colorHash from '../gme/utils/colorHash';

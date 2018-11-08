@@ -105,6 +105,7 @@ class PartBrowser extends SingleConnectedNode {
                 treePath: modelicaUri ? modelicaUri.split('.').slice(1).join('$') : null,
                 modelicaUri: modelicaUri || 'Default',
                 iconUrl: modelicaUri ? `/assets/DecoratorSVG/${modelicaUri}.svg` : '/assets/DecoratorSVG/Default.svg',
+                bbox: {x: 0, y: 0, height: 100, width: 100},
             };
         });
 

@@ -32,6 +32,4 @@ const nameSort = getObjectSorter('name', true);
 
 export default getObjectSorter;
 
-export {
-    nameSort,
-};
+export {nameSort};

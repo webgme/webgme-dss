@@ -69,14 +69,14 @@ export default class App extends Component {
         window.onGMEInit = () => {
             window.gmeClient = new window.GME.classes.Client(window.GME.gmeConfig);
             window.gmeClient.mountedPath = mountedPath;
-            superagent.get(mountedPath + '/api/user')
+            superagent.get(`${mountedPath}/api/user`)
                 .end((err, userRes) => {
                     if (err) {
                         console.error(err);
                         return;
                     }
 
-                    superagent.get(mountedPath + '/api/users')
+                    superagent.get(`${mountedPath}/api/users`)
                         .query({displayName: true})
                         .end((err2, usersMapRes) => {
                             if (err2) {

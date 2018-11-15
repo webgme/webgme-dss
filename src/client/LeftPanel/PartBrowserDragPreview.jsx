@@ -6,7 +6,7 @@ import {DragLayer} from 'react-dnd';
 import {Samy} from 'react-samy-svg';
 import {connect} from 'react-redux';
 import {DRAG_TYPES} from '../CONSTANTS';
-import SVGCACHE from '../../svgcache.json';
+import SVGCACHE from '../../plugins/MoveSVGToRegistryUtil/svgcache.json';
 
 const mapStateToProps = state => ({
     scale: state.scale,

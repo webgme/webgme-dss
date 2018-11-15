@@ -6,7 +6,7 @@ import {Samy} from 'react-samy-svg';
 
 import Territory from '../gme/BaseComponents/Territory';
 import BasicConnection from 'webgme-react-components/src/components/BasicConnection/BasicConnection';
-import SVGCACHE from '../../svgcache.json';
+import SVGCACHE from '../../plugins/MoveSVGToRegistryUtil/svgcache.json';
 import ZLEVELS from '../gme/utils/zLevels';
 import colorHash from '../gme/utils/colorHash';
 

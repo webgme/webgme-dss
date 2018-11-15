@@ -7,7 +7,7 @@ import {getEmptyImage} from 'react-dnd-html5-backend';
 import {Samy, SvgProxy} from 'react-samy-svg';
 
 import {DRAG_TYPES} from '../CONSTANTS';
-import SVGCACHE from './../../svgcache.json';
+import SVGCACHE from '../../plugins/MoveSVGToRegistryUtil/svgcache.json';
 
 // / End of DragLayer..
 const partBrowserItemSource = {

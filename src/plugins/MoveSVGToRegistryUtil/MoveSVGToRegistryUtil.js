@@ -11,7 +11,7 @@ define([
     'plugin/PluginConfig',
     'text!./metadata.json',
     'plugin/PluginBase',
-    'text!./svgcache.json'
+    'text!./../../../../../../svgcache.json',
 ], function (
     PluginConfig,
     pluginMetadata,
@@ -61,8 +61,7 @@ define([
         const metaNodes = this.core.getAllMetaNodes(this.activeNode);
         const core = this.core;
         const defaultSvg = {
-            base: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
-                '<root baseProfile="full" height="210.0" version="1.1" viewBox="0 0 210.0 210.0" ' +
+            base: '<svg baseProfile="full" height="210.0" version="1.1" viewBox="0 0 210.0 210.0" ' +
                 'width="210.0" xmlns="http://www.w3.org/2000/svg" ' +
                 'xmlns:ev="http://www.w3.org/2001/xml-events" ' +
                 'xmlns:xlink="http://www.w3.org/1999/xlink">\n  <defs/>\n  <defs>\n    ' +
@@ -81,7 +80,7 @@ define([
                 '<ellipse cx="145.0" cy="145.0" fill="rgb(0,0,0)" rx="30.0" ry="30.0"/>\n  ' +
                 '<ellipse cx="145.0" cy="65.0" fill="rgb(128,128,128)" rx="30.0" ry="30.0"/>\n  ' +
                 '<ellipse cx="65.0" cy="65.0" fill="rgb(255,255,255)" rx="30.0" ry="30.0" ' +
-                'stroke="rgb(128,128,128)" stroke-width="0.25mm"/>\n</root>',
+                'stroke="rgb(128,128,128)" stroke-width="0.25mm"/>\n</svg>',
             ports: {
                 x: 0, y: 0, height: 100, width: 100,
             },

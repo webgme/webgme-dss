@@ -131,7 +131,7 @@ function getAttributeItem(textFieldJson) {
 function getParsedSvg(rawJsonSvg) {
     let svg = {bbox: stringToBBox(rawJsonSvg.$.viewBox), ports: {}, base: '', attributes: {}},
         attributeItem, gItems, textIndexesToRemove = [], newTexts = [],
-        builder = new xml2js.Builder();
+        builder = new xml2js.Builder({rootName: 'svg', headless: true});
     if (rawJsonSvg.g === undefined) {
         gItems = [];
     } else if (rawJsonSvg.g.length) {
@@ -178,10 +178,10 @@ function getParsedSvg(rawJsonSvg) {
 }
 
 function writeResultOut(svgCache) {
-    fs.writeFileSync(path.join(__dirname, './../src/svgcache.json'), JSON.stringify(svgCache, null, 2), 'utf8');
+    fs.writeFileSync('svgcache.json', JSON.stringify(svgCache, null, 2), 'utf8');
 }
 
-const dirpath = path.join(__dirname, './../public/assets/DecoratorSVG');
+const dirpath = path.join(__dirname, '../Icons');
 let filenames = fs.readdirSync(dirpath, 'utf8'),
     cache = {},
     count = filenames.length;

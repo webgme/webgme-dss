@@ -19,6 +19,8 @@ import History from '@material-ui/icons/History';
 import {withStyles} from '@material-ui/core/styles';
 import green from '@material-ui/core/colors/green';
 
+import PartBrowser from 'webgme-react-components/src/components/PartBrowser';
+
 import SystemSimulatorMetadata from '../../plugins/SystemSimulator/metadata.json';
 import ModelCheckMetadata from '../../plugins/ModelCheck/metadata.json';
 import ModelCheckPlugin from '../../plugins/ModelCheck/ModelCheck';
@@ -28,7 +30,6 @@ import {downloadBlobArtifact} from '../gme/utils/saveUrlToDisk';
 
 import {removePlotVariable, toggleLeftDrawer, toggleModelingView, setResultNode, toggleRightDrawer} from '../actions';
 
-import PartBrowser from './PartBrowser';
 import ResultList from './ResultList';
 import PluginConfigDialog from '../Dialogs/PluginConfigDialog';
 import DomainSelector from '../Dialogs/DomainSelector';
@@ -43,6 +44,7 @@ const mapStateToProps = state => ({
     activeNode: state.activeNode,
     modelingView: state.modelingView,
     variables: state.plotData.variables,
+    scale: state.scale,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -72,6 +74,7 @@ class LeftDrawer extends Component {
         open: PropTypes.bool.isRequired,
         classes: PropTypes.object.isRequired,
         activeNode: PropTypes.string.isRequired,
+        scale: PropTypes.number.isRequired,
         modelingView: PropTypes.bool.isRequired,
         variables: PropTypes.arrayOf(PropTypes.string).isRequired,
         removePlotVariable: PropTypes.func.isRequired,
@@ -265,7 +268,7 @@ class LeftDrawer extends Component {
 
     render() {
         const {
-            classes, gmeClient, open, modelingView, variables,
+            classes, gmeClient, open, modelingView, variables, activeNode, scale,
         } = this.props;
         let actionButtons;
 
@@ -336,7 +339,7 @@ class LeftDrawer extends Component {
                     </span>
                     <Divider/>
                     {modelingView ?
-                        <PartBrowser gmeClient={gmeClient} minimized={!open}/> :
+                        <PartBrowser gmeClient={gmeClient} activeNode={activeNode} minimized={!open} scale={scale}/> :
                         <ResultList gmeClient={gmeClient} minimized={!open}/>}
                 </Drawer>
 

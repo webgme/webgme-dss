@@ -4,7 +4,7 @@ import update from 'immutability-helper';
 import {connect} from 'react-redux';
 
 import {Treebeard} from 'react-treebeard';
-import {treeBeardTheme, getTreeDecorators} from '../../treeOverrides';
+import {treeBeardTheme, getTreeDecorators} from 'webgme-react-components/src/components/PartBrowser/TreeOverrides';
 import getObjectSorter from '../../gme/utils/getObjectSorter';
 import PlotVariableSelectorItem from './PlotVariableSelectorItem';
 

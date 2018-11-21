@@ -16,7 +16,7 @@ import MultilineChart from '@material-ui/icons/MultilineChart';
 // Own modules
 import {setActiveNode, setSystemWaiting, toggleModelingView, toggleLeftDrawer, toggleRightDrawer} from './actions';
 
-import PartBrowserDragPreview from './LeftPanel/PartBrowserDragPreview';
+// import PartBrowserDragPreview from './LeftPanel/PartBrowserDragPreview';
 import Header from './HeaderPanel/Header';
 import CenterPanel from './CenterPanel/CenterPanel';
 import LeftDrawer from './LeftPanel/LeftDrawer';
@@ -144,7 +144,7 @@ class Project extends Component {
                     height: '100%',
                 }}
                 >
-                    <PartBrowserDragPreview scale={scale}/>
+                    {/*<PartBrowserDragPreview scale={scale}/>*/}
 
                     <Header gmeClient={gmeClient} projectOwner={owner} projectName={name} branchName="master"/>
 

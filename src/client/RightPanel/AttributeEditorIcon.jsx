@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import {Samy} from 'react-samy-svg';
 
-import SVGCACHE from '../../plugins/MoveSVGToRegistryUtil/svgcache.json';
+import getSVGData from 'webgme-react-components/src/utils/getSVGData';
 
 const SCALE = 0.6;
 
@@ -17,8 +17,8 @@ export default class AttributeEditorIcon extends Component {
         nodeId: null,
     };
 
-    getSvgAttributeParts = (node) => {
-        const svgAttrs = SVGCACHE[node.getAttribute('ModelicaURI')].attributes;
+    getSvgAttributeParts = (svgData) => {
+        const svgAttrs = svgData.attributes;
 
         return Object.keys(svgAttrs).map((attrName) => {
             const attrDesc = svgAttrs[attrName];
@@ -62,7 +62,7 @@ export default class AttributeEditorIcon extends Component {
             return null;
         }
 
-        const {bbox, base} = SVGCACHE[modelicaUri];
+        const svgData = getSVGData(node);
 
         return (
             <a
@@ -74,14 +74,20 @@ export default class AttributeEditorIcon extends Component {
                     {modelicaUri.substr('Modelica.'.length)}
                 </Typography>
                 <div style={{
-                    height: bbox.height * SCALE,
-                    width: bbox.width * SCALE,
+                    height: svgData.bbox.height * SCALE,
+                    width: svgData.bbox.width * SCALE,
                     position: 'relative',
                     display: 'inline-flex',
                 }}
                 >
-                    <Samy svgXML={base} style={{height: bbox.height * SCALE, width: bbox.width * SCALE}}/>
-                    {this.getSvgAttributeParts(node)}
+                    <Samy
+                        svgXML={svgData.base}
+                        style={{
+                            height: svgData.bbox.height * SCALE,
+                            width: svgData.bbox.width * SCALE,
+                        }}
+                    />
+                    {this.getSvgAttributeParts(svgData)}
                 </div>
             </a>
         );

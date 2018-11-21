@@ -4,9 +4,11 @@ import {connect} from 'react-redux';
 
 import {Samy} from 'react-samy-svg';
 
-import Territory from '../gme/BaseComponents/Territory';
-import BasicConnection from 'webgme-react-components/src/components/BasicConnection/BasicConnection';
-import SVGCACHE from '../../plugins/MoveSVGToRegistryUtil/svgcache.json';
+import BasicConnection from 'webgme-react-components/src/components/BasicConnection';
+import getSVGData from 'webgme-react-components/src/utils/getSVGData';
+
+import Territory from 'webgme-react-components/src/components/Territory';
+
 import ZLEVELS from '../gme/utils/zLevels';
 import colorHash from '../gme/utils/colorHash';
 
@@ -68,9 +70,8 @@ class SelectorCanvasItem extends Component {
 
     getAttributeItems = () => {
         const {gmeClient, activeNode, scale} = this.props;
-        const {modelicaUri} = this.state;
-        const {attributes} = SVGCACHE[modelicaUri];
         const node = gmeClient.getNode(activeNode);
+        const {attributes} = getSVGData(node);
         const attributeItems = [];
         const names = Object.keys(attributes);
 
@@ -288,14 +289,14 @@ class SelectorCanvasItem extends Component {
             scale,
             eventManager,
             activeNode,
+            gmeClient,
         } = this.props;
         const {
-            modelicaUri,
             position,
             childrenName2Id,
             justRemovedIds,
         } = this.state;
-        const {ports, bbox, base} = SVGCACHE[modelicaUri];
+        const {ports, bbox, base} = getSVGData(gmeClient.getNode(activeNode));
         const events = [];
         const portComponents = [];
 

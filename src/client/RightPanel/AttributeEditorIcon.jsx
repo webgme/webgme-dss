@@ -17,7 +17,7 @@ export default class AttributeEditorIcon extends Component {
         nodeId: null,
     };
 
-    getSvgAttributeParts = (svgData) => {
+    getSvgAttributeParts = (node, svgData) => {
         const svgAttrs = svgData.attributes;
 
         return Object.keys(svgAttrs).map((attrName) => {
@@ -87,7 +87,7 @@ export default class AttributeEditorIcon extends Component {
                             width: svgData.bbox.width * SCALE,
                         }}
                     />
-                    {this.getSvgAttributeParts(svgData)}
+                    {this.getSvgAttributeParts(node, svgData)}
                 </div>
             </a>
         );

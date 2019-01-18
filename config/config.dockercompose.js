@@ -4,11 +4,18 @@ let config = require('./config.jmod'),
 
 config.server.port = 8888;
 
-config.mongo.uri = `mongodb://${process.env.MONGO_IP}:27017/multi`;
+config.mongo.uri = 'mongodb://mongo:27017/multi';
 
-config.plugin.ModiaCodeGenerator.enable = true;
-
-config.server.workerManager.options.webgmeUrl = `http://${process.env.WEBGME_IP}:${config.server.port}`;
-config.server.workerManager.options.image = 'webgme-dss_webgme-dss-worker';
+config.server.workerManager.options = {
+    webgmeUrl: 'http://webgme:' + config.server.port,
+    image: 'dss-worker',
+    maxRunningContainers: 10,
+    createParams: {
+        HostConfig: {
+            Memory: 536870912,
+            NetworkMode: 'webgme-dss_workers',
+        },
+    },
+};
 
 module.exports = config;

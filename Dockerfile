@@ -7,7 +7,7 @@
 #     $ docker build -t webgme-server .
 
 # https://github.com/nodejs/docker-node/blob/25f26146ac5b9f74add731b0b078e34411ae5831/8/Dockerfile
-FROM node:carbon
+FROM node:dubnium
 MAINTAINER Patrik Meijer <patrik.meijer@vanderbilt.edu>
 
 #RUN apt-get update \

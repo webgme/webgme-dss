@@ -13,10 +13,10 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import EditMode from '@material-ui/icons/Edit';
 import MultilineChart from '@material-ui/icons/MultilineChart';
 
+import {PartBrowserDragPreview} from 'webgme-react-components/src/components/PartBrowser';
+
 // Own modules
 import {setActiveNode, setSystemWaiting, toggleModelingView, toggleLeftDrawer, toggleRightDrawer} from './actions';
-
-import PartBrowserDragPreview from './LeftPanel/PartBrowserDragPreview';
 import Header from './HeaderPanel/Header';
 import CenterPanel from './CenterPanel/CenterPanel';
 import LeftDrawer from './LeftPanel/LeftDrawer';
@@ -29,6 +29,7 @@ const START_NODE_ID = '/Z'; // FIXME: This should come from the project info or 
 const mapStateToProps = state => ({
     activeNode: state.activeNode,
     modelingView: state.modelingView,
+    scale: state.scale,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -56,6 +57,7 @@ class Project extends Component {
         }).isRequired,
         projectId: PropTypes.string.isRequired,
         activeNode: PropTypes.string,
+        scale: PropTypes.number.isRequired,
 
         setSystemWaiting: PropTypes.func.isRequired,
         setActiveNode: PropTypes.func.isRequired,
@@ -67,10 +69,6 @@ class Project extends Component {
 
     static defaultProps = {
         activeNode: null,
-    };
-
-    state = {
-        scale: 0.6,
     };
 
     componentDidMount() {
@@ -119,10 +117,9 @@ class Project extends Component {
 
     render() {
         const {
-            gmeClient, projectId, activeNode, modelingView,
+            gmeClient, projectId, activeNode, modelingView, scale,
         } = this.props;
 
-        const {scale} = this.state;
         const [owner, name] = projectId.split('+');
 
         let content;

@@ -202,11 +202,17 @@ define([
                 res[1].forEach(addComponent);
             })
             .then(() => {
-                this.branchName = null;
+                if (config.updateBranch === false) {
+                    this.branchName = null;
+                }
                 return this.save('Updating model');
             })
             .then((res) => {
-                return this.project.createBranch('meta_' + Date.now(), res.hash);
+                if (config.updateBranch === false) {
+                    return this.project.createBranch('meta_' + Date.now(), res.hash);
+                } else {
+                    return Q(null);
+                }
             })
             .then(() => {
                 logger.info('Done!');

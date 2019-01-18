@@ -4,7 +4,9 @@ import {connect} from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
 
-import Canvas from './Canvas';
+import Canvas from '../containers/CenterPanel/Canvas/Canvas';
+import CanvasItem from './Canvas/CanvasItem';
+import CanvasInfoCard from './Canvas/CanvasInfoCard';
 import PlotManager from './PlotManager';
 import SelectorCanvas from './SelectorCanvas';
 import OTConsole from '../OTConsole';
@@ -64,7 +66,12 @@ class CenterPanel extends Component {
         let content;
 
         if (modelingView) {
-            content = (<Canvas gmeClient={gmeClient} scrollPos={scrollPos}/>);
+            content = (
+                <Canvas gmeClient={gmeClient} scrollPos={scrollPos}>
+                    <CanvasItem/>
+                    <CanvasInfoCard/>
+                </Canvas>
+            );
         } else if (plotData.simRes) {
             content = (
                 <div style={{

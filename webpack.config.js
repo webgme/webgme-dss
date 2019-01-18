@@ -3,21 +3,24 @@ const path = require('path');
 module.exports = {
     devtool: 'source-map',
     entry: './src/index.js',
+    mode: 'development',
     output: {
         filename: 'app.build.js',
         path: path.join(__dirname, 'public'),
     },
-    plugins: [],
     module: {
         rules: [
             { // This is needed to load the requirejs webgme plugins (it falls back to node-require).
                 parser: {
-                    amd: false
-                }
+                    amd: false,
+                },
             },
             {
                 test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
+                include: [
+                    path.resolve(__dirname, 'src'),
+                    /webgme-react-components/,
+                ],
                 use: [
                     'babel-loader',
                 ],
@@ -34,7 +37,7 @@ module.exports = {
                 use: [
                     'file-loader',
                 ],
-            }
+            },
         ],
     },
     resolve: {

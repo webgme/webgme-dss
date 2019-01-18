@@ -50,12 +50,24 @@
       "ModiaCodeGenerator": {
         "src": "src/plugins/ModiaCodeGenerator",
         "test": "test/plugins/ModiaCodeGenerator"
+      },
+      "MoveSVGToRegistryUtil": {
+        "src": "src/plugins/MoveSVGToRegistryUtil",
+        "test": "test/plugins/MoveSVGToRegistryUtil"
       }
-    }
+    },
+    "addons": {},
+    "decorators": {},
+    "layouts": {},
+    "visualizers": {}
   },
   "dependencies": {
     "routers": {},
     "seeds": {},
-    "plugins": {}
+    "plugins": {},
+    "addons": {},
+    "decorators": {},
+    "layouts": {},
+    "visualizers": {}
   }
 }

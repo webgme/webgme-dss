@@ -7,27 +7,42 @@
 # To stop containers:
 #  $ docker-compose stop
 version: '3'
+networks:
+  workers:
+    driver: bridge
+    internal: true
+  database:
+    driver: bridge
+
 services:
-  webgme-server:
+  webgme:
     build: .
     depends_on:
       - mongo
     environment:
       - NODE_ENV=dockercompose
-      - MONGO_IP=mongo
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
      - 8888:8888
+    networks:
+      - database
+      - workers
   mongo:
-    image: mongo:3.4.1
-    ports:
-      - 27017:27017
-  webgme-dss-worker:
+    image: mongo
+    # ports:
+    #  - 27017:27017
+    # volumes:
+    # - ~/data/db:/data/db
+    networks:
+      - database
+  dss-worker:
+    image: dss-worker
     build:
       context: .
       dockerfile: DockerfileJMod
     command: ["cat", "/dev/null"] # A no-op command so the image is built.
     environment:
       - NODE_ENV=dockercompose
-      - WEBGME_IP=webgme-server
+    networks:
+      - workers

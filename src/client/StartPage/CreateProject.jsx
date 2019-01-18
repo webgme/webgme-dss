@@ -1,38 +1,16 @@
 /* globals window */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Link, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import superagent from 'superagent';
 
 import {connect} from 'react-redux';
 
-import {withStyles} from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Grid from '@material-ui/core/Grid';
+import ProjectSeedCards from 'webgme-react-components/src/components/ProjectSeedCards';
 
 import {setSystemWaiting} from '../actions';
 import DomainSelector from '../Dialogs/DomainSelector';
 import TEMPLATE_PROJECTS from './templateProjects.json';
-
-// http://www.publicdomainpictures.net
-
-const styles = theme => ({
-    cardContent: {
-        minHeight: 160,
-    },
-    media: {
-        height: 120,
-    },
-    progress: {
-        margin: `0 ${theme.spacing.unit * 2}px`,
-    },
-});
 
 const mapStateToProps = (/* state */) => ({});
 
@@ -46,7 +24,6 @@ class CreateProject extends Component {
     static propTypes = {
         gmeClient: PropTypes.object.isRequired,
         projects: PropTypes.arrayOf(PropTypes.object),
-        classes: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
         setSystemWaiting: PropTypes.func.isRequired,
     };
@@ -104,75 +81,19 @@ class CreateProject extends Component {
     };
 
     render() {
-        const {projects, classes, gmeClient} = this.props;
-
-        const cards = TEMPLATE_PROJECTS.map((seedInfo) => {
-            const {infoUrl} = seedInfo;
-            const buttons = [];
-            if (projects) {
-                const createBtn = (
-                    <Button
-                        key="createBtn"
-                        size="small"
-                        color="primary"
-                        onClick={() => {
-                            this.onCreateNewClick(seedInfo.createData);
-                        }}
-                    >
-                        Create
-                    </Button>);
-
-                buttons.push(createBtn);
-
-                if (infoUrl) {
-                    const infoBtn = (
-                        <Button
-                            key="infoBtn"
-                            size="small"
-                            color="primary"
-                            component={Link}
-                            to={infoUrl}
-                            target="_blank"
-                        >
-                            Learn More
-                        </Button>);
-
-                    buttons.push(infoBtn);
-                }
-            } else {
-                buttons.push(<CircularProgress key="progress" className={classes.progress}/>);
-            }
-
-            return (
-                <Grid item lg={6} md={12} sm={6} xs={12} key={seedInfo.title}>
-                    <Card>
-                        <CardMedia
-                            className={classes.media}
-                            image={`${gmeClient.mountedPath}/${seedInfo.imageUrl}`}
-                            title={seedInfo.title}
-                        />
-                        <CardContent className={classes.cardContent}>
-                            <Typography variant="headline">
-                                {seedInfo.title}
-                            </Typography>
-                            <Typography component="p">
-                                {seedInfo.description}
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            {buttons}
-                        </CardActions>
-                    </Card>
-                </Grid>
-            );
-        });
+        const {projects, gmeClient} = this.props;
 
         const {showDialog, createData} = this.state;
         return (
             <div>
-                <Grid container spacing={24}>
-                    {cards}
-                </Grid>
+                <ProjectSeedCards
+                    seedsInfo={TEMPLATE_PROJECTS.map((seedInfo) => {
+                        const cpy = JSON.parse(JSON.stringify(seedInfo));
+                        cpy.imageUrl = `${gmeClient.mountedPath || ''}${cpy.imageUrl}`;
+                        return cpy;
+                    })}
+                    onCreate={this.onCreateNewClick}
+                />
 
                 {showDialog ?
                     <DomainSelector
@@ -192,4 +113,4 @@ class CreateProject extends Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(CreateProject)));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CreateProject));

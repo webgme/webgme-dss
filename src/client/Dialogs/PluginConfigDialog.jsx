@@ -9,7 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
-import AttributeItem, {AttributeTypes} from '../RightPanel/AttributeItem';
+import AttributeItem, {AttributeTypes} from 'webgme-react-components/src/components/AttributeItem';
 
 export default class PluginConfigDialog extends Component {
     static propTypes = {

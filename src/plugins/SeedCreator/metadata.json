@@ -26,6 +26,14 @@
       "value": "./src/common/comp_flat.json",
       "valueType": "string",
       "readOnly": false
+    },
+    {
+      "name": "updateBranch",
+      "displayName": "Update Branch",
+      "description": "If true will update the pointed branch",
+      "value": false,
+      "valueType": "boolean",
+      "readOnly": false
     }
   ]
 }

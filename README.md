@@ -11,24 +11,6 @@ In the current stage it supports simulation of the Modelica models using
 For more details about the application a paper was published under [Modelica on the Web](https://www.modelica.org/events/modelica2018Americas/preliminary-program/166522_Modelica_Proceedings_v2.pdf)
 (page 220).
 
-## Starting the application using docker-compose
-With a single command (granted docker and docker-compose are installed)
-you can try out the application with [JModelica.org](https://jmodelica.org/)
- as simulation backend.
-
-Clone this repo:
-```
-git clone https://github.com/webgme/webgme-dss.git
-```
-
-Build images and start containers:
-```
-docker-compose up -d
-```
-
-Note that with the supplied compose files database files and artifacts are persisted
-inside the containers, so launching a new container will wipe out the files.
-
 ## Some features
 Leveraging the metamodeling capabilities of WebGME, the models are constrained to
 only allow (and indicate to end-user) compatible constructs.
@@ -46,7 +28,7 @@ Each state of the model can be retrieved at any time and versions can be compare
 ![repository](images/repository.PNG "The history log of a project with all details exposed")
 
 Simulate the Modelica models using the stable open source tools [JModelica.org](https://jmodelica.org/) and/or [OpenModelica](https://openmodelica.org/).
-As the simulation progress on the server the output is transmitted to the end-user via websockets.
+As the simulation progresses on the server the output is transmitted to the end-user via websockets.
 ![simulation_feedback](images/simulation_feedback.PNG "Instance simulation feedback from the server")
 
 For each simulation the simulation artifacts are stored inside the model repository together with
@@ -63,6 +45,24 @@ terms of range of handpicked domains from [Modelica Standard Library](https://gi
 Modification of some parameter types such as `packages`, `maps`, `tables`, etc. are not supported.
 The current support is however more than sufficient for getting familiar with the component-based
 features of Modelica and to compose actual cyber-physical systems from the curated domains.
+
+## Starting the application using docker-compose
+With a single command (granted docker and docker-compose are installed)
+you can try out the application with [JModelica.org](https://jmodelica.org/)
+ as simulation backend.
+
+Clone this repo:
+```
+git clone https://github.com/webgme/webgme-dss.git
+```
+
+Build images and start containers:
+```
+docker-compose up -d
+```
+
+Note that with the supplied compose files database files and artifacts are persisted
+inside the containers, so launching a new container will wipe out the files.
 
 ## Developers
 

@@ -34,7 +34,8 @@
     "app",
     "Modelica",
     "Dynamic Systems",
-    "Modelling"
+    "Modelling",
+    "Cyber-Physical Systems"
   ],
   "homepage": "https://github.com/webgme/webgme-dss#readme",
   "license": "MIT",

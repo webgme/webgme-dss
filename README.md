@@ -12,32 +12,33 @@ For more details about the application a paper was published under [Modelica on 
 (page 220).
 
 ## Some features
-Leveraging the metamodeling capabilities of WebGME, the models are constrained to
-only allow (and indicate to end-user) compatible constructs.
+* Leveraging the metamodeling capabilities of WebGME, the models are constrained to only allow (and indicate to end-user) compatible constructs.
 
-![constraints](images/constraints.PNG "At connection creatation only compatible connections can be wired")
+    ![constraints](images/constraints.PNG "At connection creatation only compatible connections can be wired")
 
-Each system constitutes a project which can be viewed as a repository.
-![projects](images/projects.PNG "Easy navigation between a users projects")
+* Each system constitutes a project which can be viewed as a git repository where the evolution of the models are stored as commits inside a mongo database.
 
-In the same way authorization of git-repositories can be managed via github, webgme provides a
-simple user management system with users and organizations.
-![users](images/users.PNG "Manage collaborators using the provided web-interface")
+    ![projects](images/projects.PNG "Easy navigation between a users projects")
 
-Each state of the model can be retrieved at any time and versions can be compared.
-![repository](images/repository.PNG "The history log of a project with all details exposed")
+* In the same way authorization of git-repositories can be managed via github, WebGME provides a basic user-management system with users and organizations.
 
-Simulate the Modelica models using the stable open source tools [JModelica.org](https://jmodelica.org/) and/or [OpenModelica](https://openmodelica.org/).
-As the simulation progresses on the server the output is transmitted to the end-user via websockets.
-![simulation_feedback](images/simulation_feedback.PNG "Instance simulation feedback from the server")
+    ![users](images/users.PNG "Manage collaborators using the provided web-interface")
 
-For each simulation the simulation artifacts are stored inside the model repository together with
-a snap-shot of the exact model that was simulated. This enables graphical feedback from the same context
-the model was composed when viewing the time-series.
-![simulation_results](images/simulation_results.PNG "Time series variables are mapped back to the original models")
+* Each state of the model can be retrieved at any time and versions can be compared.
 
-Only domains requested are loaded into the browser and can later on be updated from the user interface.
-![domains](images/domains.PNG "Add more domains as needed")
+    ![repository](images/repository.PNG "The history log of a project with all details exposed")
+
+* Simulate the Modelica models using the stable open source tools [JModelica.org](https://jmodelica.org/) and/or [OpenModelica](https://openmodelica.org/). As the simulation progresses on the server the output is transmitted to the end-user via websockets.
+
+    ![simulation_feedback](images/simulation_feedback.PNG "Instance simulation feedback from the server")
+
+* For each simulation the simulation artifacts are stored inside the model repository together with a snap-shot of the exact model that was simulated. This enables graphical feedback from the same context the model was composed when viewing the time-series.
+
+    ![simulation_results](images/simulation_results.PNG "Time series variables are mapped back to the original models")
+
+* Only domains requested are loaded into the browser and can later on be updated from the user interface.
+
+    ![domains](images/domains.PNG "Add more domains as needed")
 
 ### Disclaimer
 In its current state this application only supports a subset of Modelica in

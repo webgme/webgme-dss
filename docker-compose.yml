@@ -39,11 +39,6 @@ services:
     # - ~/data/db:/data/db
     networks:
       - database
-  dss-worker:
-    image: dss-worker
-     - database
-     - workers
-     - frontend
   mongo:
     image: mongo:3.4.1
     ports:
@@ -74,4 +69,6 @@ services:
       - NODE_ENV=dockercompose
       - WEBGME_IP=webgme
     networks:
+      - database
       - workers
+      - frontend

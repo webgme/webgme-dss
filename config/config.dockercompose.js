@@ -18,4 +18,9 @@ config.server.workerManager.options = {
     },
 };
 
+config.authentication.jwt.privateKey = '/token_keys/private_key';
+config.authentication.jwt.publicKey = '/token_keys/public_key';
+
+config.authentication.inferredUsersCanCreate = true;
+
 module.exports = config;

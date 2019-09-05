@@ -8,12 +8,13 @@
 #  $ docker-compose stop
 version: '3'
 networks:
-  workers:
+  frontend:
     driver: bridge
-    internal: true
   database:
     driver: bridge
-
+  workers:
+    internal: true
+    driver: bridge
 services:
   webgme:
     build: .
@@ -23,6 +24,8 @@ services:
       - NODE_ENV=dockercompose
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ~/dockershare/token_keys:/token_keys
+      - ~/dockershare/blob-local-storage:/blob-local-storage
     ports:
      - 8888:8888
     networks:
@@ -38,11 +41,37 @@ services:
       - database
   dss-worker:
     image: dss-worker
+     - database
+     - workers
+     - frontend
+  mongo:
+    image: mongo:3.4.1
+    ports:
+      - 27017:27017
+    volumes:
+      - ~/data/db:/data/db
+    networks:
+      - database
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    depends_on:
+      - webgme
+    volumes:
+      - ~/dockershare/ssl_certs:/ssl_certs
+    networks:
+      - frontend
+    ports:
+      - 80:80
+      - 443:443
+  webgme-dss-worker:
     build:
       context: .
       dockerfile: DockerfileJMod
     command: ["cat", "/dev/null"] # A no-op command so the image is built.
     environment:
       - NODE_ENV=dockercompose
+      - WEBGME_IP=webgme
     networks:
       - workers

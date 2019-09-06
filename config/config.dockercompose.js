@@ -23,4 +23,6 @@ config.authentication.jwt.publicKey = '/token_keys/public_key';
 
 config.authentication.inferredUsersCanCreate = true;
 
+config.authentication.publicOrganizations.push('demo');
+
 module.exports = config;

@@ -50,7 +50,7 @@
     "blockies": "0.0.2",
     "classnames": "^2.2.6",
     "css-loader": "^1.0.1",
-    "csv-parse": "^2.5.0",
+    "csv-parse": "^4.4.6",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "file-loader": "^2.0.0",
